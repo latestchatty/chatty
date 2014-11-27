@@ -95,8 +95,6 @@ a.closepost:hover {
     text-indent: -5000px;
     overflow: hidden;
     background-image: url('images/sprite-commentslink.gif');
-    background-repeat: none;
-    background-position: left top;
     margin-left: 3px;
 }
 .postnumber a:hover {
