@@ -92,7 +92,10 @@ gulp.task('watch', function() {
     gulp.watch(paths.client.css, ['build-css']);
 
     //live reload
-    //gulp.watch(paths.target + '/**').on('change', connect.changed);
+    gulp.watch(paths.target + '/**').on('change', function(file) {
+        gulp.src(file.path, {read: false})
+            .pipe(connect.reload());
+    });
 });
 
 gulp.task('server', function() {
