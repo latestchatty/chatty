@@ -14,6 +14,9 @@
     <div ng-repeat="thread in threads">
         <div class="rootPost">
             <div class="postnumber"><a href="" title="Permalink"></a></div>
+            <div class="reply">
+                <a title="reply to this comment" href="">Reply</a>
+            </div>
             <div class="postBody">
                 <span class="author">By: </span>
                 <span class="user">{{::thread.rootPost.author}}</span>
