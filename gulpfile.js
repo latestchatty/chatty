@@ -28,7 +28,8 @@ var paths = {
         html: [
             './src/main/**/*.html',
             '!./src/main/index.html'
-        ]
+        ],
+        images: './src/main/images/**'
     }
 };
 
@@ -52,6 +53,14 @@ function buildIndex(debug) {
 //copy over html
 gulp.task('build-html', function() {
     gulp.src(paths.client.html, { base: paths.client.base })
+        .pipe(clip())
+        .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
+        .pipe(gulp.dest(paths.target));
+});
+
+//copy over html
+gulp.task('build-images', function() {
+    gulp.src(paths.client.images, { base: paths.client.base })
         .pipe(clip())
         .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
         .pipe(gulp.dest(paths.target));
@@ -106,5 +115,5 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['server', 'watch', 'build-index-livereload', 'build-html', 'build-js-debug', 'build-css']);
-gulp.task('build', ['build-index', 'build-html', 'build-js', 'build-css']);
+gulp.task('default', ['server', 'watch', 'build-index-livereload', 'build-html', 'build-js-debug', 'build-css', 'build-images']);
+gulp.task('build', ['build-index', 'build-html', 'build-js', 'build-css', 'build-images']);

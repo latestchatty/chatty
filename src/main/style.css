@@ -21,6 +21,7 @@ body {
     border: 0 solid #656565;
     border-top-width: 1px;
     margin: 25px 0 3px 8px;
+    position: relative;
 }
 
 .postBody {
@@ -47,6 +48,59 @@ div.postBody a:link, div.postBody a:visited, div.postBody a:active, div.postBody
 }
 div.postBody a:hover {
     color: #fff;
+}
+
+div.postdate {
+    text-align: right;
+    font-size: 10px;
+    color: #666;
+    width: 200px;
+    right: 0;
+    position: absolute;
+    bottom: 0;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 5px;
+}
+
+a.closepost:link, a.closepost:visited, a.closepost:active, a.closepost:hover {
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    bottom: 0;
+    left: 0;
+    color: #8e8e8e;
+    text-decoration: none;
+    font-size: 10px;
+    z-index: 1;
+}
+a.closepost:hover {
+    color: #fff;
+}
+
+.postnumber {
+    width: 19px;
+    height: 16px;
+    overflow: hidden;
+    float: left;
+    margin: 1px 3px 0 0;
+}
+.postnumber a:link, .postnumber a:visited, .postnumber a:active, .postnumber a:hover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-indent: -5000px;
+    overflow: hidden;
+    background-image: url('images/sprite-commentslink.gif');
+    background-repeat: none;
+    background-position: left top;
+    margin-left: 3px;
+}
+.postnumber a:hover {
+    background-position: -50px top;
 }
 
 /* shacktags */

@@ -11,7 +11,6 @@ angular.module('chatty')
                 $scope.error = data;
             });
 
-        //$http.get('http://winchatty.com/v2/getThread?id=32767347')
         $http.get('https://winchatty.com/v2/getChatty')
             .success(function(data) {
                 $scope.threads = data.threads.map(fixThread);
@@ -46,10 +45,26 @@ angular.module('chatty')
                 } else {
                     console.log('New reply', event.eventData.post);
                     var thread = getThread(event.eventData.post.threadId);
-                    thread.posts.push(event.eventData.post);
+                    if (thread) {
+                        thread.posts.push(event.eventData.post);
+                    } else {
+                        console.log('Parent thread not found', event.eventData.post.threadId);
+                    }
                 }
             } else if (event.eventType === 'categoryChange') {
                 console.log('Category change', event);
+                var post = getPost(event.eventData.postId);
+                if (post) {
+                    if (event.eventData.category === 'nuked') {
+                        if (post.post) {
+                            _.pull($scope.posts, post.post);
+                        } else {
+                            _.pull($scope.threads, post.thread);
+                        }
+                    } else {
+
+                    }
+                }
             } else {
                 console.log('New event', event);
             }
@@ -57,8 +72,19 @@ angular.module('chatty')
 
         function getThread(id) {
             return _.find($scope.threads, function(thread) {
-                return thread.threadId = id;
+                return thread.threadId == id;
             });
+        }
+
+        function getPost(id) {
+            var post = {};
+            post.thread = _.find($scope.threads, function(thread) {
+                post.post = _.find(thread.posts, function(post) {
+                    return post.id == id;
+                });
+                return !!post.post;
+            });
+            return post;
         }
 
         function fixThread(thread) {

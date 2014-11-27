@@ -13,11 +13,15 @@
 <div ng-controller="chattyCtrl">
     <div ng-repeat="thread in threads">
         <div class="rootPost">
+            <div class="postnumber"><a href="" title="Permalink"></a></div>
             <div class="postBody">
                 <span class="author">By: </span>
                 <span class="user">{{::thread.rootPost.author}}</span>
                 <div ng-bind-html="::thread.rootPost.body"></div>
             </div>
+
+            <a href="" title="Collapse/Close" class="closepost">x</a>
+            <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma PST' : 'UTC'}}</div>
         </div>
 
         <div ng-repeat="post in thread.posts">
