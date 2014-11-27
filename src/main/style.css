@@ -1,26 +1,47 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font: 13px Helvetica, Arial;
+    font: 12px/1.5 arial, helvetica, clean, sans-serif;
     padding-bottom: 50px;
     word-wrap: break-word;
-    background-color:#000;
+    background-color: #000;
+    padding-left: 20px;
 }
 
-.postText {
+.replyText {
     color: lightgray;
+    margin: 0 0 0 20px;
 }
 
 .rootPost {
     background-color: #202224;
     padding: 3px 0 25px 0;
-    margin-bottom: 3px;
     border: 0 solid #656565;
     border-top-width: 1px;
+}
+
+.postBody {
+    color: lightgray;
+    margin: 0 5px 0 22px;
+}
+
+/* post author stuff */
+.author {
+    font-size: 11px;
+    color: #666;
+}
+.user {
+    font-size: 14px;
+    font-weight: bold;
+    color: #f3e7b5;
+    font-family: sans-serif;
+}
+
+/* links within a body */
+div.postBody a:link, div.postBody a:visited, div.postBody a:active, div.postBody a:hover {
+    text-decoration: underline;
+    color: #aeae9b;
+}
+div.postBody a:hover {
+    color: #fff;
 }
 
 /* shacktags */

@@ -13,10 +13,14 @@
 <div ng-controller="chattyCtrl">
     <div ng-repeat="thread in threads">
         <div class="rootPost">
-            <span ng-bind-html="thread.rootPost.body" class="postText"></span>
+            <div class="postBody">
+                <span class="author">By: <span class="user">{{::thread.rootPost.author}}</span></span>
+                <div ng-bind-html="::thread.rootPost.body"></div>
+            </div>
         </div>
-        <div ng-repeat="post in thread.posts" class="post">
-            <span ng-bind-html="post.body" class="reply postText"></span>
+
+        <div ng-repeat="post in thread.posts" class="replyText">
+            <span ng-bind-html="::post.body" class=""></span>
         </div>
     </div>
 </div>
