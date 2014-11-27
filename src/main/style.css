@@ -6,9 +6,13 @@ body {
     padding-left: 20px;
 }
 
+.replyBox {
+    margin: 0 0 0 20px;
+}
 .replyText {
     color: lightgray;
-    margin: 0 0 0 20px;
+    max-width: 50%;
+    overflow: hidden;
 }
 
 .rootPost {
@@ -16,6 +20,7 @@ body {
     padding: 3px 0 25px 0;
     border: 0 solid #656565;
     border-top-width: 1px;
+    margin: 25px 0 3px 8px;
 }
 
 .postBody {

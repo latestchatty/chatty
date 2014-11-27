@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shacknews Chatty</title>
+    <title>SPA Chatty</title>
 
     <link href="bundle.css" rel="stylesheet">
 </head>
@@ -14,13 +14,20 @@
     <div ng-repeat="thread in threads">
         <div class="rootPost">
             <div class="postBody">
-                <span class="author">By: <span class="user">{{::thread.rootPost.author}}</span></span>
+                <span class="author">By: </span>
+                <span class="user">{{::thread.rootPost.author}}</span>
                 <div ng-bind-html="::thread.rootPost.body"></div>
             </div>
         </div>
 
-        <div ng-repeat="post in thread.posts" class="replyText">
-            <span ng-bind-html="::post.body" class=""></span>
+        <div ng-repeat="post in thread.posts">
+            <div class="replyBox">
+                <!--<span class="replyText" ng-bind-html="::post.body"></span>-->
+                <div class="replyText">{{::post.body}}
+                    <span class="author">&nbsp;:&nbsp;</span>
+                    <span class="user">{{::post.author}}</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
