@@ -88,11 +88,21 @@ angular.module('chatty')
         }
 
         function fixThread(thread) {
-            //find the root post
-            thread.rootPost = _.remove(thread.posts, function(post) {
-                return post.parentId === 0;
-            })[0];
+            thread.posts.forEach(function(post) {
+                if (post.parentId === 0) {
+                    //pull the root post out of post list
+                    _.pull(thread.posts, post);
+                    thread.rootPost = post;
+                } else {
+                    //create the one-liner used for reply view
+                    post.oneline = stripHtml(post.body).slice(0, 106);
+                }
+            });
 
             return thread;
+        }
+
+        function stripHtml(input) {
+            return input.replace(/<[^>]+>/gm, '');
         }
     });
