@@ -86,7 +86,7 @@ angular.module('chatty')
             var post = {};
             post.thread = _.find($scope.threads, function(thread) {
                 post.post = _.find(thread.posts, function(post) {
-                    return post.id == id;
+                    return post && post.id == id;
                 });
                 return !!post.post;
             });
