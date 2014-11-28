@@ -11,23 +11,25 @@
 <body ng-app="chatty">
 
 <div ng-controller="chattyCtrl">
-    <div ng-repeat="thread in threads">
-        <div class="rootPost">
+    <div ng-repeat="thread in threads track by thread.threadId">
+        <div class="rootPost" ng-class="{ collapsed: thread.collapsed }">
             <div class="postnumber"><a href="" title="Permalink"></a></div>
-            <div class="reply">
+            <div class="reply" ng-hide="thread.collapsed">
                 <a title="reply to this comment" href="">Reply</a>
             </div>
             <div class="postBody">
                 <span class="author">By: </span>
                 <span class="user">{{::thread.rootPost.author}}</span>
-                <div ng-bind-html="::thread.rootPost.body"></div>
+                <div ng-bind-html="::thread.rootPost.body" ng-hide="thread.collapsed"></div>
+                <div ng-show="thread.collapsed">{{::thread.rootPost.oneline}}</div>
             </div>
 
-            <a href="" title="Collapse/Close" class="closepost">x</a>
+            <a ng-hide="thread.collapsed" href="" title="Collapse/Close" class="closepost" ng-click="thread.collapsed = true">x</a>
+            <a ng-show="thread.collapsed" href="" title="Show Full Post" class="showpost" ng-click="thread.collapsed = false">Show Full Post</a>
             <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
 
-        <div ng-repeat="post in thread.posts">
+        <div ng-hide="thread.collapsed" ng-repeat="post in thread.posts track by post.id">
             <div class="replyBox">
                 <div class="replyText">{{::post.oneline}}
                     <span class="author">&nbsp;:&nbsp;</span>

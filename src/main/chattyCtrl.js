@@ -34,26 +34,30 @@ angular.module('chatty')
         }
 
         function newEvent(event) {
+            var thread, post;
+
             if (event.eventType === 'newPost') {
                 if (event.eventData.post.parentId === 0) {
                     console.log('New root post', event.eventData.post);
-                    $scope.threads.unshift({
+                    thread = fixThread({
                         threadId: event.eventData.threadId,
                         rootPost: event.eventData.post,
                         posts: []
                     });
+                    $scope.threads.unshift(thread);
                 } else {
                     console.log('New reply', event.eventData.post);
-                    var thread = getThread(event.eventData.post.threadId);
+                    thread = getThread(event.eventData.post.threadId);
                     if (thread) {
-                        thread.posts.push(event.eventData.post);
+                        post = fixPost(event.eventData.post);
+                        thread.posts.push(post);
                     } else {
                         console.log('Parent thread not found', event.eventData.post.threadId);
                     }
                 }
             } else if (event.eventType === 'categoryChange') {
                 console.log('Category change', event);
-                var post = getPost(event.eventData.postId);
+                post = getPost(event.eventData.postId);
                 if (post) {
                     if (event.eventData.category === 'nuked') {
                         if (post.post) {
@@ -64,6 +68,8 @@ angular.module('chatty')
                     } else {
 
                     }
+                } else {
+                    console.log('Post not found', event.eventData.postId);
                 }
             } else {
                 console.log('New event', event);
@@ -89,17 +95,21 @@ angular.module('chatty')
 
         function fixThread(thread) {
             thread.posts.forEach(function(post) {
+                fixPost(post);
+
                 if (post.parentId === 0) {
                     //pull the root post out of post list
                     _.pull(thread.posts, post);
                     thread.rootPost = post;
-                } else {
-                    //create the one-liner used for reply view
-                    post.oneline = stripHtml(post.body).slice(0, 106);
                 }
             });
 
             return thread;
+        }
+
+        function fixPost(post) {
+            //create the one-liner used for reply view
+            post.oneline = stripHtml(post.body).slice(0, 106);
         }
 
         function stripHtml(input) {
