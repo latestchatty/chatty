@@ -31,8 +31,8 @@
 
         <div ng-hide="thread.collapsed" ng-repeat="post in thread.posts track by post.id">
             <div class="replyBox">
-                <div ng-hide="post.viewFull" class="oneline oneline9">
-                    <span ng-click="post.viewFull = true">{{::post.oneline}}</span>
+                <div ng-hide="post.viewFull">
+                    <span class="oneline oneline9" ng-click="post.viewFull = true">{{::post.oneline}}</span>
                     <span class="author">&nbsp;:&nbsp;</span>
                     <span class="user">{{::post.author}}</span>
                 </div>

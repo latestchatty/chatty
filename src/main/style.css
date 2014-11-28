@@ -184,8 +184,6 @@ a.showpost:hover {
 /* comment reply stuff */
 .replyBox {
     margin: 0 0 0 20px;
-}
-.oneline {
     line-height: 17px;
 }
 .oneline:hover {
