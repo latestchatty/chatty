@@ -16,10 +16,16 @@ body {
 
 .rootPost {
     background-color: #202224;
-    padding: 3px 0 25px 0;
+    margin: 25px 0 3px 8px;
     border: 0 solid #656565;
     border-top-width: 1px;
-    margin: 25px 0 3px 8px;
+    position: relative;
+    padding: 3px 0 25px 0;
+}
+.replyPost {
+    background-color: #121212;
+    border: 1px solid #656565;
+    padding: 3px 0 25px 0;
     position: relative;
 }
 .collapsed {
@@ -183,3 +189,20 @@ a.showpost:hover {
 .jt_spoiler_show { color: #f00; }
 .jt_codesmall    { font-family: monospace; }
 .jt_code         { display: block; font-family: monospace; border-left: 1px solid #666; padding: 3px 0 3px 10px; margin: 5px 0 5px 10px; }
+
+/* comment reply stuff */
+.oneline:hover {
+    color: #fff;
+    background-color: #233548;
+    cursor: pointer;
+}
+.oneline9 { color: #777; }
+.oneline8 { color: #888; }
+.oneline7 { color: #999; }
+.oneline6 { color: #aaa; }
+.oneline5 { color: #bbb; }
+.oneline4 { color: #ccc; }
+.oneline3 { color: #ddd; }
+.oneline2 { color: #eee; }
+.oneline1 { color: #fff; }
+.oneline0 { color: #eee; font-weight: bold; }

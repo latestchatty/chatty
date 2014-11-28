@@ -116,7 +116,8 @@ angular.module('chatty')
 
         function fixPost(post) {
             //create the one-liner used for reply view
-            post.oneline = stripHtml(post.body).slice(0, 106);
+            var stripped = stripHtml(post.body);
+            post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
             return post;
         }
 
