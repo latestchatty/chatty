@@ -6,6 +6,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
+    "build": "npm install && gulp build",
     "start": "npm install && gulp clean && gulp build && gulp server"
   },
   "dependencies": {
