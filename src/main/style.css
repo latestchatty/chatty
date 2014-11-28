@@ -3,15 +3,6 @@ body {
     padding-bottom: 50px;
     word-wrap: break-word;
     background-color: #000;
-    /*padding-left: 20px;*/
-}
-
-.replyBox {
-    margin: 0 0 0 20px;
-}
-.replyText {
-    color: lightgray;
-    overflow: hidden;
 }
 
 .rootPost {
@@ -191,6 +182,12 @@ a.showpost:hover {
 .jt_code         { display: block; font-family: monospace; border-left: 1px solid #666; padding: 3px 0 3px 10px; margin: 5px 0 5px 10px; }
 
 /* comment reply stuff */
+.replyBox {
+    margin: 0 0 0 20px;
+}
+.oneline {
+    line-height: 17px;
+}
 .oneline:hover {
     color: #fff;
     background-color: #233548;

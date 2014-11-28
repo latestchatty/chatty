@@ -10,7 +10,7 @@
 </head>
 <body ng-app="chatty">
 
-<div ng-controller="chattyCtrl">
+<div ng-controller="chattyCtrl" ng-cloak class="ng-cloak">
     <div ng-repeat="thread in threads track by thread.threadId">
         <div class="rootPost" ng-class="{ collapsed: thread.collapsed }">
             <div class="postnumber"><a href="" title="Permalink"></a></div>
@@ -31,8 +31,8 @@
 
         <div ng-hide="thread.collapsed" ng-repeat="post in thread.posts track by post.id">
             <div class="replyBox">
-                <div class="replyText" ng-hide="post.viewFull">
-                    <span class="oneline oneline9" ng-click="post.viewFull = true">{{::post.oneline}}</span>
+                <div ng-hide="post.viewFull" class="oneline oneline9">
+                    <span ng-click="post.viewFull = true">{{::post.oneline}}</span>
                     <span class="author">&nbsp;:&nbsp;</span>
                     <span class="user">{{::post.author}}</span>
                 </div>
