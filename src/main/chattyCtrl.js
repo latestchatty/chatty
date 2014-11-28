@@ -13,7 +13,9 @@ angular.module('chatty')
 
         $http.get('https://winchatty.com/v2/getChatty')
             .success(function(data) {
-                $scope.threads = data.threads.map(fixThread);
+                data.threads.forEach(function(thread) {
+                    $scope.threads.push(fixThread(thread));
+                });
 
                 waitForEvents();
             }).error(function(data) {
@@ -66,7 +68,7 @@ angular.module('chatty')
                             _.pull($scope.threads, post.thread);
                         }
                     } else {
-
+                        post.post.category = event.eventData.category;
                     }
                 } else {
                     console.log('Post not found', event.eventData.postId);
@@ -85,9 +87,14 @@ angular.module('chatty')
         function getPost(id) {
             var post = {};
             post.thread = _.find($scope.threads, function(thread) {
-                post.post = _.find(thread.posts, function(post) {
-                    return post && post.id == id;
-                });
+                if (thread.rootPost.id == id) {
+                    post.post = thread.rootPost;
+                } else {
+                    post.post = _.find(thread.posts, function(post) {
+                        return post && post.id == id;
+                    });
+                }
+
                 return !!post.post;
             });
             return post;
@@ -110,6 +117,7 @@ angular.module('chatty')
         function fixPost(post) {
             //create the one-liner used for reply view
             post.oneline = stripHtml(post.body).slice(0, 106);
+            return post;
         }
 
         function stripHtml(input) {
