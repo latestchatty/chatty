@@ -24,7 +24,7 @@
             </div>
 
             <a href="" title="Collapse/Close" class="closepost">x</a>
-            <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma PST' : 'UTC'}}</div>
+            <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
 
         <div ng-repeat="post in thread.posts">
