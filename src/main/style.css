@@ -154,7 +154,6 @@ a.showpost:link, a.showpost:visited, a.showpost:active, a.showpost:hover {
     text-decoration: none;
     font-size: 10px;
     text-align: center;
-    padding: 1px 5px 0 5px;
     background: #222;
     font-weight: bold;
 }
