@@ -100,7 +100,7 @@ angular.module('chatty')
         }
 
         function fixThread(thread) {
-            var posts = thread.posts;
+            var posts = _.sortBy(thread.posts, 'date');
             thread.posts = [];
 
             _.forEach(posts, function(post) {
