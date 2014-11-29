@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .controller('chattyCtrl', function($scope, $window, $document, chattyService) {
+    .controller('chattyCtrl', function($scope, chattyService) {
         $scope.threads = [];
         $scope.eventId = 0;
         $scope.error = null;
