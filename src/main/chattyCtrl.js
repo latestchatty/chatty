@@ -7,10 +7,4 @@ angular.module('chatty')
         chattyService.fullLoad().then(function(threads) {
             $scope.threads = threads;
         });
-
-        $document.bind('scroll', _.debounce(function () {
-            if (($window.pageYOffset + $window.innerHeight) / $window.document.body.scrollHeight >= 0.75) {
-                $scope.$apply(chattyService.loadMore());
-            }
-        }, 250, { maxWait: 1000}));
     });

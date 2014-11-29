@@ -1,10 +1,7 @@
 angular.module('chatty')
     .service('chattyService', function($q, $http, $timeout) {
-        var initialLoadCount = 15;
-        var scrollLoadCount = 10;
         var lastEventId = 0;
         var threads = [];
-        var visibleThreads = [];
         var postDb = {};
         var chattyService = {};
 
@@ -21,10 +18,8 @@ angular.module('chatty')
             $http.get('https://winchatty.com/v2/getChatty')
                 .success(function(data) {
                     //preprocess some threads before resolving
-                    processNewThreads(data.threads);
-                    visibleThreads = visibleThreads.concat(threads);
-
-                    deferred.resolve(visibleThreads);
+                    processNewThreads(data.threads, 5);
+                    deferred.resolve(threads);
 
                     //process more after we've responded
                     processRemainingThreads(data.threads);
@@ -35,34 +30,22 @@ angular.module('chatty')
             return deferred.promise;
         };
 
-        chattyService.loadMore = function loadMore() {
-            if (visibleThreads.length != threads.length) {
-                var count = 0;
-                _.each(threads, function(thread) {
-                    if (!_.contains(visibleThreads, thread)) {
-                        visibleThreads.push(thread);
-                        count++;
-                        return visibleThreads.length != threads.length && count < scrollLoadCount;
-                    }
-                });
-            }
-        };
-
         function processRemainingThreads(newThreads) {
             $timeout(function() {
-                processNewThreads(newThreads);
+                processNewThreads(newThreads, 10);
 
                 if (newThreads.length > 0) {
                     processRemainingThreads(newThreads);
                 } else {
                     waitForEvents();
                 }
-            }, 500);
+            });
         }
 
-        function processNewThreads(newThreads) {
-            var max = newThreads.length > initialLoadCount ? initialLoadCount : newThreads.length;
-                _.range(0, max).forEach(function() {
+        function processNewThreads(newThreads, count) {
+            var max = newThreads.length >= count ? count : newThreads.length;
+            console.log('Processing threads: ', max);
+            _.range(0, max).forEach(function() {
                 var thread = newThreads.shift();
                 var fixed = fixThread(thread);
                 threads.push(fixed);

@@ -1,1 +1,1 @@
-angular.module('chatty', ['ngSanitize']);
+angular.module('chatty', ['ngSanitize', 'RecursionHelper']);
