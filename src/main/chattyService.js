@@ -63,7 +63,7 @@ angular.module('chatty')
         function processNewThreads(newThreads) {
             var max = newThreads.length > initialLoadCount ? initialLoadCount : newThreads.length;
                 _.range(0, max).forEach(function() {
-                var thread = newThreads.pop();
+                var thread = newThreads.shift();
                 var fixed = fixThread(thread);
                 threads.push(fixed);
             });
