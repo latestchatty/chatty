@@ -5,7 +5,6 @@ angular.module('chatty')
         var lastEventId = 0;
         var threads = [];
         var visibleThreads = [];
-        var newThreads = [];
         var postDb = {};
         var chattyService = {};
 
@@ -21,16 +20,14 @@ angular.module('chatty')
 
             $http.get('https://winchatty.com/v2/getChatty')
                 .success(function(data) {
-                    newThreads = data.threads;
-
                     //preprocess some threads before resolving
-                    processNewThreads();
+                    processNewThreads(data.threads);
                     visibleThreads = visibleThreads.concat(threads);
 
                     deferred.resolve(visibleThreads);
 
                     //process more after we've responded
-                    processRemainingThreads();
+                    processRemainingThreads(data.threads);
                 }).error(function(data) {
                     deferred.reject(data);
                 });
@@ -51,19 +48,19 @@ angular.module('chatty')
             }
         };
 
-        function processRemainingThreads() {
+        function processRemainingThreads(newThreads) {
             $timeout(function() {
-                processNewThreads();
+                processNewThreads(newThreads);
 
                 if (newThreads.length > 0) {
-                    processRemainingThreads();
+                    processRemainingThreads(newThreads);
                 } else {
                     waitForEvents();
                 }
             }, 500);
         }
 
-        function processNewThreads() {
+        function processNewThreads(newThreads) {
             var max = newThreads.length > initialLoadCount ? initialLoadCount : newThreads.length;
                 _.range(0, max).forEach(function() {
                 var thread = newThreads.pop();
