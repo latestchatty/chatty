@@ -8,7 +8,6 @@ var minifyCSS = require('gulp-minify-css');
 var ngAnnotate = require('gulp-ng-annotate');
 var changed = require('gulp-changed');
 var gulpif = require('gulp-if');
-var injectReload = require('gulp-inject-reload');
 var connect = require('gulp-connect');
 
 var paths = {
@@ -25,10 +24,9 @@ var paths = {
             './src/main/**/*.js'
         ],
         css: './src/main/style.css',
-        index_html: './src/main/index.html',
         html: [
             './src/main/**/*.html',
-            '!./src/main/index.html'
+            './src/main/index.html'
         ],
         images: './src/main/images/**'
     }
@@ -38,18 +36,6 @@ var paths = {
 gulp.task('clean', function clean(callback) {
     del([paths.target, paths.coverage], callback);
 });
-
-//copy over index.html with livereload if in debug
-gulp.task('build-index', buildIndex(false));
-gulp.task('build-index-livereload', buildIndex(false));
-function buildIndex(debug) {
-    return function() {
-        gulp.src(paths.client.index_html, { base: paths.client.base })
-            .pipe(gulpif(debug, injectReload()))
-            .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
-            .pipe(gulp.dest(paths.target));
-    }
-}
 
 //copy over html
 gulp.task('build-html', function() {
@@ -96,7 +82,6 @@ gulp.task('build-css', function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-    gulp.watch(paths.client.index_html, ['build-index-livereload']);
     gulp.watch(paths.client.html, ['build-html']);
     gulp.watch(paths.client.js, ['build-js-debug']);
     gulp.watch(paths.client.css, ['build-css']);
@@ -116,5 +101,5 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['server', 'watch', 'build-index-livereload', 'build-html', 'build-js-debug', 'build-css', 'build-images']);
-gulp.task('build', ['build-index', 'build-html', 'build-js', 'build-css', 'build-images']);
+gulp.task('default', ['server', 'watch', 'build-html', 'build-js-debug', 'build-css', 'build-images']);
+gulp.task('build', ['build-html', 'build-js', 'build-css', 'build-images']);
