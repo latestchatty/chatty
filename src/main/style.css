@@ -45,6 +45,11 @@ body {
     color: #f3e7b5;
     font-family: sans-serif;
 }
+.user_op {
+    background-color: #202224;
+    border-radius: 18px;
+    padding: 1px 7px;
+}
 
 div.reply {
     position: absolute;

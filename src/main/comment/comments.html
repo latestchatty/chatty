@@ -3,7 +3,7 @@
         <div ng-hide="post.viewFull">
             <span class="oneline oneline9" ng-click="post.viewFull = true">{{::post.oneline}}</span>
             <span class="author">&nbsp;:&nbsp;</span>
-            <span class="user">{{::post.author}}</span>
+            <span class="user" ng-class="::{ user_op: post.author === author}">{{::post.author}}</span>
         </div>
 
         <div class="replyPost" ng-show="post.viewFull">
