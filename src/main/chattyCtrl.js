@@ -3,6 +3,7 @@ angular.module('chatty')
         $scope.threads = [];
         $scope.eventId = 0;
         $scope.error = null;
+        var postDb = {};
 
         $http.get('http://winchatty.com/v2/getNewestEventId')
             .success(function(data) {
@@ -41,29 +42,31 @@ angular.module('chatty')
             if (event.eventType === 'newPost') {
                 if (event.eventData.post.parentId === 0) {
                     console.log('New root post', event.eventData.post);
-                    thread = fixThread({
+                    thread = {
                         threadId: event.eventData.threadId,
-                        rootPost: event.eventData.post,
+                        rootPost: fixPost(event.eventData.post),
                         posts: []
-                    });
+                    };
                     $scope.threads.unshift(thread);
+                    postDb[thread.threadId] = thread;
                 } else {
                     console.log('New reply', event.eventData.post);
-                    thread = getThread(event.eventData.post.threadId);
-                    if (thread) {
+                    var parent = postDb[event.eventData.post.parentId];
+                    if (parent) {
                         post = fixPost(event.eventData.post);
-                        thread.posts.push(post);
+                        parent.posts.push(post);
+                        postDb[post.id] =post;
                     } else {
-                        console.log('Parent thread not found', event.eventData.post.threadId);
+                        console.log('Parent post not found', event.eventData.post.parentId);
                     }
                 }
             } else if (event.eventType === 'categoryChange') {
                 console.log('Category change', event);
-                post = getPost(event.eventData.postId);
+                post = postDb[event.eventData.postId];
                 if (post) {
                     if (event.eventData.category === 'nuked') {
                         if (post.post) {
-                            _.pull($scope.posts, post.post);
+                            _.pull(postDb, post.post);
                         } else {
                             _.pull($scope.threads, post.thread);
                         }
@@ -78,36 +81,37 @@ angular.module('chatty')
             }
         }
 
-        function getThread(id) {
-            return _.find($scope.threads, function(thread) {
-                return thread.threadId == id;
-            });
-        }
-
-        function getPost(id) {
-            var post = {};
-            post.thread = _.find($scope.threads, function(thread) {
-                if (thread.rootPost.id == id) {
-                    post.post = thread.rootPost;
-                } else {
-                    post.post = _.find(thread.posts, function(post) {
-                        return post && post.id == id;
-                    });
-                }
-
-                return !!post.post;
-            });
-            return post;
-        }
-
         function fixThread(thread) {
-            thread.posts.forEach(function(post) {
+            var posts = thread.posts;
+            thread.posts = [];
+
+            _.forEach(posts, function(post) {
+                //various post fixes
                 fixPost(post);
 
+                //figure out where post belongs
                 if (post.parentId === 0) {
-                    //pull the root post out of post list
-                    _.pull(thread.posts, post);
+                    //root post
                     thread.rootPost = post;
+
+                    //attach to master post list
+                    postDb[post.id] = thread;
+                } else {
+                    //attach to master post list
+                    postDb[post.id] = post;
+                }
+            });
+
+            //remove root to prevent iterating again
+            _.pull(posts, thread.rootPost);
+
+            //create nested replies
+            _.forEach(posts, function(post) {
+                var parent = postDb[post.parentId];
+                if (parent) {
+                    parent.posts.push(post);
+                } else {
+                    console.log('Orphan post: ', post);
                 }
             });
 
@@ -116,12 +120,12 @@ angular.module('chatty')
 
         function fixPost(post) {
             //create the one-liner used for reply view
-            var stripped = stripHtml(post.body);
+            var stripped = post.body.replace(/<[^>]+>/gm, '');
             post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
-            return post;
-        }
 
-        function stripHtml(input) {
-            return input.replace(/<[^>]+>/gm, '');
+            //create sub-post container
+            post.posts = [];
+
+            return post;
         }
     });
