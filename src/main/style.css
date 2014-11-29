@@ -4,6 +4,9 @@ body {
     word-wrap: break-word;
     background-color: #000;
 }
+.ng-cloak {
+    display: none  !important;
+}
 
 .rootPost {
     background-color: #202224;
