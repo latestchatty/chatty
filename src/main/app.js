@@ -1,1 +1,4 @@
-angular.module('chatty', ['ngSanitize', 'RecursionHelper']);
+angular.module('chatty', ['ngSanitize', 'RecursionHelper'],
+    function($rootScopeProvider) {
+        $rootScopeProvider.digestTtl(30);
+    });
