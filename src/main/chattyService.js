@@ -17,12 +17,10 @@ angular.module('chatty')
 
             $http.get('https://winchatty.com/v2/getChatty')
                 .success(function(data) {
-                    //preprocess some threads before resolving
-                    processNewThreads(data.threads, 5);
                     deferred.resolve(threads);
 
                     //process more after we've responded
-                    processRemainingThreads(data.threads);
+                    processThreads(data.threads);
                 }).error(function(data) {
                     deferred.reject(data);
                 });
@@ -30,25 +28,16 @@ angular.module('chatty')
             return deferred.promise;
         };
 
-        function processRemainingThreads(newThreads) {
+        function processThreads(newThreads) {
             $timeout(function() {
-                processNewThreads(newThreads, 10);
+                var thread = fixThread(newThreads.shift());
+                threads.push(thread);
 
                 if (newThreads.length > 0) {
-                    processRemainingThreads(newThreads);
+                    return processThreads(newThreads);
                 } else {
-                    waitForEvents();
+                    return waitForEvents();
                 }
-            });
-        }
-
-        function processNewThreads(newThreads, count) {
-            var max = newThreads.length >= count ? count : newThreads.length;
-            console.log('Processing threads: ', max);
-            _.range(0, max).forEach(function() {
-                var thread = newThreads.shift();
-                var fixed = fixThread(thread);
-                threads.push(fixed);
             });
         }
 
