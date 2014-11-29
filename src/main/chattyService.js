@@ -45,7 +45,7 @@ angular.module('chatty')
                     if (!_.contains(visibleThreads, thread)) {
                         visibleThreads.push(thread);
                         count++;
-                        return visibleThreads.length != threads.length && scrollLoadCount < 5;
+                        return visibleThreads.length != threads.length && count < scrollLoadCount;
                     }
                 });
             }
