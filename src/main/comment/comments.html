@@ -1,12 +1,12 @@
 <ul>
     <li ng-repeat="post in posts track by $index" ng-class="{ last: $index === posts.length - 1 }">
-        <div ng-hide="post.viewFull">
+        <div ng-if="!post.viewFull">
             <span class="oneline oneline9" ng-click="post.viewFull = true">{{::post.oneline}}</span>
             <span class="author">&nbsp;:&nbsp;</span>
             <span class="user" ng-class="::{ user_op: post.author === author}">{{::post.author}}</span>
         </div>
 
-        <div class="replyPost" ng-show="post.viewFull">
+        <div class="replyPost" ng-if="post.viewFull">
             <div class="postnumber"><a href="" title="Permalink"></a></div>
             <div class="reply">
                 <a title="reply to this comment" href="">Reply</a>
