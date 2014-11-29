@@ -29,29 +29,8 @@
             <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
 
-        <div ng-hide="thread.collapsed" ng-repeat="post in thread.posts track by post.id">
-            <div class="replyBox">
-                <div ng-hide="post.viewFull">
-                    <span class="oneline oneline9" ng-click="post.viewFull = true">{{::post.oneline}}</span>
-                    <span class="author">&nbsp;:&nbsp;</span>
-                    <span class="user">{{::post.author}}</span>
-                </div>
-
-                <div class="replyPost" ng-show="post.viewFull">
-                    <div class="postnumber"><a href="" title="Permalink"></a></div>
-                    <div class="reply">
-                        <a title="reply to this comment" href="">Reply</a>
-                    </div>
-                    <div class="postBody">
-                        <span class="author">By: </span>
-                        <span class="user">{{::post.author}}</span>
-                        <div ng-bind-html="::post.body"></div>
-                    </div>
-
-                    <a href="" title="Collapse/Close" class="closepost" ng-click="post.viewFull = false">x</a>
-                    <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma CST' }}</div>
-                </div>
-            </div>
+        <div class="treeview">
+            <comments posts="thread.posts" ng-hide="thread.collapsed"></comments>
         </div>
     </div>
 </div>

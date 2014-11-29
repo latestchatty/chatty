@@ -160,6 +160,31 @@ a.showpost:hover {
     background-color: #393939;
 }
 
+/* tree view stuff */
+div.treeview {
+    margin-left: 10px;
+    padding-bottom: 1px;
+}
+div.treeview ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: static;
+}
+div.treeview ul {
+    margin-left: 5px;
+    background: url('images/commentsul.gif') repeat-y 2px bottom;
+}
+div.treeview ul li {
+    line-height: 17px;
+    padding-left: 13px;
+    margin-left: 0;
+    background: url('images/commentsbullet.gif') no-repeat 2px top;
+}
+div.treeview ul li.last {
+    background: #000 url('images/commentsbulletlast.gif') no-repeat 2px top;
+}
+
 /* shacktags */
 .jt_red          { color: #f00; }
 .jt_green        { color: #8dc63f; }
@@ -182,10 +207,6 @@ a.showpost:hover {
 .jt_code         { display: block; font-family: monospace; border-left: 1px solid #666; padding: 3px 0 3px 10px; margin: 5px 0 5px 10px; }
 
 /* comment reply stuff */
-.replyBox {
-    margin: 0 0 0 20px;
-    line-height: 17px;
-}
 .oneline:hover {
     color: #fff;
     background-color: #233548;
