@@ -17,9 +17,10 @@ var paths = {
     client: {
         base: './src/main',
         js: [
-            './node_modules/lodash/dist/lodash.js',
-            './node_modules/angular/angular.js',
-            './node_modules/angular-sanitize/angular-sanitize.js',
+            './bower_components/lodash/dist/lodash.js',
+            './bower_components/angular/angular.js',
+            './bower_components/angular-recursion/angular-recursion.js',
+            './bower_components/angular-sanitize/angular-sanitize.js',
             './src/main/app.js',
             './src/main/**/*.js'
         ],
