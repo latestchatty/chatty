@@ -1,16 +1,15 @@
 angular.module('chatty')
     .controller('chattyCtrl', function($scope, $filter, chattyService) {
+        //load full chatty on start
         $scope.threads = [];
-        $scope.eventId = 0;
-        $scope.error = null;
-        $scope.filterSet = false;
-        $scope.filterExpression = null;
-
         chattyService.fullLoad().then(function(threads) {
             $scope.threads = threads;
         });
 
-        $scope.$watch('filterExpression', function() {
+        //support filters
+        $scope.filterSet = false;
+        $scope.filterExpression = null;
+        $scope.$watch('filterExpression', function runFilter() {
             $scope.filterSet = false;
             if ($scope.filterExpression) {
                 _.forEach($scope.threads, function(thread) {
