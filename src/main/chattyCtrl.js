@@ -25,15 +25,11 @@ angular.module('chatty')
         });
 
         $scope.collapseThread = function collapseThread(thread) {
-            _.pull($scope.threads, thread);
-
-            thread.collapsed = true;
-
-            $scope.threads.push(thread);
+            chattyService.collapseThread(thread);
         };
 
         $scope.expandThread = function expandThread(thread) {
-            delete thread.collapsed;
+            chattyService.expandThread(thread);
         };
 
     });

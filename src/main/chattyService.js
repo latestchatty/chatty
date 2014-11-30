@@ -1,9 +1,10 @@
 angular.module('chatty')
-    .service('chattyService', function($q, $http, $timeout) {
+    .service('chattyService', function($q, $http, $timeout, localStorageService) {
         var lastEventId = 0;
         var threads = [];
         var postDb = {};
         var chattyService = {};
+        var collapsedThreads = angular.fromJson(localStorageService.get('collapsedThreads')) || [];
 
         chattyService.fullLoad = function fullLoad() {
             var deferred = $q.defer();
@@ -20,7 +21,7 @@ angular.module('chatty')
                     deferred.resolve(threads);
 
                     //process more after we've responded
-                    processThreads(data.threads);
+                    processThreads(data.threads, []);
                 }).error(function(data) {
                     deferred.reject(data);
                 });
@@ -28,14 +29,31 @@ angular.module('chatty')
             return deferred.promise;
         };
 
-        function processThreads(newThreads) {
+        function processThreads(newThreads, collapsed) {
             $timeout(function() {
                 var thread = fixThread(newThreads.shift());
-                threads.push(thread);
+                if (thread.collapsed) {
+                    //don't add collapsed threads in until end
+                    collapsed.push(thread);
+                } else {
+                    threads.push(thread);
+                }
 
                 if (newThreads.length > 0) {
-                    return processThreads(newThreads);
+                    //process more
+                    return processThreads(newThreads, collapsed);
                 } else {
+                    //add collapsed threads in at end
+                    _.each(collapsed, function(thread) {
+                        threads.push(thread);
+                    });
+
+                    //clean up collapsed thread list
+                    _.remove(collapsedThreads, function(id) {
+                        return !postDb[id];
+                    });
+                    localStorageService.set('collapsedThreads', collapsedThreads);
+
                     return waitForEvents();
                 }
             });
@@ -133,6 +151,11 @@ angular.module('chatty')
                 }
             });
 
+            //check if it's supposed to be collapsed
+            if (collapsedThreads.indexOf(thread.threadId) >= 0) {
+                thread.collapsed = true;
+            }
+
             return thread;
         }
 
@@ -146,6 +169,29 @@ angular.module('chatty')
 
             return post;
         }
+
+        chattyService.collapseThread = function chattyService(thread) {
+            thread.collapsed = true;
+
+            //move to the end of the list
+            _.pull(threads, thread);
+            threads.push(thread);
+
+            //update local storage
+            if (collapsedThreads.indexOf(thread.threadId) < 0) {
+                collapsedThreads.push(thread.threadId);
+
+                localStorageService.set('collapsedThreads', collapsedThreads);
+            }
+        };
+
+        chattyService.expandThread = function expandThread(thread) {
+            delete thread.collapsed;
+
+            //update local storage
+            _.pull(collapsedThreads, thread.threadId);
+            localStorageService.set('collapsedThreads', collapsedThreads);
+        };
 
         //support uncollapsing replies
         var currentComment = null;
