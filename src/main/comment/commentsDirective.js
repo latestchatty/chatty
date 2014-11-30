@@ -13,11 +13,11 @@ angular.module('chatty')
         },
         controller: function($scope, chattyService) {
             $scope.expandReply = function expandReply(post) {
-                chattyService.expandReply(post.id);
+                chattyService.expandReply(post);
             };
 
             $scope.collapseReply = function collapseReply(post) {
-                delete post.viewFull;
+                chattyService.collapseReply(post);
             };
         }
     }

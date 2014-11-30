@@ -193,16 +193,22 @@ angular.module('chatty')
             localStorageService.set('collapsedThreads', collapsedThreads);
         };
 
-        //support uncollapsing replies
-        var currentComment = null;
-        chattyService.expandReply = function expandReply(id) {
-            if (currentComment) {
+        chattyService.expandReply = function expandReply(post) {
+            var parent = postDb[post.threadId];
+            if (parent.currentComment) {
                 //unset previous reply
-                delete currentComment.viewFull;
+                delete parent.currentComment.viewFull;
             }
 
-            currentComment = postDb[id];
-            currentComment.viewFull = true;
+            parent.currentComment = post;
+            post.viewFull = true;
+        };
+
+        chattyService.collapseReply = function collapseReply(post) {
+            var parent = postDb[post.threadId];
+            delete parent.currentComment;
+
+            delete post.viewFull;
         };
 
         return chattyService;
