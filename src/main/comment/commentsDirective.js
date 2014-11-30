@@ -6,10 +6,19 @@ angular.module('chatty')
         templateUrl: 'comment/comments.html',
         scope: {
             posts: '=',
-            author: '='
+            author: '@'
         },
         compile: function(element) {
             return RecursionHelper.compile(element);
+        },
+        controller: function($scope, chattyService) {
+            $scope.expandReply = function expandReply(post) {
+                chattyService.expandReply(post.id);
+            };
+
+            $scope.collapseReply = function collapseReply(post) {
+                delete post.viewFull;
+            };
         }
     }
 });

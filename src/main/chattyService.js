@@ -147,5 +147,17 @@ angular.module('chatty')
             return post;
         }
 
+        //support uncollapsing replies
+        var currentComment = null;
+        chattyService.expandReply = function expandReply(id) {
+            if (currentComment) {
+                //unset previous reply
+                delete currentComment.viewFull;
+            }
+
+            currentComment = postDb[id];
+            currentComment.viewFull = true;
+        };
+
         return chattyService;
     });
