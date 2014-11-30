@@ -31,8 +31,8 @@
                 <div ng-if="thread.collapsed">{{::thread.rootPost.oneline}}</div>
             </div>
 
-            <a ng-if="!thread.collapsed" href="" title="Collapse/Close" class="closepost" ng-click="thread.collapsed = true">x</a>
-            <a ng-if="thread.collapsed" href="" title="Show Full Post" class="showpost" ng-click="thread.collapsed = false">Show Full Post</a>
+            <a ng-if="!thread.collapsed" href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(thread)">x</a>
+            <a ng-if="thread.collapsed" href="" title="Show Full Post" class="showpost" ng-click="expandThread(thread)">Show Full Post</a>
             <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
 

@@ -23,4 +23,17 @@ angular.module('chatty')
                 $scope.filterSet = true;
             }
         });
+
+        $scope.collapseThread = function collapseThread(thread) {
+            _.pull($scope.threads, thread);
+
+            thread.collapsed = true;
+
+            $scope.threads.push(thread);
+        };
+
+        $scope.expandThread = function expandThread(thread) {
+            delete thread.collapsed;
+        };
+
     });
