@@ -2,6 +2,9 @@ Chatty
 ====
 A web based alternate client for the shacknews chatty (http://www.shacknews.com/chatty).
 
+##### Example Site
+http://chatty.nixxed.com
+
 ##### How to run:
 ---------
 Notes
@@ -17,5 +20,5 @@ Notes:
   1. Creates 'build' directory
   2. Serve build dir as the public root
 ~~~~
-npm build
+npm run build
 ~~~~
