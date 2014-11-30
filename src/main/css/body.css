@@ -1,0 +1,16 @@
+body {
+    font: 12px/1.5 arial, helvetica, clean, sans-serif;
+    padding-bottom: 50px;
+    word-wrap: break-word;
+    background-color: #000;
+}
+
+/* hide angular elements before load */
+.ng-cloak {
+    display: none  !important;
+}
+
+/* thread container */
+.threads {
+    margin-top: 55px;
+}
