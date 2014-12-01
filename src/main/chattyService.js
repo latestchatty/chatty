@@ -169,7 +169,7 @@ angular.module('chatty')
             return post;
         }
 
-        chattyService.collapseThread = function chattyService(thread) {
+        chattyService.collapseThread = function collapseThread(thread) {
             thread.collapsed = true;
             delete thread.replying;
 
@@ -222,7 +222,7 @@ angular.module('chatty')
             post.replying = true;
         };
 
-        chattyService.getUsername = function isLoggedIn() {
+        chattyService.getUsername = function getUsername() {
             return credentials ? credentials.username : null;
         };
 
