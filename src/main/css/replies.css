@@ -5,6 +5,8 @@ div.reply {
     width: 66px;
     text-align: center;
     font-size: 14px;
+    line-height: 16px;
+    display: block;
     text-transform: uppercase;
 }
 div.reply a:link, div.reply a:visited, div.reply a:active, div.reply a:hover {

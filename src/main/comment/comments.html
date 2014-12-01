@@ -8,8 +8,8 @@
 
         <div class="replyPost" ng-if="post.viewFull">
             <div class="postnumber"><a href="" title="Permalink"></a></div>
-            <div class="reply">
-                <a title="reply to this comment" href="">Reply</a>
+            <div class="reply" ng-if="loggedIn">
+                <a title="reply to this comment" href="" ng-click="openReplyBox(post)">Reply</a>
             </div>
             <div class="postBody">
                 <span class="author">By: </span>
@@ -20,6 +20,8 @@
             <a href="" title="Collapse/Close" class="closepost" ng-click="collapseReply(post)">x</a>
             <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
+
+        <replybox class="replybox-comment" post="post" ng-if="post.replying"></replybox>
 
         <comments posts="post.posts"></comments>
     </li>

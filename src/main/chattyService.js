@@ -5,7 +5,8 @@ angular.module('chatty')
         var postDb = {};
         var chattyService = {};
         var collapsedThreads = angular.fromJson(localStorageService.get('collapsedThreads')) || [];
-        var userinfo = {};
+        var userinfo = null;
+        var replyingToPost = null;
 
         chattyService.fullLoad = function fullLoad() {
             var deferred = $q.defer();
@@ -173,6 +174,7 @@ angular.module('chatty')
 
         chattyService.collapseThread = function chattyService(thread) {
             thread.collapsed = true;
+            delete thread.replying;
 
             //move to the end of the list
             _.pull(threads, thread);
@@ -210,41 +212,59 @@ angular.module('chatty')
             delete parent.currentComment;
 
             delete post.viewFull;
+            delete post.replying;
+        };
+
+        chattyService.openReplyBox = function openReplyBox(post) {
+            //close previous reply window
+            if (replyingToPost) {
+                delete replyingToPost.replying;
+            }
+
+            replyingToPost = post;
+            post.replying = true;
         };
 
         chattyService.login = function login(username, password) {
             var deferred = $q.defer();
-            userinfo = {};
+            userinfo = null;
 
-            var config = {
-                method: 'POST',
-                url: 'https://winchatty.com/v2/verifyCredentials',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: 'username=' + encodeURI(username) +
-                '&password=' + encodeURI(password)
-            };
+            if (username && password) {
+                var config = {
+                    method: 'POST',
+                    url: 'https://winchatty.com/v2/verifyCredentials',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: 'username=' + encodeURI(username) +
+                    '&password=' + encodeURI(password)
+                };
 
-            $http(config)
-                .success(function(data) {
-                    var result = data && data.isValid;
-                    if (result) {
-                        userinfo = {
-                            username: username,
-                            password: password
-                        };
-                    }
-                    deferred.resolve();
-                }).error(function() {
-                    deferred.resolve(false);
-                });
-
+                $http(config)
+                    .success(function(data) {
+                        var result = data && data.isValid;
+                        if (result) {
+                            userinfo = {
+                                username: username,
+                                password: password
+                            };
+                        }
+                        deferred.resolve(result);
+                    }).error(function() {
+                        deferred.resolve(false);
+                    });
+            } else {
+                deferred.resolve(false);
+            }
             return deferred.promise;
         };
 
         chattyService.logout = function logout() {
-            userinfo = {};
+            userinfo = null;
+        };
+
+        chattyService.submitPost = function submitPost() {
+
         };
 
         return chattyService;

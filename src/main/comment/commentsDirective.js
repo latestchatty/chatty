@@ -6,6 +6,7 @@ angular.module('chatty')
         templateUrl: 'comment/comments.html',
         scope: {
             posts: '=',
+            loggedIn: '=',
             author: '@'
         },
         compile: function(element) {
@@ -19,6 +20,10 @@ angular.module('chatty')
             $scope.collapseReply = function collapseReply(post) {
                 chattyService.collapseReply(post);
             };
+
+            $scope.openReplyBox = function openReplyBox(post) {
+                chattyService.openReplyBox(post);
+            }
         }
     }
 });

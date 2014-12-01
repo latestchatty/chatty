@@ -62,4 +62,7 @@ angular.module('chatty')
             chattyService.expandThread(thread);
         };
 
+        $scope.openReplyBox = function openReplyBox(thread) {
+            chattyService.openReplyBox(thread);
+        };
     });

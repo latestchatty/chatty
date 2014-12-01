@@ -19,8 +19,8 @@
                    placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
             <input type="submit" value="Login" class="navbar-button" ng-disabled="loginRunning">
         </form>
-        <div class="navbar-form">
-            <input type="button" value="Logout" class="navbar-button" ng-click="doLogout()" ng-show="loggedIn">
+        <div class="navbar-form" ng-show="loggedIn">
+            <input type="button" value="Logout" class="navbar-button" ng-click="doLogout()" >
         </div>
 
         <input type="search" class="navbar-textinput" placeholder="Filter"
@@ -32,8 +32,8 @@
     <div ng-repeat="thread in threads" ng-hide="filterSet && !thread.visible">
         <div class="rootPost" ng-class="{ collapsed: thread.collapsed }">
             <div class="postnumber"><a href="" title="Permalink"></a></div>
-            <div class="reply" ng-if="!thread.collapsed">
-                <a title="reply to this comment" href="">Reply</a>
+            <div class="reply" ng-if="!thread.collapsed && loggedIn">
+                <a title="reply to this comment" href="" ng-click="openReplyBox(thread)">Reply</a>
             </div>
             <div class="postBody">
                 <span class="author">By: </span>
@@ -47,8 +47,10 @@
             <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
 
+        <replybox class="replybox-op" post="thread" ng-if="thread.replying"></replybox>
+
         <div class="treeview">
-            <comments posts="thread.posts" author="thread.rootPost.author" ng-hide="thread.collapsed"></comments>
+            <comments posts="thread.posts" logged-in="loggedIn" author="thread.rootPost.author" ng-if="!thread.collapsed"></comments>
         </div>
     </div>
 </div>

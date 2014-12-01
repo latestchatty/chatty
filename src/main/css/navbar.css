@@ -25,6 +25,7 @@
     margin: 0;
     padding: 5px 5px 5px 5px;
     color: white;
+    cursor: pointer;
 }
 .navbar-textinput {
     border: 1px solid black;
