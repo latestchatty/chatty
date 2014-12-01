@@ -79,7 +79,6 @@ angular.module('chatty')
 
             if (event.eventType === 'newPost') {
                 if (event.eventData.post.parentId === 0) {
-                    console.log('New root post', event.eventData.post);
                     thread = {
                         threadId: event.eventData.threadId,
                         rootPost: fixPost(event.eventData.post),
@@ -88,7 +87,6 @@ angular.module('chatty')
                     threads.unshift(thread);
                     postDb[thread.threadId] = thread;
                 } else {
-                    console.log('New reply', event.eventData.post);
                     var parent = postDb[event.eventData.post.parentId];
                     if (parent) {
                         post = fixPost(event.eventData.post);
@@ -99,7 +97,6 @@ angular.module('chatty')
                     }
                 }
             } else if (event.eventType === 'categoryChange') {
-                console.log('Category change', event);
                 post = postDb[event.eventData.postId];
                 if (post) {
                     if (event.eventData.category === 'nuked') {
@@ -115,7 +112,7 @@ angular.module('chatty')
                     console.log('Post not found', event.eventData.postId);
                 }
             } else {
-                console.log('New event', event);
+                console.log('Unhandled event', event);
             }
         }
 
