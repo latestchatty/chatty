@@ -109,7 +109,7 @@ angular.module('chatty')
                             _.pull(threads, post.thread);
                         }
                     } else {
-                        post.post.category = event.eventData.category;
+                        post.category = event.eventData.category;
                     }
                 } else {
                     console.log('Post not found', event.eventData.postId);
@@ -235,17 +235,12 @@ angular.module('chatty')
             localStorageService.remove('credentials');
 
             if (username && password) {
-                var config = {
-                    method: 'POST',
-                    url: 'https://winchatty.com/v2/verifyCredentials',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    data: 'username=' + encodeURI(username) +
-                    '&password=' + encodeURI(password)
+                var params = {
+                    username: username,
+                    password: password
                 };
 
-                $http(config)
+                post('https://winchatty.com/v2/verifyCredentials', params)
                     .success(function(data) {
                         var result = data && data.isValid;
                         if (result) {
@@ -262,6 +257,7 @@ angular.module('chatty')
             } else {
                 deferred.resolve(false);
             }
+
             return deferred.promise;
         };
 
@@ -276,9 +272,42 @@ angular.module('chatty')
             replyingToPost = null;
         };
 
-        chattyService.submitPost = function submitPost() {
+        chattyService.submitPost = function submitPost(id, body) {
+            var deferred = $q.defer();
 
+            var params = {
+                username: credentials.username,
+                password: credentials.password,
+                parentId: id,
+                text: body
+            };
+
+            post('https://winchatty.com/v2/postComment', params)
+                .success(function(data) {
+                    deferred.resolve(data.result && data.result == 'success');
+                }).error(function() {
+                    deferred.resolve(false);
+                });
+
+            return deferred.promise;
         };
+
+        function post(url, params) {
+            var data = _.reduce(params, function(result, value, key) {
+                return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURI(value);
+            }, '');
+
+            var config = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: data
+            };
+
+            return $http(config);
+        }
 
         return chattyService;
     });

@@ -8,8 +8,20 @@ angular.module('chatty')
                 post: '='
             },
             controller: function($scope, chattyService) {
-                $scope.submitPost = function submitPost() {
+                $scope.replyBody = null;
 
+                $scope.submitPost = function submitPost() {
+                    var id = ($scope.post ? $scope.post.id || $scope.post.threadId : 0);
+                    chattyService.submitPost(id, $scope.replyBody)
+                        .then(function(result) {
+                            if (result) {
+                                $scope.close();
+                            }
+                        });
+                };
+
+                $scope.close = function close() {
+                    $scope.post.replying = false;
                 }
             }
         }

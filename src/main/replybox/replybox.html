@@ -1,10 +1,11 @@
 <div class="replybox">
     <div>
         <form ng-submit="submitPost()">
-            <textarea class="replybox-input" placeholder="Type something interesting..." required></textarea>
+            <textarea class="replybox-input" placeholder="Type something interesting..."
+                      ng-model="replyBody" required></textarea>
             <br>
             <input type="submit" value="Submit Post" class="replybox-button">
         </form>
     </div>
-    <a class="closepost" href="" title="Close" ng-click="post.replying = false">x</a>
+    <a class="closepost" href="" title="Close" ng-click="close()">x</a>
 </div>
