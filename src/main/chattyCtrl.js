@@ -8,10 +8,10 @@ angular.module('chatty')
 
         //login related
         $scope.loginRunning = false;
-        $scope.loggedIn = false;
         $scope.loginInvalid = false;
-        $scope.username = null;
+        $scope.username = chattyService.getUsername();
         $scope.password = null;
+        $scope.loggedIn = !!$scope.username;
         $scope.doLogin = function doLogin() {
             $scope.loginRunning = true;
             $scope.loggedIn = false;

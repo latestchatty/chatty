@@ -5,7 +5,7 @@ angular.module('chatty')
         var postDb = {};
         var chattyService = {};
         var collapsedThreads = angular.fromJson(localStorageService.get('collapsedThreads')) || [];
-        var userinfo = null;
+        var credentials = angular.fromJson(localStorageService.get('credentials')) || null;
         var replyingToPost = null;
 
         chattyService.fullLoad = function fullLoad() {
@@ -225,9 +225,14 @@ angular.module('chatty')
             post.replying = true;
         };
 
+        chattyService.getUsername = function isLoggedIn() {
+            return credentials ? credentials.username : null;
+        };
+
         chattyService.login = function login(username, password) {
             var deferred = $q.defer();
-            userinfo = null;
+            credentials = null;
+            localStorageService.remove('credentials');
 
             if (username && password) {
                 var config = {
@@ -244,10 +249,11 @@ angular.module('chatty')
                     .success(function(data) {
                         var result = data && data.isValid;
                         if (result) {
-                            userinfo = {
+                            credentials = {
                                 username: username,
                                 password: password
                             };
+                            localStorageService.set('credentials', credentials);
                         }
                         deferred.resolve(result);
                     }).error(function() {
@@ -260,7 +266,14 @@ angular.module('chatty')
         };
 
         chattyService.logout = function logout() {
-            userinfo = null;
+            credentials = null;
+            localStorageService.remove('credentials');
+
+            //close reply box
+            if (replyingToPost) {
+                delete replyingToPost.replying;
+            }
+            replyingToPost = null;
         };
 
         chattyService.submitPost = function submitPost() {
