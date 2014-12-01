@@ -121,7 +121,6 @@ angular.module('chatty')
 
         function fixThread(thread) {
             var posts = _.sortBy(thread.posts, 'id');
-            thread.posts = [];
 
             //handle root post
             var rootPost = _.find(posts, { parentId: 0 });
@@ -133,7 +132,9 @@ angular.module('chatty')
             thread.body = rootPost.body;
             thread.parentId = 0;
             thread.recent = [];
+            thread.posts = [];
             postDb[thread.id] = thread;
+            fixPost(thread);
 
             while(posts.length > 0) {
                 var post = posts.shift();
@@ -168,14 +169,12 @@ angular.module('chatty')
         }
 
         function fixPost(post) {
-            if (!post.oneline) {
-                //create the one-liner used for reply view
-                var stripped = post.body.replace(/<[^>]+>/gm, '');
-                post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
+            //create the one-liner used for reply view
+            var stripped = post.body.replace(/<[^>]+>/gm, '');
+            post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
 
-                //create sub-post container
-                post.posts = post.posts || [];
-            }
+            //create sub-post container
+            post.posts = post.posts || [];
 
             return post;
         }
