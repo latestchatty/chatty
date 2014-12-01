@@ -169,6 +169,11 @@ angular.module('chatty')
         }
 
         function fixPost(post) {
+            //fix Shacknews posts with article links
+            if (post.author === 'Shacknews') {
+                post.body = post.body.replace('href="', 'href="http://www.shacknews.com');
+            }
+
             //create the one-liner used for reply view
             var stripped = post.body.replace(/<[^>]+>/gm, '');
             post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
