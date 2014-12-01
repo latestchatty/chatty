@@ -38,8 +38,8 @@
             <div class="postBody">
                 <span class="author">By: </span>
                 <span class="user">{{::thread.author}}</span>
-                <div ng-bind-html="::thread.body" ng-if="!thread.collapsed"></div>
-                <div ng-if="thread.collapsed" ng-bind-html="::thread.oneline"></div>
+                <div ng-bind-html="::thread.body | trusted" ng-if="!thread.collapsed"></div>
+                <div ng-if="thread.collapsed" ng-bind-html="::thread.oneline | trusted"></div>
             </div>
 
             <a ng-if="!thread.collapsed" href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(thread)">x</a>

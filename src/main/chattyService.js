@@ -174,8 +174,12 @@ angular.module('chatty')
                 post.body = post.body.replace('href="', 'href="http://www.shacknews.com');
             }
 
+            //fix spoiler tags not being clickable
+            post.body = post.body.replace(/onclick=[^>]+/gm, 'tabindex="1"');
+            console.log(post.body);
+
             //create the one-liner used for reply view
-            var stripped = post.body.replace(/<[^>]+>/gm, '');
+            var stripped = _.unescape(post.body.replace(/<(?!span)(?!\/span)[^>]+>/gm, ''));
             post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
 
             //create sub-post container
