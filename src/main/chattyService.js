@@ -86,9 +86,12 @@ angular.module('chatty')
                     threads.unshift(thread);
                     postDb[thread.threadId] = thread;
                 } else {
+                    thread = postDb[event.eventData.post.threadId];
                     var parent = postDb[event.eventData.post.parentId];
-                    if (parent) {
+                    if (parent && thread) {
                         post = fixPost(event.eventData.post);
+                        addUserHighlight(post, thread);
+
                         parent.posts.push(post);
                         postDb[post.id] = post;
                     } else {
@@ -136,12 +139,8 @@ angular.module('chatty')
                 //various post fixes
                 fixPost(post);
 
-                //add user class highlight
-                if (post.author === thread.author) {
-                    post.userClass = 'user_op';
-                } else if (post.author === credentials.username) {
-                    post.userClass = 'user_me';
-                }
+                //user highlighting
+                addUserHighlight(post, thread);
 
                 //add to post db
                 postDb[post.id] = post;
@@ -170,6 +169,15 @@ angular.module('chatty')
             }
 
             return post;
+        }
+
+        function addUserHighlight(post, thread) {
+            //add user class highlight
+            if (post.author === thread.author) {
+                post.userClass = 'user_op';
+            } else if (post.author === credentials.username) {
+                post.userClass = 'user_me';
+            }
         }
 
         chattyService.collapseThread = function collapseThread(thread) {
