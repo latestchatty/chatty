@@ -291,7 +291,7 @@ angular.module('chatty')
 
         function post(url, params) {
             var data = _.reduce(params, function(result, value, key) {
-                return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURI(value);
+                return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(value);
             }, '');
 
             var config = {
