@@ -5,10 +5,12 @@
     height: 40px;
     background: #333;
     width: 100%;
-    position: absolute;
-    top: 0;
+    position: fixed !important;
+    top: 0 !important;
     left: 0;
+    z-index: 99999;
 }
+
 .navbar-right {
     float: right;
     margin-right: 10px;
