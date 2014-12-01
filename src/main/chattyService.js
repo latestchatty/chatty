@@ -91,6 +91,7 @@ angular.module('chatty')
                     if (parent && thread) {
                         post = fixPost(event.eventData.post);
                         addUserHighlight(post, thread);
+                        updateLineClass(post, thread);
 
                         parent.posts.push(post);
                         postDb[post.id] = post;
@@ -131,6 +132,7 @@ angular.module('chatty')
             thread.category = rootPost.category;
             thread.body = rootPost.body;
             thread.parentId = 0;
+            thread.recent = [];
             postDb[thread.id] = thread;
 
             while(posts.length > 0) {
@@ -148,6 +150,13 @@ angular.module('chatty')
                 //create nested replies
                 var parent = postDb[post.parentId];
                 parent.posts.push(post);
+
+                //line coloring
+                if (posts.length < 10) {
+                    //post.lineClass = 'oneline' + posts.length;
+                    //thread.recent.push(post);
+                    updateLineClass(post, thread);
+                }
             }
 
             //check if it's supposed to be collapsed
@@ -178,6 +187,18 @@ angular.module('chatty')
             } else if (credentials && post.author === credentials.username) {
                 post.userClass = 'user_me';
             }
+        }
+
+        function updateLineClass(post, thread) {
+            thread.recent.push(post);
+
+            if (thread.recent.length > 10) {
+                thread.recent.shift();
+            }
+
+            _.each(thread.recent, function(recentPost, index) {
+                recentPost.lineClass = 'oneline' + (9 - index);
+            });
         }
 
         chattyService.collapseThread = function collapseThread(thread) {
