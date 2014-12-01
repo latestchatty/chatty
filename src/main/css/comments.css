@@ -48,9 +48,19 @@ div.treeview ul li.last {
 .oneline1 { color: #fff; }
 .oneline0 { color: #eee; font-weight: bold; }
 
-/* original poster highlight */
+/* poster highlights */
 .user_op {
+    font-weight: bold;
+    color: #f3e7b5;
     background-color: #202224;
     border-radius: 18px;
     padding: 1px 7px;
+    font-size: 14px;
+    font-family: sans-serif;
+}
+.user_me {
+    font-size: 14px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: #66CCFF;
 }

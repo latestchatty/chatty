@@ -11,7 +11,7 @@ angular.module('chatty')
                 $scope.replyBody = null;
 
                 $scope.submitPost = function submitPost() {
-                    var id = ($scope.post ? $scope.post.id || $scope.post.threadId : 0);
+                    var id = $scope.post.id;
                     chattyService.submitPost(id, $scope.replyBody)
                         .then(function(result) {
                             if (result) {

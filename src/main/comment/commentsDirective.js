@@ -6,8 +6,7 @@ angular.module('chatty')
         templateUrl: 'comment/comments.html',
         scope: {
             posts: '=',
-            loggedIn: '=',
-            author: '@'
+            loggedIn: '='
         },
         compile: function(element) {
             return RecursionHelper.compile(element);

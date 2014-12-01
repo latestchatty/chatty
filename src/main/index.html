@@ -37,20 +37,20 @@
             </div>
             <div class="postBody">
                 <span class="author">By: </span>
-                <span class="user">{{::thread.rootPost.author}}</span>
-                <div ng-bind-html="::thread.rootPost.body" ng-if="!thread.collapsed"></div>
-                <div ng-if="thread.collapsed">{{::thread.rootPost.oneline}}</div>
+                <span class="user">{{::thread.author}}</span>
+                <div ng-bind-html="::thread.body" ng-if="!thread.collapsed"></div>
+                <div ng-if="thread.collapsed">{{::thread.oneline}}</div>
             </div>
 
             <a ng-if="!thread.collapsed" href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(thread)">x</a>
             <a ng-if="thread.collapsed" href="" title="Show Full Post" class="showpost" ng-click="expandThread(thread)">Show Full Post</a>
-            <div class="postdate">{{::thread.rootPost.date | date : 'MMM d, yyyy h:mma CST' }}</div>
+            <div class="postdate">{{::thread.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
 
         <replybox class="replybox-op" post="thread" ng-if="thread.replying"></replybox>
 
         <div class="treeview">
-            <comments posts="thread.posts" logged-in="loggedIn" author="thread.rootPost.author" ng-if="!thread.collapsed"></comments>
+            <comments posts="thread.posts" logged-in="loggedIn" ng-if="!thread.collapsed"></comments>
         </div>
     </div>
 </div>

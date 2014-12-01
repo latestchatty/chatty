@@ -79,11 +79,10 @@ angular.module('chatty')
 
             if (event.eventType === 'newPost') {
                 if (event.eventData.post.parentId === 0) {
-                    thread = {
+                    thread = fixThread({
                         threadId: event.eventData.threadId,
-                        rootPost: fixPost(event.eventData.post),
-                        posts: []
-                    };
+                        posts: [ event.eventData.post ]
+                    });
                     threads.unshift(thread);
                     postDb[thread.threadId] = thread;
                 } else {
@@ -93,7 +92,7 @@ angular.module('chatty')
                         parent.posts.push(post);
                         postDb[post.id] = post;
                     } else {
-                        console.log('Parent post not found', event.eventData.post.parentId);
+                        console.log('Parent post not found for event: ', event);
                     }
                 }
             } else if (event.eventType === 'categoryChange') {
@@ -109,7 +108,7 @@ angular.module('chatty')
                         post.category = event.eventData.category;
                     }
                 } else {
-                    console.log('Post not found', event.eventData.postId);
+                    console.log('Post not found for event: ', event);
                 }
             } else {
                 console.log('Unhandled event', event);
@@ -117,38 +116,40 @@ angular.module('chatty')
         }
 
         function fixThread(thread) {
-            var posts = _.sortBy(thread.posts, 'date');
+            var posts = _.sortBy(thread.posts, 'id');
             thread.posts = [];
 
-            _.forEach(posts, function(post) {
+            //handle root post
+            var rootPost = _.find(posts, { parentId: 0 });
+            _.pull(posts, rootPost);
+            thread.id = rootPost.id;
+            thread.author = rootPost.author;
+            thread.date = rootPost.date;
+            thread.category = rootPost.category;
+            thread.body = rootPost.body;
+            thread.parentId = 0;
+            postDb[thread.id] = thread;
+
+            while(posts.length > 0) {
+                var post = posts.shift();
+
                 //various post fixes
                 fixPost(post);
 
-                //figure out where post belongs
-                if (post.parentId === 0) {
-                    //root post
-                    thread.rootPost = post;
-
-                    //attach to master post list
-                    postDb[post.id] = thread;
-                } else {
-                    //attach to master post list
-                    postDb[post.id] = post;
+                //add user class highlight
+                if (post.author === thread.author) {
+                    post.userClass = 'user_op';
+                } else if (post.author === credentials.username) {
+                    post.userClass = 'user_me';
                 }
-            });
 
-            //remove root to prevent iterating again
-            _.pull(posts, thread.rootPost);
+                //add to post db
+                postDb[post.id] = post;
 
-            //create nested replies
-            _.forEach(posts, function(post) {
+                //create nested replies
                 var parent = postDb[post.parentId];
-                if (parent) {
-                    parent.posts.push(post);
-                } else {
-                    console.log('Orphan post: ', post);
-                }
-            });
+                parent.posts.push(post);
+            }
 
             //check if it's supposed to be collapsed
             if (collapsedThreads.indexOf(thread.threadId) >= 0) {
@@ -159,12 +160,14 @@ angular.module('chatty')
         }
 
         function fixPost(post) {
-            //create the one-liner used for reply view
-            var stripped = post.body.replace(/<[^>]+>/gm, '');
-            post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
+            if (!post.oneline) {
+                //create the one-liner used for reply view
+                var stripped = post.body.replace(/<[^>]+>/gm, '');
+                post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
 
-            //create sub-post container
-            post.posts = [];
+                //create sub-post container
+                post.posts = post.posts || [];
+            }
 
             return post;
         }
