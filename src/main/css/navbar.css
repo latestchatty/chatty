@@ -3,12 +3,8 @@
     margin: 0 0 0 0;
     padding: 0 0 0 0;
     height: 40px;
-    /*margin-top: -40px;*/
-    /*padding-top: 40px;*/
     background: #333;
-    /*box-shadow: 0 0 100px 0 rgba(255, 255, 255, .25);*/
     width: 100%;
-    /*min-width: 1024px !important;*/
     position: absolute;
     top: 0;
     left: 0;
@@ -18,10 +14,25 @@
     margin-right: 10px;
     padding: 8px 0 0 7px;
 }
-.navbar-filter {
-    border-color: black;
+
+.navbar-form {
+    display: inline;
+    padding-right: 5px;
+}
+.navbar-button {
+    border: 1px solid black;
+    background-color: #6CB0C0;
+    margin: 0;
+    padding: 5px 5px 5px 5px;
+    color: white;
+}
+.navbar-textinput {
+    border: 1px solid black;
     color: white;
     background-color: #555;
     padding: 5px 5px 5px 5px;
     box-sizing: content-box;
+}
+.navbar-textinput-invalid {
+    border: 1px solid red;
 }

@@ -5,6 +5,7 @@ angular.module('chatty')
         var postDb = {};
         var chattyService = {};
         var collapsedThreads = angular.fromJson(localStorageService.get('collapsedThreads')) || [];
+        var userinfo = {};
 
         chattyService.fullLoad = function fullLoad() {
             var deferred = $q.defer();
@@ -16,7 +17,7 @@ angular.module('chatty')
                     deferred.reject(data);
                 });
 
-            $http.get('https://winchatty.com/v2/getChatty')
+            $http.get('http://winchatty.com/v2/getChatty')
                 .success(function(data) {
                     deferred.resolve(threads);
 
@@ -91,7 +92,7 @@ angular.module('chatty')
                     if (parent) {
                         post = fixPost(event.eventData.post);
                         parent.posts.push(post);
-                        postDb[post.id] =post;
+                        postDb[post.id] = post;
                     } else {
                         console.log('Parent post not found', event.eventData.post.parentId);
                     }
@@ -209,6 +210,41 @@ angular.module('chatty')
             delete parent.currentComment;
 
             delete post.viewFull;
+        };
+
+        chattyService.login = function login(username, password) {
+            var deferred = $q.defer();
+            userinfo = {};
+
+            var config = {
+                method: 'POST',
+                url: 'https://winchatty.com/v2/verifyCredentials',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: 'username=' + encodeURI(username) +
+                '&password=' + encodeURI(password)
+            };
+
+            $http(config)
+                .success(function(data) {
+                    var result = data && data.isValid;
+                    if (result) {
+                        userinfo = {
+                            username: username,
+                            password: password
+                        };
+                    }
+                    deferred.resolve();
+                }).error(function() {
+                    deferred.resolve(false);
+                });
+
+            return deferred.promise;
+        };
+
+        chattyService.logout = function logout() {
+            userinfo = {};
         };
 
         return chattyService;

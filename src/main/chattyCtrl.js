@@ -6,6 +6,36 @@ angular.module('chatty')
             $scope.threads = threads;
         });
 
+        //login related
+        $scope.loginRunning = false;
+        $scope.loggedIn = false;
+        $scope.loginInvalid = false;
+        $scope.username = null;
+        $scope.password = null;
+        $scope.doLogin = function doLogin() {
+            $scope.loginRunning = true;
+            $scope.loggedIn = false;
+            $scope.loginInvalid = false;
+            chattyService.login($scope.username, $scope.password)
+                .then(function(result) {
+                    if (result) {
+                        $scope.loggedIn = true;
+                    } else {
+                        $scope.loginInvalid = true;
+                    }
+                    $scope.password = null;
+                    $scope.loginRunning = false;
+                });
+        };
+        $scope.doLogout = function doLogout() {
+            $scope.username = null;
+            $scope.password = null;
+            chattyService.logout();
+            $scope.loginRunning = false;
+            $scope.loginInvalid = false;
+            $scope.loggedIn = false;
+        };
+
         //support filters
         $scope.filterSet = false;
         $scope.filterExpression = null;

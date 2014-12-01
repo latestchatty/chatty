@@ -12,7 +12,18 @@
 
 <div class="navbar">
     <div class="navbar-right">
-        <input type="search" class="navbar-filter" placeholder="Filter"
+        <form id="loginForm" name="login" class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn">
+            <input id="username" type="text" class="navbar-textinput"
+                   placeholder="Username" ng-model="username" ng-disabled="loginRunning" required>
+            <input id="password" type="password" class="navbar-textinput" ng-class="{ 'navbar-textinput-invalid': loginInvalid }"
+                   placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
+            <input type="submit" value="Login" class="navbar-button" ng-disabled="loginRunning">
+        </form>
+        <div class="navbar-form">
+            <input type="button" value="Logout" class="navbar-button" ng-click="doLogout()" ng-show="loggedIn">
+        </div>
+
+        <input type="search" class="navbar-textinput" placeholder="Filter"
                ng-model="filterExpression" ng-model-options="{ debounce: 250 }">
     </div>
 </div>
