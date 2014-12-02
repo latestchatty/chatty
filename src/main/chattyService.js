@@ -79,10 +79,7 @@ angular.module('chatty')
 
             if (event.eventType === 'newPost') {
                 if (event.eventData.post.parentId === 0) {
-                    thread = fixThread({
-                        threadId: event.eventData.threadId,
-                        posts: [ event.eventData.post ]
-                    });
+                    thread = fixThread({ posts: [event.eventData.post] });
                     threads.unshift(thread);
                     postDb[thread.threadId] = thread;
                 } else {
@@ -126,11 +123,12 @@ angular.module('chatty')
             var rootPost = _.find(posts, { parentId: 0 });
             _.pull(posts, rootPost);
             thread.id = rootPost.id;
+            thread.parentId = 0;
+            thread.threadId = rootPost.id;
             thread.author = rootPost.author;
             thread.date = rootPost.date;
             thread.category = rootPost.category;
             thread.body = rootPost.body;
-            thread.parentId = 0;
             thread.recent = [];
             thread.posts = [];
             postDb[thread.id] = thread;
