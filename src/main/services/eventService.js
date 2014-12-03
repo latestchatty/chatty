@@ -5,6 +5,8 @@ angular.module('chatty')
 
         //load on startup
         eventService.load = function load() {
+            modelService.clear();
+
             $http.get('http://winchatty.com/v2/getNewestEventId')
                 .success(function(data) {
                     lastEventId = data.eventId;
@@ -50,14 +52,35 @@ angular.module('chatty')
         function waitForEvents() {
             $http.get('http://winchatty.com/v2/waitForEvent?lastEventId=' + lastEventId)
                 .success(function(data) {
-                    lastEventId = data.lastEventId;
-
-                    data.events.forEach(newEvent);
-
-                    waitForEvents();
+                    eventResponse(data);
                 }).error(function(data) {
                     console.log('Error during waitForEvent: ', data);
+                    eventResponse(data);
                 });
+        }
+
+        function eventResponse(data) {
+            if (data.error) {
+                if (data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
+                    console.log('Too many events since last refresh, reloading chatty.');
+                    $timeout(function() {
+                        eventService.load();
+                    });
+                } else {
+                    //restart events
+                    $timeout(function() {
+                        waitForEvents();
+                    }, 30000)
+                }
+            } else {
+                lastEventId = data.lastEventId;
+
+                //process the events
+                data.events.forEach(newEvent);
+
+                //wait for more
+                waitForEvents();
+            }
         }
 
         function newEvent(event) {

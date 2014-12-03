@@ -61,6 +61,13 @@ angular.module('chatty')
             settingsService.cleanCollapsed(posts);
         };
 
+        modelService.clear = function clear() {
+            while(threads.length) {
+                threads.pop();
+            }
+            posts = {};
+        };
+
         function fixThread(thread) {
             var threadPosts = _.sortBy(thread.posts, 'id');
 
