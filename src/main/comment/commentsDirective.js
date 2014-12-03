@@ -11,17 +11,17 @@ angular.module('chatty')
         compile: function(element) {
             return RecursionHelper.compile(element);
         },
-        controller: function($scope, chattyService) {
+        controller: function($scope, actionService) {
             $scope.expandReply = function expandReply(post) {
-                chattyService.expandReply(post);
+                actionService.expandReply(post);
             };
 
             $scope.collapseReply = function collapseReply(post) {
-                chattyService.collapseReply(post);
+                actionService.collapseReply(post);
             };
 
             $scope.openReplyBox = function openReplyBox(post) {
-                chattyService.openReplyBox(post);
+                actionService.openReplyBox(post);
             }
         }
     }

@@ -1,22 +1,19 @@
 angular.module('chatty')
-    .controller('chattyCtrl', function($scope, $filter, chattyService) {
+    .controller('chattyCtrl', function($scope, $filter, modelService, actionService, settingsService) {
         //load full chatty on start
-        $scope.threads = [];
-        chattyService.fullLoad().then(function(threads) {
-            $scope.threads = threads;
-        });
+        $scope.threads = modelService.getThreads();
 
         //login related
         $scope.loginRunning = false;
         $scope.loginInvalid = false;
-        $scope.username = chattyService.getUsername();
+        $scope.username = settingsService.getUsername();
         $scope.password = null;
         $scope.loggedIn = !!$scope.username;
         $scope.doLogin = function doLogin() {
             $scope.loginRunning = true;
             $scope.loggedIn = false;
             $scope.loginInvalid = false;
-            chattyService.login($scope.username, $scope.password)
+            actionService.login($scope.username, $scope.password)
                 .then(function(result) {
                     if (result) {
                         $scope.loggedIn = true;
@@ -30,7 +27,7 @@ angular.module('chatty')
         $scope.doLogout = function doLogout() {
             $scope.username = null;
             $scope.password = null;
-            chattyService.logout();
+            actionService.logout();
             $scope.loginRunning = false;
             $scope.loginInvalid = false;
             $scope.loggedIn = false;
@@ -55,14 +52,14 @@ angular.module('chatty')
         });
 
         $scope.collapseThread = function collapseThread(thread) {
-            chattyService.collapseThread(thread);
+            actionService.collapseThread(thread);
         };
 
         $scope.expandThread = function expandThread(thread) {
-            chattyService.expandThread(thread);
+            actionService.expandThread(thread);
         };
 
         $scope.openReplyBox = function openReplyBox(thread) {
-            chattyService.openReplyBox(thread);
+            actionService.openReplyBox(thread);
         };
     });

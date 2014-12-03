@@ -7,12 +7,12 @@ angular.module('chatty')
             scope: {
                 post: '='
             },
-            controller: function($scope, chattyService) {
+            controller: function($scope, actionService) {
                 $scope.replyBody = null;
 
                 $scope.submitPost = function submitPost() {
                     var id = $scope.post.id;
-                    chattyService.submitPost(id, $scope.replyBody)
+                    actionService.submitPost(id, $scope.replyBody)
                         .then(function(result) {
                             if (result) {
                                 $scope.close();
