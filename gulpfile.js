@@ -75,7 +75,7 @@ function buildJs(debug) {
 gulp.task('build-css', function() {
     gulp.src(paths.client.css)
         .pipe(clip())
-        .pipe(minifyCSS({keepBreaks: true}))
+        .pipe(minifyCSS())
         .pipe(concat('bundle.css'))
         .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
         .pipe(gulp.dest(paths.target));
