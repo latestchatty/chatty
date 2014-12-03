@@ -60,8 +60,16 @@ angular.module('chatty')
         }
 
         function eventResponse(data) {
-            if (data.error) {
-                if (data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
+            if (data && !data.error) {
+                lastEventId = data.lastEventId;
+
+                //process the events
+                data.events.forEach(newEvent);
+
+                //wait for more
+                waitForEvents();
+            } else {
+                if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
                     console.log('Too many events since last refresh, reloading chatty.');
                     $timeout(function() {
                         eventService.load();
@@ -72,14 +80,6 @@ angular.module('chatty')
                         waitForEvents();
                     }, 30000)
                 }
-            } else {
-                lastEventId = data.lastEventId;
-
-                //process the events
-                data.events.forEach(newEvent);
-
-                //wait for more
-                waitForEvents();
             }
         }
 
