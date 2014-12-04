@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .controller('chattyCtrl', function($scope, $filter, modelService, actionService, settingsService) {
+    .controller('chattyCtrl', function($scope, $filter, $document, $timeout, modelService, actionService, settingsService) {
         //load full chatty on start
         $scope.threads = modelService.getThreads();
         $scope.newThreads = modelService.getNewThreads();
@@ -67,4 +67,20 @@ angular.module('chatty')
         $scope.expandNewThreads = function expandNewThreads() {
             actionService.expandNewThreads();
         };
+
+        //have to check for keystrokes globally
+        $document.bind('keydown', function(event) {
+            if (!event.repeat && event.srcElement.localName !== 'input') {
+                $timeout(function() {
+                    if (event.keyCode === 65) {
+                        actionService.previousReply();
+                    } else if (event.keyCode === 90) {
+                        actionService.nextReply();
+                    } else if (event.keyCode === 27) {
+                        actionService.collapseReply();
+                    }
+                });
+            }
+        })
+
     });

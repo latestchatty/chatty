@@ -2,6 +2,8 @@ angular.module('chatty')
     .service('actionService', function($q, $http, $timeout, modelService, settingsService) {
         var actionService = {};
 
+        var lastReply;
+
         actionService.login = function login(username, password) {
             var deferred = $q.defer();
             settingsService.clearCredentials();
@@ -110,15 +112,69 @@ angular.module('chatty')
 
             thread.autoRefresh = true;
             thread.currentComment = post;
+            lastReply = post;
             post.viewFull = true;
         };
 
-        actionService.collapseReply = function collapseReply(post) {
-            var parent = modelService.getPost(post.threadId);
-            delete parent.currentComment;
+        actionService.previousReply = function previousReply() {
+            if (lastReply) {
+                var parent = modelService.getPost(lastReply.parentId);
+                if (parent) {
+                    var index = parent.posts.indexOf(lastReply);
+                    if (index === 0 && parent.parentId > 0) {
+                        actionService.expandReply(parent);
+                    } else if (index > 0) {
+                        var next = parent.posts[index - 1];
+                        var last = findLastReply(next);
+                        actionService.expandReply(last);
+                    }
+                }
+            }
+        };
 
-            delete post.viewFull;
-            delete post.replying;
+        function findLastReply(post) {
+            if (post.posts.length) {
+                return findLastReply(_.last(post.posts));
+            } else {
+                return post;
+            }
+        }
+
+        actionService.nextReply = function nextReply() {
+            if (lastReply) {
+                processNextReply(lastReply);
+            }
+        };
+
+        function processNextReply(post, skipChildren) {
+            if (!skipChildren && post.posts.length) {
+                actionService.expandReply(post.posts[0]);
+            } else {
+                var parent = modelService.getPost(post.parentId);
+                if (parent) {
+                    var index = parent.posts.indexOf(post);
+                    if (index + 1 < parent.posts.length) {
+                        var next = parent.posts[index + 1];
+                        actionService.expandReply(next);
+                    } else {
+                        processNextReply(parent, true);
+                    }
+                }
+            }
+        }
+
+        actionService.collapseReply = function collapseReply(post) {
+            if (post) {
+                var parent = modelService.getPost(post.threadId);
+                delete parent.currentComment;
+
+                delete post.viewFull;
+                delete post.replying;
+            } else if (lastReply) {
+                actionService.collapseReply(lastReply);
+                lastReply = null;
+            }
+
         };
 
         actionService.openReplyBox = function openReplyBox(post) {
