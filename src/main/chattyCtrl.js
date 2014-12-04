@@ -2,6 +2,7 @@ angular.module('chatty')
     .controller('chattyCtrl', function($scope, $filter, modelService, actionService, settingsService) {
         //load full chatty on start
         $scope.threads = modelService.getThreads();
+        $scope.newThreads = modelService.getNewThreads();
 
         //login related
         $scope.loginRunning = false;
@@ -62,4 +63,8 @@ angular.module('chatty')
         $scope.openReplyBox = function openReplyBox(thread) {
             actionService.openReplyBox(thread);
         };
+
+        $scope.expandNewThreads = function expandNewThreads() {
+            actionService.expandNewThreads();
+        }
     });

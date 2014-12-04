@@ -122,6 +122,15 @@ angular.module('chatty')
             }
         };
 
+        actionService.expandNewThreads = function expandNewThreads() {
+            var newThreads = modelService.getNewThreads();
+            var threads = modelService.getThreads();
+
+            while (newThreads.length) {
+                threads.unshift(newThreads.pop());
+            }
+        };
+
         function post(url, params) {
             var data = _.reduce(params, function(result, value, key) {
                 return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(value);

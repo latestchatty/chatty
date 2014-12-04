@@ -30,14 +30,14 @@ angular.module('chatty')
                     if (settingsService.isCollapsed(thread.threadId)) {
                         collapsedThreads.push(thread);
                     } else {
-                        modelService.addThread(thread, true);
+                        modelService.addThread(thread);
                     }
 
                     processChatty(newThreads, collapsedThreads);
                 } else {
                     //add collapsed threads in at end
                     _.each(collapsedThreads, function(thread) {
-                        modelService.addThread(thread, true);
+                        modelService.addThread(thread);
                     });
 
                     //clean collapsed thread list after initial load
@@ -86,7 +86,7 @@ angular.module('chatty')
         function newEvent(event) {
             if (event.eventType === 'newPost') {
                 if (event.eventData.post.parentId === 0) {
-                    modelService.addThread(event.eventData.post);
+                    modelService.addThread(event.eventData.post, true);
                 } else {
                     modelService.addPost(event.eventData.post);
                 }

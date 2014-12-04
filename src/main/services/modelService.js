@@ -3,15 +3,16 @@ angular.module('chatty')
         var modelService = {};
 
         var threads = [];
+        var newThreads = [];
         var posts = {};
         var username = settingsService.getUsername();
 
-        modelService.addThread = function addThread(post, atEnd) {
+        modelService.addThread = function addThread(post, event) {
             var thread = fixThread(post);
-            if (atEnd) {
-                threads.push(thread);
+            if (event) {
+                newThreads.push(thread);
             } else {
-                threads.unshift(thread);
+                threads.push(thread);
             }
             posts[thread.threadId] = thread;
         };
@@ -19,6 +20,10 @@ angular.module('chatty')
         modelService.getThreads = function getThreads() {
             return threads;
         };
+
+        modelService.getNewThreads = function getNewThreads() {
+            return newThreads;
+        }
 
         modelService.addPost = function addPost(post) {
             var thread = posts[post.threadId];

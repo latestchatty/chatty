@@ -29,6 +29,9 @@
 </div>
 
 <div class="threads">
+    <div class="rootPost collapsed" ng-show="newThreads.length">
+        <a href="" title="Show New Threads" class="showpost" ng-click="expandNewThreads()">{{newThreads.length}} New Threads Available. Click to show.</a>
+    </div>
     <div ng-repeat="thread in threads" ng-hide="filterSet && !thread.visible">
         <div class="rootPost" ng-class="{ collapsed: thread.collapsed }">
             <div class="postnumber"><a target="_blank" ng-href="http://www.shacknews.com/chatty?id={{::thread.id}}" title="Permalink"></a></div>
