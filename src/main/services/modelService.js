@@ -32,9 +32,14 @@ angular.module('chatty')
                 var fixedPost = fixPost(post, thread);
                 updateLineClass(fixedPost, thread);
 
-                parent.posts.push(fixedPost);
-                posts[fixedPost.id] = fixedPost;
+                if (thread.autoRefresh) {
+                    parent.posts.push(fixedPost);
+                } else {
+                    thread.newPosts.push(fixedPost);
+                }
+
                 thread.replyCount++;
+                posts[fixedPost.id] = fixedPost;
             }
         };
 
@@ -95,8 +100,10 @@ angular.module('chatty')
                 thread.body = rootPost.body;
             }
             thread.replyCount = threadPosts.length || 0;
+            thread.truncated = thread.replyCount > 15;
             thread.recent = [];
             thread.posts = [];
+            thread.newPosts = [];
             posts[thread.id] = thread;
             fixPost(thread);
 
@@ -122,6 +129,7 @@ angular.module('chatty')
             //check if it's supposed to be collapsed
             if (settingsService.isCollapsed(thread.threadId)) {
                 thread.collapsed = true;
+                thread.truncated = false;
             }
 
             return thread;

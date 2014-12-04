@@ -32,16 +32,20 @@
     <div class="rootPost collapsed" ng-show="newThreads.length">
         <a href="" title="Show New Threads" class="showpost" ng-click="expandNewThreads()">{{newThreads.length}} New Threads Available. Click to show.</a>
     </div>
-    <div ng-repeat="thread in threads" ng-hide="filterSet && !thread.visible">
+    <div ng-repeat="thread in threads" ng-class="{ truncated: thread.truncated }" ng-hide="filterSet && !thread.visible">
         <div class="rootPost" ng-class="{ collapsed: thread.collapsed }">
             <div class="postnumber"><a target="_blank" ng-href="http://www.shacknews.com/chatty?id={{::thread.id}}" title="Permalink"></a></div>
             <div class="reply" ng-if="!thread.collapsed && loggedIn">
                 <a title="reply to this comment" href="" ng-click="openReplyBox(thread)">Reply</a>
             </div>
+            <div class="refresh" ng-click="expandThread(thread)" ng-if="!thread.collapsed && !thread.autoRefresh">
+                <a title="refresh mode" href=""></a>
+            </div>
             <div class="postBody">
                 <span class="author">By: </span>
                 <span class="user">{{::thread.author}}</span>
-                <div ng-bind-html="::thread.body | trusted" ng-if="!thread.collapsed"></div>
+                <span class="newReplies">{{thread.newPosts.length ? '+' + thread.newPosts.length : ''}}</span>
+                <div class="postBodyText" ng-bind-html="::thread.body | trusted" ng-if="!thread.collapsed"></div>
                 <div ng-if="thread.collapsed" ng-bind-html="::thread.oneline | trusted"></div>
             </div>
 
@@ -50,10 +54,18 @@
             <div class="postdate">{{::thread.date | date : 'MMM d, yyyy h:mma CST' }}</div>
         </div>
 
-        <replybox class="replybox-op" post="thread" ng-if="thread.replying"></replybox>
+        <div class="threadContainer">
+            <p class="threadCapHeader" ng-if="thread.truncated">
+                <a href="" ng-click="expandThread(thread)">
+                    &nbsp;Thread Truncated. Click to see all <strong>{{thread.replyCount}}</strong> replies.
+                </a>
+            </p>
 
-        <div class="treeview">
-            <comments posts="thread.posts" logged-in="loggedIn" ng-if="!thread.collapsed"></comments>
+            <replybox class="replybox-op" post="thread" ng-if="thread.replying"></replybox>
+
+            <div class="treeview">
+                <comments posts="thread.posts" logged-in="loggedIn" ng-if="!thread.collapsed"></comments>
+            </div>
         </div>
     </div>
 </div>

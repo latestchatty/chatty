@@ -66,5 +66,5 @@ angular.module('chatty')
 
         $scope.expandNewThreads = function expandNewThreads() {
             actionService.expandNewThreads();
-        }
+        };
     });

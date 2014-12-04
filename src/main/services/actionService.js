@@ -66,8 +66,10 @@ angular.module('chatty')
             _.pull(threads, thread);
 
             //collapse thread
-            thread.collapsed = true;
             actionService.closeReplyBox(thread);
+            thread.collapsed = true;
+            delete thread.autoRefresh;
+            delete thread.truncated;
 
             //add to the end of the list
             threads.push(thread);
@@ -77,20 +79,37 @@ angular.module('chatty')
         };
 
         actionService.expandThread = function expandThread(thread) {
-            delete thread.collapsed;
+            thread.autoRefresh = true;
+            while (thread.newPosts.length) {
+                var post = thread.newPosts.shift();
+                var parent = modelService.getPost(post.parentId);
+                parent.posts.push(post);
+            }
 
-            //update local storage
-            settingsService.removeCollapsed(thread.id);
+            if (thread.truncated) {
+                delete thread.truncated;
+            }
+
+            if (thread.collapsed) {
+                delete thread.collapsed;
+
+                //update local storage
+                settingsService.removeCollapsed(thread.id);
+            }
         };
 
         actionService.expandReply = function expandReply(post) {
-            var parent = modelService.getPost(post.threadId);
-            if (parent.currentComment) {
+            var thread = modelService.getPost(post.threadId);
+            if (thread.truncated) {
+                actionService.expandThread(thread);
+            }
+            if (thread.currentComment) {
                 //unset previous reply
-                delete parent.currentComment.viewFull;
+                delete thread.currentComment.viewFull;
             }
 
-            parent.currentComment = post;
+            thread.autoRefresh = true;
+            thread.currentComment = post;
             post.viewFull = true;
         };
 
@@ -103,6 +122,10 @@ angular.module('chatty')
         };
 
         actionService.openReplyBox = function openReplyBox(post) {
+            if (post.truncated) {
+                actionService.expandThread(post);
+            }
+
             var thread = modelService.getPostThread(post);
 
             //close previous reply window

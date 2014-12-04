@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('eventService', function($http, $timeout, modelService, settingsService) {
+    .service('eventService', function($http, $timeout, $interval, modelService, settingsService) {
         var eventService = {};
         var lastEventId = 0;
 

@@ -1,0 +1,47 @@
+.truncated .rootPost {
+    margin-bottom: 0;
+}
+.truncated .threadContainer {
+    height: 292px;
+    overflow: hidden;
+    position: relative;
+}
+.truncated .treeview {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.threadCapHeader {
+    color: #aeae9b;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0 0 0 8px;
+    position: relative;
+    top: 0;
+    z-index: 900;
+    width: 100%;
+    border-top: 1px solid #575757;
+    border-bottom: 1px dotted #fff;
+}
+.threadCapHeader a:link, .threadCapHeader a:visited,
+.threadCapHeader a:active, .threadCapHeader a:hover {
+    display: block;
+    height: 19px;
+    line-height: 17px;
+    text-align: left;
+    color: #E9E9DE;
+    text-decoration: none;
+    background-color: #181818;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+.threadCapHeader a:hover {
+    color: #fff;
+    background-color: #222;
+}
+.threadCapHeader strong {
+    color: #00bff3;
+    font-size: 14px;
+}
