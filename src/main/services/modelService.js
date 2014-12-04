@@ -23,7 +23,7 @@ angular.module('chatty')
 
         modelService.getNewThreads = function getNewThreads() {
             return newThreads;
-        }
+        };
 
         modelService.addPost = function addPost(post) {
             var thread = posts[post.threadId];
@@ -34,6 +34,7 @@ angular.module('chatty')
 
                 parent.posts.push(fixedPost);
                 posts[fixedPost.id] = fixedPost;
+                thread.replyCount++;
             }
         };
 
@@ -53,9 +54,14 @@ angular.module('chatty')
             var post = posts[id];
             if (post) {
                 if (category === 'nuked') {
+                    //remove if it's a root post
                     _.pull(threads, post);
 
+                    //recursively remove all children
                     removePost(post);
+
+                    //update reply count
+                    countReplies(post);
                 } else {
                     post.category = category;
                 }
@@ -88,6 +94,7 @@ angular.module('chatty')
                 thread.category = rootPost.category;
                 thread.body = rootPost.body;
             }
+            thread.replyCount = threadPosts.length || 0;
             thread.recent = [];
             thread.posts = [];
             posts[thread.id] = thread;
@@ -163,6 +170,12 @@ angular.module('chatty')
         function removePost(post) {
             delete posts[post.id];
             _.each(post.posts, removePost);
+        }
+
+        function countReplies(post) {
+            return _.reduce(post.posts, function(result, subreply) {
+                return result + countReplies(subreply) + 1;
+            }, 0);
         }
 
         return modelService;
