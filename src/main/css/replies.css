@@ -1,6 +1,6 @@
 div.reply {
     position: absolute;
-    right: -1px;
+    right: 0;
     top: -1px;
     width: 66px;
     text-align: center;

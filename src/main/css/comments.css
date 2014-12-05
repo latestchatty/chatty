@@ -8,6 +8,7 @@
 
 /* tree view stuff */
 div.treeview {
+    margin-top: 3px;
     margin-left: 10px;
     padding-bottom: 1px;
 }
@@ -22,9 +23,9 @@ div.treeview ul {
     background: url('../images/commentsul.gif') repeat-y 2px bottom;
 }
 div.treeview ul li {
-    line-height: 17px;
+    font-size: 13px;
+    line-height: 16px;
     padding-left: 13px;
-    margin-left: 0;
     background: url('../images/commentsbullet.gif') no-repeat 2px top;
 }
 div.treeview ul li.last {

@@ -1,6 +1,6 @@
 .rootPost {
     background-color: #202224;
-    margin: 25px 0 3px 8px;
+    margin: 25px 0 0 8px;
     border: 0 solid #656565;
     border-top-width: 1px;
     position: relative;
@@ -35,41 +35,20 @@ div.postBody a:hover {
     font-size: 11px;
     color: #666;
 }
-.user {
+.rootPost .user {
     font-size: 14px;
+}
+.user {
+    font-size: 13px;
     font-weight: bold;
     color: #f3e7b5;
     font-family: sans-serif;
 }
 .newReplies {
-    /*font-size: 14px;*/
     font-weight: bold;
     color: #68f374;
     font-family: sans-serif;
-}
-
-.refresh {
-    width: 19px;
-    height: 16px;
-    overflow: hidden;
-    position: absolute;
-    left: 1px;
-    top: 24px;
-    margin: 1px 3px 0 0;
-}
-
-.refresh a:link, .refresh a:visited, .refresh a:active, .refresh a:hover {
-    display: block;
-    width: 100%;
-    height: 100%;
-    text-indent: -5000px;
-    overflow: hidden;
-    background: url('../images/sprite-commentsrefresh.gif') left top;
-    margin-left: 3px;
-}
-
-.refresh a:hover {
-    background-position: -50px top;
+    text-decoration: none;
 }
 
 /* post body date */

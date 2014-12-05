@@ -1,0 +1,23 @@
+<ul>
+    <li ng-repeat="post in posts track by $index" ng-class="{ last: $last }">
+        <div ng-switch="post.viewFull">
+            <div ng-switch-default>
+                <span class="oneline" ng-class="post.lineClass || 'oneline9'" ng-click="expandReply(post)" ng-bind-html="::post.oneline | trusted"></span>
+                <span class="author">&nbsp;:&nbsp;</span>
+                <span ng-class="::post.userClass || 'user'">{{::post.author}}</span>
+            </div>
+
+            <div ng-switch-when="true">
+                <div class="replyPost">
+                    <post></post>
+                    <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
+                    <a href="" title="Collapse/Close" class="closepost" ng-click="collapseReply(post)">x</a>
+                </div>
+
+                <replybox class="replybox-comment" ng-if="post.replying"></replybox>
+            </div>
+        </div>
+
+        <comments posts="post.posts"></comments>
+    </li>
+</ul>

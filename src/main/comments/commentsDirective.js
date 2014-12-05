@@ -3,10 +3,9 @@ angular.module('chatty')
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: 'comment/comments.html',
+        templateUrl: 'comments/comments.html',
         scope: {
-            posts: '=',
-            loggedIn: '='
+            posts: '='
         },
         compile: function(element) {
             return RecursionHelper.compile(element);

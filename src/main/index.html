@@ -10,61 +10,41 @@
 </head>
 <body ng-app="chatty" ng-controller="chattyCtrl" ng-cloak class="ng-cloak">
 
-<div class="navbar">
-    <div class="navbar-right">
-        <form class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn">
-            <input type="text" class="navbar-textinput"
-                   placeholder="Username" ng-model="username" ng-disabled="loginRunning" required>
-            <input type="password" class="navbar-textinput" ng-class="{ 'navbar-textinput-invalid': loginInvalid }"
-                   placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
-            <input type="submit" value="Login" class="navbar-button" ng-disabled="loginRunning">
-        </form>
-        <div class="navbar-form" ng-show="loggedIn">
-            <input type="button" value="Logout" class="navbar-button" ng-click="doLogout()" >
-        </div>
+<navbar></navbar>
 
-        <input type="search" class="navbar-textinput" placeholder="Filter"
-               ng-model="filterExpression" ng-model-options="{ debounce: 250 }">
-    </div>
-</div>
-
-<div class="threads">
+<div class="threads" hotkeys>
     <div class="rootPost collapsed" ng-show="newThreads.length">
         <a href="" title="Show New Threads" class="showpost" ng-click="expandNewThreads()">{{newThreads.length}} New Threads Available. Click to show.</a>
     </div>
-    <div ng-repeat="thread in threads" ng-class="{ truncated: thread.truncated }" ng-hide="filterSet && !thread.visible">
-        <div class="rootPost" ng-class="{ collapsed: thread.collapsed }">
-            <div class="postnumber"><a target="_blank" ng-href="http://www.shacknews.com/chatty?id={{::thread.id}}" title="Permalink"></a></div>
-            <div class="reply" ng-if="!thread.collapsed && loggedIn">
-                <a title="reply to this comment" href="" ng-click="openReplyBox(thread)">Reply</a>
-            </div>
-            <div class="refresh" ng-click="expandThread(thread)" ng-if="!thread.collapsed && !thread.autoRefresh">
-                <a title="refresh mode" href=""></a>
-            </div>
-            <div class="postBody">
-                <span class="author">By: </span>
-                <span class="user">{{::thread.author}}</span>
-                <span class="newReplies">{{thread.newPosts.length ? '+' + thread.newPosts.length : ''}}</span>
-                <div class="postBodyText" ng-bind-html="::thread.body | trusted" ng-if="!thread.collapsed"></div>
-                <div ng-if="thread.collapsed" ng-bind-html="::thread.oneline | trusted"></div>
-            </div>
-
-            <a ng-if="!thread.collapsed" href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(thread)">x</a>
-            <a ng-if="thread.collapsed" href="" title="Show Full Post" class="showpost" ng-click="expandThread(thread)">Show Full Post</a>
-            <div class="postdate">{{::thread.date | date : 'MMM d, yyyy h:mma CST' }}</div>
+    <div ng-repeat="post in threads track by post.id" ng-hide="filterSet && !post.visible">
+        <div ng-if="post.state !== 'collapsed'" class="rootPost">
+            <post></post>
+            <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
+            <a href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(post)">x</a>
         </div>
-
-        <div class="threadContainer">
-            <p class="threadCapHeader" ng-if="thread.truncated">
-                <a href="" ng-click="expandThread(thread)">
-                    &nbsp;Thread Truncated. Click to see all <strong>{{thread.replyCount}}</strong> replies.
-                </a>
-            </p>
-
-            <replybox class="replybox-op" post="thread" ng-if="thread.replying"></replybox>
+        <div ng-if="post.state === 'collapsed'" class="rootPost collapsed">
+            <post></post>
+            <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
+            <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
+        </div>
+        <div ng-if="!post.state">
+            <replybox class="replybox-op" ng-if="post.replying"></replybox>
 
             <div class="treeview">
-                <comments posts="thread.posts" logged-in="loggedIn" ng-if="!thread.collapsed"></comments>
+                <comments posts="post.posts"></comments>
+            </div>
+        </div>
+        <div ng-if="post.state === 'truncated'" class="truncated">
+            <div class="threadContainer">
+                <p class="threadCapHeader">
+                    <a href="" ng-click="expandThread(post)">
+                        &nbsp;Thread Truncated. Click to see all <strong>{{post.replyCount}}</strong> replies.
+                    </a>
+                </p>
+
+                <div class="treeview">
+                    <comments posts="post.posts"></comments>
+                </div>
             </div>
         </div>
     </div>

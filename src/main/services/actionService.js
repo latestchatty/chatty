@@ -69,9 +69,8 @@ angular.module('chatty')
 
             //collapse thread
             actionService.closeReplyBox(thread);
-            thread.collapsed = true;
+            thread.state = 'collapsed';
             delete thread.autoRefresh;
-            delete thread.truncated;
 
             //add to the end of the list
             threads.push(thread);
@@ -81,19 +80,17 @@ angular.module('chatty')
         };
 
         actionService.expandThread = function expandThread(thread) {
-            thread.autoRefresh = true;
-            while (thread.newPosts.length) {
-                var post = thread.newPosts.shift();
-                var parent = modelService.getPost(post.parentId);
-                parent.posts.push(post);
+            if (!thread.autoRefresh) {
+                thread.autoRefresh = true;
+                while (thread.newPosts.length) {
+                    var post = thread.newPosts.shift();
+                    var parent = modelService.getPost(post.parentId);
+                    parent.posts.push(post);
+                }
             }
 
-            if (thread.truncated) {
-                delete thread.truncated;
-            }
-
-            if (thread.collapsed) {
-                delete thread.collapsed;
+            if (thread.state) {
+                delete thread.state;
 
                 //update local storage
                 settingsService.removeCollapsed(thread.id);
@@ -101,21 +98,27 @@ angular.module('chatty')
         };
 
         actionService.expandReply = function expandReply(post) {
-            var thread = modelService.getPost(post.threadId);
-            if (thread.truncated) {
-                actionService.expandThread(thread);
-            }
-            if (thread.currentComment) {
-                //unset previous reply
-                delete thread.currentComment.viewFull;
-                actionService.closeReplyBox(thread);
-            }
+            var thread = resetThread(post, true);
 
+            //expand
             thread.autoRefresh = true;
             thread.currentComment = post;
             lastReply = post;
             post.viewFull = true;
         };
+
+        function resetThread(post, closeComment) {
+            var thread = modelService.getPostThread(post);
+
+            //close any other actions
+            actionService.expandThread(thread);
+            actionService.closeReplyBox(thread);
+            if (closeComment && thread.currentComment) {
+                delete thread.currentComment.viewFull;
+            }
+
+            return thread;
+        }
 
         actionService.previousReply = function previousReply() {
             if (lastReply) {
@@ -166,30 +169,17 @@ angular.module('chatty')
 
         actionService.collapseReply = function collapseReply(post) {
             if (post) {
-                var parent = modelService.getPost(post.threadId);
-                delete parent.currentComment;
-
-                delete post.viewFull;
-                delete post.replying;
+                resetThread(post, true);
             } else if (lastReply) {
                 actionService.collapseReply(lastReply);
                 lastReply = null;
             }
-
         };
 
         actionService.openReplyBox = function openReplyBox(post) {
-            if (post.truncated) {
-                actionService.expandThread(post);
-            }
+            var thread = resetThread(post);
 
-            var thread = modelService.getPostThread(post);
-
-            //close previous reply window
-            if (thread.replyingToPost) {
-                delete thread.replyingToPost.replying;
-            }
-
+            //open reply
             thread.replyingToPost = post;
             post.replying = true;
         };
@@ -199,15 +189,6 @@ angular.module('chatty')
             if (thread.replyingToPost) {
                 delete thread.replyingToPost.replying;
                 delete thread.replyingToPost;
-            }
-        };
-
-        actionService.expandNewThreads = function expandNewThreads() {
-            var newThreads = modelService.getNewThreads();
-            var threads = modelService.getThreads();
-
-            while (newThreads.length) {
-                threads.unshift(newThreads.pop());
             }
         };
 

@@ -49,7 +49,7 @@ angular.module('chatty')
 
         modelService.getPostThread = function getPostThread(post) {
             if (post.parentId > 0) {
-                return modelService.getPost(post.parentId);
+                return modelService.getPost(post.threadId);
             } else {
                 return post;
             }
@@ -100,7 +100,6 @@ angular.module('chatty')
                 thread.body = rootPost.body;
             }
             thread.replyCount = threadPosts.length || 0;
-            thread.truncated = thread.replyCount > 15;
             thread.recent = [];
             thread.posts = [];
             thread.newPosts = [];
@@ -128,8 +127,9 @@ angular.module('chatty')
 
             //check if it's supposed to be collapsed
             if (settingsService.isCollapsed(thread.threadId)) {
-                thread.collapsed = true;
-                thread.truncated = false;
+                thread.state = 'collapsed';
+            } else if (thread.replyCount > 15) {
+                thread.state = 'truncated';
             }
 
             return thread;

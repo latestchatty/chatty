@@ -1,11 +1,9 @@
-<div class="replybox">
-    <div>
-        <form ng-submit="submitPost()">
-            <textarea class="replybox-input" placeholder="Type something interesting..."
-                      ng-model="replyBody" required auto-focus></textarea>
-            <br>
-            <input type="submit" value="Submit Post" class="replybox-button">
-        </form>
-    </div>
+<div class="replybox" ng-class="">
+    <form ng-submit="submitPost()">
+        <textarea class="replybox-input" placeholder="Type something interesting..."
+                  ng-model="replyBody" required auto-focus></textarea>
+        <br>
+        <input type="submit" value="Submit Post" class="replybox-button">
+    </form>
     <a class="closepost" href="" title="Close" ng-click="close()">x</a>
 </div>
