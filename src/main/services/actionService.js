@@ -108,6 +108,7 @@ angular.module('chatty')
             if (thread.currentComment) {
                 //unset previous reply
                 delete thread.currentComment.viewFull;
+                actionService.closeReplyBox(thread);
             }
 
             thread.autoRefresh = true;
