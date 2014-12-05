@@ -70,7 +70,8 @@ angular.module('chatty')
 
         //have to check for keystrokes globally
         $document.bind('keydown', function(event) {
-            if (!event.repeat && event.srcElement.localName !== 'input') {
+            if (!event.repeat && event.srcElement.localName !== 'input'
+                && event.srcElement.localName !== 'textarea') {
                 $timeout(function() {
                     if (event.keyCode === 65) {
                         actionService.previousReply();
