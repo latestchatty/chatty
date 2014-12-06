@@ -60,7 +60,7 @@ angular.module('chatty')
                 $scope.defaultTabs = [
                     { displayText: 'Chatty', filterExpression: null, selected: true },
                     { displayText: 'Frontpage', filterExpression: { author: 'Shacknews'} },
-                    { displayText: 'Mine', filterExpression: $scope.username }
+                    { displayText: 'Mine', filterExpression: settingsService.getUsername() }
                 ];
                 $scope.selectedTab = $scope.defaultTabs[0];
                 $scope.tabs = settingsService.getTabs();
