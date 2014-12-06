@@ -61,7 +61,7 @@ angular.module('chatty')
         };
 
         settingsService.addTab = function addTab(tab) {
-            if (!_.find(tabs, {'filterText' : tab.filterText})) {
+            if (!_.find(tabs, {'filterExpression' : tab.filterExpression})) {
                 tabs.push(tab);
             }
             saveTabs();

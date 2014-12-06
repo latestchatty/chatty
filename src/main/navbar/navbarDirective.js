@@ -39,35 +39,40 @@ angular.module('chatty')
                 $scope.filterSet = false;
                 $scope.filterExpression = null;
                 $scope.$watch('filterExpression', function runFilter() {
+                    applyFilter($scope.filterExpression);
+                });
+                function applyFilter(filterExpression) {
                     $scope.filterSet = false;
-                    if ($scope.filterExpression) {
+                    if (filterExpression) {
                         _.forEach($scope.threads, function(thread) {
                             delete thread.visible;
                         });
 
-                        var visibleThreads = $filter('filter')($scope.threads, $scope.filterExpression);
+                        var visibleThreads = $filter('filter')($scope.threads, filterExpression);
                         visibleThreads.forEach(function(thread) {
                             thread.visible = true;
                         });
                         $scope.filterSet = true;
                     }
-                });
+                }
 
                 //support tabs
                 $scope.defaultTabs = [
-                    { displayText: 'Chatty', filterText: null, selected: true },
-                    { displayText: 'Mine', filterText: $scope.username }
+                    { displayText: 'Chatty', filterExpression: null, selected: true },
+                    { displayText: 'Frontpage', filterExpression: { author: 'Shacknews'} },
+                    { displayText: 'Mine', filterExpression: $scope.username }
                 ];
                 $scope.selectedTab = $scope.defaultTabs[0];
                 $scope.tabs = settingsService.getTabs();
                 $scope.selectTab = function selectTab(tab) {
                     delete $scope.selectedTab.selected;
+                    $scope.filterExpression = null;
                     $scope.selectedTab = tab;
                     tab.selected = true;
-                    $scope.filterExpression = tab.filterText;
+                    applyFilter(tab.filterExpression);
                 };
-                $scope.addTab = function addTab(filterText, displayText) {
-                    var tab = {filterText:filterText, displayText:displayText};
+                $scope.addTab = function addTab(filterExpression, displayText) {
+                    var tab = {filterExpression:filterExpression, displayText:displayText};
                     settingsService.addTab(tab);
                     return tab;
                 };
