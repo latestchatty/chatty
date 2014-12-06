@@ -6,6 +6,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var ngAnnotate = require('gulp-ng-annotate');
+var templateCache = require('gulp-angular-templatecache');
 var changed = require('gulp-changed');
 var gulpif = require('gulp-if');
 var connect = require('gulp-connect');
@@ -27,9 +28,12 @@ var paths = {
         css: './src/main/**/*.css',
         html: [
             './src/main/**/*.html',
-            './src/main/index.html'
+            '!./src/main/index.html'
         ],
-        images: './src/main/images/**'
+        static_content: [
+            './src/main/index.html',
+            './src/main/images/**'
+        ]
     }
 };
 
@@ -40,15 +44,16 @@ gulp.task('clean', function clean(callback) {
 
 //copy over html
 gulp.task('build-html', function() {
-    gulp.src(paths.client.html, { base: paths.client.base })
+    gulp.src(paths.client.html)
         .pipe(clip())
+        .pipe(templateCache({ module: 'chatty'}))
         .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
         .pipe(gulp.dest(paths.target));
 });
 
 //copy over html
-gulp.task('build-images', function() {
-    gulp.src(paths.client.images, { base: paths.client.base })
+gulp.task('build-static', function() {
+    gulp.src(paths.client.static_content, { base: paths.client.base })
         .pipe(clip())
         .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
         .pipe(gulp.dest(paths.target));
@@ -83,6 +88,7 @@ gulp.task('build-css', function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
+    gulp.watch(paths.client.static_content, ['build-static']);
     gulp.watch(paths.client.html, ['build-html']);
     gulp.watch(paths.client.js, ['build-js-debug']);
     gulp.watch(paths.client.css, ['build-css']);
@@ -102,5 +108,5 @@ gulp.task('server', function() {
     });
 });
 
-gulp.task('default', ['server', 'watch', 'build-html', 'build-js-debug', 'build-css', 'build-images']);
-gulp.task('build', ['build-html', 'build-js', 'build-css', 'build-images']);
+gulp.task('default', ['server', 'watch', 'build-html', 'build-js-debug', 'build-css', 'build-static']);
+gulp.task('build', ['build-html', 'build-js', 'build-css', 'build-static']);
