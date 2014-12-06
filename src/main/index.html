@@ -17,7 +17,7 @@
         <a href="" title="Show New Threads" class="showpost" ng-click="expandNewThreads()">{{newThreads.length}} New Threads Available. Click to show.</a>
     </div>
     <div ng-repeat="post in threads track by post.id" ng-hide="filterSet && !post.visible">
-        <div ng-if="post.state !== 'collapsed'" class="rootPost">
+        <div ng-if="post.state !== 'collapsed'" class="rootPost" ng-class="post.tagClass">
             <post></post>
             <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
             <a href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(post)">x</a>

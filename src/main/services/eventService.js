@@ -23,7 +23,6 @@ angular.module('chatty')
         };
 
         function processChatty(newThreads, collapsedThreads) {
-            //$timeout(function() {
                 if (newThreads.length > 0) {
                     var thread = newThreads.shift();
 
@@ -46,7 +45,6 @@ angular.module('chatty')
                     //start events
                     return waitForEvents();
                 }
-            //});
         }
 
         function waitForEvents() {

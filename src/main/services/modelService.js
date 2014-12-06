@@ -31,6 +31,7 @@ angular.module('chatty')
             if (parent && thread) {
                 var fixedPost = fixPost(post, thread);
                 updateLineClass(fixedPost, thread);
+                updateModTagClass(fixedPost);
 
                 if (thread.autoRefresh) {
                     parent.posts.push(fixedPost);
@@ -69,6 +70,7 @@ angular.module('chatty')
                     countReplies(post);
                 } else {
                     post.category = category;
+                    updateModTagClass(post);
                 }
             }
         };
@@ -105,12 +107,14 @@ angular.module('chatty')
             thread.newPosts = [];
             posts[thread.id] = thread;
             fixPost(thread);
+            updateModTagClass(thread);
 
             while(threadPosts.length > 0) {
                 var post = threadPosts.shift();
 
                 //various post fixes
                 fixPost(post, thread);
+                updateModTagClass(post);
 
                 //add to post list
                 posts[post.id] = post;
@@ -173,6 +177,18 @@ angular.module('chatty')
             _.each(thread.recent, function(recentPost, index) {
                 recentPost.lineClass = 'oneline' + (9 - index);
             });
+        }
+
+        function updateModTagClass(post) {
+            if (post.category === 'informative') {
+                post.tagClass = 'postInformative';
+                console.log(post);
+            } else if (post.category === 'nws') {
+                post.tagClass = 'postNws';
+                console.log(post);
+            } else {
+                delete post.tagClass;
+            }
         }
 
         function removePost(post) {

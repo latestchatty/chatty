@@ -129,3 +129,9 @@ a.showpost:hover {
     text-decoration: none;
     background-color: #393939;
 }
+.postInformative {
+    border: 1px solid #00bff3;
+}
+.postNws {
+    border: 1px solid red;
+}

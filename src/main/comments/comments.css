@@ -51,13 +51,10 @@ div.treeview ul li.last {
 
 /* poster highlights */
 .user_op {
-    font-weight: bold;
-    color: #f3e7b5;
-    background-color: #202224;
-    border-radius: 18px;
-    padding: 1px 7px;
     font-size: 14px;
+    font-weight: bold;
     font-family: sans-serif;
+    color: #6aff94;
 }
 .user_me {
     font-size: 14px;
