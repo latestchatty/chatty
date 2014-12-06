@@ -1,28 +1,38 @@
-<div class="navbar">
-    <ul class="navbar-tabs">
-        <li ng-click="selectTab(defaultTabs[0])" ng-class="{ navbarTabSelected:defaultTabs[0].selected }">Chatty</li>
-        <li ng-click="selectTab(defaultTabs[1])"  ng-class="{ navbarTabSelected:defaultTabs[1].selected }">Frontpage</li>
-        <li ng-click="selectTab(defaultTabs[2])"  ng-class="{ navbarTabSelected:defaultTabs[2].selected }" ng-if="loggedIn">Mine</li>
-        <li ng-repeat="tab in tabs" ng-click="selectTab(tab)"
-            ng-right-click="removeTab(tab)" ng-class="{ navbarTabSelected:tab.selected }"
-            ng-bind="::tab.displayText"></li>
-    </ul>
+<div>
+    <div class="navbar">
+        <ul class="navbar-tabs">
+            <li ng-click="selectTab(defaultTabs[0])" ng-class="{ navbarTabSelected:defaultTabs[0].selected }">Chatty</li>
+            <li ng-click="selectTab(defaultTabs[1])"  ng-class="{ navbarTabSelected:defaultTabs[1].selected }">Frontpage</li>
+            <li ng-click="selectTab(defaultTabs[2])"  ng-class="{ navbarTabSelected:defaultTabs[2].selected }" ng-if="loggedIn">Mine</li>
+            <li ng-repeat="tab in tabs" ng-click="selectTab(tab)"
+                ng-right-click="removeTab(tab)" ng-class="{ navbarTabSelected:tab.selected }"
+                ng-bind="::tab.displayText"></li>
+        </ul>
 
-    <div class="navbar-right">
-        <form class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn">
-            <input type="text" class="navbar-textinput"
-                   placeholder="Username" ng-model="username" ng-disabled="loginRunning" required>
-            <input type="password" class="navbar-textinput" ng-class="{ 'navbar-textinput-invalid': loginInvalid }"
-                   placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
-            <input type="submit" value="Login" class="navbar-button" ng-disabled="loginRunning">
-        </form>
-        <div class="navbar-form" ng-show="loggedIn">
-            <input type="button" value="Logout: {{username}}" class="navbar-button" ng-click="doLogout()" >
+        <div class="navbar-right">
+            <form class="navbar-form" ng-submit="doLogin()">
+                <input type="button" value="New Thread" class="navbar-button" ng-click="newThread()">
+            </form>
+
+            <form class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn">
+                <input type="text" class="navbar-textinput"
+                       placeholder="Username" ng-model="username" ng-disabled="loginRunning" required>
+                <input type="password" class="navbar-textinput" ng-class="{ 'navbar-textinput-invalid': loginInvalid }"
+                       placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
+                <input type="submit" value="Login" class="navbar-button" ng-disabled="loginRunning">
+            </form>
+            <div class="navbar-form" ng-show="loggedIn">
+                <input type="button" value="Logout: {{username}}" class="navbar-button" ng-click="doLogout()">
+            </div>
+
+            <form class="navbar-form" ng-submit="selectTab(addTab(filterExpression, filterExpression))">
+                <input type="search" class="navbar-textinput" placeholder="Filter"
+                       ng-model="filterExpression" ng-model-options="{ debounce: 250 }">
+            </form>
         </div>
 
-        <form class="navbar-form" ng-submit="selectTab(addTab(filterExpression, filterExpression))">
-            <input type="search" class="navbar-textinput" placeholder="Filter"
-                   ng-model="filterExpression" ng-model-options="{ debounce: 250 }">
-        </form>
+        <div class="newThreadContainer">
+            <replybox class="replybox-op"></replybox>
+        </div>
     </div>
 </div>

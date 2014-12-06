@@ -78,7 +78,13 @@ angular.module('chatty')
                 };
                 $scope.removeTab = function removeTab(tab) {
                     settingsService.removeTab(tab);
-                }
+                };
+
+                //new thread
+                $scope.post = { id: 0 };
+                $scope.newThread = function newThread() {
+                    $scope.post.replying = true;
+                };
             }
         }
     });

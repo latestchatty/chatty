@@ -1,4 +1,4 @@
-<div class="replybox" ng-class="">
+<div class="replybox" ng-if="post.replying">
     <form ng-submit="submitPost()">
         <textarea class="replybox-input" placeholder="Type something interesting..."
                   ng-model="replyBody" required auto-focus></textarea>

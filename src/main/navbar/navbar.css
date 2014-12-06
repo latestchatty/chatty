@@ -65,3 +65,9 @@
 .navbar-textinput-invalid {
     border: 1px solid red;
 }
+
+.newThreadContainer {
+    position: fixed;
+    top: 44px;
+    width: 80%;
+}
