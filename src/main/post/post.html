@@ -1,10 +1,10 @@
 <div>
-    <div class="postnumber"><a target="_blank" ng-href="http://www.shacknews.com/chatty?id={{::post.id}}" title="Permalink"></a></div>
+    <div class="postnumber"><a title="Save post" href="" ng-click="addTab(post.id, 'post')"></a></div>
     <div class="reply">
         <a title="reply to this comment" href="" ng-click="openReplyBox(post)">Reply</a>
     </div>
     <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma CST' }}</div>
     <span class="author">By: </span>
-    <span class="user">{{::post.author}}</span>
+    <span class="user" ng-click="addTab(post.author, post.author)">{{::post.author}}</span>
     <a href="" class="newReplies" ng-click="expandThread(post)" ng-if="::!post.parentId">{{post.newPosts.length ? '+' + post.newPosts.length : ''}}</a>
 </div>

@@ -24,7 +24,7 @@ var paths = {
             './src/main/app.js',
             './src/main/**/*.js'
         ],
-        css: './src/main/css/*.css',
+        css: './src/main/**/*.css',
         html: [
             './src/main/**/*.html',
             './src/main/index.html'

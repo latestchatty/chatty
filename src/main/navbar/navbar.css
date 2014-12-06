@@ -11,6 +11,26 @@
     z-index: 99999;
 }
 
+.navbar-tabs {
+    position: relative;
+    float: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #e8e8e8;
+    border-bottom: none;
+    text-shadow: 0 1px 1px black;
+    line-height: 21px;
+}
+.navbar-tabs li {
+    display: inline-block;
+    padding: 0 5px 0 5px;
+    border-right: 1px solid black;
+    cursor: pointer;
+}
+.navbar-tabs li:last-child {
+    border-right: 0;
+}
+
 .navbar-right {
     float: right;
     margin-right: 10px;

@@ -1,4 +1,10 @@
 <div class="navbar">
+    <ul class="navbar-tabs">
+        <li ng-click="setFilter()">Chatty</li>
+        <li ng-click="setFilter(username)">Mine</li>
+        <li ng-repeat="tab in tabs" ng-click="setFilter(tab.filterText)" ng-right-click="removeTab(tab)">{{::tab.displayText}}</li>
+    </ul>
+
     <div class="navbar-right">
         <form class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn">
             <input type="text" class="navbar-textinput"
@@ -11,7 +17,9 @@
             <input type="button" value="Logout" class="navbar-button" ng-click="doLogout()" >
         </div>
 
-        <input type="search" class="navbar-textinput" placeholder="Filter"
-               ng-model="filterExpression" ng-model-options="{ debounce: 250 }">
+        <form class="navbar-form" ng-submit="addTab(filterExpression, filterExpression)">
+            <input type="search" class="navbar-textinput" placeholder="Filter"
+                   ng-model="filterExpression" ng-model-options="{ debounce: 250 }">
+        </form>
     </div>
 </div>

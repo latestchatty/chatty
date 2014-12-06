@@ -38,6 +38,7 @@ angular.module('chatty')
                 //support filters
                 $scope.filterSet = false;
                 $scope.filterExpression = null;
+                $scope.tabs = [];
                 $scope.$watch('filterExpression', function runFilter() {
                     $scope.filterSet = false;
                     if ($scope.filterExpression) {
@@ -52,6 +53,17 @@ angular.module('chatty')
                         $scope.filterSet = true;
                     }
                 });
+                $scope.setFilter = function setFilter(text) {
+                    $scope.filterExpression = text;
+                };
+                $scope.addTab = function addTab(filterText, displayText) {
+                    if (!_.find($scope.tabs, {'filterText' : filterText})) {
+                        $scope.tabs.push({filterText:filterText, displayText:displayText});
+                    }
+                };
+                $scope.removeTab = function removeTab(tab) {
+                    _.pull($scope.tabs, tab);
+                }
             }
         }
     });
