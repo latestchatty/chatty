@@ -38,7 +38,6 @@ angular.module('chatty')
                 //support filters
                 $scope.filterSet = false;
                 $scope.filterExpression = null;
-                $scope.tabs = settingsService.getTabs();
                 $scope.$watch('filterExpression', function runFilter() {
                     $scope.filterSet = false;
                     if ($scope.filterExpression) {
@@ -53,8 +52,19 @@ angular.module('chatty')
                         $scope.filterSet = true;
                     }
                 });
-                $scope.setFilter = function setFilter(text) {
-                    $scope.filterExpression = text;
+
+                //support tabs
+                $scope.defaultTabs = [
+                    { displayText: 'Chatty', filterText: null, selected: true },
+                    { displayText: 'Mine', filterText: $scope.username }
+                ];
+                $scope.selectedTab = $scope.defaultTabs[0];
+                $scope.tabs = settingsService.getTabs();
+                $scope.selectTab = function selectTab(tab) {
+                    delete $scope.selectedTab.selected;
+                    $scope.selectedTab = tab;
+                    tab.selected = true;
+                    $scope.filterExpression = tab.filterText;
                 };
                 $scope.addTab = function addTab(filterText, displayText) {
                     settingsService.addTab({filterText:filterText, displayText:displayText});

@@ -1,8 +1,10 @@
 <div class="navbar">
     <ul class="navbar-tabs">
-        <li ng-click="setFilter()">Chatty</li>
-        <li ng-click="setFilter(username)">Mine</li>
-        <li ng-repeat="tab in tabs" ng-click="setFilter(tab.filterText)" ng-right-click="removeTab(tab)">{{::tab.displayText}}</li>
+        <li ng-click="selectTab(defaultTabs[0])" ng-class="{ navbarTabSelected:defaultTabs[0].selected }">Chatty</li>
+        <li ng-click="selectTab(defaultTabs[1])"  ng-class="{ navbarTabSelected:defaultTabs[1].selected }">Mine</li>
+        <li ng-repeat="tab in tabs" ng-click="selectTab(tab)"
+            ng-right-click="removeTab(tab)" ng-class="{ navbarTabSelected:tab.selected }"
+            ng-bind="::tab.displayText"></li>
     </ul>
 
     <div class="navbar-right">

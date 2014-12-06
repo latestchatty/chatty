@@ -27,8 +27,14 @@
     border-right: 1px solid black;
     cursor: pointer;
 }
+.navbar-tabs li:hover {
+    text-decoration: underline;
+}
 .navbar-tabs li:last-child {
     border-right: 0;
+}
+.navbarTabSelected {
+    color: #00bff3;
 }
 
 .navbar-right {

@@ -61,18 +61,24 @@ angular.module('chatty')
         };
 
         settingsService.addTab = function addTab(tab) {
-            console.log('Adding1: ', tab);
             if (!_.find(tabs, {'filterText' : tab.filterText})) {
-                console.log('Adding2: ', tab);
                 tabs.push(tab);
             }
-            localStorageService.set('tabs', tabs);
+            saveTabs();
         };
 
         settingsService.removeTab = function removeTab(tab) {
             _.pull(tabs, tab);
-            localStorageService.set('tabs', tabs);
+            saveTabs();
         };
+
+        function saveTabs() {
+            var clone = _.cloneDeep(tabs);
+            _.each(clone, function(tab) {
+                delete tab.selected;
+            });
+            localStorageService.set('tabs', clone);
+        }
 
         return settingsService;
     });
