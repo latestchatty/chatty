@@ -19,7 +19,7 @@
             <input type="button" value="Logout" class="navbar-button" ng-click="doLogout()" >
         </div>
 
-        <form class="navbar-form" ng-submit="addTab(filterExpression, filterExpression)">
+        <form class="navbar-form" ng-submit="selectTab(addTab(filterExpression, filterExpression))">
             <input type="search" class="navbar-textinput" placeholder="Filter"
                    ng-model="filterExpression" ng-model-options="{ debounce: 250 }">
         </form>

@@ -67,7 +67,9 @@ angular.module('chatty')
                     $scope.filterExpression = tab.filterText;
                 };
                 $scope.addTab = function addTab(filterText, displayText) {
-                    settingsService.addTab({filterText:filterText, displayText:displayText});
+                    var tab = {filterText:filterText, displayText:displayText};
+                    settingsService.addTab(tab);
+                    return tab;
                 };
                 $scope.removeTab = function removeTab(tab) {
                     settingsService.removeTab(tab);
