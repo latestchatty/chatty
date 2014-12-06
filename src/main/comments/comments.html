@@ -3,6 +3,7 @@
         <div ng-switch="post.viewFull">
             <div ng-switch-default>
                 <span class="oneline" ng-class="[post.lineClass || 'oneline9', post.tagClass]" ng-click="expandReply(post)" ng-bind-html="::post.oneline | trusted"></span>
+
                 <span class="author">&nbsp;:&nbsp;</span>
                 <span ng-class="::post.userClass || 'user'">{{::post.author}}</span>
             </div>

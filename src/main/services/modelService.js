@@ -182,10 +182,8 @@ angular.module('chatty')
         function updateModTagClass(post) {
             if (post.category === 'informative') {
                 post.tagClass = 'postInformative';
-                console.log(post);
             } else if (post.category === 'nws') {
                 post.tagClass = 'postNws';
-                console.log(post);
             } else {
                 delete post.tagClass;
             }
