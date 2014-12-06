@@ -4,8 +4,8 @@ A web based alternate client for the shacknews chatty (http://www.shacknews.com/
 
 Features above standard chatty:
 * Reduced page load size / time.
-  * Shacknews is ~900kb / ~100 http requests
-  * This version is ~200kb / 15 http requests (aiming to get this smaller)
+  * Shacknews is ~1.2mb / ~125 http requests
+  * This version is ~175kb / 11 http requests (aiming to get this smaller still)
 * Event based: Replies and new root posts are loaded live. No more F5 necessary.
 * Live filtering. No more reposts! Filter works without API call in the background (against live threads only).
 * Collapsed posts are remembered, no browser extension required.
