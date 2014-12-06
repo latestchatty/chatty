@@ -16,7 +16,7 @@
             <input type="submit" value="Login" class="navbar-button" ng-disabled="loginRunning">
         </form>
         <div class="navbar-form" ng-show="loggedIn">
-            <input type="button" value="Logout" class="navbar-button" ng-click="doLogout()" >
+            <input type="button" value="Logout: {{username}}" class="navbar-button" ng-click="doLogout()" >
         </div>
 
         <form class="navbar-form" ng-submit="selectTab(addTab(filterExpression, filterExpression))">
