@@ -28,7 +28,7 @@
             <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
         </div>
         <div ng-if="!post.state">
-            <replybox class="replybox-op"></replybox>
+            <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>
 
             <div class="treeview">
                 <comments posts="post.posts"></comments>

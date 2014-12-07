@@ -4,12 +4,17 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'replybox/replybox.html',
+            scope: {
+                post: '='
+            },
             controller: function($scope, actionService) {
                 $scope.replyBody = null;
 
                 $scope.submitPost = function submitPost() {
-                    actionService.submitPost($scope.post.id, $scope.replyBody);
-                    $scope.close();
+                    if ($scope.replyBody) {
+                        actionService.submitPost($scope.post.id, $scope.replyBody);
+                        $scope.close();
+                    }
                 };
 
                 $scope.close = function close() {

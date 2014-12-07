@@ -15,7 +15,7 @@
                     <a href="" title="Collapse/Close" class="closepost" ng-click="collapseReply(post)">x</a>
                 </div>
 
-                <replybox class="replybox-comment"></replybox>
+                <replybox class="replybox-comment" post="post" ng-if="post.replying"></replybox>
             </div>
         </div>
 

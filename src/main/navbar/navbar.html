@@ -31,8 +31,8 @@
             </form>
         </div>
 
-        <div class="newThreadContainer">
-            <replybox class="replybox-op"></replybox>
+        <div class="newThreadContainer" ng-if="newThreadPost.replying">
+            <replybox class="replybox-op" post="newThreadPost"></replybox>
         </div>
     </div>
 </div>
