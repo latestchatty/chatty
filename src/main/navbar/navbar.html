@@ -10,7 +10,7 @@
         </ul>
 
         <div class="navbar-right">
-            <form class="navbar-form" ng-submit="doLogin()">
+            <form class="navbar-form" ng-if="loggedIn">
                 <input type="button" value="New Thread" class="navbar-button" ng-click="newThread()">
             </form>
 
