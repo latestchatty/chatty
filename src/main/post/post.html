@@ -6,6 +6,6 @@
     <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma' }}</div>
     <progress class="expireTimer" value="{{::post.expirePercent}}" max="100" ng-if="post.expirePercent"></progress>
     <span class="author">By: </span>
-    <span class="user" ng-click="addTab(post.author, post.author)">{{::post.author}}</span>
+    <span ng-class="::post.userClass || 'user'" ng-click="addTab(post.author, post.author)">{{::post.author}}</span>
     <a href="" class="newReplies" ng-click="expandThread(post)" ng-if="::!post.parentId">{{post.newPosts.length ? '+' + post.newPosts.length : ''}}</a>
 </div>

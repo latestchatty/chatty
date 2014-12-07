@@ -156,13 +156,11 @@ angular.module('chatty')
             //create sub-post container
             post.posts = post.posts || [];
 
-            if (thread) {
-                //add user class highlight
-                if (post.author.toLowerCase() === thread.author.toLowerCase()) {
-                    post.userClass = 'user_op';
-                } else if (post.author.toLowerCase() === username.toLowerCase()) {
-                    post.userClass = 'user_me';
-                }
+            //add user class highlight
+            if (post.author.toLowerCase() === username.toLowerCase()) {
+                post.userClass = 'user_me';
+            } else if (thread && post.author.toLowerCase() === thread.author.toLowerCase()) {
+                post.userClass = 'user_op';
             }
 
             return post;
