@@ -160,7 +160,7 @@ angular.module('chatty')
                 //add user class highlight
                 if (post.author === thread.author) {
                     post.userClass = 'user_op';
-                } else if (post.author === username) {
+                } else if (post.author.toLowerCase() === username.toLowerCase()) {
                     post.userClass = 'user_me';
                 }
             }
