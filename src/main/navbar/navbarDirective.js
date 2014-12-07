@@ -83,7 +83,7 @@ angular.module('chatty')
                 //new thread
                 $scope.newThreadPost = { id: 0 };
                 $scope.newThread = function newThread() {
-                    $scope.post.replying = true;
+                    $scope.newThreadPost.replying = true;
                 };
             }
         }
