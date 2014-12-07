@@ -53,17 +53,23 @@ div.postBody a:hover {
 }
 
 /* post body date */
-div.postdate {
+.postdate {
     text-align: right;
     font-size: 10px;
     color: #666;
     width: 200px;
     right: 0;
     position: absolute;
-    bottom: 0;
+    bottom: 8px;
     height: 20px;
     line-height: 20px;
     padding: 0 5px;
+}
+.expireTimer {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    background-color: #575757;
 }
 
 /* collapse post 'x' */
