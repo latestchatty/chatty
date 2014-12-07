@@ -22,7 +22,7 @@
             <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
             <a href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(post)">x</a>
         </div>
-        <div ng-if="post.state === 'collapsed'" class="rootPost collapsed">
+        <div ng-if="post.state === 'collapsed'" class="rootPost collapsed" ng-class="post.tagClass">
             <post></post>
             <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
             <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
