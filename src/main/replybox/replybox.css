@@ -32,3 +32,25 @@
     color: white;
     cursor: pointer;
 }
+
+/* tag legend stuff */
+.tagLegend {
+    float: right;
+    padding: 5px;
+    border: 1px solid #6CB0C0;
+    color: white;
+    margin-right: 10px;
+}
+.tagLegend td {
+    padding: 2px 10px 0 10px;
+}
+.tagLegend h4 {
+    text-align: center;
+    margin: 0;
+}
+.tagLegendClicky {
+    cursor: pointer;
+}
+.tagLegendClicky:hover {
+    text-decoration: underline;
+}

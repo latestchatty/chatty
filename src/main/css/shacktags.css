@@ -17,20 +17,3 @@
 .jt_spoiler:focus { color: #f00; }
 .jt_codesmall    { font-family: monospace; }
 .jt_code         { display: block; font-family: monospace; border-left: 1px solid #666; padding: 3px 0 3px 10px; margin: 5px 0 5px 10px; }
-
-#shackCommentTags {
-    float: right;
-    padding: 5px;
-    border: 1px solid #6CB0C0;
-    color: white;
-    margin-right: 10px;
-}
-#shackCommentTags .jt_italics  { font-style: italic; }
-
-#shackCommentTags td {
-    padding: 2px 10px 0 10px;
-}
-#shackCommentTags h4 {
-    text-align: center;
-    margin: 0;
-}
