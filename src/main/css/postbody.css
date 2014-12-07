@@ -60,7 +60,7 @@ div.postBody a:hover {
     width: 200px;
     right: 0;
     position: absolute;
-    bottom: 8px;
+    bottom: 0;
     height: 20px;
     line-height: 20px;
     padding: 0 5px;
@@ -68,8 +68,9 @@ div.postBody a:hover {
 .expireTimer {
     position: absolute;
     right: 1px;
-    bottom: 1px;
+    bottom: 18px;
     background-color: #575757;
+    width: 75px;
 }
 
 /* collapse post 'x' */
