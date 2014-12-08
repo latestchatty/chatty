@@ -75,6 +75,20 @@ angular.module('chatty')
             }
         };
 
+        modelService.updateTags = function updateTags(updates) {
+            _.each(updates, function(update) {
+                var post = posts[update.postId];
+                if (post) {
+                    var tag = _.find(post.lols, {'tag': update.tag});
+                    if (tag) {
+                        tag.count = update.count;
+                    } else {
+                        post.lols.push({tag:update.tag, count:update.count});
+                    }
+                }
+            });
+        };
+
         modelService.cleanCollapsed = function cleanCollapsed() {
             settingsService.cleanCollapsed(posts);
         };
@@ -155,6 +169,7 @@ angular.module('chatty')
 
             //create sub-post container
             post.posts = post.posts || [];
+            post.lols = post.lols || [];
 
             //add user class highlight
             if (post.author.toLowerCase() === username.toLowerCase()) {

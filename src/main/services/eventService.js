@@ -14,6 +14,7 @@ angular.module('chatty')
                     console.log('Error during getNewestEventId: ', data);
                 });
 
+            //$http.get('http://winchatty.com/v2/getThread?id=32810584')
             $http.get('http://winchatty.com/v2/getChatty')
                 .success(function(data) {
                     processChatty(data.threads, []);
@@ -90,6 +91,8 @@ angular.module('chatty')
                 }
             } else if (event.eventType === 'categoryChange') {
                 modelService.changeCategory(event.eventData.postId, event.eventData.category);
+            } else if (event.eventType === 'lolCountsUpdate') {
+                modelService.updateTags(event.eventData.updates);
             } else {
                 console.log('Unhandled event', event);
             }
