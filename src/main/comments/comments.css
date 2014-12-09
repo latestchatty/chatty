@@ -62,3 +62,15 @@ div.treeview ul li.last {
     font-family: sans-serif;
     color: #66CCFF;
 }
+
+.lolArea {
+    color: #fff;
+}
+
+a.lol_buttonunknown { color: #7a0fbb !important; }
+a.lol_button5 { color: #0b0 !important; }
+a.lol_button4 { color: #c000c0 !important; }
+a.lol_button3 { color: #7b2 !important; }
+a.lol_button2 { color: #f00 !important; }
+a.lol_button1 { color: #09c !important; }
+a.lol_button0 { color: #f80 !important; }

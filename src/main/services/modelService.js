@@ -169,7 +169,11 @@ angular.module('chatty')
 
             //create sub-post container
             post.posts = post.posts || [];
-            post.lols = post.lols || [];
+            post.lols = post.lols || [
+                {tag: 'lol', count: 0},
+                {tag: 'inf', count: 0},
+                {tag: 'unf', count: 0}
+            ]; //TODO: Return this to empty when posts come in with lols.
 
             //add user class highlight
             if (post.author.toLowerCase() === username.toLowerCase()) {
