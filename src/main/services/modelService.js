@@ -36,7 +36,7 @@ angular.module('chatty')
                 thread.posts.push(fixedPost);
 
                 if (thread.posts.length > 15 && thread.state != 'expanded') {
-                    thread.state = truncated;
+                    thread.state = 'truncated';
                 }
 
                 thread.replyCount++;
