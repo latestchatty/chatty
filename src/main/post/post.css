@@ -142,3 +142,18 @@ a.showpost:hover {
 .postNws {
     border-left: 2px solid red;
 }
+
+.tags {
+    position: absolute;
+    bottom: 0;
+    height: 20px;
+    left: 22px;
+}
+.tag { padding-right: 3px;}
+.tag_default { color: #7a0fbb; }
+.tag_tag { color: #0b0; }
+.tag_wtf { color: #c000c0; }
+.tag_ugh { color: #7b2; }
+.tag_unf { color: #f00; }
+.tag_inf { color: #09c; }
+.tag_lol { color: #f80; }

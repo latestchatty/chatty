@@ -7,8 +7,11 @@
     <progress class="expireTimer" value="{{::post.expirePercent}}" max="100" ng-if="post.expirePercent"></progress>
     <span class="author">By: </span>
     <span ng-class="::post.userClass || 'user'" ng-click="addTab(post.author, post.author)">{{::post.author}}</span>
-    <span ng-repeat="lolTag in post.lols" class="lolArea">
-        [<a href="" ng-class="['lol_button' + $index]">{{lolTag.tag}}<span ng-show="lolTag.count > 0">x{{lolTag.count}}</span></a>]
-    </span>
+    <div class="tags">
+        <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]">
+            <span ng-bind="::tag.tag"></span>
+            <span ng-bind="tag.count"></span>
+        </span>
+    </div>
     <a href="" class="newReplies" ng-click="expandThread(post)" ng-if="::!post.parentId">{{post.newPosts.length ? '+' + post.newPosts.length : ''}}</a>
 </div>
