@@ -16,11 +16,6 @@
     margin-top: 5px;
 }
 
-.collapsed {
-    opacity: 0.5;
-    border-bottom: 3px double #dedecd;
-}
-
 /* links within a body */
 div.postBody a:link, div.postBody a:visited, div.postBody a:active, div.postBody a:hover {
     text-decoration: underline;
