@@ -63,6 +63,15 @@ angular.module('chatty')
             return deferred.promise;
         };
 
+        actionService.expandNewThreads = function expandNewThreads() {
+            var newThreads = modelService.getNewThreads();
+            var threads = modelService.getThreads();
+
+            while (newThreads.length) {
+                threads.unshift(newThreads.pop());
+            }
+        };
+
         actionService.collapseThread = function collapseThread(thread) {
             var threads = modelService.getThreads();
             _.pull(threads, thread);

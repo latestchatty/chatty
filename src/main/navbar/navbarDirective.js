@@ -4,7 +4,7 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'navbar/navbar.html',
-            controller: function($scope, $filter, actionService, settingsService) {
+            controller: function($scope, $filter, $window, actionService, settingsService) {
                 //login related
                 $scope.loginRunning = false;
                 $scope.loginInvalid = false;
@@ -68,8 +68,14 @@ angular.module('chatty')
                     delete $scope.selectedTab.selected;
                     $scope.filterExpression = null;
                     $scope.selectedTab = tab;
+
+                    if (tab.displayText === 'Chatty') {
+                        actionService.expandNewThreads();
+                        $window.scrollTo(0, 0);
+                    }
                     tab.selected = true;
                     applyFilter(tab.filterExpression);
+
                 };
                 $scope.addTab = function addTab(filterExpression, displayText) {
                     var tab = {filterExpression:filterExpression, displayText:displayText};
