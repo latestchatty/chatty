@@ -1,10 +1,8 @@
 <div>
     <div class="postnumber"><a title="Save post to tab" href="" ng-click="addTab({ id: post.id }, 'post')"></a></div>
-    <div class="reply">
-        <a title="reply to this comment" href="" ng-click="openReplyBox(post)">Reply</a>
-    </div>
+    <input type="button" class="replyButton button" title="reply to this comment" value="Reply" ng-click="openReplyBox(post)">
     <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma' }}</div>
-    <progress class="expireTimer" value="{{::post.expirePercent}}" max="100" ng-if="post.expirePercent"></progress>
+    <progress class="expireTimer" value="{{::post.expirePercent}}" max="100" ng-if="::post.expirePercent"></progress>
     <span ng-class="::post.userClass || 'user'" ng-click="addTab(post.author, post.author)">{{::post.author}}</span>
     <div class="tags">
         <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]">

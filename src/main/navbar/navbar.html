@@ -11,7 +11,7 @@
 
         <div class="navbar-right">
             <form class="navbar-form" ng-if="loggedIn">
-                <input type="button" value="New Thread" class="navbar-button" ng-click="newThread()">
+                <input type="button" value="New Thread" class="button" ng-click="newThread()">
             </form>
 
             <form class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn">
@@ -19,10 +19,10 @@
                        placeholder="Username" ng-model="username" ng-disabled="loginRunning" required>
                 <input type="password" class="navbar-textinput" ng-class="{ 'navbar-textinput-invalid': loginInvalid }"
                        placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
-                <input type="submit" value="Login" class="navbar-button" ng-disabled="loginRunning">
+                <input type="submit" value="Login" class="button" ng-disabled="loginRunning">
             </form>
             <div class="navbar-form" ng-show="loggedIn">
-                <input type="button" value="Logout: {{username}}" class="navbar-button" ng-click="doLogout()">
+                <input type="button" value="Logout: {{username}}" class="button" ng-click="doLogout()">
             </div>
 
             <form class="navbar-form" ng-submit="selectTab(addTab(filterExpression, filterExpression))">

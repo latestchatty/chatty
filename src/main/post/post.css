@@ -58,7 +58,7 @@ div.postBody a:hover {
 }
 .expireTimer {
     position: absolute;
-    right: 1px;
+    right: 5px;
     bottom: 18px;
     background-color: #575757;
     width: 75px;
@@ -147,3 +147,10 @@ a.showpost:hover {
 .tag_unf { color: #f00; }
 .tag_inf { color: #09c; }
 .tag_lol { color: #f80; }
+
+.replyButton {
+    position: absolute;
+    top: -2px;
+    right: 0;
+    width: 75px;
+}

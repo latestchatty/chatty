@@ -4,3 +4,12 @@ body {
     word-wrap: break-word;
     background-color: #000;
 }
+
+.button {
+    border: 1px solid black;
+    background-color: #6CB0C0;
+    margin: 0;
+    padding: 5px 5px 5px 5px;
+    color: white;
+    cursor: pointer;
+}

@@ -47,14 +47,6 @@
     display: inline;
     padding-right: 5px;
 }
-.navbar-button {
-    border: 1px solid black;
-    background-color: #6CB0C0;
-    margin: 0;
-    padding: 5px 5px 5px 5px;
-    color: white;
-    cursor: pointer;
-}
 .navbar-textinput {
     border: 1px solid black;
     color: white;
