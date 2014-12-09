@@ -141,11 +141,10 @@ a.showpost:hover {
 
 .tags {
     position: absolute;
-    bottom: 0;
-    height: 20px;
+    bottom: 2px;
     left: 22px;
 }
-.tag { padding-right: 3px;}
+.tag { font-size: 10px; padding-right: 2px;}
 .tag_default { color: #7a0fbb; }
 .tag_tag { color: #0b0; }
 .tag_wtf { color: #c000c0; }
