@@ -48,6 +48,7 @@ div.treeview ul li.last {
 .oneline2 { color: #eee; }
 .oneline1 { color: #fff; }
 .oneline0 { color: #eee; font-weight: bold; }
+.onelineSeparator { font-size: 11px; color: #666;}
 
 /* poster highlights */
 .user_op {

@@ -5,7 +5,6 @@
     </div>
     <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma' }}</div>
     <progress class="expireTimer" value="{{::post.expirePercent}}" max="100" ng-if="post.expirePercent"></progress>
-    <span class="author">By: </span>
     <span ng-class="::post.userClass || 'user'" ng-click="addTab(post.author, post.author)">{{::post.author}}</span>
     <div class="tags">
         <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]">
