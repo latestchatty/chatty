@@ -4,13 +4,3 @@ body {
     word-wrap: break-word;
     background-color: #000;
 }
-
-/* hide angular elements before load */
-.ng-cloak {
-    display: none  !important;
-}
-
-/* thread container */
-.threads {
-    margin-top: 55px;
-}

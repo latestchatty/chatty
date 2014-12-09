@@ -8,47 +8,10 @@
 
     <link href="bundle.css" rel="stylesheet">
 </head>
-<body ng-app="chatty" ng-controller="chattyCtrl" ng-cloak class="ng-cloak">
+<body ng-app="chatty" hotkeys ng-cloak class="ng-cloak">
 
 <navbar></navbar>
-
-<div class="threads" hotkeys>
-    <div class="rootPost collapsed" ng-show="newThreads.length">
-        <a href="" title="Show New Threads" class="showpost" ng-click="expandNewThreads()">{{newThreads.length}} New Threads Available. Click to show.</a>
-    </div>
-    <div ng-repeat="post in threads track by post.id" ng-hide="filterSet && !post.visible">
-        <div ng-if="post.state !== 'collapsed'" class="rootPost" ng-class="post.tagClass">
-            <post></post>
-            <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
-            <a href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(post)">x</a>
-        </div>
-        <div ng-if="post.state === 'collapsed'" class="rootPost collapsed" ng-class="post.tagClass">
-            <post></post>
-            <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
-            <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
-        </div>
-        <div ng-if="!post.state">
-            <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>
-
-            <div class="treeview">
-                <comments posts="post.posts"></comments>
-            </div>
-        </div>
-        <div ng-if="post.state === 'truncated'" class="truncated">
-            <div class="threadContainer">
-                <p class="threadCapHeader">
-                    <a href="" ng-click="expandThread(post)">
-                        &nbsp;Thread Truncated. Click to see all <strong>{{post.replyCount}}</strong> replies.
-                    </a>
-                </p>
-
-                <div class="treeview">
-                    <comments posts="post.posts"></comments>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<threads></threads>
 
 <script src="bundle.js"></script>
 <script src="templates.js"></script>
