@@ -13,7 +13,7 @@
             <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
             <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
         </div>
-        <div ng-if="!post.state">
+        <div ng-if="post.state !== 'truncated'">
             <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>
 
             <div class="treeview">

@@ -70,7 +70,6 @@ angular.module('chatty')
             //collapse thread
             actionService.closeReplyBox(thread);
             thread.state = 'collapsed';
-            delete thread.autoRefresh;
 
             //add to the end of the list
             threads.push(thread);
@@ -80,28 +79,16 @@ angular.module('chatty')
         };
 
         actionService.expandThread = function expandThread(thread) {
-            if (!thread.autoRefresh) {
-                thread.autoRefresh = true;
-                while (thread.newPosts.length) {
-                    var post = thread.newPosts.shift();
-                    var parent = modelService.getPost(post.parentId);
-                    parent.posts.push(post);
-                }
-            }
+            thread.state = 'expanded';
 
-            if (thread.state) {
-                delete thread.state;
-
-                //update local storage
-                settingsService.removeCollapsed(thread.id);
-            }
+            //update local storage
+            settingsService.removeCollapsed(thread.id);
         };
 
         actionService.expandReply = function expandReply(post) {
             var thread = resetThread(post, true);
 
             //expand
-            thread.autoRefresh = true;
             thread.currentComment = post;
             lastReply = post;
             post.viewFull = true;

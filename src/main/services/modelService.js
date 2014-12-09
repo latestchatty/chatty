@@ -33,10 +33,10 @@ angular.module('chatty')
                 updateLineClass(fixedPost, thread);
                 updateModTagClass(fixedPost);
 
-                if (thread.autoRefresh) {
-                    parent.posts.push(fixedPost);
-                } else {
-                    thread.newPosts.push(fixedPost);
+                thread.posts.push(fixedPost);
+
+                if (thread.posts.length > 15 && thread.state != 'expanded') {
+                    thread.state = truncated;
                 }
 
                 thread.replyCount++;
@@ -119,7 +119,6 @@ angular.module('chatty')
             thread.replyCount = threadPosts.length || 0;
             thread.recent = [];
             thread.posts = [];
-            thread.newPosts = [];
             posts[thread.id] = thread;
             fixPost(thread);
             updateModTagClass(thread);

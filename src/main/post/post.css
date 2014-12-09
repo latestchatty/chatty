@@ -36,12 +36,6 @@ div.postBody a:hover {
     color: #f3e7b5;
     font-family: sans-serif;
 }
-.newReplies {
-    font-weight: bold;
-    color: #68f374;
-    font-family: sans-serif;
-    text-decoration: none;
-}
 
 /* post body date */
 .postdate {
