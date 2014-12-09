@@ -1,13 +1,16 @@
 <ul>
     <li ng-repeat="post in posts track by $index" ng-class="{ last: $last }">
         <div ng-switch="post.viewFull">
-            <div ng-switch-default>
+
+            <!--collapsed reply-->
+            <div ng-switch-default scroll-item>
                 <span class="oneline" ng-class="[post.lineClass || 'oneline9', post.tagClass]" ng-click="expandReply(post)" ng-bind-html="::post.oneline | trusted"></span>
 
                 <span class="onelineSeparator">&nbsp;:&nbsp;</span>
                 <span ng-class="::post.userClass || 'user'">{{::post.author}}</span>
             </div>
 
+            <!--expanded reply-->
             <div ng-switch-when="true">
                 <div class="replyPost" ng-class="post.tagClass" scroll-into-view>
                     <post></post>
@@ -17,8 +20,10 @@
 
                 <replybox class="replybox-comment" post="post" ng-if="post.replying"></replybox>
             </div>
+
         </div>
 
+        <!-- replies to this post -->
         <comments posts="post.posts"></comments>
     </li>
 </ul>

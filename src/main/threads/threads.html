@@ -1,5 +1,5 @@
-<div class="threads">
-    <div class="rootPost collapsed" ng-show="newThreads.length">
+<div class="threads" keep-scroll>
+    <div class="rootPost collapsed" ng-if="newThreads.length">
         <a href="" title="Show New Threads" class="showpost" ng-click="expandNewThreads()">{{newThreads.length}} New Threads Available. Click to show.</a>
     </div>
     <div ng-repeat="post in threads track by post.id" ng-hide="filterSet && !post.visible">

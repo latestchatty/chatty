@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('modelService', function(settingsService) {
+    .service('modelService', function($interval, $timeout, settingsService) {
         var modelService = {};
 
         var threads = [];
@@ -33,13 +33,9 @@ angular.module('chatty')
                 updateLineClass(fixedPost, thread);
                 updateModTagClass(fixedPost);
 
-                thread.posts.push(fixedPost);
-
-                if (thread.posts.length > 15 && thread.state != 'expanded') {
-                    thread.state = 'truncated';
-                }
-
                 thread.replyCount++;
+
+                parent.posts.push(fixedPost);
                 posts[fixedPost.id] = fixedPost;
             }
         };
@@ -83,7 +79,7 @@ angular.module('chatty')
                     if (tag) {
                         tag.count = update.count;
                     } else {
-                        post.lols.push({tag:update.tag, count:update.count});
+                        post.lols.push({tag: update.tag, count: update.count});
                     }
                 }
             });
@@ -94,7 +90,7 @@ angular.module('chatty')
         };
 
         modelService.clear = function clear() {
-            while(threads.length) {
+            while (threads.length) {
                 threads.pop();
             }
             posts = {};
@@ -105,7 +101,7 @@ angular.module('chatty')
 
             //handle root post
             if (thread.posts) {
-                var rootPost = _.find(threadPosts, { parentId: 0 });
+                var rootPost = _.find(threadPosts, {parentId: 0});
                 _.pull(threadPosts, rootPost);
                 thread.id = rootPost.id;
                 thread.threadId = rootPost.id;
@@ -123,7 +119,7 @@ angular.module('chatty')
             fixPost(thread);
             updateModTagClass(thread);
 
-            while(threadPosts.length > 0) {
+            while (threadPosts.length > 0) {
                 var post = threadPosts.shift();
 
                 //various post fixes
@@ -171,9 +167,9 @@ angular.module('chatty')
 
             //default tags as necessary
             post.lols = post.lols || [];
-            _.each(['lol','inf','unf','ugh','wtf'], function(tag) {
+            _.each(['lol', 'inf', 'unf', 'ugh', 'wtf'], function(tag) {
                 if (!_.find(post.lols, {'tag': tag})) {
-                    post.lols.push({ tag: tag });
+                    post.lols.push({tag: tag});
                 }
             });
 
