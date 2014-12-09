@@ -9,7 +9,7 @@
             </div>
 
             <div ng-switch-when="true">
-                <div class="replyPost" ng-class="post.tagClass">
+                <div class="replyPost" ng-class="post.tagClass" scroll-into-view>
                     <post></post>
                     <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
                     <a href="" title="Collapse/Close" class="closepost" ng-click="collapseReply(post)">x</a>

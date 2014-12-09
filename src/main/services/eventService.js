@@ -14,7 +14,6 @@ angular.module('chatty')
                     console.log('Error during getNewestEventId: ', data);
                 });
 
-            //$http.get('http://winchatty.com/v2/getThread?id=32810584')
             $http.get('http://winchatty.com/v2/getChatty')
                 .success(function(data) {
                     processChatty(data.threads, []);
