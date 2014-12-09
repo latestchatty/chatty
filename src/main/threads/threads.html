@@ -10,16 +10,11 @@
             <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
             <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
         </div>
-        <div ng-if="post.state !== 'truncated'">
+        <div ng-class="{ truncated: post.state === 'truncated'}">
             <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>
 
-            <div class="treeview">
-                <comments posts="post.posts"></comments>
-            </div>
-        </div>
-        <div ng-if="post.state === 'truncated'" class="truncated">
             <div class="threadContainer">
-                <p class="threadCapHeader">
+                <p class="threadCapHeader" ng-if="post.state === 'truncated'">
                     <a href="" ng-click="expandThread(post)">
                         &nbsp;Thread Truncated. Click to see all <strong>{{post.replyCount}}</strong> replies.
                     </a>
