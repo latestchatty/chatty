@@ -1,22 +1,27 @@
 angular.module('chatty')
     .directive('keepScroll', function($window) {
         return {
-            controller: function() {
-                var element = 0;
-                var lastHeight;
+            controller: function($scope) {
+                $scope.element = 0;
+                $scope.lastHeight = null;
 
                 this.setElement = function(el) {
-                    element = el;
+                    $scope.element = el;
+
+                    $scope.$watch('element.scrollHeight', function() {
+                        $scope.lastHeight = $scope.element.scrollHeight;
+                    }, true);
                 };
 
                 this.itemChanged = function(item) {
                     if ((item.offsetTop <= $window.scrollY + $window.innerHeight / 2) && $window.scrollY > 0) {
-                        if (element.scrollHeight !== lastHeight) {
-                            $window.scrollTo($window.scrollX, $window.scrollY + item.scrollHeight);
+                        if ($scope.element.scrollHeight !== $scope.lastHeight) {
+                            var diff = $scope.element.scrollHeight - $scope.lastHeight;
+                            $window.scrollTo($window.scrollX, $window.scrollY + diff);
                         }
                     }
 
-                    lastHeight = element.scrollHeight;
+                    $scope.lastHeight = $scope.element.scrollHeight;
                 };
             },
             link: {
