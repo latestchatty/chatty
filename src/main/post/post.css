@@ -1,11 +1,20 @@
 .rootPost {
     background-color: #202224;
     margin: 25px 0 0 8px;
-    border: 0 solid #656565;
-    border-top-width: 1px;
     position: relative;
-    padding: 3px 0 25px 0;
+    padding: 0 0 25px 0;
 }
+
+.postheader{
+    background-color: #373a3c;
+    padding:3px;
+}
+
+.headerright {
+    float:right;
+    margin-right: 25px;
+}
+
 .postBody {
     color: lightgray;
     margin: 0 0 0 22px;
@@ -29,13 +38,18 @@ div.postBody a:hover {
 .rootPost .user {
     font-size: 14px;
     cursor: pointer;
+    line-height: 14px;
 }
+
 .user {
+    padding-left: 20px;
     font-size: 13px;
     font-weight: bold;
+    line-height: 14px;
     color: #f3e7b5;
     font-family: sans-serif;
 }
+
 .newReplies {
     font-weight: bold;
     color: #68f374;
@@ -45,22 +59,20 @@ div.postBody a:hover {
 
 /* post body date */
 .postdate {
+    display:inline;
     text-align: right;
     font-size: 10px;
     color: #666;
     width: 200px;
-    right: 0;
-    position: absolute;
-    bottom: 0;
+    vertical-align: middle;
     height: 20px;
     line-height: 20px;
     padding: 0 5px;
 }
 .expireTimer {
-    position: absolute;
-    right: 5px;
-    bottom: 18px;
+    display: inline;
     background-color: #575757;
+    vertical-align: middle;
     width: 75px;
 }
 
@@ -72,8 +84,8 @@ a.closepost:link, a.closepost:visited, a.closepost:active, a.closepost:hover {
     height: 20px;
     text-align: center;
     line-height: 20px;
-    bottom: 0;
-    left: 0;
+    top: 2px;
+    right: 2px;
     color: #8e8e8e;
     text-decoration: none;
     font-size: 10px;
@@ -97,7 +109,7 @@ a.closepost:hover {
     height: 100%;
     text-indent: -5000px;
     overflow: hidden;
-    background-image: url('../images/sprite-commentslink.gif');
+    background-image: url('../images/sprite-commentslink.gif'); /*TODO: Switch this to a pin icon or at least something more visible in the header*/
     margin-left: 3px;
 }
 .postnumber a:hover {
@@ -135,19 +147,58 @@ a.showpost:hover {
 }
 
 .tags {
-    position: absolute;
-    bottom: 2px;
-    left: 22px;
+    margin-left: 5px;
+    display: inline;
+    /*position: absolute;*/
+    /*bottom: 2px;*/
+    /*left: 22px;*/
 }
-.tag { font-size: 10px; padding-right: 2px;}
-.tag_wtf { color: #c000c0; }
-.tag_unf { color: #f00; }
-.tag_inf { color: #09c; }
-.tag_lol { color: #f80; }
+.tag {
+    margin: 0 3px;
+    display: inline-block;
+    width: 35px;
+    height: 14px;
+    line-height: 14px;
+    color: #ffffff;
+    font-size: 11px;
+    vertical-align: middle;
+    text-align: center;
+    text-shadow: 0 0 3px #000;
+    border-radius: 3px;
+    font-weight: bold;
+}
+.tag_default { background-color: #7a0fbb; }
+.tag_wtf { background-color: #c000c0; }
+.tag_unf { background-color: #f00; }
+.tag_inf { background-color: #09c; }
+.tag_lol { background-color: #f80; }
+
+span.tag[lolcount=""],
+span.tag[lolcount="0"] {
+    width: 10px;
+}
+span.tag[lolcount="1"] {
+    width: 15px;
+}
+span.tag[lolcount="3"] {
+    width: 25px;
+}
+span.tag[lolcount="4"] {
+    width: 30px;
+}
+span.tag[lolcount="5"] {
+    width: 35px;
+}
+span.tag[lolcount="6"] {
+    width: 40px;
+}
+span.tag[lolcount="7"] {
+    width: 45px;
+}
 
 .replyButton {
     position: absolute;
-    top: -2px;
-    right: 0;
+    bottom: -1px;
+    right: -1px;
     width: 75px;
 }
