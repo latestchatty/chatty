@@ -10,7 +10,7 @@
             <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
             <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
         </div>
-        <div ng-class="{ truncated: post.state === 'truncated'}">
+        <div ng-if="post.state !== 'collapsed'" ng-class="{ truncated: post.state === 'truncated'}">
             <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>
 
             <div class="threadContainer">
