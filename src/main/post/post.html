@@ -3,9 +3,7 @@
     <div class="postheader">
         <span ng-class="::post.userClass || 'user'" ng-click="addTab(post.author, post.author)" ng-bind="::post.author"></span>
         <div class="tags">
-            <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]" lolcount="{{tag.count}}">
-                {{tag.count}}
-            </span>
+            <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]" ng-bind="tag.count"></span>
         </div>
         <div class="headerright">
             <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma' }}</div>
