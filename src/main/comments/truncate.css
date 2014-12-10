@@ -1,16 +1,3 @@
-.truncated .rootPost {
-    margin-bottom: 0;
-}
-.truncated .threadContainer {
-    height: 264px;
-    overflow: hidden;
-    position: relative;
-}
-.truncated .treeview {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
 .threadCapHeader {
     color: #aeae9b;
     font-size: 12px;

@@ -143,7 +143,7 @@ angular.module('chatty')
             //check if it's supposed to be collapsed
             if (settingsService.isCollapsed(thread.threadId)) {
                 thread.state = 'collapsed';
-            } else if (thread.replyCount > 15) {
+            } else if (thread.replyCount > 10) {
                 thread.state = 'truncated';
             }
 

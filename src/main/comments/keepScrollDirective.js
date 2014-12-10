@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('keepScroll', function($window) {
+    .directive('keepScroll', function($window, $timeout) {
         return {
             controller: function($scope) {
                 $scope.element = 0;
@@ -16,8 +16,10 @@ angular.module('chatty')
                 this.itemChanged = function(item) {
                     if ((item.offsetTop <= $window.scrollY + $window.innerHeight / 2) && $window.scrollY > 0) {
                         if ($scope.element.scrollHeight !== $scope.lastHeight) {
-                            var diff = $scope.element.scrollHeight - $scope.lastHeight;
-                            $window.scrollTo($window.scrollX, $window.scrollY + diff);
+                            $timeout(function() {
+                                var diff = $scope.element.scrollHeight - $scope.lastHeight;
+                                $window.scrollTo($window.scrollX, $window.scrollY + diff);
+                            });
                         }
                     }
 
