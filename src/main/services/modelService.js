@@ -110,6 +110,7 @@ angular.module('chatty')
                 thread.date = rootPost.date;
                 thread.category = rootPost.category;
                 thread.body = rootPost.body;
+                thread.lols = rootPost.lols;
                 thread.expirePercent = ((((new Date().getTime()) - new Date(rootPost.date).getTime()) / 3600000) / 18) * 100;
             }
             thread.replyCount = threadPosts.length || 0;
