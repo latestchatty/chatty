@@ -1,16 +1,21 @@
 <div class="threads" keep-scroll>
     <div ng-repeat="post in threads track by post.id" ng-hide="filterSet && !post.visible">
-        <div ng-if="post.state !== 'collapsed'" class="rootPost" ng-class="post.tagClass">
-            <post></post>
-            <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
-            <a href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(post)">x</a>
-        </div>
+
+        <!-- collapsed root post -->
         <div ng-if="post.state === 'collapsed'" class="rootPost collapsed" ng-class="post.tagClass">
             <post></post>
             <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
             <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
         </div>
+
+        <!-- expanded root post -->
         <div ng-if="post.state !== 'collapsed'">
+            <div  class="rootPost" ng-class="post.tagClass">
+                <post></post>
+                <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
+                <a href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(post)">x</a>
+            </div>
+
             <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>
 
             <p class="threadCapHeader" ng-if="post.state === 'truncated'">
@@ -24,5 +29,6 @@
                 <comments posts="post.recent" flat="true" ng-if="post.state === 'truncated'"></comments>
             </div>
         </div>
+
     </div>
 </div>
