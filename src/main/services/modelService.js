@@ -6,6 +6,7 @@ angular.module('chatty')
         var newThreads = [];
         var posts = {};
         var username = settingsService.getUsername();
+        var supportedTags = ['lol', 'inf', 'unf', 'wtf'];
 
         modelService.addThread = function addThread(post, event) {
             var thread = fixThread(post);
@@ -73,13 +74,15 @@ angular.module('chatty')
 
         modelService.updateTags = function updateTags(updates) {
             _.each(updates, function(update) {
-                var post = posts[update.postId];
-                if (post) {
-                    var tag = _.find(post.lols, {'tag': update.tag});
-                    if (tag) {
-                        tag.count = update.count;
-                    } else {
-                        post.lols.push({tag: update.tag, count: update.count});
+                if (supportedTags.indexOf(update.tag) >= 0) {
+                    var post = posts[update.postId];
+                    if (post) {
+                        var tag = _.find(post.lols, {'tag': update.tag});
+                        if (tag) {
+                            tag.count = update.count;
+                        } else {
+                            post.lols.push({tag: update.tag, count: update.count});
+                        }
                     }
                 }
             });
@@ -167,9 +170,13 @@ angular.module('chatty')
             post.posts = post.posts || [];
 
             //default tags as necessary
-            post.lols = post.lols || [];
-            _.each(['lol', 'inf', 'unf', 'ugh', 'wtf'], function(tag) {
-                if (!_.find(post.lols, {'tag': tag})) {
+            var tags = post.lols;
+            post.lols = [];
+            _.each(supportedTags, function(tag) {
+                var found = _.find(tags, {'tag': tag});
+                if (found) {
+                    post.lols.push(found);
+                } else {
                     post.lols.push({tag: tag});
                 }
             });

@@ -36,6 +36,12 @@ div.postBody a:hover {
     color: #f3e7b5;
     font-family: sans-serif;
 }
+.newReplies {
+    font-weight: bold;
+    color: #68f374;
+    font-family: sans-serif;
+    text-decoration: none;
+}
 
 /* post body date */
 .postdate {
@@ -134,10 +140,7 @@ a.showpost:hover {
     left: 22px;
 }
 .tag { font-size: 10px; padding-right: 2px;}
-.tag_default { color: #7a0fbb; }
-.tag_tag { color: #0b0; }
 .tag_wtf { color: #c000c0; }
-.tag_ugh { color: #7b2; }
 .tag_unf { color: #f00; }
 .tag_inf { color: #09c; }
 .tag_lol { color: #f80; }
