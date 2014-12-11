@@ -1,8 +1,8 @@
 <div>
     <div class="navbar">
         <ul class="navbar-tabs">
-            <li>
-                <i class="actionItem fa fa-history" title="Reflow thread order" ng-click="reflowThreads()"></i>
+            <li title="Reflow thread order" ng-click="reflowThreads()">
+                <i class="actionItem fa fa-history"></i>
                 <span class="navbarNewThreads" ng-if="newThreads.length">+{{newThreads.length}}</span>
             </li>
             <li ng-click="selectTab(defaultTabs[0])" class="hoverable"

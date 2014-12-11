@@ -79,6 +79,9 @@ angular.module('chatty')
                     if (thread.replyCount > 10) {
                         thread.state = 'truncated';
                     }
+                    collapseReply(thread);
+                    closeReplyBox(thread);
+
                     if (thread.expirePercent < 100) {
                         threads.push(thread);
                     }
@@ -134,11 +137,16 @@ angular.module('chatty')
             //close any other actions
             actionService.expandThread(thread);
             actionService.closeReplyBox(thread);
-            if (closeComment && thread.currentComment) {
+            if (closeComment) {
+                collapseReply(thread);
+            }
+            return thread;
+        }
+
+        function collapseReply(thread) {
+            if (thread.currentComment) {
                 delete thread.currentComment.viewFull;
             }
-
-            return thread;
         }
 
         actionService.previousReply = function previousReply() {
@@ -207,11 +215,15 @@ angular.module('chatty')
 
         actionService.closeReplyBox = function closeReplyBox(post) {
             var thread = modelService.getPostThread(post);
+            closeReplyBox(thread);
+        };
+
+        function closeReplyBox(thread) {
             if (thread.replyingToPost) {
                 delete thread.replyingToPost.replying;
                 delete thread.replyingToPost;
             }
-        };
+        }
 
         function post(url, params) {
             var data = _.reduce(params, function(result, value, key) {
