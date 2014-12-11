@@ -64,11 +64,9 @@ angular.module('chatty')
         };
 
         actionService.reflowThreads = function reflowThreads() {
-            var newThreads = modelService.getNewThreads();
             var threads = modelService.getThreads();
-            var tempThreads = newThreads.concat(threads);
+            var tempThreads = [].concat(threads);
             threads.length = 0;
-            newThreads.length = 0;
 
             var collapsed = [];
             var sorted = _.sortBy(tempThreads, 'lastPostId');
@@ -85,6 +83,12 @@ angular.module('chatty')
                         threads.push(thread);
                     }
                 }
+            }
+
+            //new threads in at top after reflow
+            var newThreads = modelService.getNewThreads();
+            while (newThreads.length) {
+                threads.unshift(newThreads.pop());
             }
 
             //add collapsed threads in at end
