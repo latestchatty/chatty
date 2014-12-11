@@ -94,8 +94,10 @@ div.postBody a:hover {
     bottom: 2px;
     left: 6px;
 }
-.actionItem {
+.actionbar i {
     padding-right: 9px;
+}
+.actionItem {
     color: white;
     cursor: pointer;
 }

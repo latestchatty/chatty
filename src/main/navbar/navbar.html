@@ -1,12 +1,16 @@
 <div>
     <div class="navbar">
         <ul class="navbar-tabs">
-            <li ng-click="selectTab(defaultTabs[0])" ng-class="{ navbarTabSelected:defaultTabs[0].selected }">
-                Chatty
-                <span class="navbarNewThreads" ng-if="newThreads.length">&nbsp;+{{newThreads.length}}</span>
+            <li>
+                <i class="actionItem fa fa-history" title="Reflow thread order" ng-click="reflowThreads()"></i>
+                <span class="navbarNewThreads" ng-if="newThreads.length">+{{newThreads.length}}</span>
             </li>
-            <li ng-click="selectTab(defaultTabs[1])"  ng-class="{ navbarTabSelected:defaultTabs[1].selected }">Frontpage</li>
-            <li ng-click="selectTab(defaultTabs[2])"  ng-class="{ navbarTabSelected:defaultTabs[2].selected }" ng-if="loggedIn">Mine</li>
+            <li ng-click="selectTab(defaultTabs[0])" class="hoverable"
+                ng-class="{ navbarTabSelected:defaultTabs[0].selected }">Chatty</li>
+            <li ng-click="selectTab(defaultTabs[1])" class="hoverable"
+            ng-class="{ navbarTabSelected:defaultTabs[1].selected }">Frontpage</li>
+            <li ng-click="selectTab(defaultTabs[2])" class="hoverable"
+            ng-class="{ navbarTabSelected:defaultTabs[2].selected }" ng-if="loggedIn">Mine</li>
             <li ng-repeat="tab in tabs" ng-click="selectTab(tab)"
                 ng-right-click="removeTab(tab)" ng-class="{ navbarTabSelected:tab.selected }"
                 ng-bind="::tab.displayText"></li>

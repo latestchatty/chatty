@@ -35,11 +35,13 @@ angular.module('chatty')
             return newThreads;
         };
 
-        modelService.addPost = function addPost(post) {
-            var thread = posts[post.threadId];
+        modelService.addPost = function addPost(post, thread) {
+            thread = thread || posts[post.threadId];
             var parent = posts[post.parentId];
             if (parent && thread) {
+                console.log('Old: ', thread.lastActionDate);
                 var fixedPost = fixPost(post, thread);
+                console.log('New: ', thread.lastActionDate);
                 updateLineClass(fixedPost, thread);
                 updateModTagClass(fixedPost);
 
@@ -123,6 +125,7 @@ angular.module('chatty')
                 thread.category = rootPost.category;
                 thread.body = rootPost.body;
                 thread.lols = rootPost.lols;
+                thread.lastActionDate = new Date(rootPost.date).getTime();
                 updateExpiration(thread);
             }
             thread.replyCount = threadPosts.length || 0;
@@ -134,22 +137,7 @@ angular.module('chatty')
 
             while (threadPosts.length > 0) {
                 var post = threadPosts.shift();
-
-                //various post fixes
-                fixPost(post, thread);
-                updateModTagClass(post);
-
-                //add to post list
-                posts[post.id] = post;
-
-                //create nested replies
-                var parent = posts[post.parentId];
-                parent.posts.push(post);
-
-                //line coloring
-                if (threadPosts.length < 10) {
-                    updateLineClass(post, thread);
-                }
+                modelService.addPost(post, thread);
             }
 
             //check if it's supposed to be collapsed
@@ -195,6 +183,12 @@ angular.module('chatty')
                 post.userClass = 'user_me';
             } else if (thread && post.author.toLowerCase() === thread.author.toLowerCase()) {
                 post.userClass = 'user_op';
+            }
+
+            //add last action date
+            if (thread) {
+                var newActionDate = new Date(post.date).getTime();
+                thread.lastActionDate = Math.max(thread.lastActionDate, newActionDate);
             }
 
             return post;

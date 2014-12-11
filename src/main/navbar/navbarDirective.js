@@ -70,10 +70,6 @@ angular.module('chatty')
                     $scope.filterExpression = null;
                     $scope.selectedTab = tab;
 
-                    if (tab.displayText === 'Chatty') {
-                        actionService.expandNewThreads();
-                        $window.scrollTo(0, 0);
-                    }
                     tab.selected = true;
                     var filterExpression = angular.isFunction(tab.filterExpression) ? tab.filterExpression() : tab.filterExpression;
                     applyFilter(filterExpression);
@@ -92,6 +88,12 @@ angular.module('chatty')
                 $scope.newThread = function newThread() {
                     $scope.newThreadPost.replying = true;
                 };
+
+                //reflow
+                $scope.reflowThreads = function reflowThreads() {
+                    actionService.reflowThreads();
+                    $window.scrollTo(0, 0);
+                }
             }
         }
     });

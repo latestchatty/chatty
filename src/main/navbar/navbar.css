@@ -27,7 +27,7 @@
     border-right: 1px solid black;
     cursor: pointer;
 }
-.navbar-tabs li:hover {
+.navbar-tabs .hoverable:hover {
     text-decoration: underline;
 }
 .navbar-tabs li:last-child {

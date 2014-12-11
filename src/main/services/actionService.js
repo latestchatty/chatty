@@ -63,12 +63,18 @@ angular.module('chatty')
             return deferred.promise;
         };
 
-        actionService.expandNewThreads = function expandNewThreads() {
+        actionService.reflowThreads = function reflowThreads() {
             var newThreads = modelService.getNewThreads();
             var threads = modelService.getThreads();
+            var tempThreads = newThreads.concat(threads);
+            threads.length = 0;
+            newThreads.length = 0;
 
-            while (newThreads.length) {
-                threads.unshift(newThreads.pop());
+            var sorted = _.sortBy(tempThreads, 'lastActionDate');
+            while (sorted.length) {
+                var thread = sorted.pop();
+                console.log(thread.lastActionDate);
+                threads.push(thread);
             }
         };
 
