@@ -14,11 +14,6 @@
     float: right;
     margin-right: 5px;
 }
-.actionbar {
-    position: absolute;
-    bottom: 2px;
-    left: 22px;
-}
 
 .postBody {
     color: lightgray;
@@ -72,7 +67,7 @@ div.postBody a:hover {
 
 .countdown-wrap {
     display: inline-block;
-    height: 10px;
+    height: 8px;
     width: 48px;
     position: relative;
     margin-top: 3px;
@@ -97,19 +92,16 @@ div.postBody a:hover {
                         rgba(0, 0, 0, 0.4) 0 -2px 3px inset;
 }
 
+.actionbar {
+    position: absolute;
+    bottom: 2px;
+    left: 6px;
+}
 .actionItem {
-    padding-right: 7px;
+    padding-right: 9px;
     color: white;
     cursor: pointer;
 }
 .actionItem:hover {
     color: #00bff3;
-}
-.collapse {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 0;
-    margin-top: 4px;
-    margin-left: 5px;
 }
