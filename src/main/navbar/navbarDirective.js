@@ -91,8 +91,8 @@ angular.module('chatty')
 
                 //reflow
                 $scope.reflowThreads = function reflowThreads() {
-                    actionService.reflowThreads();
                     $window.scrollTo(0, 0);
+                    actionService.reflowThreads();
                 }
             }
         }

@@ -35,9 +35,9 @@ angular.module('chatty')
                     processChatty(newThreads, collapsedThreads);
                 } else {
                     //add collapsed threads in at end
-                    _.each(collapsedThreads, function(thread) {
-                        modelService.addThread(thread);
-                    });
+                    while(collapsedThreads.length) {
+                        modelService.addThread(collapsedThreads.pop());
+                    }
 
                     //clean collapsed thread list after initial load
                     modelService.cleanCollapsed();

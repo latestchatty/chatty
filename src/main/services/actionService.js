@@ -70,11 +70,23 @@ angular.module('chatty')
             threads.length = 0;
             newThreads.length = 0;
 
-            var sorted = _.sortBy(tempThreads, 'lastActionDate');
+            var collapsed = [];
+            var sorted = _.sortBy(tempThreads, 'lastPostId');
             while (sorted.length) {
                 var thread = sorted.pop();
-                console.log(thread.lastActionDate);
-                threads.push(thread);
+                if (thread.collapsed) {
+                    collapsed.push(thread);
+                } else {
+                    if (thread.replyCount > 10) {
+                        thread.state = 'truncated';
+                    }
+                    threads.push(thread);
+                }
+            }
+
+            //add collapsed threads in at end
+            while (collapsed.length) {
+                threads.push(collapsed.pop());
             }
         };
 
