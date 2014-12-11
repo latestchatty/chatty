@@ -1,0 +1,35 @@
+.tags {
+    margin-left: 5px;
+    display: inline;
+}
+.tag {
+    margin: 0 3px;
+    display: inline-block;
+    width: 35px;
+    height: 14px;
+    line-height: 14px;
+    color: #ffffff;
+    font-size: 11px;
+    vertical-align: middle;
+    text-align: center;
+    text-shadow: 0 0 3px #000;
+    border-radius: 3px;
+    font-weight: bold;
+}
+.tag:before {
+    content: attr(lolcount);
+}
+.tag_default { background-color: #7a0fbb; }
+.tag_wtf { background-color: #c000c0; }
+.tag_unf { background-color: #f00; }
+.tag_inf { background-color: #09c; }
+.tag_lol { background-color: #f80; }
+
+span.tag[lolcount=""],
+span.tag[lolcount="0"] { display: none; }
+span.tag[lolcount="1"] { width: 15px; }
+span.tag[lolcount="3"] { width: 25px; }
+span.tag[lolcount="4"] { width: 30px; }
+span.tag[lolcount="5"] { width: 35px; }
+span.tag[lolcount="6"] { width: 40px; }
+span.tag[lolcount="7"] { width: 45px; }

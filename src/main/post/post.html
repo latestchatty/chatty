@@ -1,14 +1,26 @@
 <div>
-    <input type="button" class="replyButton button" title="reply to this comment" value="Reply" ng-click="openReplyBox(post)">
     <div class="postheader">
+        <i class="actionItem fa fa-times collapse" title="Collapse post" ng-click="collapse(post)"></i>
         <span ng-class="::post.userClass || 'user'" ng-click="addTab(post.author, post.author)" ng-bind="::post.author"></span>
         <div class="tags">
             <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]" title="{{tag.tag}}" lolcount="{{tag.count}}"></span>
         </div>
+
+        <!-- action bar -->
+        <div class="actionbar">
+            <i class="actionItem fa fa-reply" title="Reply to post" ng-click="openReplyBox(post)"></i>
+            <i class="actionItem fa fa-bookmark-o" title="Save to tab" ng-click="addTab({ id: post.id }, 'post')"></i>
+            <i class="actionItem fa fa-tags" title="Tag post"></i>
+        </div>
+
+        <!-- header right -->
         <div class="headerright">
             <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma' }}</div>
-            <progress class="expireTimer" value="{{::post.expirePercent}}" max="100" ng-if="::post.expirePercent"></progress>
-            <div class="postnumber"><a title="Save post to tab" href="" ng-click="addTab({ id: post.id }, 'post')"></a></div>
+
+            <div class="countdown-wrap">
+                <div class="countdown-value" ng-style="::{ width: post.expirePercent + '%',
+                    'background-color': post.expirePercent < 50 ? 'springgreen' : post.expirePercent >=75 ? 'red' : 'yellow'}"></div>
+            </div>
         </div>
     </div>
 </div>

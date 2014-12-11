@@ -9,14 +9,6 @@ angular.module('chatty')
                 $scope.threads = modelService.getThreads();
                 $scope.newThreads = modelService.getNewThreads();
 
-                $scope.openReplyBox = function openReplyBox(thread) {
-                    actionService.openReplyBox(thread);
-                };
-
-                $scope.collapseThread = function collapseThread(thread) {
-                    actionService.collapseThread(thread);
-                };
-
                 $scope.expandThread = function expandThread(thread) {
                     actionService.expandThread(thread);
                 };

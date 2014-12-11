@@ -1,10 +1,12 @@
 <div class="replybox">
     <form ng-submit="submitPost()">
+        <i class="actionItem fa fa-times replybox-close" title="Collapse post" ng-click="close()"></i>
+
         <textarea class="replybox-input" placeholder="Type something interesting..."
                   ng-model="replyBody" required auto-focus></textarea>
 
         <div class="tagLegend">
-            <h4>Comment Tags</h4>
+            <h4>Shack Tags</h4>
             <table>
                 <tr ng-repeat="tagGroup in ::tagGroups">
                     <td ng-repeat-start="tag in ::tagGroup">
@@ -15,7 +17,6 @@
             </table>
         </div>
         <br>
-        <input type="submit" value="Submit Post" class="replybox-button">
+        <input type="submit" value="Submit Post" class="button replybox-submit">
     </form>
-    <a class="closepost" href="" title="Close" ng-click="close()">x</a>
 </div>

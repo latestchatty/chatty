@@ -13,7 +13,6 @@
             <div  class="rootPost" ng-class="post.tagClass">
                 <post></post>
                 <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
-                <a href="" title="Collapse/Close" class="closepost" ng-click="collapseThread(post)">x</a>
             </div>
 
             <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>

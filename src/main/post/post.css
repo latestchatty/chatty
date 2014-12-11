@@ -7,12 +7,17 @@
 
 .postheader{
     background-color: #373a3c;
-    padding:3px;
+    padding: 3px 3px 3px 20px;
 }
 
 .headerright {
-    float:right;
-    margin-right: 25px;
+    float: right;
+    margin-right: 5px;
+}
+.actionbar {
+    position: absolute;
+    bottom: 2px;
+    left: 22px;
 }
 
 .postBody {
@@ -42,166 +47,67 @@ div.postBody a:hover {
 }
 
 .user {
-    padding-left: 20px;
     font-size: 13px;
     font-weight: bold;
     line-height: 14px;
     color: #f3e7b5;
     font-family: sans-serif;
 }
-
-.newReplies {
-    font-weight: bold;
-    color: #68f374;
-    font-family: sans-serif;
-    text-decoration: none;
+.user:hover {
+    text-decoration: underline;
 }
 
 /* post body date */
 .postdate {
-    display:inline;
+    display: inline;
     text-align: right;
     font-size: 10px;
-    color: #666;
+    color: #888888;
     width: 200px;
     vertical-align: middle;
     height: 20px;
     line-height: 20px;
     padding: 0 5px;
 }
-.expireTimer {
-    display: inline;
-    background-color: #575757;
-    vertical-align: middle;
-    width: 75px;
-}
 
-/* collapse post 'x' */
-a.closepost:link, a.closepost:visited, a.closepost:active, a.closepost:hover {
-    display: block;
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    line-height: 20px;
-    top: 2px;
-    right: 2px;
-    color: #8e8e8e;
-    text-decoration: none;
-    font-size: 10px;
-    z-index: 1;
-}
-a.closepost:hover {
-    color: #fff;
-}
-
-/* post perma link */
-.postnumber {
-    width: 19px;
-    height: 16px;
-    overflow: hidden;
-    float: left;
-    margin: 1px 3px 0 0;
-}
-.postnumber a:link, .postnumber a:visited, .postnumber a:active, .postnumber a:hover {
-    display: block;
-    width: 100%;
-    height: 100%;
-    text-indent: -5000px;
-    overflow: hidden;
-    background-image: url('../images/sprite-commentslink.gif'); /*TODO: Switch this to a pin icon or at least something more visible in the header*/
-    margin-left: 3px;
-}
-.postnumber a:hover {
-    background-position: -50px top;
-}
-
-/* uncollapse post link */
-a.showpost:link, a.showpost:visited, a.showpost:active, a.showpost:hover {
-    display: none;
-}
-a.showpost:link, a.showpost:visited, a.showpost:active, a.showpost:hover {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 20px;
-    line-height: 20px;
-    bottom: 0;
-    left: 0;
-    color: #f02e01;
-    text-decoration: none;
-    font-size: 10px;
-    text-align: center;
-    background: #222;
-    font-weight: bold;
-}
-a.showpost:hover {
-    text-decoration: none;
-    background-color: #393939;
-}
-.postInformative {
-    border-left: 2px solid #00bff3;
-}
-.postNws {
-    border-left: 2px solid red;
-}
-
-.tags {
-    margin-left: 5px;
-    display: inline;
-    /*position: absolute;*/
-    /*bottom: 2px;*/
-    /*left: 22px;*/
-}
-.tag {
-    margin: 0 3px;
+.countdown-wrap {
     display: inline-block;
-    width: 35px;
-    height: 14px;
-    line-height: 14px;
-    color: #ffffff;
-    font-size: 11px;
-    vertical-align: middle;
-    text-align: center;
-    text-shadow: 0 0 3px #000;
-    border-radius: 3px;
-    font-weight: bold;
+    height: 10px;
+    width: 48px;
+    position: relative;
+    margin-top: 3px;
+    margin-right: -1px;
+    background: rgb(221, 221, 221)
+                -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(170, 170, 170)),
+                color-stop(0.4, rgb(204, 204, 204)),
+                color-stop(0.6, rgb(204, 204, 204)), to(rgb(238, 238, 238)));
 }
-.tag:before {
-    content: attr(lolcount);
-}
-.tag_default { background-color: #7a0fbb; }
-.tag_wtf { background-color: #c000c0; }
-.tag_unf { background-color: #f00; }
-.tag_inf { background-color: #09c; }
-.tag_lol { background-color: #f80; }
-
-span.tag[lolcount=""],
-span.tag[lolcount="0"] {
-    display: none;
-}
-span.tag[lolcount="1"] {
-    width: 15px;
-}
-span.tag[lolcount="3"] {
-    width: 25px;
-}
-span.tag[lolcount="4"] {
-    width: 30px;
-}
-span.tag[lolcount="5"] {
-    width: 35px;
-}
-span.tag[lolcount="6"] {
-    width: 40px;
-}
-span.tag[lolcount="7"] {
-    width: 45px;
+.countdown-value {
+    height: 100%;
+    display: block;
+    background-image: -webkit-gradient(linear, 0 100%, 100% 0,
+                        color-stop(0.25, rgba(255, 255, 255, 0.4)),
+                        color-stop(0.25, transparent),
+                        color-stop(0.5, transparent),
+                        color-stop(0.5, rgba(255, 255, 255, 0.4)),
+                        color-stop(0.75, rgba(255, 255, 255, 0.4)),
+                        color-stop(0.75, transparent), to(transparent));
+    -webkit-background-size: 25px;
+    -webkit-box-shadow: rgba(255, 255, 255, 0.298039) 0 2px 4px inset,
+                        rgba(0, 0, 0, 0.4) 0 -2px 3px inset;
 }
 
-.replyButton {
+.actionItem {
+    padding-right: 7px;
+    color: white;
+    cursor: pointer;
+}
+.actionItem:hover {
+    color: #00bff3;
+}
+.collapse {
     position: absolute;
-    bottom: -1px;
-    right: -1px;
-    width: 75px;
+    top: 5px;
+    left: 5px;
+    padding: 0;
 }
