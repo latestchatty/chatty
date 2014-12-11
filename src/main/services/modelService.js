@@ -14,7 +14,7 @@ angular.module('chatty')
         }, 300000);
 
         modelService.updateAllThreads = function updateAllThreads() {
-            threads.each(updateExpiration);
+            _.each(threads, updateExpiration);
         };
 
         modelService.addThread = function addThread(post, event) {
