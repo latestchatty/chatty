@@ -105,7 +105,7 @@ angular.module('chatty')
             _.pull(threads, thread);
 
             //collapse thread
-            actionService.closeReplyBox(thread);
+            closeReplyBox(thread);
             thread.state = 'collapsed';
 
             //add to the end of the list
@@ -136,7 +136,7 @@ angular.module('chatty')
 
             //close any other actions
             actionService.expandThread(thread);
-            actionService.closeReplyBox(thread);
+            closeReplyBox(thread);
             if (closeComment) {
                 collapseReply(thread);
             }
@@ -196,11 +196,11 @@ angular.module('chatty')
             }
         }
 
-        actionService.collapseReply = function collapseReply(post) {
+        actionService.collapsePostReply = function collapsePostReply(post) {
             if (post) {
                 resetThread(post, true);
             } else if (lastReply) {
-                actionService.collapseReply(lastReply);
+                actionService.collapsePostReply(lastReply);
                 lastReply = null;
             }
         };
@@ -213,7 +213,7 @@ angular.module('chatty')
             post.replying = true;
         };
 
-        actionService.closeReplyBox = function closeReplyBox(post) {
+        actionService.closePostReplyBox = function closePostReplyBox(post) {
             var thread = modelService.getPostThread(post);
             closeReplyBox(thread);
         };

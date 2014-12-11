@@ -17,7 +17,7 @@ angular.module('chatty')
             };
 
             $scope.collapseReply = function collapseReply(post) {
-                actionService.collapseReply(post);
+                actionService.collapsePostReply(post);
             };
 
             $scope.openReplyBox = function openReplyBox(post) {
