@@ -8,6 +8,35 @@ angular.module('chatty')
         var username = settingsService.getUsername();
         var supportedTags = ['lol', 'inf', 'unf', 'wtf'];
 
+        //start fake replies
+        var id = 1;
+        //$interval(function() {
+        //    _.range(0, 5).forEach(function() {
+        //        var parent = posts[_.sample(_.keys(posts))];
+        //        modelService.addPost({
+        //            author: "SomeDude",
+        //            body: "OMGOSH LIKE A NEW REPLY OR SOMETHING" + id,
+        //            category: "ontopic",
+        //            date: "2014-12-04T18:34:00Z",
+        //            id: id++,
+        //            parentId: parent.id,
+        //            threadId: parent.threadId
+        //        });
+        //    });
+        //}, 750);
+
+        $interval(function() {
+            modelService.addThread({
+                author: "SomeDude",
+                body: "OMGOSH LIKE A NEW REPLY OR SOMETHING" + id,
+                category: "ontopic",
+                date: "2014-12-04T18:34:00Z",
+                id: id++,
+                parentId: 0,
+                threadId: id++
+            }, true);
+        }, 10000);
+
         //model update loop
         $interval(function() {
             modelService.updateAllThreads();
@@ -123,15 +152,15 @@ angular.module('chatty')
                 thread.category = rootPost.category;
                 thread.body = rootPost.body;
                 thread.lols = rootPost.lols;
-                thread.lastPostId = rootPost.id;
-                updateExpiration(thread);
             }
+            thread.lastPostId = thread.id;
             thread.replyCount = threadPosts.length || 0;
             thread.recent = [];
             thread.posts = [];
             posts[thread.id] = thread;
             fixPost(thread);
             updateModTagClass(thread);
+            updateExpiration(thread);
 
             while (threadPosts.length > 0) {
                 var post = threadPosts.shift();
@@ -214,11 +243,13 @@ angular.module('chatty')
         }
 
         function updateExpiration(thread) {
-            thread.expirePercent = ((((new Date().getTime()) - new Date(thread.date).getTime()) / 3600000) / 18) * 100;
-            if (thread.expirePercent <= 50) {
+            thread.expirePercent = Math.max(((((new Date().getTime()) - new Date(thread.date).getTime()) / 3600000) / 18) * 100, 100);
+            if (thread.expirePercent <= 25) {
                 thread.expireColor = 'springgreen';
-            } else if (thread.expirePercent <= 75) {
+            } else if (thread.expirePercent <= 50) {
                 thread.expireColor = 'yellow';
+            } else if (thread.expirePercent <= 75) {
+                thread.expireColor = 'orange';
             } else {
                 thread.expireColor = 'red';
             }
