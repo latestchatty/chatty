@@ -7,7 +7,7 @@ angular.module('chatty')
             controller: function($scope, actionService) {
                 $scope.collapse = function collapse(post) {
                     if (post.parentId) {
-                        actionService.collapseReply(post);
+                        actionService.collapsePostReply(post);
                     } else {
                         actionService.collapseThread(post);
                     }
