@@ -10,9 +10,8 @@ angular.module('chatty')
                 $scope.loginInvalid = false;
                 $scope.username = settingsService.getUsername();
                 $scope.password = null;
-                //TODO: Better handling if they're not logged in but we're embedded.
-                $scope.loggedIn = settingsService.isEmbeddedInShacknews() || !!$scope.username;
-                $scope.showLogout = $scope.loggedIn && !settingsService.isEmbeddedInShacknews();
+                $scope.embedded = settingsService.isEmbeddedInShacknews();
+                $scope.loggedIn = !!$scope.username;
                 $scope.doLogin = function doLogin() {
                     $scope.loginRunning = true;
                     $scope.loggedIn = false;
@@ -62,7 +61,7 @@ angular.module('chatty')
                 $scope.defaultTabs = [
                     { displayText: 'Chatty', filterExpression: null, selected: true },
                     { displayText: 'Frontpage', filterExpression: { author: 'Shacknews'} },
-                    { displayText: 'Mine', filterExpression: settingsService.getUsername() }
+                    { displayText: 'Mine', filterExpression: settingsService.getUsername }
                 ];
                 $scope.selectedTab = $scope.defaultTabs[0];
                 $scope.tabs = settingsService.getTabs();
@@ -76,8 +75,8 @@ angular.module('chatty')
                         $window.scrollTo(0, 0);
                     }
                     tab.selected = true;
-                    applyFilter(tab.filterExpression);
-
+                    var filterExpression = angular.isFunction(tab.filterExpression) ? tab.filterExpression() : tab.filterExpression;
+                    applyFilter(filterExpression);
                 };
                 $scope.addTab = function addTab(filterExpression, displayText) {
                     var tab = {filterExpression:filterExpression, displayText:displayText};
