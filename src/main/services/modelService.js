@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('modelService', function($interval, $timeout, settingsService) {
+    .service('modelService', function($interval, settingsService) {
         var modelService = {};
 
         var threads = [];
@@ -7,6 +7,15 @@ angular.module('chatty')
         var posts = {};
         var username = settingsService.getUsername();
         var supportedTags = ['lol', 'inf', 'unf', 'wtf'];
+
+        //model update loop
+        $interval(function() {
+            modelService.updateAllThreads();
+        }, 300000);
+
+        modelService.updateAllThreads = function updateAllThreads() {
+            threads.each(updateExpiration);
+        };
 
         modelService.addThread = function addThread(post, event) {
             var thread = fixThread(post);
@@ -114,7 +123,7 @@ angular.module('chatty')
                 thread.category = rootPost.category;
                 thread.body = rootPost.body;
                 thread.lols = rootPost.lols;
-                thread.expirePercent = ((((new Date().getTime()) - new Date(rootPost.date).getTime()) / 3600000) / 18) * 100;
+                updateExpiration(thread);
             }
             thread.replyCount = threadPosts.length || 0;
             thread.recent = [];
@@ -210,6 +219,17 @@ angular.module('chatty')
                 post.tagClass = 'postNws';
             } else {
                 delete post.tagClass;
+            }
+        }
+
+        function updateExpiration(thread) {
+            thread.expirePercent = ((((new Date().getTime()) - new Date(thread.date).getTime()) / 3600000) / 18) * 100;
+            if (thread.expirePercent <= 50) {
+                thread.expireColor = 'springgreen';
+            } else if (thread.expirePercent <= 75) {
+                thread.expireColor = 'yellow';
+            } else {
+                thread.expireColor = 'red';
             }
         }
 
