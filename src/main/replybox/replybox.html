@@ -5,8 +5,9 @@
         <textarea class="replybox-input" placeholder="Type something interesting..."
                   ng-model="replyBody" required auto-focus></textarea>
 
+        <input type="submit" value="Submit Post" class="button replybox-submit">
+
         <div class="tagLegend">
-            <h4>Shack Tags</h4>
             <table>
                 <tr ng-repeat="tagGroup in ::tagGroups">
                     <td ng-repeat-start="tag in ::tagGroup">
@@ -16,7 +17,5 @@
                 </tr>
             </table>
         </div>
-        <br>
-        <input type="submit" value="Submit Post" class="button replybox-submit">
     </form>
 </div>
