@@ -1,5 +1,5 @@
 <ul>
-    <li ng-repeat="post in posts track by $index" ng-class="{ last: $last }">
+    <li ng-repeat="post in posts track by post.id" ng-class="{ last: $last }">
         <div ng-switch="post.viewFull">
 
             <!--collapsed reply-->
