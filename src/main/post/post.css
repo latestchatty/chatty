@@ -17,12 +17,9 @@
 
 .postBody {
     color: lightgray;
-    margin: 0 0 0 22px;
     font-size: 13px;
     line-height: 16px;
-}
-.postBodyText {
-    margin-top: 5px;
+    margin: 5px 0 0 22px;
 }
 
 /* links within a body */
