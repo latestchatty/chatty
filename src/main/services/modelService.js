@@ -8,35 +8,6 @@ angular.module('chatty')
         var username = settingsService.getUsername();
         var supportedTags = ['lol', 'inf', 'unf', 'wtf'];
 
-        //start fake replies
-        var id = 1;
-        //$interval(function() {
-        //    _.range(0, 5).forEach(function() {
-        //        var parent = posts[_.sample(_.keys(posts))];
-        //        modelService.addPost({
-        //            author: "SomeDude",
-        //            body: "OMGOSH LIKE A NEW REPLY OR SOMETHING" + id,
-        //            category: "ontopic",
-        //            date: "2014-12-04T18:34:00Z",
-        //            id: id++,
-        //            parentId: parent.id,
-        //            threadId: parent.threadId
-        //        });
-        //    });
-        //}, 750);
-
-        $interval(function() {
-            modelService.addThread({
-                author: "SomeDude",
-                body: "OMGOSH LIKE A NEW REPLY OR SOMETHING" + id,
-                category: "ontopic",
-                date: "2014-12-04T18:34:00Z",
-                id: id++,
-                parentId: 0,
-                threadId: id++
-            }, true);
-        }, 10000);
-
         //model update loop
         $interval(function() {
             modelService.updateAllThreads();
