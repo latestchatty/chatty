@@ -167,6 +167,9 @@ a.showpost:hover {
     border-radius: 3px;
     font-weight: bold;
 }
+.tag:before {
+    content: attr(lolcount);
+}
 .tag_default { background-color: #7a0fbb; }
 .tag_wtf { background-color: #c000c0; }
 .tag_unf { background-color: #f00; }
@@ -175,7 +178,7 @@ a.showpost:hover {
 
 span.tag[lolcount=""],
 span.tag[lolcount="0"] {
-    width: 10px;
+    display: none;
 }
 span.tag[lolcount="1"] {
     width: 15px;
