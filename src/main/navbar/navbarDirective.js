@@ -11,7 +11,7 @@ angular.module('chatty')
                 $scope.username = settingsService.getUsername();
                 $scope.password = null;
                 //TODO: Better handling if they're not logged in but we're embedded.
-                $scope.loggedIn = (!settingsService.isEmbeddedInShacknews() && !!$scope.username) || (settingsService.isEmbeddedInShacknews());
+                $scope.loggedIn = settingsService.isEmbeddedInShacknews() || !!$scope.username;
                 $scope.showLogout = $scope.loggedIn && !settingsService.isEmbeddedInShacknews();
                 $scope.doLogin = function doLogin() {
                     $scope.loginRunning = true;
