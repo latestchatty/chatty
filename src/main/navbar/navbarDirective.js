@@ -81,6 +81,7 @@ angular.module('chatty')
                 };
                 $scope.removeTab = function removeTab(tab) {
                     settingsService.removeTab(tab);
+                    $scope.selectTab($scope.defaultTabs[0]);
                 };
 
                 //new thread
