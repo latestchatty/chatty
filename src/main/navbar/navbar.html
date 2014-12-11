@@ -24,7 +24,7 @@
                        placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
                 <input type="submit" value="Login" class="button" ng-disabled="loginRunning">
             </form>
-            <div class="navbar-form" ng-show="loggedIn">
+            <div class="navbar-form" ng-show="showLogout">
                 <input type="button" value="Logout: {{username}}" class="button" ng-click="doLogout()">
             </div>
 
