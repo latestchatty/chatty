@@ -7,14 +7,15 @@ angular.module('chatty')
         };
 
         var collapsedThreads = angular.fromJson(localStorageService.get('collapsedThreads')) || [];
-        var credentials = {username: '', password: ''};
+        var credentials;
         if(settingsService.isEmbeddedInShacknews()) {
             //Get the username from the hidden shack element.
             var el = $document[0].getElementById('user_posts');
-            credentials.username = !!el ? el.innerHTML : '';
+            credentials = {};
+            credentials.username = !!el ? el.innerHTML || '' : '';
             credentials.password = '';
         } else {
-            credentials = angular.fromJson(localStorageService.get('credentials'));
+            credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''};
         }
         var tabs = angular.fromJson(localStorageService.get('tabs')) || [];
 
