@@ -214,7 +214,7 @@ angular.module('chatty')
         }
 
         function updateExpiration(thread) {
-            thread.expirePercent = Math.max(((((new Date().getTime()) - new Date(thread.date).getTime()) / 3600000) / 18) * 100, 100);
+            thread.expirePercent = Math.min(((((new Date().getTime()) - new Date(thread.date).getTime()) / 3600000) / 18) * 100, 100);
             if (thread.expirePercent <= 25) {
                 thread.expireColor = 'springgreen';
             } else if (thread.expirePercent <= 50) {

@@ -82,7 +82,7 @@ angular.module('chatty')
                     collapseReply(thread);
                     closeReplyBox(thread);
 
-                    if (!thread.expirePercent || thread.expirePercent < 100) {
+                    if (thread.expirePercent < 100) {
                         threads.push(thread);
                     }
                 }
