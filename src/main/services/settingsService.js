@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('settingsService', function($location, localStorageService) {
+    .service('settingsService', function($document, $location, localStorageService) {
         var settingsService = {};
 
         settingsService.isEmbeddedInShacknews = function isEmbeddedInShacknews () {
@@ -10,7 +10,8 @@ angular.module('chatty')
         var credentials = {username: '', password: ''};
         if(settingsService.isEmbeddedInShacknews()) {
             //Get the username from the hidden shack element.
-            credentials.username = angular.element('#user_posts').html();
+            var el = $document[0].getElementById('user_posts');
+            credentials.username = !!el ? el.innerHTML : '';
             credentials.password = '';
         } else {
             credentials = angular.fromJson(localStorageService.get('credentials'));
