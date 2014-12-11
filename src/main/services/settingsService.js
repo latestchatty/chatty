@@ -2,8 +2,19 @@ angular.module('chatty')
     .service('settingsService', function(localStorageService) {
         var settingsService = {};
 
+        settingsService.isEmbeddedInShacknews = function isEmbeddedInShacknews () {
+            return window.location.hostname.indexOf('shacknews.com') >= 0;
+        };
+
         var collapsedThreads = angular.fromJson(localStorageService.get('collapsedThreads')) || [];
-        var credentials = angular.fromJson(localStorageService.get('credentials')) || { username: '', password: '' };
+        var credentials = {username: '', password: ''};
+        if(settingsService.isEmbeddedInShacknews()) {
+            //Get the username from the hidden shack element.
+            credentials.username = $('#user_posts').html();
+            credentials.password = '';
+        } else {
+            credentials = angular.fromJson(localStorageService.get('credentials'));
+        }
         var tabs = angular.fromJson(localStorageService.get('tabs')) || [];
 
         settingsService.isCollapsed = function isCollapsed(id) {
