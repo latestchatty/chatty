@@ -73,7 +73,7 @@ angular.module('chatty')
             while (sorted.length) {
                 var thread = sorted.pop();
 
-                if (thread.collapsed) {
+                if (thread.state === 'collapsed') {
                     collapsed.push(thread);
                 } else {
                     if (thread.replyCount > 10) {
