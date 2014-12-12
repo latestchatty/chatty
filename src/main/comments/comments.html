@@ -8,6 +8,7 @@
 
                 <span class="onelineSeparator">&nbsp;:&nbsp;</span>
                 <span ng-class="::post.userClass || 'user'">{{::post.author}}</span>
+                <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]" title="{{tag.tag}}" lolcount="{{tag.count}}"></span>
             </div>
 
             <!--expanded reply-->
