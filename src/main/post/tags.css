@@ -27,6 +27,7 @@
 span.tag[lolcount=""],
 span.tag[lolcount="0"] { display: none; }
 span.tag[lolcount="1"] { width: 15px; }
+span.tag[lolcount="2"] { width: 20px; }
 span.tag[lolcount="3"] { width: 25px; }
 span.tag[lolcount="4"] { width: 30px; }
 span.tag[lolcount="5"] { width: 35px; }
