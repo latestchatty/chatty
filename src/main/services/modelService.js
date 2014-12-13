@@ -125,7 +125,7 @@ angular.module('chatty')
                 thread.lols = rootPost.lols;
             }
             thread.lastPostId = thread.id;
-            thread.replyCount = threadPosts.length || 0;
+            thread.replyCount = 0;
             thread.recent = [];
             thread.posts = [];
             posts[thread.id] = thread;
