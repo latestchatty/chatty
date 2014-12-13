@@ -14,7 +14,7 @@ angular.module('chatty')
                 };
 
                 this.itemChanged = function(item) {
-                    if ((item.offsetTop <= $window.scrollY + $window.innerHeight / 2) && $window.scrollY > 0) {
+                    if ((item.offsetTop <= $window.scrollY) && $window.scrollY > 0) {
                         if ($scope.element.scrollHeight !== $scope.lastHeight) {
                             var diff = $scope.element.scrollHeight - $scope.lastHeight;
                             $window.scrollTo($window.scrollX, $window.scrollY + diff);
