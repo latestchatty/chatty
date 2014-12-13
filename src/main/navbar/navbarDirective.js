@@ -73,6 +73,7 @@ angular.module('chatty')
                     tab.selected = true;
                     var filterExpression = angular.isFunction(tab.filterExpression) ? tab.filterExpression() : tab.filterExpression;
                     applyFilter(filterExpression);
+                    $window.scrollTo(0, 0);
                 };
                 $scope.addTab = function addTab(filterExpression, displayText) {
                     var tab = {filterExpression:filterExpression, displayText:displayText};
