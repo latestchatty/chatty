@@ -4,14 +4,14 @@
         <!-- header left -->
         <span ng-class="::post.userClass || 'user'" ng-click="addTab(post.author, post.author)" ng-bind="::post.author"></span>
         <div class="tags">
-            <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]" title="{{tag.tag}}" lolcount="{{tag.count}}"></span>
+            <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]" title="{{::tag.tag}}" lolcount="{{tag.count}}"></span>
         </div>
 
         <!-- header right -->
         <div class="headerright">
             <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma' }}</div>
 
-            <div class="countdown-wrap" ng-if="::post.expirePercent">
+            <div class="countdown-wrap" ng-if="::!!post.expirePercent">
                 <div class="countdown-value" ng-style="{ width: post.expirePercent + '%',
                     'background-color': post.expireColor}"></div>
             </div>
