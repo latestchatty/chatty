@@ -11,7 +11,7 @@
 
         <!-- expanded root post -->
         <div ng-if-event-expr="post.state !== 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id">
-            <div  class="rootPost" ng-class="::post.tagClass">
+            <div class="rootPost" ng-class="::post.tagClass">
                 <post></post>
                 <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
             </div>
