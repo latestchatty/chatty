@@ -88,7 +88,7 @@ angular.module('chatty')
                 //new thread
                 $scope.newThreadPost = { id: 0 };
                 $scope.newThread = function newThread() {
-                    $scope.newThreadPost.replying = true;
+                    actionService.openReplyBox($scope.newThreadPost);
                 };
 
                 //reflow
