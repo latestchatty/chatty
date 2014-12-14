@@ -1,5 +1,5 @@
 <ul>
-    <li ng-repeat="post in ::posts" ng-class="::{ last: $last }">
+    <li ng-repeat="post in posts" ng-class="{ last: $last }">
 
         <!--collapsed reply-->
         <div ng-if-event-expr="!post.viewFull" ng-if-event="reply-collapse" ng-if-event-id="post.id" scroll-item>
