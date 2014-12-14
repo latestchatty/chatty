@@ -6,7 +6,8 @@
     "lodash": "~2.4.1",
     "angular-local-storage": "~0.1.5",
     "angular": "1.3.5",
-    "angular-sanitize": "1.3.5"
+    "angular-sanitize": "1.3.5",
+    "ng-stats": "~2.0.1"
   },
   "resolutions": {
     "angular": "1.3.5"
