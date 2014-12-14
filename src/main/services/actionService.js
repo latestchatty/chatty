@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('actionService', function($q, $http, $timeout, modelService, settingsService) {
+    .service('actionService', function($rootScope, $q, $http, $timeout, modelService, settingsService) {
         var actionService = {};
 
         var lastReply;
@@ -107,6 +107,7 @@ angular.module('chatty')
             //collapse thread
             closeReplyBox(thread);
             thread.state = 'collapsed';
+            $rootScope.$broadcast('thread-collapse' + thread.id);
 
             //add to the end of the list
             threads.push(thread);
@@ -117,6 +118,7 @@ angular.module('chatty')
 
         actionService.expandThread = function expandThread(thread) {
             thread.state = 'expanded';
+            $rootScope.$broadcast('thread-collapse' + thread.id);
 
             //update local storage
             settingsService.removeCollapsed(thread.id);
@@ -129,6 +131,8 @@ angular.module('chatty')
             thread.currentComment = post;
             lastReply = post;
             post.viewFull = true;
+
+            $rootScope.$broadcast('reply-collapse' + post.id);
         };
 
         function resetThread(post, closeComment) {
@@ -145,7 +149,10 @@ angular.module('chatty')
 
         function collapseReply(thread) {
             if (thread.currentComment) {
+                var id = thread.currentComment.id;
                 delete thread.currentComment.viewFull;
+
+                $rootScope.$broadcast('reply-collapse' + id);
             }
         }
 

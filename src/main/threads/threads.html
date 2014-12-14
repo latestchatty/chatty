@@ -2,15 +2,16 @@
     <div ng-repeat="post in threads track by post.id" ng-hide="filterSet && !post.visible">
 
         <!-- collapsed root post -->
-        <div ng-if="post.state === 'collapsed'" class="rootPost collapsed" ng-class="post.tagClass">
+        <div ng-if-event-expr="post.state === 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id"
+             class="rootPost collapsed" ng-class="::post.tagClass">
             <post></post>
             <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
             <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
         </div>
 
         <!-- expanded root post -->
-        <div ng-if="post.state !== 'collapsed'">
-            <div  class="rootPost" ng-class="post.tagClass">
+        <div ng-if-event-expr="post.state !== 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id">
+            <div  class="rootPost" ng-class="::post.tagClass">
                 <post></post>
                 <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
             </div>
