@@ -78,6 +78,7 @@ angular.module('chatty')
                 } else {
                     if (thread.replyCount > 10) {
                         thread.state = 'truncated';
+                        $rootScope.$broadcast('thread-truncate' + thread.id);
                     }
                     collapseReply(thread);
                     closeReplyBox(thread);
@@ -119,6 +120,7 @@ angular.module('chatty')
         actionService.expandThread = function expandThread(thread) {
             thread.state = 'expanded';
             $rootScope.$broadcast('thread-collapse' + thread.id);
+            $rootScope.$broadcast('thread-truncate' + thread.id);
 
             //update local storage
             settingsService.removeCollapsed(thread.id);

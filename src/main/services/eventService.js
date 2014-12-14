@@ -42,15 +42,6 @@ angular.module('chatty')
                     //clean collapsed thread list after initial load
                     modelService.cleanCollapsed();
 
-                    var threads =  modelService.getThreads();
-                    var threadCount = threads.length;
-                    var replyCount = _.reduce(threads, function(count, thread) {
-                        return count + thread.recent.length;
-                    }, 0);
-                    console.log('Threads: ', threadCount);
-                    console.log('Replies: ', replyCount);
-                    showAngularStats();
-
                     //start events
                     return waitForEvents();
                 }
