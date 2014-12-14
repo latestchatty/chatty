@@ -8,19 +8,19 @@ angular.module('chatty')
             restrict: 'A',
             $$tlb: true,
             scope: {
-                ngIfEvent: '@ngIfEvent',
-                ngIfEventId: '@ngIfEventId',
-                ngIfEventExpr: '@ngIfEventExpr'
+                ngIfEvent: '@',
+                ngIfEventId: '&',
+                ngIfEventExpr: '&'
             },
             link: function($scope, $element, $attr, ctrl, $transclude) {
                 var block, childScope, previousElements;
 
-                var eventId = $scope.$parent.$eval($scope.ngIfEventId);
+                var eventId = $scope.$eval($scope.ngIfEventId);
                 $scope.$on($scope.ngIfEvent + eventId, evaluate);
                 evaluate();
 
                 function evaluate() {
-                    var value = $scope.$parent.$eval($scope.ngIfEventExpr);
+                    var value = $scope.$eval($scope.ngIfEventExpr);
                     if (value) {
                         if (!childScope) {
                             $transclude(function(clone, newScope) {
