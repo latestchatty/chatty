@@ -12,12 +12,13 @@
 
         <!--expanded reply-->
         <div ng-if-event-expr="post.viewFull" ng-if-event="reply-collapse" ng-if-event-id="post.id">
-            <div class="replyPost" ng-class="post.tagClass" scroll-into-view>
+            <div class="replyPost" ng-class="::post.tagClass" scroll-into-view>
                 <post></post>
                 <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
             </div>
 
-            <replybox class="replybox-comment" post="post" ng-if="post.replying"></replybox>
+            <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.threadId"
+                    class="replybox-comment" post="post"></replybox>
         </div>
 
         <!-- replies to this post -->

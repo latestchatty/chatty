@@ -220,6 +220,7 @@ angular.module('chatty')
             //open reply
             thread.replyingToPost = post;
             post.replying = true;
+            $rootScope.$broadcast('post-reply' + thread.id);
         };
 
         actionService.closePostReplyBox = function closePostReplyBox(post) {
@@ -231,6 +232,7 @@ angular.module('chatty')
             if (thread.replyingToPost) {
                 delete thread.replyingToPost.replying;
                 delete thread.replyingToPost;
+                $rootScope.$broadcast('post-reply' + thread.id);
             }
         }
 

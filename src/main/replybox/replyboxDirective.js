@@ -40,7 +40,7 @@ angular.module('chatty')
                 };
 
                 $scope.close = function close() {
-                    $scope.post.replying = false;
+                    actionService.closePostReplyBox($scope.post);
                 }
             }
         }

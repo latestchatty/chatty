@@ -16,7 +16,8 @@
                 <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
             </div>
 
-            <replybox class="replybox-op" post="post" ng-if="post.replying"></replybox>
+            <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.id"
+                      class="replybox-op" post="post"></replybox>
 
             <!-- truncated replies -->
             <div ng-if-event-expr="post.state === 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
