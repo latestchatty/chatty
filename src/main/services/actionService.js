@@ -73,19 +73,23 @@ angular.module('chatty')
             while (sorted.length) {
                 var thread = sorted.pop();
 
-                if (thread.state === 'collapsed') {
-                    collapsed.push(thread);
-                } else {
-                    if (thread.replyCount > 10) {
-                        thread.state = 'truncated';
-                        $rootScope.$broadcast('thread-truncate' + thread.id);
-                    }
-                    collapseReply(thread);
-                    closeReplyBox(thread);
+                if (thread.expirePercent < 100) {
+                    if (thread.state === 'collapsed') {
+                        collapsed.push(thread);
+                    } else {
+                        if (thread.replyCount > 10) {
+                            thread.state = 'truncated';
+                            $rootScope.$broadcast('thread-truncate' + thread.id);
+                        }
+                        collapseReply(thread);
+                        closeReplyBox(thread);
 
-                    if (thread.expirePercent < 100) {
+
                         threads.push(thread);
                     }
+                } else {
+                    //removing thread from model
+                    settingsService.removeCollapsed(thread.id);
                 }
             }
 
