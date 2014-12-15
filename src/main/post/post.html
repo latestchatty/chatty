@@ -21,9 +21,9 @@
 
     <!-- action bar -->
     <div class="actionbar">
-        <i class="actionItem fa fa-times" title="Collapse post" ng-click="collapse(post)"></i>
-        <i class="actionItem fa fa-reply" title="Reply to post" ng-click="openReplyBox(post)"></i>
-        <i class="actionItem fa fa-bookmark-o" title="Save to tab" ng-if="::!post.parentId" ng-click="addTab({ id: post.id }, 'post')"></i>
+        <i class="actionItem fa fa-close" title="Collapse post" ng-click="collapse(post)"></i>
+        <i class="actionItem fa fa-comment" title="Reply to post" ng-click="openReplyBox(post)"></i>
+        <i class="actionItem fa fa-bookmark" title="Save to tab" ng-if="::!post.parentId" ng-click="addTab({ id: post.id }, 'post')"></i>
         <i class="actionItem fa fa-tags" title="Tag post"></i>
     </div>
 </div>
