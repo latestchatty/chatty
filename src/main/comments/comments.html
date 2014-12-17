@@ -8,7 +8,7 @@
             <span class="onelineSeparator">&nbsp;:&nbsp;</span>
             <span ng-class="::post.userClass || 'user'">{{::post.author}}</span>
         </div>
-
+        
         <!--expanded reply-->
         <div ng-if-event-expr="post.viewFull" ng-if-event="reply-collapse" ng-if-event-id="post.id">
             <div class="replyPost" ng-class="::post.tagClass" scroll-into-view>
