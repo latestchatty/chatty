@@ -14,7 +14,7 @@ angular.module('chatty')
                     password: password
                 };
 
-                post('https://winchatty.com/v2/verifyCredentials', params)
+                post(window.location.protocol + '//winchatty.com/v2/verifyCredentials', params)
                     .success(function(data) {
                         var result = data && data.isValid;
                         if (result) {
@@ -50,7 +50,7 @@ angular.module('chatty')
                     text: body
                 };
 
-                post('https://winchatty.com/v2/postComment', params)
+                post(window.location.protocol + '//winchatty.com/v2/postComment', params)
                     .success(function(data) {
                         deferred.resolve(data.result && data.result == 'success');
                     }).error(function() {
