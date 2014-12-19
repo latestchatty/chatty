@@ -34,6 +34,19 @@ angular.module('chatty')
             return $http.get('https://winchatty.com/v2/waitForEvent?lastEventId=' + lastEventId);
         };
 
+        apiService.getMarkedPosts = function getMarkedPosts(username) {
+            return $http.get('https://winchatty.com/v2/clientData/getMarkedPosts?username=' + encodeURIComponent(username))
+        };
+
+        apiService.markPost = function markPost(username, postId, markType) {
+            var params = {
+                username: username,
+                postId: postId,
+                type: markType
+            };
+            return post('https://winchatty.com/v2/clientData/markPost', params);
+        };
+
         function post(url, params) {
             var data = _.reduce(params, function(result, value, key) {
                 return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(value);

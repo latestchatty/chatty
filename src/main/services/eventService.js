@@ -1,9 +1,9 @@
 angular.module('chatty')
-    .service('eventService', function($timeout, apiService, modelService, settingsService) {
+    .service('eventService', function($timeout, $interval, apiService, modelService, settingsService) {
         var eventService = {};
         var lastEventId = 0;
 
-        //load on startup
+        //fresh load of full chatty
         eventService.load = function load() {
             modelService.clear();
 
@@ -94,6 +94,13 @@ angular.module('chatty')
                 console.log('Unhandled event', event);
             }
         }
+
+        //update loop every 5 min
+        $interval(function() {
+            modelService.updateAllThreads();
+
+            settingsService.refresh();
+        }, 300000);
 
         return eventService;
     });

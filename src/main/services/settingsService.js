@@ -1,37 +1,13 @@
 angular.module('chatty')
-    .service('settingsService', function($document, $location, localStorageService) {
+    .service('settingsService', function($document, $location, $q, apiService, localStorageService) {
         var settingsService = {};
 
-        settingsService.isEmbeddedInShacknews = function isEmbeddedInShacknews () {
-            return $location.host().indexOf('shacknews.com') >= 0;
-        };
-
-        var collapsedThreads = angular.fromJson(localStorageService.get('collapsedThreads')) || [];
-        var credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''};
-        if (settingsService.isEmbeddedInShacknews()) {
-            //Get the username from the hidden shack element.
-            var el = $document[0].getElementById('user_posts');
-            credentials = {};
-            credentials.username = !!el ? el.innerHTML || '' : '';
-            credentials.password = '';
-        }
-        var tabs = angular.fromJson(localStorageService.get('tabs')) || [];
+        var collapsedThreads;
+        var credentials;
+        var tabs;
 
         settingsService.isCollapsed = function isCollapsed(id) {
             return collapsedThreads.indexOf(Number(id)) >= 0;
-        };
-
-        settingsService.addCollapsed = function addCollapsed(id) {
-            if (collapsedThreads.indexOf(id) < 0) {
-                collapsedThreads.push(id);
-
-                localStorageService.set('collapsedThreads', collapsedThreads);
-            }
-        };
-
-        settingsService.removeCollapsed = function removeCollapsed(id) {
-            _.pull(collapsedThreads, id);
-            localStorageService.set('collapsedThreads', collapsedThreads);
         };
 
         settingsService.cleanCollapsed = function cleanCollapsed(posts) {
@@ -43,7 +19,7 @@ angular.module('chatty')
 
 
         settingsService.getUsername = function getUsername() {
-            return credentials.username;
+            return credentials ? credentials.username : '';
         };
 
         settingsService.getPassword = function getPassword() {
@@ -90,6 +66,49 @@ angular.module('chatty')
             });
             localStorageService.set('tabs', clone);
         }
+
+
+        settingsService.isEmbeddedInShacknews = function isEmbeddedInShacknews () {
+            return $location.host().indexOf('shacknews.com') >= 0;
+        };
+
+
+        settingsService.load = function load() {
+            var deferred = $q.defer();
+
+            collapsedThreads = [];
+            credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''};
+            tabs = angular.fromJson(localStorageService.get('tabs')) || [];
+
+            if (settingsService.isEmbeddedInShacknews()) {
+                //Get the username from the hidden shack element.
+                var el = $document[0].getElementById('user_posts');
+                credentials = {};
+                credentials.username = !!el ? el.innerHTML || '' : '';
+                credentials.password = '';
+            }
+
+            apiService.getMarkedPosts(settingsService.getUsername())
+                .success(function(data) {
+                    _.each(data.markedPosts, function(mark) {
+                        if (mark.type === 'collapsed') {
+                            collapsedThreads.push(mark.id);
+                        }
+                    });
+
+                    deferred.resolve();
+                })
+                .error(function(data) {
+                    console.log('Error getting marked posts: ', data);
+                    deferred.resolve();
+                });
+
+            return deferred.promise;
+        };
+
+        settingsService.refresh = function refresh() {
+            //TODO handle refreshing collapsed/pinned/etc
+        };
 
         return settingsService;
     });

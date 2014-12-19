@@ -4,6 +4,9 @@ angular.module('chatty', ['ngSanitize', 'RecursionHelper', 'LocalStorageModule']
         $rootScopeProvider.digestTtl(60);
     }).config(function(localStorageServiceProvider) {
         localStorageServiceProvider.setPrefix('chatty');
-    }).run(function(eventService) {
-        eventService.load();
+    }).run(function(settingsService, eventService) {
+        settingsService.load()
+            .then(function() {
+                eventService.load();
+            });
     });

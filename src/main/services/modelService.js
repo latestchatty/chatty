@@ -1,17 +1,11 @@
 angular.module('chatty')
-    .service('modelService', function($interval, settingsService) {
+    .service('modelService', function(settingsService) {
         var modelService = {};
 
         var threads = [];
         var newThreads = [];
         var posts = {};
-        var username = settingsService.getUsername();
         var supportedTags = ['lol', 'inf', 'unf', 'wtf'];
-
-        //model update loop
-        $interval(function() {
-            modelService.updateAllThreads();
-        }, 300000);
 
         modelService.updateAllThreads = function updateAllThreads() {
             _.each(threads, updateExpiration);
@@ -177,7 +171,7 @@ angular.module('chatty')
             });
 
             //add user class highlight
-            if (post.author.toLowerCase() === username.toLowerCase()) {
+            if (post.author.toLowerCase() === settingsService.getUsername().toLowerCase()) {
                 post.userClass = 'user_me';
             } else if (thread && post.author.toLowerCase() === thread.author.toLowerCase()) {
                 post.userClass = 'user_op';
