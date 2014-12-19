@@ -75,8 +75,6 @@ angular.module('chatty')
 
 
         settingsService.load = function load() {
-            var deferred = $q.defer();
-
             collapsedThreads = [];
             credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''};
             tabs = angular.fromJson(localStorageService.get('tabs')) || [];
@@ -89,8 +87,15 @@ angular.module('chatty')
                 credentials.password = '';
             }
 
+            return settingsService.refresh();
+        };
+
+        settingsService.refresh = function refresh() {
+            var deferred = $q.defer();
+
             apiService.getMarkedPosts(settingsService.getUsername())
                 .success(function(data) {
+                    collapsedThreads = [];
                     _.each(data.markedPosts, function(mark) {
                         if (mark.type === 'collapsed') {
                             collapsedThreads.push(mark.id);
@@ -105,10 +110,6 @@ angular.module('chatty')
                 });
 
             return deferred.promise;
-        };
-
-        settingsService.refresh = function refresh() {
-            //TODO handle refreshing collapsed/pinned/etc
         };
 
         return settingsService;
