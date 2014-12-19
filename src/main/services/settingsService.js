@@ -1,8 +1,8 @@
 angular.module('chatty')
-    .service('settingsService', function($document, $location, localStorageService) {
+    .service('settingsService', function($document, $location, $http, $window, localStorageService) {
         var settingsService = {};
         
-        var USE_LOCAL_STORAGE = true;
+        var USE_LOCAL_STORAGE = false;
         
         var settingsContainer = {
             collapsedThreads: [],
@@ -98,19 +98,70 @@ angular.module('chatty')
             save();
         }
 
-        function load() {        
-            if(USE_LOCAL_STORAGE) {
+        function load() {
+            //TODO: When the user logs in, they shouldn't have to refresh to see their cloud synced data.
+            //TODO: Periodically load settings so we get fresh tabs from other instances.
+            //If we're overriding to use local storage, do it.
+            //If we're not logged in, also use local storage.
+            if(USE_LOCAL_STORAGE || !settingsService.isLoggedIn()) {
                 var data = angular.fromJson(localStorageService.get('chattyData'));
                 if(data) {
                     settingsContainer = data;
                 }
+            } else {
+                $http.get($window.location.protocol + '//winchatty.com/v2/clientData/getClientData', {params: {username: settingsService.getUsername(), client: "nixxed"}, responseType: "text"})
+                .success(function(data) {
+                    //populate settings data container.
+                    var j = JSON.parse($window.atob(data.data));
+                    //TODO: Maybe a different way to notify things that settings have updated and things should refresh...
+                    settingsContainer.tabs.length = 0; //Clear the array and add to it because the binding has already been set.
+                    for (var t in j.tabs) {
+                        var tab = j.tabs[t];
+                        settingsContainer.tabs.push(tab);
+                    }
+                    settingsContainer.collapsedThreads.length = 0;
+                    for (var ct in j.collapsedThreads) {
+                        var collapsedThread = j.collapsedThreads[ct];
+                        settingsContainer.collapsedThreads.push(collapsedThread);
+                    }
+                }).error(function(data) {
+                    console.log('Error during settingsLoad - custom: ', data);
+                });
+                
+                //TODO: Use winchatty markPost for collapse and tabbed things with IDs - http://winchatty.com/v2/readme#_Toc405750611
             }
         }
         
         function save() {
-            if(USE_LOCAL_STORAGE) {
+            if(USE_LOCAL_STORAGE || !settingsService.isLoggedIn()) {
                 localStorageService.set('chattyData', settingsContainer);
+            } else {
+                //post additional settings data to winchatty.  Pin/Collapse is done at the time they're pinned so it's not necessary here.
+                var d = $window.btoa(JSON.stringify(settingsContainer));
+                post($window.location.protocol + '//winchatty.com/v2/clientData/setClientData', {username: settingsService.getUsername(), client: "nixxed", data: d})
+                .success(function(data) {
+                    
+                }).error(function(data) {
+                    console.log('Error during settingsLoad - custom: ', data);
+                });
             }
+        }
+        
+        function post(url, params) {
+            var data = _.reduce(params, function(result, value, key) {
+                return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(value);
+            }, '');
+
+            var config = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: data
+            };
+
+            return $http(config);
         }
         
         load();
