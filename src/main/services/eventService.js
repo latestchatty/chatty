@@ -7,14 +7,14 @@ angular.module('chatty')
         eventService.load = function load() {
             modelService.clear();
 
-            $http.get('http://winchatty.com/v2/getNewestEventId')
+            $http.get(window.location.protocol + '//winchatty.com/v2/getNewestEventId')
                 .success(function(data) {
                     lastEventId = data.eventId;
                 }).error(function(data) {
                     console.log('Error during getNewestEventId: ', data);
                 });
 
-            $http.get('http://winchatty.com/v2/getChatty')
+            $http.get(window.location.protocol + '//winchatty.com/v2/getChatty')
                 .success(function(data) {
                     processChatty(data.threads, []);
                 }).error(function(data) {
@@ -48,7 +48,7 @@ angular.module('chatty')
         }
 
         function waitForEvents() {
-            $http.get('http://winchatty.com/v2/waitForEvent?lastEventId=' + lastEventId)
+            $http.get(window.location.protocol + '//winchatty.com/v2/waitForEvent?lastEventId=' + lastEventId)
                 .success(function(data) {
                     eventResponse(data);
                 }).error(function(data) {
