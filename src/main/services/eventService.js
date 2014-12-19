@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('eventService', function($http, $timeout, $interval, modelService, settingsService) {
+    .service('eventService', function($timeout, apiService, modelService, settingsService) {
         var eventService = {};
         var lastEventId = 0;
 
@@ -7,14 +7,14 @@ angular.module('chatty')
         eventService.load = function load() {
             modelService.clear();
 
-            $http.get('http://winchatty.com/v2/getNewestEventId')
+            apiService.getNewestEventId()
                 .success(function(data) {
                     lastEventId = data.eventId;
                 }).error(function(data) {
                     console.log('Error during getNewestEventId: ', data);
                 });
 
-            $http.get('http://winchatty.com/v2/getChatty')
+            apiService.getChatty()
                 .success(function(data) {
                     processChatty(data.threads, []);
                 }).error(function(data) {
@@ -48,7 +48,7 @@ angular.module('chatty')
         }
 
         function waitForEvents() {
-            $http.get('http://winchatty.com/v2/waitForEvent?lastEventId=' + lastEventId)
+            apiService.waitForEvent(lastEventId)
                 .success(function(data) {
                     eventResponse(data);
                 }).error(function(data) {
@@ -69,11 +69,9 @@ angular.module('chatty')
             } else {
                 if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
                     console.log('Too many events since last refresh, reloading chatty.');
-                    $timeout(function() {
-                        eventService.load();
-                    });
+                    eventService.load();
                 } else {
-                    //restart events
+                    //restart events in 30s
                     $timeout(function() {
                         waitForEvents();
                     }, 30000)

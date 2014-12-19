@@ -60,9 +60,9 @@ angular.module('chatty')
             localStorageService.remove('credentials');
         };
 
-        settingsService.setCredentials = function setCredentials(newCredentials) {
-            credentials.username = newCredentials.username;
-            credentials.password = newCredentials.password;
+        settingsService.setCredentials = function setCredentials(username, password) {
+            credentials.username = username;
+            credentials.password = password;
             localStorageService.set('credentials', credentials);
         };
 

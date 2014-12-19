@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('actionService', function($rootScope, $q, $http, $timeout, modelService, settingsService) {
+    .service('actionService', function($rootScope, $q, apiService, modelService, settingsService) {
         var actionService = {};
 
         var lastReply;
@@ -9,16 +9,11 @@ angular.module('chatty')
             settingsService.clearCredentials();
 
             if (username && password) {
-                var params = {
-                    username: username,
-                    password: password
-                };
-
-                post('https://winchatty.com/v2/verifyCredentials', params)
+                apiService.login(username, password)
                     .success(function(data) {
                         var result = data && data.isValid;
                         if (result) {
-                            settingsService.setCredentials(params);
+                            settingsService.setCredentials(username, password);
                         }
                         deferred.resolve(result);
                     }).error(function() {
@@ -39,20 +34,13 @@ angular.module('chatty')
             _.each(threads, actionService.closeReplyBox);
         };
 
-        actionService.submitPost = function submitPost(id, body) {
+        actionService.submitPost = function submitPost(parentId, body) {
             var deferred = $q.defer();
 
             if (settingsService.isLoggedIn()) {
-                var params = {
-                    username: settingsService.getUsername(),
-                    password: settingsService.getPassword(),
-                    parentId: id,
-                    text: body
-                };
-
-                post('https://winchatty.com/v2/postComment', params)
+                apiService.submitPost(settingsService.getUsername(), settingsService.getPassword(), parentId, body)
                     .success(function(data) {
-                        deferred.resolve(data.result && data.result == 'success');
+                        deferred.resolve(data.result && data.result === 'success');
                     }).error(function() {
                         deferred.resolve(false);
                     });
@@ -238,23 +226,6 @@ angular.module('chatty')
                 delete thread.replyingToPost;
                 $rootScope.$broadcast('post-reply' + thread.id);
             }
-        }
-
-        function post(url, params) {
-            var data = _.reduce(params, function(result, value, key) {
-                return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(value);
-            }, '');
-
-            var config = {
-                method: 'POST',
-                url: url,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: data
-            };
-
-            return $http(config);
         }
 
         return actionService;
