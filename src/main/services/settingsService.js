@@ -11,10 +11,11 @@ angular.module('chatty')
         };
 
         settingsService.cleanCollapsed = function cleanCollapsed(posts) {
-            _.remove(collapsedThreads, function(id) {
-                return !posts[id];
+            _.each(collapsedThreads, function(id) {
+                if (!posts[id]) {
+                    apiService.markPost(settingsService.getUsername(), thread.id, 'unmarked');
+                }
             });
-            localStorageService.set('collapsedThreads', collapsedThreads);
         };
 
 
