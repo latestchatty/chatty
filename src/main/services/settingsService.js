@@ -13,7 +13,7 @@ angular.module('chatty')
         settingsService.cleanCollapsed = function cleanCollapsed(posts) {
             _.each(collapsedThreads, function(id) {
                 if (!posts[id]) {
-                    apiService.markPost(settingsService.getUsername(), thread.id, 'unmarked');
+                    apiService.markPost(settingsService.getUsername(), id, 'unmarked');
                 }
             });
         };
