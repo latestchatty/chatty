@@ -73,7 +73,7 @@ function buildJs(debug) {
             .pipe(gulpif(!debug, uglify()))
             .pipe(concat('bundle.js'))
             .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
-            .pipe(gulpif(!debug,sourcemaps.write('.', {addComment: false})))
+            .pipe(gulpif(!debug,sourcemaps.write('.')))
             .pipe(gulp.dest(paths.target));
     }
 }
