@@ -36,11 +36,14 @@ angular.module('chatty')
                 var fixedPost = fixPost(post, thread);
                 updateLineClass(fixedPost, thread);
                 updateModTagClass(fixedPost);
+                fixedPost.parentAuthor = parent.author;
 
                 thread.replyCount++;
 
                 parent.posts.push(fixedPost);
                 posts[fixedPost.id] = fixedPost;
+
+                return fixedPost;
             }
         };
 

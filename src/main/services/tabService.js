@@ -4,9 +4,14 @@ angular.module('chatty')
 
         var threads = modelService.getThreads();
         var tabs = [
-            { displayText: 'Chatty', expression: null, selected: true, defaultTab: true },
-            { displayText: 'Frontpage', expression: { author: 'Shacknews'}, defaultTab: true },
-            { displayText: 'Mine', expression: settingsService.getUsername, defaultTab: true }
+            { displayText: 'Chatty', expression: null, selected: true, defaultTab: true, newPostCount: 0 },
+            { displayText: 'Frontpage', expression: { author: 'Shacknews'}, defaultTab: true, newPostCount: 0 },
+            { displayText: 'Mine', expression: function() {
+                return {$:{ author: settingsService.getUsername() }};
+            }, defaultTab: true, newPostCount: 0 },
+            { displayText: 'Replies', expression: function() {
+                return {$:{ parentAuthor: settingsService.getUsername() }};
+            }, defaultTab: true, newPostCount: 0 }
         ].concat(angular.fromJson(localStorageService.get('tabs')) || []);
         var selectedTab = tabs[0];
 
@@ -19,8 +24,8 @@ angular.module('chatty')
             selectedTab = tab;
 
             tab.selected = true;
-            var filterExpression = angular.isFunction(tab.expression) ? tab.expression() : tab.expression;
-            applyFilter(filterExpression);
+            var expression = angular.isFunction(tab.expression) ? tab.expression() : tab.expression;
+            applyFilter(expression);
         };
 
         tabService.addTab = function(expression, displayText) {
@@ -28,7 +33,8 @@ angular.module('chatty')
             if (!existing) {
                 var tab = {
                     displayText: displayText,
-                    expression: expression
+                    expression: expression,
+                    newPostCount: 0
                 };
                 tabs.push(tab);
                 save();
