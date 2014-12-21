@@ -12,6 +12,7 @@
 }
 
 .navbar-tabs {
+    margin-left: -30px;
     position: relative;
     float: left;
     text-transform: uppercase;
