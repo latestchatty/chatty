@@ -40,11 +40,16 @@ angular.module('chatty')
                 $scope.filterSet = false;
                 $scope.filterExpression = null;
                 $scope.$watch('filterExpression', function runFilter() {
-                    applyFilter($scope.filterExpression);
+                    if ($scope.filterExpression) {
+                        applyFilter({$:$scope.filterExpression});
+                    } else {
+                        $scope.filterSet = false;
+                    }
                 });
                 function applyFilter(filterExpression) {
                     $scope.filterSet = false;
                     if (filterExpression) {
+                        console.log('filtering: ', filterExpression);
                         _.forEach($scope.threads, function(thread) {
                             delete thread.visible;
                         });
