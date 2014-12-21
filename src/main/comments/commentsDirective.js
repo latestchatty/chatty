@@ -11,7 +11,7 @@ angular.module('chatty')
         compile: function(element) {
             return RecursionHelper.compile(element);
         },
-        controller: function($scope, actionService) {
+        controller: function($scope, actionService, tabService) {
             $scope.expandReply = function expandReply(post) {
                 actionService.expandReply(post);
             };
@@ -22,7 +22,11 @@ angular.module('chatty')
 
             $scope.openReplyBox = function openReplyBox(post) {
                 actionService.openReplyBox(post);
-            }
+            };
+
+            $scope.addUserTab = function(user) {
+                tabService.addTab({ author: user }, user);
+            };
         }
     }
 });

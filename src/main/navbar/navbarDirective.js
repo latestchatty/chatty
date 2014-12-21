@@ -4,7 +4,7 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'navbar/navbar.html',
-            controller: function($scope, $filter, $window, actionService, settingsService) {
+            controller: function($scope, $filter, $window, actionService, settingsService, tabService) {
                 //login related
                 $scope.loginRunning = false;
                 $scope.loginInvalid = false;
@@ -37,57 +37,19 @@ angular.module('chatty')
                 };
 
                 //support filters
-                $scope.filterSet = false;
                 $scope.filterExpression = null;
                 $scope.$watch('filterExpression', function runFilter() {
-                    if ($scope.filterExpression) {
-                        applyFilter({$:$scope.filterExpression});
-                    } else {
-                        $scope.filterSet = false;
-                    }
+                    tabService.filterThreads($scope.filterExpression);
                 });
-                function applyFilter(filterExpression) {
-                    $scope.filterSet = false;
-                    if (filterExpression) {
-                        console.log('filtering: ', filterExpression);
-                        _.forEach($scope.threads, function(thread) {
-                            delete thread.visible;
-                        });
-
-                        var visibleThreads = $filter('filter')($scope.threads, filterExpression);
-                        visibleThreads.forEach(function(thread) {
-                            thread.visible = true;
-                        });
-                        $scope.filterSet = true;
-                    }
-                }
 
                 //support tabs
-                $scope.defaultTabs = [
-                    { displayText: 'Chatty', filterExpression: null, selected: true },
-                    { displayText: 'Frontpage', filterExpression: { author: 'Shacknews'} },
-                    { displayText: 'Mine', filterExpression: settingsService.getUsername }
-                ];
-                $scope.selectedTab = $scope.defaultTabs[0];
-                $scope.tabs = settingsService.getTabs();
-                $scope.selectTab = function selectTab(tab) {
-                    delete $scope.selectedTab.selected;
-                    $scope.filterExpression = null;
-                    $scope.selectedTab = tab;
-
-                    tab.selected = true;
-                    var filterExpression = angular.isFunction(tab.filterExpression) ? tab.filterExpression() : tab.filterExpression;
-                    applyFilter(filterExpression);
+                $scope.tabs = tabService.getTabs();
+                $scope.selectTab = function(tab) {
+                    tabService.selectTab(tab);
                     $window.scrollTo(0, 0);
                 };
-                $scope.addTab = function addTab(filterExpression, displayText) {
-                    var tab = {filterExpression:filterExpression, displayText:displayText};
-                    settingsService.addTab(tab);
-                    return tab;
-                };
-                $scope.removeTab = function removeTab(tab) {
-                    settingsService.removeTab(tab);
-                    $scope.selectTab($scope.defaultTabs[0]);
+                $scope.removeTab = function(tab) {
+                    tabService.removeTab(tab);
                 };
 
                 //new thread

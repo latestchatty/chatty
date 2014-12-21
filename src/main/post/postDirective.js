@@ -4,7 +4,7 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'post/post.html',
-            controller: function($scope, actionService) {
+            controller: function($scope, actionService, tabService) {
                 $scope.collapse = function collapse(post) {
                     if (post.parentId) {
                         actionService.collapsePostReply(post);
@@ -15,6 +15,14 @@ angular.module('chatty')
 
                 $scope.openReplyBox = function openReplyBox(post) {
                     actionService.openReplyBox(post);
+                };
+
+                $scope.addUserTab = function(user) {
+                    tabService.addTab({ author: user }, user);
+                };
+
+                $scope.addPostTab = function(post) {
+                    tabService.addTab({ id: post.id }, 'post');
                 };
             }
         }

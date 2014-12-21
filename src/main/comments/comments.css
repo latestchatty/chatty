@@ -50,17 +50,3 @@ div.treeview ul li.last {
 .oneline1 { color: #fff; }
 .oneline0 { color: #eee; font-weight: bold; }
 .onelineSeparator { font-size: 11px; color: #666;}
-
-/* poster highlights */
-.user_op {
-    font-size: 14px;
-    font-weight: bold;
-    font-family: sans-serif;
-    color: #6aff94;
-}
-.user_me {
-    font-size: 14px;
-    font-weight: bold;
-    font-family: sans-serif;
-    color: #66CCFF;
-}

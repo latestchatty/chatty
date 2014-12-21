@@ -7,7 +7,7 @@
                   ng-click="expandReply(post)" ng-bind-html="::post.oneline | trusted"></span>
 
             <span class="onelineSeparator">&nbsp;:&nbsp;</span>
-            <span ng-class="::post.userClass || 'user'">{{::post.author}}</span>
+            <span ng-class="::post.userClass || 'user'" ng-click="addUserTab(post.author)">{{::post.author}}</span>
         </div>
 
         <!--expanded reply-->

@@ -4,7 +4,6 @@ angular.module('chatty')
 
         var collapsedThreads;
         var credentials;
-        var tabs;
 
         settingsService.isCollapsed = function isCollapsed(id) {
             return collapsedThreads.indexOf(Number(id)) >= 0;
@@ -43,32 +42,6 @@ angular.module('chatty')
             localStorageService.set('credentials', credentials);
         };
 
-
-        settingsService.getTabs = function getTabs() {
-            return tabs;
-        };
-
-        settingsService.addTab = function addTab(tab) {
-            if (!_.find(tabs, {'filterExpression' : tab.filterExpression})) {
-                tabs.push(tab);
-            }
-            saveTabs();
-        };
-
-        settingsService.removeTab = function removeTab(tab) {
-            _.pull(tabs, tab);
-            saveTabs();
-        };
-
-        function saveTabs() {
-            var clone = _.cloneDeep(tabs);
-            _.each(clone, function(tab) {
-                delete tab.selected;
-            });
-            localStorageService.set('tabs', clone);
-        }
-
-
         settingsService.isEmbeddedInShacknews = function isEmbeddedInShacknews () {
             return $location.host().indexOf('shacknews.com') >= 0;
         };
@@ -77,7 +50,6 @@ angular.module('chatty')
         settingsService.load = function load() {
             collapsedThreads = [];
             credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''};
-            tabs = angular.fromJson(localStorageService.get('tabs')) || [];
 
             if (settingsService.isEmbeddedInShacknews()) {
                 //Get the username from the hidden shack element.

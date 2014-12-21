@@ -1,5 +1,5 @@
 <div class="threads" keep-scroll>
-    <div ng-repeat="post in threads track by post.id" ng-hide="filterSet && !post.visible">
+    <div ng-repeat="post in threads track by post.id" ng-show="post.visible">
 
         <!-- collapsed root post -->
         <div ng-if-event-expr="post.state === 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id"

@@ -32,20 +32,37 @@ div.postBody a:hover {
 }
 
 /* post author */
-.rootPost .user {
-    font-size: 14px;
-    cursor: pointer;
-    line-height: 14px;
-}
-
 .user {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     line-height: 14px;
     color: #f3e7b5;
     font-family: sans-serif;
+    cursor: pointer;
 }
 .user:hover {
+    text-decoration: underline;
+}
+.user_op {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #6aff94;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+.user_op:hover {
+    text-decoration: underline;
+}
+.user_me {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #66CCFF;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+.user_me:hover {
     text-decoration: underline;
 }
 
