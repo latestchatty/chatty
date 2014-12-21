@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('eventService', function($timeout, $interval, apiService, modelService, settingsService) {
+    .service('eventService', function($timeout, $interval, apiService, modelService, settingsService, tabService) {
         var eventService = {};
         var lastEventId = 0;
 
@@ -84,7 +84,10 @@ angular.module('chatty')
                 if (event.eventData.post.parentId === 0) {
                     modelService.addThread(event.eventData.post, true);
                 } else {
-                    modelService.addPost(event.eventData.post);
+                    var thread = modelService.addPost(event.eventData.post);
+                    if (thread) {
+                        tabService.newPost(thread);
+                    }
                 }
             } else if (event.eventType === 'categoryChange') {
                 modelService.changeCategory(event.eventData.postId, event.eventData.category);

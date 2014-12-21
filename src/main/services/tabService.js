@@ -24,14 +24,33 @@ angular.module('chatty')
             selectedTab = tab;
 
             tab.selected = true;
-            var expression = angular.isFunction(tab.expression) ? tab.expression() : tab.expression;
-            applyFilter(expression);
+            tab.newPostCount = 0;
+
+            applyFilter(getTabExpression(tab));
+        };
+
+        function getTabExpression(tab) {
+            return angular.isFunction(tab.expression) ? tab.expression() : tab.expression;
+        }
+
+        tabService.newPost = function(thread) {
+            _.each(tabs, function(tab) {
+                if (!tab.selected) {
+                    var expression = getTabExpression(tab);
+                    if (expression) {
+                        var visible = $filter('filter')([thread], expression);
+                        if (visible.length) {
+                            tab.newPostCount++;
+                        }
+                    }
+                }
+            });
         };
 
         tabService.addTab = function(expression, displayText) {
-            var existing = _.find(tabs, {'expression':expression});
-            if (!existing) {
-                var tab = {
+            var tab = _.find(tabs, {'expression':expression});
+            if (!tab) {
+                tab = {
                     displayText: displayText,
                     expression: expression,
                     newPostCount: 0
@@ -39,6 +58,7 @@ angular.module('chatty')
                 tabs.push(tab);
                 save();
             }
+            return tab;
         };
 
         tabService.removeTab = function(tab) {
@@ -78,6 +98,7 @@ angular.module('chatty')
             var clone = _.cloneDeep(tabs);
             _.remove(clone, function(tab) {
                 delete tab.selected;
+                delete tab.newPostCount;
                 return tab.defaultTab;
             });
             localStorageService.set('tabs', clone);

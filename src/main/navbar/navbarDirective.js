@@ -48,6 +48,9 @@ angular.module('chatty')
                     tabService.selectTab(tab);
                     $window.scrollTo(0, 0);
                 };
+                $scope.addTab = function(expression) {
+                    return tabService.addTab({ $:expression }, expression);
+                };
                 $scope.removeTab = function(tab) {
                     tabService.removeTab(tab);
                 };
