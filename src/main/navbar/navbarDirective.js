@@ -4,7 +4,7 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'navbar/navbar.html',
-            controller: function($scope, $filter, $window, actionService, settingsService, tabService) {
+            controller: function($scope, $window, actionService, settingsService, tabService) {
                 //login related
                 $scope.loginRunning = false;
                 $scope.loginInvalid = false;
