@@ -4,6 +4,7 @@
   "description": "A web based alternate client for the shacknews chatty (http://www.shacknews.com/chatty).",
   "author": "Andy Christianson",
   "license": "MIT",
+  "repository": "https://github.com/NiXXeD/chatty",
   "scripts": {
     "build": "npm install && bower install && gulp clean && gulp build",
     "start": "npm install && bower install && gulp clean && gulp build && gulp server"
