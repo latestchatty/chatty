@@ -9,6 +9,20 @@ angular.module('chatty')
             return collapsedThreads.indexOf(Number(id)) >= 0;
         };
 
+        settingsService.collapseThread = function(id) {
+            collapsedThreads.push(id);
+            if (settingsService.isLoggedIn()) {
+                apiService.markPost(settingsService.getUsername(), id, 'collapsed');
+            }
+        };
+
+        settingsService.uncollapseThread = function(id) {
+            _.pull(collapsedThreads, id);
+            if (settingsService.isLoggedIn()) {
+                apiService.markPost(settingsService.getUsername(), id, 'unmarked');
+            }
+        };
+
         settingsService.cleanCollapsed = function cleanCollapsed(posts) {
             _.each(collapsedThreads, function(id) {
                 if (!posts[id]) {

@@ -83,7 +83,7 @@ angular.module('chatty')
                     }
                 } else {
                     //removing thread from model
-                    apiService.markPost(settingsService.getUsername(), thread.id, 'unmarked');
+                    settingsService.uncollapseThread(thread.id);
                 }
             }
 
@@ -112,7 +112,7 @@ angular.module('chatty')
             threads.push(thread);
 
             //update local storage
-            apiService.markPost(settingsService.getUsername(), thread.id, 'collapsed');
+            settingsService.collapseThread(thread.id);
         };
 
         actionService.expandThread = function expandThread(thread) {
@@ -121,7 +121,7 @@ angular.module('chatty')
             $rootScope.$broadcast('thread-truncate' + thread.id);
 
             //update local storage
-            apiService.markPost(settingsService.getUsername(), thread.id, 'unmarked');
+            settingsService.uncollapseThread(thread.id);
         };
 
         actionService.expandReply = function expandReply(post) {
