@@ -3,12 +3,12 @@
         <ul class="navbar-tabs">
             <li title="Reflow thread order" ng-click="reflowThreads()">
                 <i class="actionItem fa fa-history"></i>
-                <span class="navbarNewThreads" ng-if="newThreads.length">+{{newThreads.length}}</span>
+                <span class="navbarNewThreads" ng-if="newThreads.length" title="New threads">+{{newThreads.length}}</span>
             </li>
             <li ng-repeat="tab in tabs" ng-click="selectTab(tab)"
                 ng-right-click="removeTab(tab)" ng-class="{ navbarTabSelected:tab.selected }">
-                {{tab.displayText}}
-                <span class="navbarNewThreads" ng-if="tab.newPostCount">+{{tab.newPostCount}}</span>
+                {{::tab.displayText}}
+                <span class="navbarNewThreads" ng-if="tab.newPostCount" title="{{::tab.newPostText}}">+{{tab.newPostCount}}</span>
             </li>
         </ul>
 

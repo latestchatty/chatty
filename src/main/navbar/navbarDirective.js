@@ -49,7 +49,7 @@ angular.module('chatty')
                     $window.scrollTo(0, 0);
                 };
                 $scope.addTab = function(expression) {
-                    return tabService.addTab({ $:expression }, expression);
+                    return tabService.addTab({ $:expression }, expression, 'New replies in threads with this search term.');
                 };
                 $scope.removeTab = function(tab) {
                     tabService.removeTab(tab);
