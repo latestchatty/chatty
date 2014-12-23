@@ -25,7 +25,7 @@ angular.module('chatty')
             };
 
             $scope.addUserTab = function(user) {
-                tabService.addTab({ author: user }, user, 'New replies in threads participated in by ' + user + '.');
+                tabService.addTab('user', user);
             };
         }
     }

@@ -11,9 +11,7 @@ angular.module('chatty')
                 defaultTab: true
             }, {
                 displayText: 'Frontpage',
-                expression: {
-                    author: 'Shacknews'
-                },
+                expression: { author: 'Shacknews' },
                 defaultTab: true,
                 newPostText: 'New front page articles.',
                 newPostFunction: function(thread, parent, post) {
@@ -37,7 +35,45 @@ angular.module('chatty')
                     return post.parentAuthor === settingsService.getUsername();
                 }
             }
-        ].concat(angular.fromJson(localStorageService.get('tabs')) || []);
+        ];
+        var tabTemplates = {
+            user: function(value) {
+                return {
+                    tabType: 'user',
+                    value: value,
+                    displayText: value,
+                    expression: { author: value },
+                    newPostText: 'New replies in threads participated in by this user.',
+                    newPostFunction: function(thread, parent, post) {
+                        return post.author === this.displayText;
+                    }
+                };
+            },
+            post: function(value) {
+                return {
+                    tabType: 'post',
+                    value: value,
+                    displayText: 'post',
+                    expression: { id: value },
+                    newPostText: 'New replies in this specific post.',
+                    newPostFunction: function(thread, parent, post) {
+                        return post.author === this.displayText;
+                    }
+                };
+            },
+            filter: function(value) {
+                return {
+                    tabType: 'filter',
+                    value: value,
+                    displayText: value,
+                    expression: { $: value },
+                    newPostText: 'New replies in threads with this search term.',
+                    newPostFunction: function(thread, parent, post) {
+                        return post.author === this.displayText;
+                    }
+                };
+            }
+        };
         var selectedTab = tabs[0];
 
         tabService.setThreads = function(newThreads) {
@@ -85,18 +121,15 @@ angular.module('chatty')
             }
         };
 
-        tabService.addTab = function(expression, displayText, newPostText) {
-            var tab = _.find(tabs, {'expression':expression});
+        tabService.addTab = function(tabType, value) {
+            var tab = _.find(tabs, {'tabType': tabType, 'value': value});
+
             if (!tab) {
-                tab = {
-                    displayText: displayText,
-                    expression: expression,
-                    newPostCount: 0,
-                    newPostText: newPostText
-                };
+                tab = tabTemplates[tabType](value);
                 tabs.push(tab);
                 save();
             }
+
             return tab;
         };
 
@@ -134,14 +167,23 @@ angular.module('chatty')
         }
 
         function save() {
-            var clone = _.cloneDeep(tabs);
-            _.remove(clone, function(tab) {
-                delete tab.selected;
-                delete tab.newPostCount;
-                return tab.defaultTab;
+            var filtered = _.filter(_.cloneDeep(tabs), function(tab) {
+                return !!tab.tabType;
             });
-            localStorageService.set('tabs', clone);
+            var cleaned = _.map(filtered, function(tab) {
+                return {
+                    tabType: tab.tabType,
+                    value: tab.value
+                };
+            });
+            localStorageService.set('tabs', cleaned);
         }
+
+        //load on startup
+        var loaded = angular.fromJson(localStorageService.get('tabs')) || [];
+        _.each(loaded, function(tab) {
+            tabService.addTab(tab.tabType, tab.value);
+        });
 
         return tabService;
     });

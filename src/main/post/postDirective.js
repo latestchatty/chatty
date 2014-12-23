@@ -18,11 +18,11 @@ angular.module('chatty')
                 };
 
                 $scope.addUserTab = function(user) {
-                    tabService.addTab({ author: user }, user, 'New replies in threads participated in by ' + user + '.');
+                    tabService.addTab('user', user);
                 };
 
                 $scope.addPostTab = function(post) {
-                    tabService.addTab({ id: post.id }, 'post', 'New replies in this specific post.');
+                    tabService.addTab('post', post.id);
                 };
             }
         }

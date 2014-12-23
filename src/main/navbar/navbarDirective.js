@@ -49,7 +49,7 @@ angular.module('chatty')
                     $window.scrollTo(0, 0);
                 };
                 $scope.addTab = function(expression) {
-                    return tabService.addTab({ $:expression }, expression, 'New replies in threads with this search term.');
+                    return tabService.addTab('filter', expression);
                 };
                 $scope.removeTab = function(tab) {
                     tabService.removeTab(tab);
@@ -64,7 +64,7 @@ angular.module('chatty')
                 //reflow
                 $scope.reflowThreads = function reflowThreads() {
                     $window.scrollTo(0, 0);
-                    tabService.selectTab(tabs[0]);
+                    tabService.selectTab($scope.tabs[0]);
                     actionService.reflowThreads();
                 }
             }
