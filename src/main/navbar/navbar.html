@@ -7,7 +7,7 @@
             </li>
             <li ng-repeat="tab in tabs" ng-click="selectTab(tab)"
                 ng-right-click="removeTab(tab)" ng-class="{ navbarTabSelected:tab.selected }">
-                {{::tab.displayText}}
+                <span ng-bind="::tab.displayText" class="hoverable"></span>
                 <span class="navbarNewThreads" ng-if="tab.newPostCount" title="{{::tab.newPostText}}">+{{tab.newPostCount}}</span>
             </li>
         </ul>
