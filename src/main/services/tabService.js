@@ -23,7 +23,9 @@ angular.module('chatty')
                     return {$: {author: settingsService.getUsername()}};
                 },
                 defaultTab: true,
-                newPostText: 'New replies in threads I participated in.'
+                newPostFunction: function() {
+                    return false;
+                }
             }, {
                 displayText: 'Replies',
                 expression: function() {
@@ -67,7 +69,7 @@ angular.module('chatty')
                     value: value,
                     displayText: value,
                     expression: { $: value },
-                    newPostText: 'New replies in threads with this search term.'
+                    newPostText: 'New posts containing this search term.'
                 };
             }
         };
@@ -106,7 +108,7 @@ angular.module('chatty')
                         } else {
                             var expression = getTabExpression(tab);
                             if (expression) {
-                                increment = !!$filter('filter')([thread], expression).length;
+                                increment = !!$filter('filter')([post], expression).length;
                             }
                         }
 
