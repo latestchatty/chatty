@@ -64,6 +64,7 @@ angular.module('chatty')
                 //reflow
                 $scope.reflowThreads = function reflowThreads() {
                     $window.scrollTo(0, 0);
+                    tabService.selectTab(tabs[0]);
                     actionService.reflowThreads();
                 }
             }
