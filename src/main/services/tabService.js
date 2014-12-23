@@ -56,8 +56,8 @@ angular.module('chatty')
                     displayText: 'post',
                     expression: { id: value },
                     newPostText: 'New replies in this specific post.',
-                    newPostFunction: function(thread, parent, post) {
-                        return post.author === this.displayText;
+                    newPostFunction: function(thread) {
+                        return thread.id === value;
                     }
                 };
             },
@@ -67,10 +67,7 @@ angular.module('chatty')
                     value: value,
                     displayText: value,
                     expression: { $: value },
-                    newPostText: 'New replies in threads with this search term.',
-                    newPostFunction: function(thread, parent, post) {
-                        return post.author === this.displayText;
-                    }
+                    newPostText: 'New replies in threads with this search term.'
                 };
             }
         };
@@ -114,7 +111,10 @@ angular.module('chatty')
                         }
 
                         if (increment) {
-                            tab.newPostCount++;
+                            console.log('increment');
+                            tab.newPostCount = (tab.newPostCount || 0) + 1;
+                        } else {
+                            console.log('nope');
                         }
                     }
                 });
