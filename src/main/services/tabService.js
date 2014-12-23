@@ -4,17 +4,45 @@ angular.module('chatty')
 
         var threads = modelService.getThreads();
         var tabs = [
-            { displayText: 'Chatty', expression: null, selected: true, defaultTab: true, newPostCount: 0 },
-            { displayText: 'Frontpage', expression: { author: 'Shacknews'}, defaultTab: true,
-                newPostCount: 0, newPostText: 'New front page articles.' },
-            { displayText: 'Mine', expression: function() {
-                return {$:{ author: settingsService.getUsername() }};
-            }, defaultTab: true, newPostCount: 0, newPostText: 'New replies in threads I participated in.' },
-            { displayText: 'Replies', expression: function() {
-                return {$:{ parentAuthor: settingsService.getUsername() }};
-            }, defaultTab: true, newPostCount: 0, newPostText: 'New replies to my posts.' }
+            {
+                displayText: 'Chatty',
+                expression: null,
+                selected: true,
+                defaultTab: true
+            }, {
+                displayText: 'Frontpage',
+                expression: {
+                    author: 'Shacknews'
+                },
+                defaultTab: true,
+                newPostText: 'New front page articles.',
+                newPostFunction: function(thread, parent, post) {
+                    return post.author === 'Shacknews';
+                }
+            }, {
+                displayText: 'Mine',
+                expression: function() {
+                    return {$: {author: settingsService.getUsername()}};
+                },
+                defaultTab: true,
+                newPostText: 'New replies in threads I participated in.'
+            }, {
+                displayText: 'Replies',
+                expression: function() {
+                    return {$: {parentAuthor: settingsService.getUsername()}};
+                },
+                defaultTab: true,
+                newPostText: 'New replies to my posts.',
+                newPostFunction: function(thread, parent, post) {
+                    return post.parentAuthor === settingsService.getUsername();
+                }
+            }
         ].concat(angular.fromJson(localStorageService.get('tabs')) || []);
         var selectedTab = tabs[0];
+
+        tabService.setThreads = function(newThreads) {
+            threads = newThreads;
+        };
 
         tabService.getTabs = function() {
             return tabs;
@@ -34,18 +62,27 @@ angular.module('chatty')
             return angular.isFunction(tab.expression) ? tab.expression() : tab.expression;
         }
 
-        tabService.newPost = function(thread) {
-            _.each(tabs, function(tab) {
-                if (!tab.selected) {
-                    var expression = getTabExpression(tab);
-                    if (expression) {
-                        var visible = $filter('filter')([thread], expression);
-                        if (visible.length) {
+        tabService.newPost = function(thread, parent, post) {
+            if (thread.state !== 'collapsed' && post.author !== settingsService.getUsername()) {
+                _.each(tabs, function(tab) {
+                    if (!tab.selected) {
+                        var increment = false;
+
+                        if (angular.isFunction(tab.newPostFunction)) {
+                            increment = tab.newPostFunction(thread, parent, post);
+                        } else {
+                            var expression = getTabExpression(tab);
+                            if (expression) {
+                                increment = !!$filter('filter')([thread], expression).length;
+                            }
+                        }
+
+                        if (increment) {
                             tab.newPostCount++;
                         }
                     }
-                }
-            });
+                });
+            }
         };
 
         tabService.addTab = function(expression, displayText, newPostText) {

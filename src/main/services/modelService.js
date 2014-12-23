@@ -43,7 +43,7 @@ angular.module('chatty')
                 parent.posts.push(fixedPost);
                 posts[fixedPost.id] = fixedPost;
 
-                return thread;
+                return { thread: thread, parent: parent, post: fixedPost};
             }
         };
 

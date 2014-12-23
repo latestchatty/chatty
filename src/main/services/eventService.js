@@ -84,9 +84,9 @@ angular.module('chatty')
                 if (event.eventData.post.parentId === 0) {
                     modelService.addThread(event.eventData.post, true);
                 } else {
-                    var thread = modelService.addPost(event.eventData.post);
-                    if (thread) {
-                        tabService.newPost(thread);
+                    var data = modelService.addPost(event.eventData.post);
+                    if (data) {
+                        tabService.newPost(data.thread, data.parent, data.post);
                     }
                 }
             } else if (event.eventType === 'categoryChange') {
