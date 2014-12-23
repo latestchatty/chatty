@@ -113,10 +113,7 @@ angular.module('chatty')
                         }
 
                         if (increment) {
-                            console.log('increment');
                             tab.newPostCount = (tab.newPostCount || 0) + 1;
-                        } else {
-                            console.log('nope');
                         }
                     }
                 });
