@@ -157,7 +157,7 @@ angular.module('chatty')
 
             //create the one-liner used for reply view
             var stripped = _.unescape(post.body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' '));
-            post.oneline = stripped.slice(0, 106) + (stripped.length > 106 ? '...' : '');
+            post.oneline = htmlSnippet(stripped, 106);
 
             //create sub-post container
             post.posts = post.posts || [];
@@ -222,6 +222,29 @@ angular.module('chatty')
             } else {
                 thread.expireColor = 'red';
             }
+        }
+
+        function htmlSnippet(input, maxLength) {
+            var i = 0;
+            var len = 0;
+            var tag = false;
+            while (i < input.length && len < maxLength) {
+                if (input[i] === '<') {
+                    tag = true;
+                } else if (input[i] === '>') {
+                    tag = false;
+                } else if (!tag) {
+                    len++;
+                }
+
+                i++;
+            }
+
+            var output = input.slice(0, i);
+            if (i < input.length) {
+                output += '...';
+            }
+            return output;
         }
 
         function removePost(post) {
