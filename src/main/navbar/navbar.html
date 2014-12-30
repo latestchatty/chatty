@@ -13,18 +13,22 @@
         </ul>
 
         <div class="navbar-right">
-            <form class="navbar-form" ng-if="loggedIn">
+            <form class="navbar-form" ng-show="postQueue.length">
+                <input type="button" value="Clear Post Queue ({{postQueue.length}})" class="button" ng-click="clearPostQueue()">
+            </form>
+            
+            <form class="navbar-form" ng-if="loggedIn()">
                 <input type="button" value="New Thread" class="button" ng-click="newThread()">
             </form>
 
-            <form class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn || embedded">
+            <form class="navbar-form" ng-submit="doLogin()" ng-hide="loggedIn() || embedded">
                 <input type="text" class="navbar-textinput"
                        placeholder="Username" ng-model="username" ng-disabled="loginRunning" required>
                 <input type="password" class="navbar-textinput" ng-class="{ 'navbar-textinput-invalid': loginInvalid }"
                        placeholder="Password" ng-model="password" ng-disabled="loginRunning" required>
                 <input type="submit" value="Login" class="button" ng-disabled="loginRunning">
             </form>
-            <div class="navbar-form" ng-show="loggedIn && !embedded">
+            <div class="navbar-form" ng-show="loggedIn() && !embedded">
                 <input type="button" value="Logout: {{username}}" class="button" ng-click="doLogout()">
             </div>
 

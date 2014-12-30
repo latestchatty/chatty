@@ -7,7 +7,7 @@ angular.module('chatty')
             scope: {
                 post: '='
             },
-            controller: function($scope, actionService) {
+            controller: function($scope, actionService, postService) {
                 $scope.replyBody = '';
                 $scope.tagGroups = [
                     [{ name: 'red', class: 'jt_red', open: 'r{', close: '}r'},
@@ -34,7 +34,7 @@ angular.module('chatty')
 
                 $scope.submitPost = function submitPost() {
                     if ($scope.replyBody) {
-                        actionService.submitPost($scope.post.id, $scope.replyBody);
+                        postService.submitPost($scope.post.id, $scope.replyBody);
                         $scope.close();
                     }
                 };

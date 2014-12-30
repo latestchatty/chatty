@@ -4,22 +4,21 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'navbar/navbar.html',
-            controller: function($scope, $window, actionService, settingsService, tabService) {
+            controller: function($scope, $window, actionService, postService, settingsService, tabService) {
                 //login related
                 $scope.loginRunning = false;
                 $scope.loginInvalid = false;
                 $scope.username = settingsService.getUsername();
                 $scope.password = null;
                 $scope.embedded = settingsService.isEmbeddedInShacknews();
-                $scope.loggedIn = !!$scope.username;
+                $scope.loggedIn = settingsService.isLoggedIn;
                 $scope.doLogin = function doLogin() {
                     $scope.loginRunning = true;
-                    $scope.loggedIn = false;
                     $scope.loginInvalid = false;
                     actionService.login($scope.username, $scope.password)
                         .then(function(result) {
                             if (result) {
-                                $scope.loggedIn = true;
+                                postService.loggedIn();
                             } else {
                                 $scope.loginInvalid = true;
                             }
@@ -33,7 +32,12 @@ angular.module('chatty')
                     actionService.logout();
                     $scope.loginRunning = false;
                     $scope.loginInvalid = false;
-                    $scope.loggedIn = false;
+                };
+                
+                //post queue stuff
+                $scope.postQueue = postService.getQueue();
+                $scope.clearPostQueue = function() {
+                    postService.clearQueue();
                 };
 
                 //support filters

@@ -34,23 +34,6 @@ angular.module('chatty')
             _.each(threads, actionService.closeReplyBox);
         };
 
-        actionService.submitPost = function submitPost(parentId, body) {
-            var deferred = $q.defer();
-
-            if (settingsService.isLoggedIn()) {
-                apiService.submitPost(settingsService.getUsername(), settingsService.getPassword(), parentId, body)
-                    .success(function(data) {
-                        deferred.resolve(data.result && data.result === 'success');
-                    }).error(function() {
-                        deferred.resolve(false);
-                    });
-            } else {
-                deferred.resolve(false);
-            }
-
-            return deferred.promise;
-        };
-
         actionService.reflowThreads = function reflowThreads() {
             var threads = modelService.getThreads();
             var tempThreads = [].concat(threads);
