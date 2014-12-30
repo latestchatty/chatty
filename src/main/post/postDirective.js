@@ -5,7 +5,7 @@ angular.module('chatty')
             replace: true,
             templateUrl: 'post/post.html',
             controller: function($scope, actionService, tabService) {
-                $scope.collapse = function collapse(post) {
+                $scope.collapse = function(post) {
                     if (post.parentId) {
                         actionService.collapsePostReply(post);
                     } else {
@@ -13,7 +13,7 @@ angular.module('chatty')
                     }
                 };
 
-                $scope.openReplyBox = function openReplyBox(post) {
+                $scope.openReplyBox = function(post) {
                     actionService.openReplyBox(post);
                 };
 

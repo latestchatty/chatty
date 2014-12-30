@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('threads', function () {
+    .directive('threads', function() {
         return {
             restrict: 'E',
             replace: true,
@@ -9,7 +9,7 @@ angular.module('chatty')
                 $scope.threads = modelService.getThreads();
                 $scope.newThreads = modelService.getNewThreads();
 
-                $scope.expandThread = function expandThread(thread) {
+                $scope.expandThread = function(thread) {
                     actionService.expandThread(thread);
                 };
             }

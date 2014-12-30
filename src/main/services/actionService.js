@@ -4,7 +4,7 @@ angular.module('chatty')
 
         var lastReply;
 
-        actionService.login = function login(username, password) {
+        actionService.login = function(username, password) {
             var deferred = $q.defer();
             settingsService.clearCredentials();
 
@@ -26,7 +26,7 @@ angular.module('chatty')
             return deferred.promise;
         };
 
-        actionService.logout = function logout() {
+        actionService.logout = function() {
             settingsService.clearCredentials();
 
             //close reply boxes
@@ -34,7 +34,7 @@ angular.module('chatty')
             _.each(threads, actionService.closeReplyBox);
         };
 
-        actionService.reflowThreads = function reflowThreads() {
+        actionService.reflowThreads = function() {
             var threads = modelService.getThreads();
             var tempThreads = [].concat(threads);
             threads.length = 0;
@@ -82,7 +82,7 @@ angular.module('chatty')
             }
         };
 
-        actionService.collapseThread = function collapseThread(thread) {
+        actionService.collapseThread = function(thread) {
             var threads = modelService.getThreads();
             _.pull(threads, thread);
 
@@ -98,7 +98,7 @@ angular.module('chatty')
             settingsService.collapseThread(thread.id);
         };
 
-        actionService.expandThread = function expandThread(thread) {
+        actionService.expandThread = function(thread) {
             thread.state = 'expanded';
             $rootScope.$broadcast('thread-collapse' + thread.id);
             $rootScope.$broadcast('thread-truncate' + thread.id);
@@ -107,7 +107,7 @@ angular.module('chatty')
             settingsService.uncollapseThread(thread.id);
         };
 
-        actionService.expandReply = function expandReply(post) {
+        actionService.expandReply = function(post) {
             var thread = resetThread(post, true);
 
             //expand
@@ -139,7 +139,7 @@ angular.module('chatty')
             }
         }
 
-        actionService.previousReply = function previousReply() {
+        actionService.previousReply = function() {
             if (lastReply) {
                 var parent = modelService.getPost(lastReply.parentId);
                 if (parent) {
@@ -163,7 +163,7 @@ angular.module('chatty')
             }
         }
 
-        actionService.nextReply = function nextReply() {
+        actionService.nextReply = function() {
             if (lastReply) {
                 processNextReply(lastReply);
             }
@@ -186,7 +186,7 @@ angular.module('chatty')
             }
         }
 
-        actionService.collapsePostReply = function collapsePostReply(post) {
+        actionService.collapsePostReply = function(post) {
             if (post) {
                 resetThread(post, true);
             } else if (lastReply) {
@@ -195,7 +195,7 @@ angular.module('chatty')
             }
         };
 
-        actionService.openReplyBox = function openReplyBox(post) {
+        actionService.openReplyBox = function(post) {
             var thread = resetThread(post);
 
             //open reply
@@ -204,7 +204,7 @@ angular.module('chatty')
             $rootScope.$broadcast('post-reply' + thread.id);
         };
 
-        actionService.closePostReplyBox = function closePostReplyBox(post) {
+        actionService.closePostReplyBox = function(post) {
             var thread = modelService.getPostThread(post);
             closeReplyBox(thread);
         };

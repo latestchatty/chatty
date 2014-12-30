@@ -5,7 +5,7 @@ angular.module('chatty')
         var collapsedThreads;
         var credentials;
 
-        settingsService.isCollapsed = function isCollapsed(id) {
+        settingsService.isCollapsed = function(id) {
             return collapsedThreads.indexOf(Number(id)) >= 0;
         };
 
@@ -23,7 +23,7 @@ angular.module('chatty')
             }
         };
 
-        settingsService.cleanCollapsed = function cleanCollapsed(posts) {
+        settingsService.cleanCollapsed = function(posts) {
             _.each(collapsedThreads, function(id) {
                 if (!posts[id]) {
                     apiService.markPost(settingsService.getUsername(), id, 'unmarked');
@@ -32,36 +32,36 @@ angular.module('chatty')
         };
 
 
-        settingsService.getUsername = function getUsername() {
+        settingsService.getUsername = function() {
             return credentials ? credentials.username : '';
         };
 
-        settingsService.getPassword = function getPassword() {
+        settingsService.getPassword = function() {
             return credentials.password;
         };
 
-        settingsService.isLoggedIn = function isLoggedIn() {
+        settingsService.isLoggedIn = function() {
             return credentials.username && credentials.password;
         };
 
-        settingsService.clearCredentials = function clearCredentials() {
+        settingsService.clearCredentials = function() {
             credentials.username = '';
             credentials.password = '';
             localStorageService.remove('credentials');
         };
 
-        settingsService.setCredentials = function setCredentials(username, password) {
+        settingsService.setCredentials = function(username, password) {
             credentials.username = username;
             credentials.password = password;
             localStorageService.set('credentials', credentials);
         };
 
-        settingsService.isEmbeddedInShacknews = function isEmbeddedInShacknews () {
+        settingsService.isEmbeddedInShacknews = function() {
             return $location.host().indexOf('shacknews.com') >= 0;
         };
 
 
-        settingsService.load = function load() {
+        settingsService.load = function() {
             collapsedThreads = [];
             credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''};
 
@@ -76,7 +76,7 @@ angular.module('chatty')
             return settingsService.refresh();
         };
 
-        settingsService.refresh = function refresh() {
+        settingsService.refresh = function() {
             var deferred = $q.defer();
 
             apiService.getMarkedPosts(settingsService.getUsername())

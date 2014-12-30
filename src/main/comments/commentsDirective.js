@@ -12,15 +12,15 @@ angular.module('chatty')
             return RecursionHelper.compile(element);
         },
         controller: function($scope, actionService, tabService) {
-            $scope.expandReply = function expandReply(post) {
+            $scope.expandReply = function(post) {
                 actionService.expandReply(post);
             };
 
-            $scope.collapseReply = function collapseReply(post) {
+            $scope.collapseReply = function(post) {
                 actionService.collapsePostReply(post);
             };
 
-            $scope.openReplyBox = function openReplyBox(post) {
+            $scope.openReplyBox = function(post) {
                 actionService.openReplyBox(post);
             };
 

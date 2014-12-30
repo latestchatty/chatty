@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('replybox', function () {
+    .directive('replybox', function() {
         return {
             restrict: 'E',
             replace: true,
@@ -28,18 +28,18 @@ angular.module('chatty')
                     { name: 'code', class: 'jt_codesmall', open: '/{{', close: '}}/'}]
                 ];
                 
-                $scope.addTag = function addTag(tag) {
+                $scope.addTag = function(tag) {
                     $scope.replyBody += tag.open + tag.close;
                 };
 
-                $scope.submitPost = function submitPost() {
+                $scope.submitPost = function() {
                     if ($scope.replyBody) {
                         postService.submitPost($scope.post.id, $scope.replyBody);
                         $scope.close();
                     }
                 };
 
-                $scope.close = function close() {
+                $scope.close = function() {
                     actionService.closePostReplyBox($scope.post);
                 }
             }

@@ -31,7 +31,7 @@ angular.module('chatty')
             }
         };
 
-        postService.submitPost = function submitPost(parentId, body) {
+        postService.submitPost = function(parentId, body) {
             postQueue.push({ parentId: parentId, body: body });
             save();
 

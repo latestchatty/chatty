@@ -7,11 +7,11 @@ angular.module('chatty')
         var posts = {};
         var supportedTags = ['lol', 'inf', 'unf', 'wtf'];
 
-        modelService.updateAllThreads = function updateAllThreads() {
+        modelService.updateAllThreads = function() {
             _.each(threads, updateExpiration);
         };
 
-        modelService.addThread = function addThread(post, event) {
+        modelService.addThread = function(post, event) {
             var thread = fixThread(post);
             if (event) {
                 newThreads.push(thread);
@@ -21,15 +21,15 @@ angular.module('chatty')
             posts[thread.threadId] = thread;
         };
 
-        modelService.getThreads = function getThreads() {
+        modelService.getThreads = function() {
             return threads;
         };
 
-        modelService.getNewThreads = function getNewThreads() {
+        modelService.getNewThreads = function() {
             return newThreads;
         };
 
-        modelService.addPost = function addPost(post, thread) {
+        modelService.addPost = function(post, thread) {
             thread = thread || posts[post.threadId];
             var parent = posts[post.parentId];
             if (parent && thread) {
@@ -47,11 +47,11 @@ angular.module('chatty')
             }
         };
 
-        modelService.getPost = function getPost(id) {
+        modelService.getPost = function(id) {
             return posts[id];
         };
 
-        modelService.getPostThread = function getPostThread(post) {
+        modelService.getPostThread = function(post) {
             if (post.parentId > 0) {
                 return modelService.getPost(post.threadId);
             } else {
@@ -59,7 +59,7 @@ angular.module('chatty')
             }
         };
 
-        modelService.changeCategory = function changeCategory(id, category) {
+        modelService.changeCategory = function(id, category) {
             var post = posts[id];
             if (post) {
                 if (category === 'nuked') {
@@ -78,7 +78,7 @@ angular.module('chatty')
             }
         };
 
-        modelService.updateTags = function updateTags(updates) {
+        modelService.updateTags = function(updates) {
             _.each(updates, function(update) {
                 if (supportedTags.indexOf(update.tag) >= 0) {
                     var post = posts[update.postId];
@@ -94,11 +94,11 @@ angular.module('chatty')
             });
         };
 
-        modelService.cleanCollapsed = function cleanCollapsed() {
+        modelService.cleanCollapsed = function() {
             settingsService.cleanCollapsed(posts);
         };
 
-        modelService.clear = function clear() {
+        modelService.clear = function() {
             while (threads.length) {
                 threads.pop();
             }

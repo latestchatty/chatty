@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('navbar', function () {
+    .directive('navbar', function() {
         return {
             restrict: 'E',
             replace: true,
@@ -12,7 +12,7 @@ angular.module('chatty')
                 $scope.password = null;
                 $scope.embedded = settingsService.isEmbeddedInShacknews();
                 $scope.loggedIn = settingsService.isLoggedIn;
-                $scope.doLogin = function doLogin() {
+                $scope.doLogin = function() {
                     $scope.loginRunning = true;
                     $scope.loginInvalid = false;
                     actionService.login($scope.username, $scope.password)
@@ -26,7 +26,7 @@ angular.module('chatty')
                             $scope.loginRunning = false;
                         });
                 };
-                $scope.doLogout = function doLogout() {
+                $scope.doLogout = function() {
                     $scope.username = null;
                     $scope.password = null;
                     actionService.logout();
@@ -42,7 +42,7 @@ angular.module('chatty')
 
                 //support filters
                 $scope.filterExpression = null;
-                $scope.$watch('filterExpression', function runFilter() {
+                $scope.$watch('filterExpression', function() {
                     tabService.filterThreads($scope.filterExpression);
                 });
 
@@ -61,12 +61,12 @@ angular.module('chatty')
 
                 //new thread
                 $scope.newThreadPost = { id: 0 };
-                $scope.newThread = function newThread() {
+                $scope.newThread = function() {
                     actionService.openReplyBox($scope.newThreadPost);
                 };
 
                 //reflow
-                $scope.reflowThreads = function reflowThreads() {
+                $scope.reflowThreads = function() {
                     $window.scrollTo(0, 0);
                     tabService.selectTab($scope.tabs[0]);
                     actionService.reflowThreads();

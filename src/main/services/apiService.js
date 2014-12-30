@@ -2,7 +2,7 @@ angular.module('chatty')
     .service('apiService', function($http) {
         var apiService = {};
 
-        apiService.login = function login(username, password) {
+        apiService.login = function(username, password) {
             var params = {
                 username: username,
                 password: password
@@ -11,7 +11,7 @@ angular.module('chatty')
             return post('https://winchatty.com/v2/verifyCredentials', params);
         };
 
-        apiService.submitPost = function submitPost(username, password, parentId, body) {
+        apiService.submitPost = function(username, password, parentId, body) {
             var params = {
                 username: username,
                 password: password,
@@ -22,23 +22,23 @@ angular.module('chatty')
             return post('https://winchatty.com/v2/postComment', params);
         };
 
-        apiService.getNewestEventId = function getNewestEventId() {
+        apiService.getNewestEventId = function() {
             return $http.get('https://winchatty.com/v2/getNewestEventId');
         };
 
-        apiService.getChatty = function getChatty() {
+        apiService.getChatty = function() {
             return $http.get('https://winchatty.com/v2/getChatty');
         };
 
-        apiService.waitForEvent = function waitForEvent(lastEventId) {
+        apiService.waitForEvent = function(lastEventId) {
             return $http.get('https://winchatty.com/v2/waitForEvent?lastEventId=' + lastEventId);
         };
 
-        apiService.getMarkedPosts = function getMarkedPosts(username) {
+        apiService.getMarkedPosts = function(username) {
             return $http.get('https://winchatty.com/v2/clientData/getMarkedPosts?username=' + encodeURIComponent(username))
         };
 
-        apiService.markPost = function markPost(username, postId, markType) {
+        apiService.markPost = function(username, postId, markType) {
             var params = {
                 username: username,
                 postId: postId,

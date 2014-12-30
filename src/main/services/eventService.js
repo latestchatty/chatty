@@ -4,7 +4,7 @@ angular.module('chatty')
         var lastEventId = 0;
 
         //fresh load of full chatty
-        eventService.load = function load() {
+        eventService.load = function() {
             modelService.clear();
 
             apiService.getNewestEventId()
