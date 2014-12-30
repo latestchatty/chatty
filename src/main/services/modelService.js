@@ -156,7 +156,7 @@ angular.module('chatty')
             post.body = post.body.replace(/onclick=[^>]+/gm, 'tabindex="1"');
 
             //create the one-liner used for reply view
-            var stripped = _.unescape(post.body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' '));
+            var stripped = post.body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ');
             post.oneline = htmlSnippet(stripped, 106);
 
             //create sub-post container
@@ -228,11 +228,17 @@ angular.module('chatty')
             var i = 0;
             var len = 0;
             var tag = false;
+            var char = false;
             while (i < input.length && len < maxLength) {
                 if (input[i] === '<') {
                     tag = true;
                 } else if (input[i] === '>') {
                     tag = false;
+                } else if (input[i] === '&') {
+                    char = true;
+                } else if (input[i] === ';' && char) {
+                    char = false;
+                    len++;
                 } else if (!tag) {
                     len++;
                 }
