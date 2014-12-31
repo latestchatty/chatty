@@ -5,7 +5,7 @@
         <textarea class="replybox-input" placeholder="Type something interesting..."
                   ng-model="replyBody" required auto-focus></textarea>
 
-        <input type="submit" value="Submit Post" class="button replybox-submit">
+        <input type="submit" value="Submit Post" class="button replybox-submit" ng-if="isLoggedIn()">
 
         <div class="tagLegend">
             <table>

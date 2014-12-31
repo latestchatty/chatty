@@ -17,9 +17,7 @@ angular.module('chatty')
                     $scope.loginInvalid = false;
                     actionService.login($scope.username, $scope.password)
                         .then(function(result) {
-                            if (result) {
-                                postService.loggedIn();
-                            } else {
+                            if (!result) {
                                 $scope.loginInvalid = true;
                             }
                             $scope.password = null;
@@ -27,6 +25,7 @@ angular.module('chatty')
                         });
                 };
                 $scope.doLogout = function() {
+                    postService.clearQueue();
                     $scope.username = null;
                     $scope.password = null;
                     actionService.logout();

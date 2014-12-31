@@ -7,7 +7,7 @@ angular.module('chatty')
             scope: {
                 post: '='
             },
-            controller: function($scope, actionService, postService) {
+            controller: function($scope, actionService, postService, settingsService) {
                 $scope.replyBody = '';
                 $scope.tagGroups = [
                     [{ name: 'red', class: 'jt_red', open: 'r{', close: '}r'},
@@ -41,7 +41,9 @@ angular.module('chatty')
 
                 $scope.close = function() {
                     actionService.closePostReplyBox($scope.post);
-                }
+                };
+
+                $scope.isLoggedIn = settingsService.isLoggedIn;
             }
         }
     });

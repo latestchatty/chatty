@@ -10,18 +10,12 @@ angular.module('chatty')
             return postQueue;
         };
         
-        postService.loggedIn = function() {
-            $timeout(function() {
-                startPosting();
-            });
-        };
-        
         postService.clearQueue = function() {
-            if (posting) {
-                $timeout.cancel(lastTimeout);
-                while(postQueue.length) {
-                    postQueue.pop();
-                }
+            $timeout.cancel(lastTimeout);
+            posting = false;
+
+            while (postQueue.length) {
+                postQueue.pop();
             }
         };
 
@@ -64,6 +58,7 @@ angular.module('chatty')
                 }, function(data) {
                     if (data && data.error && data.code === 'ERR_INVALID_LOGIN') {
                         settingsService.clearCredentials();
+                        postService.clearQueue();
                     } else if (data && data.error && data.code === 'ERR_BANNED') {
                         _.pull(postQueue, post);
                     } else {
