@@ -1,15 +1,10 @@
 angular.module('chatty')
-    .service('postService', function($q, $timeout, apiService, settingsService, localStorageService) {
+    .service('postService', function($q, $timeout, apiService, settingsService) {
         var postService = {};
 
         var posting = false;
         var lastTimeout = null;
-        var postQueue = angular.fromJson(localStorageService.get('postQueue')) || [];
-        postService.load = function() {
-            $timeout(function() {
-                startPosting();
-            });
-        };
+        var postQueue = [];
 
         postService.getQueue = function() {
             return postQueue;
@@ -27,13 +22,11 @@ angular.module('chatty')
                 while(postQueue.length) {
                     postQueue.pop();
                 }
-                save();
             }
         };
 
         postService.submitPost = function(parentId, body) {
             postQueue.push({ parentId: parentId, body: body });
-            save();
 
             if (!posting) {
                 $timeout(function() {
@@ -66,7 +59,6 @@ angular.module('chatty')
                 var post = postQueue[0];
                 postToApi(post).then(function() {
                     _.pull(postQueue, post);
-                    save();
                     
                     startPosting();
                 }, function(data) {
@@ -74,7 +66,6 @@ angular.module('chatty')
                         settingsService.clearCredentials();
                     } else if (data && data.error && data.code === 'ERR_BANNED') {
                         _.pull(postQueue, post);
-                        save();
                     } else {
                         lastTimeout = $timeout(function() {
                             startPosting();
@@ -84,10 +75,6 @@ angular.module('chatty')
             } else {
                 posting = false;
             }
-        }
-        
-        function save() {
-            localStorageService.set('postQueue', postQueue);
         }
 
         return postService;
