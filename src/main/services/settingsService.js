@@ -17,8 +17,8 @@ angular.module('chatty')
         };
 
         settingsService.uncollapseThread = function(id) {
-            _.pull(collapsedThreads, id);
-            if (settingsService.isLoggedIn()) {
+            if (settingsService.isLoggedIn() && _.contains(collapsedThreads, id)) {
+                _.pull(collapsedThreads, id);
                 apiService.markPost(settingsService.getUsername(), id, 'unmarked');
             }
         };
