@@ -61,6 +61,8 @@ angular.module('chatty')
                         postService.clearQueue();
                     } else if (data && data.error && data.code === 'ERR_BANNED') {
                         _.pull(postQueue, post);
+                    } else if (data && data.error && data.code === 'ERR_SERVER' && data.message.indexOf('nuked thread')) {
+                        _.pull(postQueue, post);
                     } else {
                         lastTimeout = $timeout(function() {
                             startPosting();
