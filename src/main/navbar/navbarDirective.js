@@ -50,6 +50,7 @@ angular.module('chatty')
                 $scope.selectTab = function(tab) {
                     tabService.selectTab(tab);
                     $window.scrollTo(0, 0);
+                    $scope.filterExpression = null;
                 };
                 $scope.addTab = function(expression) {
                     return tabService.addTab('filter', expression);
@@ -69,6 +70,7 @@ angular.module('chatty')
                     $window.scrollTo(0, 0);
                     tabService.selectTab($scope.tabs[0]);
                     actionService.reflowThreads();
+                    $scope.filterExpression = null;
                 }
             }
         }
