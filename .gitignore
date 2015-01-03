@@ -4,3 +4,4 @@ build
 npm-debug.log
 coverage
 .idea
+.c9/*
