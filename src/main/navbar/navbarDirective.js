@@ -4,7 +4,7 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'navbar/navbar.html',
-            controller: function($scope, $window, actionService, postService, settingsService, tabService) {
+            controller: function($scope, $window, $interval, actionService, postService, settingsService, tabService, apiService) {
                 //login related
                 $scope.loginRunning = false;
                 $scope.loginInvalid = false;
@@ -12,6 +12,8 @@ angular.module('chatty')
                 $scope.password = null;
                 $scope.embedded = settingsService.isEmbeddedInShacknews();
                 $scope.loggedIn = settingsService.isLoggedIn;
+                $scope.totalMessageCount = '...';
+                
                 $scope.doLogin = function() {
                     $scope.loginRunning = true;
                     $scope.loginInvalid = false;
@@ -72,6 +74,30 @@ angular.module('chatty')
                     actionService.reflowThreads();
                     $scope.filterExpression = null;
                 }
+                
+                $scope.goToInbox = function () {
+                    $window.open("https://www.shacknews.com/messages", "_blank");
+                }
+                
+                $interval(function () {
+                    refreshInboxCount();
+                }, 60000);
+                
+                function refreshInboxCount() {
+                    if(settingsService.isLoggedIn())
+                    {
+                        apiService.getTotalInboxCount(settingsService.getUsername(), settingsService.getPassword())
+                            .success(function(data) {
+                                $scope.totalMessageCount = data.totalMessages;
+                            })
+                            .error(function (data) {
+                                $scope.totalMessageCount = -1;
+                            });
+                    }
+                };
+                
+                refreshInboxCount();
+                
             }
         }
     });
