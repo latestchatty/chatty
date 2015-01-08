@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('shackMessageService', function(settingsService, apiService) {
+    .service('shackMessageService', function($window, settingsService, apiService) {
        var shackMessageService = {};
        
        shackMessageService.totalMessageCount = '...';
@@ -19,7 +19,11 @@ angular.module('chatty')
                  shackMessageService.totalMessageCount = -1;
                });
           }
-       }
+       };
+       
+       shackMessageService.goToInbox = function () {
+           $window.open("https://www.shacknews.com/messages", "_blank");
+       };
        
        return shackMessageService;
     });

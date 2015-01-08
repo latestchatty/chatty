@@ -75,9 +75,7 @@ angular.module('chatty')
                     $scope.filterExpression = null;
                 }
                 
-                $scope.goToInbox = function () {
-                    $window.open("https://www.shacknews.com/messages", "_blank");
-                }
+                $scope.goToInbox = shackMessageService.goToInbox;
             }
         }
     });
