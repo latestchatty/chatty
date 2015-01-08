@@ -4,7 +4,7 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'navbar/navbar.html',
-            controller: function($scope, $window, actionService, postService, settingsService, tabService) {
+            controller: function($scope, $window, actionService, postService, settingsService, tabService, shackMessageService) {
                 //login related
                 $scope.loginRunning = false;
                 $scope.loginInvalid = false;
@@ -12,6 +12,8 @@ angular.module('chatty')
                 $scope.password = null;
                 $scope.embedded = settingsService.isEmbeddedInShacknews();
                 $scope.loggedIn = settingsService.isLoggedIn;
+                $scope.getTotalMessageCount = shackMessageService.getTotalMessageCount;
+                
                 $scope.doLogin = function() {
                     $scope.loginRunning = true;
                     $scope.loginInvalid = false;
@@ -72,6 +74,8 @@ angular.module('chatty')
                     actionService.reflowThreads();
                     $scope.filterExpression = null;
                 }
+                
+                $scope.goToInbox = shackMessageService.goToInbox;
             }
         }
     });

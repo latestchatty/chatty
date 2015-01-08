@@ -46,6 +46,17 @@ angular.module('chatty')
             };
             return post('https://winchatty.com/v2/clientData/markPost', params);
         };
+        
+        apiService.getTotalInboxCount = function(username, password) {
+            var opts = {
+                username: username,
+                password: password,
+                folder: 'inbox',
+                page:1 //TODO: There's not a good way to get the count of all unread messages, will need to talk to electroly about that.
+            };
+            
+            return post('https://winchatty.com/v2/getMessages', opts);
+        };
 
         function post(url, params) {
             var data = _.reduce(params, function(result, value, key) {

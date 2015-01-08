@@ -18,6 +18,10 @@
             </form>
             
             <form class="navbar-form" ng-if="loggedIn()">
+                <input type="button" value="Inbox ({{getTotalMessageCount()}})" class="button" ng-click="goToInbox()">
+            </form>
+            
+            <form class="navbar-form" ng-if="loggedIn()">
                 <input type="button" value="New Thread" class="button" ng-click="newThread()">
             </form>
 
