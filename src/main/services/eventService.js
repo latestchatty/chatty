@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('eventService', function($timeout, $interval, apiService, modelService, settingsService, tabService) {
+    .service('eventService', function($timeout, $interval, apiService, modelService, settingsService, tabService, shackMessageService) {
         var eventService = {};
         var lastEventId = 0;
 
@@ -20,6 +20,8 @@ angular.module('chatty')
                 }).error(function(data) {
                     console.log('Error during getChatty: ', data);
                 });
+                
+            shackMessageService.refresh();
         };
 
         function processChatty(newThreads, collapsedThreads) {
@@ -101,7 +103,7 @@ angular.module('chatty')
         //update loop every 5 min
         $interval(function() {
             modelService.updateAllThreads();
-
+            shackMessageService.refresh();
             settingsService.refresh();
         }, 300000);
 
