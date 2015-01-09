@@ -77,7 +77,7 @@ angular.module('chatty')
                     tabService.selectTab($scope.tabs[0]);
                     actionService.reflowThreads();
                     $scope.filterExpression = null;
-                }
+                };
                 
                 $scope.goToInbox = shackMessageService.goToInbox;
             }
