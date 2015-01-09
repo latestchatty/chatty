@@ -1,0 +1,11 @@
+<div class="message">
+    <!-- header left -->
+    <span class="user" ng-bind="::message.from"></span>
+
+    <!-- header right -->
+    <div class="headerright">
+        <div class="postdate">{{::message.date | date : 'MMM d, yyyy h:mma' }}</div>
+    </div>
+
+    <div class="postBody">{{::message.body}}</div>
+</div>

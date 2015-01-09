@@ -79,7 +79,7 @@ angular.module('chatty')
                     $scope.filterExpression = null;
                 };
                 
-                $scope.goToInbox = shackMessageService.goToInbox;
+                $scope.toggleMessagesShown = shackMessageService.toggleMessagesShown;
             }
         }
     });

@@ -1,0 +1,11 @@
+<div style="position: absolute; left: 50%" ng-show="showMessages()">
+    <div class="messages">
+        <div class="messagesHeader">
+            Messages
+            <i class="headerright actionItem fa fa-close" title="Close messages" ng-click="toggleShow()"></i>
+        </div>
+        <div ng-repeat="message in messages()">
+            <message></message>
+        </div>
+    </div>
+</div>
