@@ -1,0 +1,17 @@
+.messages {
+    position: relative;
+    width: 800px;
+    height: 400px;
+    top: 10px;
+    left: -50%;
+    border: solid white 1px;
+    background-color: #202224;
+    overflow: scroll;
+    z-index: 999999;
+}
+
+.messagesHeader {
+    color: lightgray;
+    font-size: 13px;
+    background-color: #373a3c;
+}
