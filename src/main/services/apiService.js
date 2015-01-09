@@ -50,12 +50,10 @@ angular.module('chatty')
         apiService.getTotalInboxCount = function(username, password) {
             var opts = {
                 username: username,
-                password: password,
-                folder: 'inbox',
-                page:1 //TODO: There's not a good way to get the count of all unread messages, will need to talk to electroly about that.
+                password: password
             };
             
-            return post('https://winchatty.com/v2/getMessages', opts);
+            return post('https://winchatty.com/v2/getMessageCount', opts);
         };
 
         function post(url, params) {

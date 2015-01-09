@@ -3,9 +3,14 @@ angular.module('chatty')
        var shackMessageService = {};
        
        shackMessageService.totalMessageCount = '...';
+       shackMessageService.unreadMessageCount = '...';
        
        shackMessageService.getTotalMessageCount = function () { 
           return shackMessageService.totalMessageCount;
+       }
+       
+       shackMessageService.getUnreadMessageCount = function () { 
+          return shackMessageService.unreadMessageCount;
        }
        
        shackMessageService.refresh = function () {
@@ -13,10 +18,12 @@ angular.module('chatty')
           {
              apiService.getTotalInboxCount(settingsService.getUsername(), settingsService.getPassword())
                .success(function(data) {
-                 shackMessageService.totalMessageCount = data.totalMessages;
+                 shackMessageService.totalMessageCount = data.total;
+                 shackMessageService.unreadMessageCount = data.unread;
                })
                .error(function (data) {
                  shackMessageService.totalMessageCount = -1;
+                 shackMessageService.unreadMessageCount = -1;
                });
           }
        };
