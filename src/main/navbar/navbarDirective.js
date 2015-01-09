@@ -20,7 +20,9 @@ angular.module('chatty')
                     $scope.loginInvalid = false;
                     actionService.login($scope.username, $scope.password)
                         .then(function(result) {
-                            if (!result) {
+                            if (result) {
+                                shackMessageService.refresh();
+                            } else {
                                 $scope.loginInvalid = true;
                             }
                             $scope.password = null;
@@ -28,6 +30,7 @@ angular.module('chatty')
                         });
                 };
                 $scope.doLogout = function() {
+                    shackMessageService.clear();
                     postService.clearQueue();
                     $scope.username = null;
                     $scope.password = null;

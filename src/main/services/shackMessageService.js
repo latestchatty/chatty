@@ -2,8 +2,11 @@ angular.module('chatty')
     .service('shackMessageService', function($window, settingsService, apiService) {
         var shackMessageService = {};
 
-        shackMessageService.totalMessageCount = '...';
-        shackMessageService.unreadMessageCount = '...';
+        shackMessageService.clear = function() {
+            shackMessageService.totalMessageCount = '...';
+            shackMessageService.unreadMessageCount = '...';
+        };
+        shackMessageService.clear();
 
         shackMessageService.getTotalMessageCount = function() {
             return shackMessageService.totalMessageCount;
