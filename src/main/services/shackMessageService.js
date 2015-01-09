@@ -21,6 +21,7 @@ angular.module('chatty')
                         shackMessageService.unreadMessageCount = data.unread;
                     })
                     .error(function(data) {
+                        console.log('Error during shackmessage count update: ', data);
                         shackMessageService.totalMessageCount = -1;
                         shackMessageService.unreadMessageCount = -1;
                     });
