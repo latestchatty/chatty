@@ -17,7 +17,7 @@ var paths = {
     client: {
         base: './src/main',
         js: [
-            './bower_components/lodash/dist/lodash.js',
+            './bower_components/lodash/lodash.js',
             './bower_components/angular/angular.js',
             './bower_components/angular-local-storage/dist/angular-local-storage.js',
             './bower_components/angular-recursion/angular-recursion.js',
