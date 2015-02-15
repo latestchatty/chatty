@@ -3,9 +3,6 @@
 
         <!-- header left -->
         <span ng-class="::post.userClass || 'user'" ng-click="addUserTab(post.author)" ng-bind="::post.author"></span>
-        <div class="tags">
-            <span ng-repeat="tag in ::post.lols" class="tag" ng-class="::['tag_' + tag.tag]" title="{{::tag.tag}}" lolcount="{{tag.count}}"></span>
-        </div>
 
         <!-- header right -->
         <div class="headerright">
