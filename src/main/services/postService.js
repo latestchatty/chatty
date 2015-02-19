@@ -59,7 +59,9 @@ angular.module('chatty')
                     if (data && data.error && data.code === 'ERR_INVALID_LOGIN') {
                         settingsService.clearCredentials();
                         postService.clearQueue();
-                    } else if (data && data.error && (data.code === 'ERR_BANNED' || data.code === 'ERR_NUKED')) {
+                    } else if (data && data.error &&
+                        (data.code === 'ERR_BANNED' || data.code === 'ERR_NUKED' || data.code === 'ERR_SERVER')) {
+                        console.log('Error creating post.', data);
                         _.pull(postQueue, post);
                     } else {
                         lastTimeout = $timeout(function() {
