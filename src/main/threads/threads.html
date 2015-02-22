@@ -1,5 +1,8 @@
 <div class="threads" keep-scroll>
-    <div ng-repeat="post in threads track by post.id" ng-show="post.visible">
+    <div ng-hide="isLoaded" class="loader">
+        <img src="../images/loader.gif" class="loader"/> Think before you post...
+    </div>
+    <div ng-repeat="post in threads track by post.id" ng-show="post.visible" on-finish-render="ngRepeatFinished">
 
         <!-- collapsed root post -->
         <div ng-if-event-expr="post.state === 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id"
@@ -27,14 +30,14 @@
                     </a>
                 </p>
 
-                <div class="treeview" >
+                <div class="treeview">
                     <comments posts="post.recent" flat="true"></comments>
                 </div>
             </div>
 
             <!-- full replies -->
             <div ng-if-event-expr="post.state !== 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
-                <div class="treeview" >
+                <div class="treeview">
                     <comments posts="post.posts" flat="false"></comments>
                 </div>
             </div>
