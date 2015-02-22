@@ -1,50 +1,48 @@
 <div class="threads" keep-scroll>
     <div ng-hide="isLoaded" class="loader">
-        <img src="../images/loader.gif" class="loader" /> Think before you post...
+        <img src="../images/loader.gif" class="loader"/> Think before you post...
     </div>
-    <div ng-show="isLoaded">
-        <div ng-repeat="post in threads track by post.id" ng-show="post.visible" on-finish-render="ngRepeatFinished">
+    <div ng-repeat="post in threads track by post.id" ng-show="post.visible" on-finish-render="ngRepeatFinished">
 
-            <!-- collapsed root post -->
-            <div ng-if-event-expr="post.state === 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id"
-                 class="rootPost collapsed" ng-class="::post.tagClass">
+        <!-- collapsed root post -->
+        <div ng-if-event-expr="post.state === 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id"
+             class="rootPost collapsed" ng-class="::post.tagClass">
+            <post></post>
+            <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
+            <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
+        </div>
+
+        <!-- expanded root post -->
+        <div ng-if-event-expr="post.state !== 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id">
+            <div class="rootPost" ng-class="::post.tagClass">
                 <post></post>
-                <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
-                <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
+                <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
             </div>
 
-            <!-- expanded root post -->
-            <div ng-if-event-expr="post.state !== 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id">
-                <div class="rootPost" ng-class="::post.tagClass">
-                    <post></post>
-                    <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
+            <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.id"
+                      class="replybox-op" post="post"></replybox>
+
+            <!-- truncated replies -->
+            <div ng-if-event-expr="post.state === 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
+                <p class="threadCapHeader">
+                    <a href="" ng-click="expandThread(post)">
+                        &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{::post.replyCount}}+</strong> replies.
+                    </a>
+                </p>
+
+                <div class="treeview">
+                    <comments posts="post.recent" flat="true"></comments>
                 </div>
+            </div>
 
-                <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.id"
-                          class="replybox-op" post="post"></replybox>
-
-                <!-- truncated replies -->
-                <div ng-if-event-expr="post.state === 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
-                    <p class="threadCapHeader">
-                        <a href="" ng-click="expandThread(post)">
-                            &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{::post.replyCount}}+</strong> replies.
-                        </a>
-                    </p>
-
-                    <div class="treeview">
-                        <comments posts="post.recent" flat="true"></comments>
-                    </div>
+            <!-- full replies -->
+            <div ng-if-event-expr="post.state !== 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
+                <div class="treeview">
+                    <comments posts="post.posts" flat="false"></comments>
                 </div>
-
-                <!-- full replies -->
-                <div ng-if-event-expr="post.state !== 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
-                    <div class="treeview">
-                        <comments posts="post.posts" flat="false"></comments>
-                    </div>
-                </div>
-
             </div>
 
         </div>
+
     </div>
 </div>
