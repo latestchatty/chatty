@@ -5,6 +5,7 @@ angular.module('chatty')
 
         //fresh load of full chatty
         eventService.load = function() {
+            eventService.chattyLoaded = false;
             modelService.clear();
 
             apiService.getNewestEventId()
@@ -23,12 +24,20 @@ angular.module('chatty')
                     modelService.cleanCollapsed();
 
                     //start events
-                    return waitForEvents();
+                    var eventsReturn = waitForEvents();
+
+                    eventService.chattyLoaded = true;
+
+                    return eventsReturn;
                 }).error(function(data) {
                     console.log('Error during getChatty: ', data);
                 });
                 
             shackMessageService.refresh();
+        };
+
+        eventService.getIsLoaded = function() {
+            return eventService.chattyLoaded;
         };
 
         function waitForEvents() {

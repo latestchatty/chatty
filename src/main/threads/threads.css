@@ -7,6 +7,10 @@
     border-bottom: 3px double #dedecd;
 }
 
+.loader {
+    color: #fff;
+    vertical-align: middle;
+}
 /* uncollapse post link */
 a.showpost:link, a.showpost:visited, a.showpost:active, a.showpost:hover {
     display: none;
