@@ -1,6 +1,7 @@
 <div class="threads" keep-scroll>
-    <div ng-hide="isLoaded" class="loader">
-        <img src="../images/loader.gif" class="loader"/> Think before you post...
+    <div ng-hide="::isLoaded" class="loader">
+        <img src="../images/loader.gif" class="loader"/>
+        <span ng-bind-html="::loadingMessage | trusted"></span>
     </div>
     <div ng-repeat="post in threads track by post.id" ng-show="post.visible" on-finish-render="ngRepeatFinished">
 
