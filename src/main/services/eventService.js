@@ -94,7 +94,7 @@ angular.module('chatty')
             } else if (event.eventType === 'categoryChange') {
                 modelService.changeCategory(event.eventData.postId, event.eventData.category);
             } else if (event.eventType === 'lolCountsUpdate') {
-                modelService.updateTags(event.eventData.updates);
+                //not supported
             } else {
                 console.log('Unhandled event', event);
             }

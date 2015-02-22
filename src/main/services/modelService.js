@@ -5,7 +5,6 @@ angular.module('chatty')
         var threads = [];
         var newThreads = [];
         var posts = {};
-        var supportedTags = ['lol', 'inf', 'unf', 'wtf'];
 
         modelService.updateAllThreads = function() {
             _.each(threads, updateExpiration);
@@ -78,22 +77,6 @@ angular.module('chatty')
             }
         };
 
-        modelService.updateTags = function(updates) {
-            _.each(updates, function(update) {
-                if (supportedTags.indexOf(update.tag) >= 0) {
-                    var post = posts[update.postId];
-                    if (post) {
-                        var tag = _.find(post.lols, {'tag': update.tag});
-                        if (tag) {
-                            tag.count = update.count;
-                        } else {
-                            post.lols.push({tag: update.tag, count: update.count});
-                        }
-                    }
-                }
-            });
-        };
-
         modelService.cleanCollapsed = function() {
             settingsService.cleanCollapsed(posts);
         };
@@ -161,18 +144,6 @@ angular.module('chatty')
 
             //create sub-post container
             post.posts = post.posts || [];
-
-            //default tags as necessary
-            var tags = post.lols;
-            post.lols = [];
-            _.each(supportedTags, function(tag) {
-                var found = _.find(tags, {'tag': tag});
-                if (found) {
-                    post.lols.push(found);
-                } else {
-                    post.lols.push({tag: tag});
-                }
-            });
 
             //add user class highlight
             if (post.author.toLowerCase() === settingsService.getUsername().toLowerCase()) {
