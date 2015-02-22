@@ -39,7 +39,6 @@ angular.module('chatty')
             var tempThreads = [].concat(threads);
             threads.length = 0;
 
-            var collapsed = [];
             var sorted = _.sortBy(tempThreads, 'lastPostId');
             while (sorted.length) {
                 var thread = sorted.pop();
@@ -48,9 +47,10 @@ angular.module('chatty')
                     if (settingsService.isCollapsed(thread.id)) {
                         if (thread.state !== 'collapsed') {
                             thread.state = 'collapsed';
+                            thread.visible = false;
                             $rootScope.$broadcast('thread-collapse' + thread.id);
                         }
-                        collapsed.push(thread);
+                        threads.push(thread);
                     } else {
                         if (thread.replyCount > 10 && thread.state !== 'truncated') {
                             thread.state = 'truncated';
@@ -75,24 +75,14 @@ angular.module('chatty')
             while (newThreads.length) {
                 threads.unshift(newThreads.pop());
             }
-
-            //add collapsed threads in at end
-            while (collapsed.length) {
-                threads.push(collapsed.pop());
-            }
         };
 
         actionService.collapseThread = function(thread) {
-            var threads = modelService.getThreads();
-            _.pull(threads, thread);
-
             //collapse thread
+            thread.visible = false;
             closeReplyBox(thread);
             thread.state = 'collapsed';
             $rootScope.$broadcast('thread-collapse' + thread.id);
-
-            //add to the end of the list
-            threads.push(thread);
 
             //update local storage
             settingsService.collapseThread(thread.id);

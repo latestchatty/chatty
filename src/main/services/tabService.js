@@ -149,18 +149,20 @@ angular.module('chatty')
         };
 
         function applyFilter(filterExpression) {
-            if (filterExpression) {
-                _.forEach(threads, function(thread) {
-                    delete thread.visible;
-                });
+            _.forEach(threads, function(thread) {
+                delete thread.visible;
+            });
 
+            if (filterExpression) {
                 var visibleThreads = $filter('filter')(threads, filterExpression);
                 visibleThreads.forEach(function(thread) {
                     thread.visible = true;
                 });
             } else {
                 _.forEach(threads, function(thread) {
-                    thread.visible = true;
+                    if (thread.state != 'collapsed') {
+                        thread.visible = true;
+                    }
                 });
             }
         }

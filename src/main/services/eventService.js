@@ -16,38 +16,20 @@ angular.module('chatty')
 
             apiService.getChatty()
                 .success(function(data) {
-                    processChatty(data.threads, []);
+                    //process all threads
+                    _.each(data.threads, modelService.addThread);
+
+                    //clean collapsed thread list after initial load
+                    modelService.cleanCollapsed();
+
+                    //start events
+                    return waitForEvents();
                 }).error(function(data) {
                     console.log('Error during getChatty: ', data);
                 });
                 
             shackMessageService.refresh();
         };
-
-        function processChatty(newThreads, collapsedThreads) {
-            if (newThreads.length > 0) {
-                var thread = newThreads.shift();
-
-                if (settingsService.isCollapsed(thread.threadId)) {
-                    collapsedThreads.push(thread);
-                } else {
-                    modelService.addThread(thread);
-                }
-
-                processChatty(newThreads, collapsedThreads);
-            } else {
-                //add collapsed threads in at end
-                while(collapsedThreads.length) {
-                    modelService.addThread(collapsedThreads.pop());
-                }
-
-                //clean collapsed thread list after initial load
-                modelService.cleanCollapsed();
-
-                //start events
-                return waitForEvents();
-            }
-        }
 
         function waitForEvents() {
             apiService.waitForEvent(lastEventId)

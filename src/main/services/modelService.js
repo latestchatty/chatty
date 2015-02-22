@@ -12,7 +12,7 @@ angular.module('chatty')
 
         modelService.addThread = function(post, event) {
             var thread = fixThread(post);
-            if (event) {
+            if (event === true) {
                 newThreads.push(thread);
             } else {
                 threads.push(thread);
@@ -122,6 +122,7 @@ angular.module('chatty')
             //check if it's supposed to be collapsed
             if (settingsService.isCollapsed(thread.threadId)) {
                 thread.state = 'collapsed';
+                thread.visible = false;
             } else if (thread.replyCount > 10) {
                 thread.state = 'truncated';
             }
