@@ -4,11 +4,15 @@ angular.module('chatty')
             restrict: 'E',
             replace: true,
             templateUrl: 'threads/threads.html',
-            controller: function($scope, modelService, actionService, eventService) {
+            controller: function($scope, modelService, actionService) {
                 //load full chatty on start
                 $scope.threads = modelService.getThreads();
                 $scope.newThreads = modelService.getNewThreads();
-                $scope.isLoaded = eventService.getIsLoaded;
+                $scope.isLoaded = false;
+
+                $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+                    $scope.isLoaded = true;
+                });
 
                 $scope.expandThread = function(thread) {
                     actionService.expandThread(thread);
