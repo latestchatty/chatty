@@ -18,6 +18,7 @@ angular.module('chatty')
                 threads.push(thread);
             }
             posts[thread.threadId] = thread;
+            return thread;
         };
 
         modelService.getThreads = function() {

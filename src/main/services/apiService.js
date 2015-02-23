@@ -30,6 +30,10 @@ angular.module('chatty')
             return $http.get('https://winchatty.com/v2/getChatty');
         };
 
+        apiService.getThread = function(threadId) {
+            return $http.get('https://winchatty.com/v2/getThread?id=' + threadId);
+        };
+
         apiService.waitForEvent = function(lastEventId) {
             return $http.get('https://winchatty.com/v2/waitForEvent?lastEventId=' + lastEventId);
         };

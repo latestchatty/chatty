@@ -22,6 +22,9 @@ angular.module('chatty')
                     //clean collapsed thread list after initial load
                     modelService.cleanCollapsed();
 
+                    //reorder pinned threads
+                    handlePinnedThreads();
+
                     //start events
                     return waitForEvents();
                 }).error(function(data) {
@@ -30,6 +33,36 @@ angular.module('chatty')
                 
             shackMessageService.refresh();
         };
+
+        function handlePinnedThreads() {
+            var pinnedThreads = settingsService.getPinned();
+            var threads = modelService.getThreads();
+
+            _.each(pinnedThreads, function(threadId) {
+                var thread = modelService.getPost(threadId);
+                if (!thread) {
+                    //load expired thread
+                    apiService.getThread(threadId)
+                        .success(function(data) {
+                            if (data.threads && data.threads[0]) {
+                                thread = modelService.addThread(data.threads[0]);
+                                thread.pinned = true;
+
+                                //put it at the top of the list
+                                _.pull(threads, thread);
+                                threads.unshift(thread);
+                            }
+                        }).error(function(error) {
+                            console.log('Error loading pinned threadId=' +  threadId, error);
+                        });
+                } else {
+                    //put it at the top of the list
+                    thread.pinned = true;
+                    _.pull(threads, thread);
+                    threads.unshift(thread);
+                }
+            });
+        }
 
         function waitForEvents() {
             apiService.waitForEvent(lastEventId)

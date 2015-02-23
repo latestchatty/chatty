@@ -3,6 +3,7 @@ angular.module('chatty')
         var settingsService = {};
 
         var collapsedThreads;
+        var pinnedThreads;
         var credentials;
 
         settingsService.isCollapsed = function(id) {
@@ -17,8 +18,8 @@ angular.module('chatty')
         };
 
         settingsService.uncollapseThread = function(id) {
+            _.pull(collapsedThreads, id);
             if (settingsService.isLoggedIn() && _.contains(collapsedThreads, id)) {
-                _.pull(collapsedThreads, id);
                 apiService.markPost(settingsService.getUsername(), id, 'unmarked');
             }
         };
@@ -29,6 +30,28 @@ angular.module('chatty')
                     apiService.markPost(settingsService.getUsername(), id, 'unmarked');
                 }
             });
+        };
+
+        settingsService.getPinned = function() {
+            return pinnedThreads;
+        };
+
+        settingsService.isPinned = function(id) {
+            return pinnedThreads.indexOf(Number(id)) >= 0;
+        };
+
+        settingsService.pinThread = function(id) {
+            pinnedThreads.push(id);
+            if (settingsService.isLoggedIn() && _.contains(pinnedThreads, id)) {
+                apiService.markPost(settingsService.getUsername(), id, 'pinned');
+            }
+        };
+
+        settingsService.unpinThread = function(id) {
+            _.pull(pinnedThreads, id);
+            if (settingsService.isLoggedIn() && _.contains(pinnedThreads, id)) {
+                apiService.markPost(settingsService.getUsername(), id, 'unmarked');
+            }
         };
 
 
@@ -82,9 +105,12 @@ angular.module('chatty')
             apiService.getMarkedPosts(settingsService.getUsername())
                 .success(function(data) {
                     collapsedThreads = [];
+                    pinnedThreads = [];
                     _.each(data.markedPosts, function(mark) {
                         if (mark.type === 'collapsed') {
                             collapsedThreads.push(mark.id);
+                        } else if (mark.type === 'pinned') {
+                            pinnedThreads.push(mark.id);
                         }
                     });
 

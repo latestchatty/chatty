@@ -24,6 +24,10 @@ angular.module('chatty')
                 $scope.addPostTab = function(post) {
                     tabService.addTab('post', post.id);
                 };
+
+                $scope.pinPost = function(post) {
+                    actionService.togglePinThread(post);
+                };
             }
         }
     });

@@ -43,7 +43,7 @@ angular.module('chatty')
             while (sorted.length) {
                 var thread = sorted.pop();
 
-                if (thread.expirePercent < 100) {
+                if (thread.expirePercent < 100 || thread.pinned) {
                     if (settingsService.isCollapsed(thread.id)) {
                         if (thread.state !== 'collapsed') {
                             thread.state = 'collapsed';
@@ -62,7 +62,11 @@ angular.module('chatty')
                         collapseReply(thread);
                         closeReplyBox(thread);
 
-                        threads.push(thread);
+                        if (thread.pinned) {
+                            threads.unshift(thread);
+                        } else {
+                            threads.push(thread);
+                        }
                     }
                 } else {
                     //removing thread from model
@@ -74,6 +78,20 @@ angular.module('chatty')
             var newThreads = modelService.getNewThreads();
             while (newThreads.length) {
                 threads.unshift(newThreads.pop());
+            }
+        };
+
+        actionService.togglePinThread = function(thread) {
+            if (thread.pinned) {
+                thread.pinned = false;
+
+                //update local storage
+                settingsService.unpinThread(thread.id);
+            } else {
+                thread.pinned = true;
+
+                //update local storage
+                settingsService.pinThread(thread.id);
             }
         };
 
