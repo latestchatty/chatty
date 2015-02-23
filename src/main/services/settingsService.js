@@ -18,10 +18,10 @@ angular.module('chatty')
         };
 
         settingsService.uncollapseThread = function(id) {
-            _.pull(collapsedThreads, id);
             if (settingsService.isLoggedIn() && _.contains(collapsedThreads, id)) {
                 apiService.markPost(settingsService.getUsername(), id, 'unmarked');
             }
+            _.pull(collapsedThreads, id);
         };
 
         settingsService.cleanCollapsed = function(posts) {
@@ -42,16 +42,16 @@ angular.module('chatty')
 
         settingsService.pinThread = function(id) {
             pinnedThreads.push(id);
-            if (settingsService.isLoggedIn() && _.contains(pinnedThreads, id)) {
+            if (settingsService.isLoggedIn()) {
                 apiService.markPost(settingsService.getUsername(), id, 'pinned');
             }
         };
 
         settingsService.unpinThread = function(id) {
-            _.pull(pinnedThreads, id);
             if (settingsService.isLoggedIn() && _.contains(pinnedThreads, id)) {
                 apiService.markPost(settingsService.getUsername(), id, 'unmarked');
             }
+            _.pull(pinnedThreads, id);
         };
 
 
