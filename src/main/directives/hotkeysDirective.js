@@ -4,11 +4,10 @@ angular.module('chatty')
             restrict: 'A',
             controller: function($document, $timeout, actionService) {
                 $document.bind('keydown', function(event) {
-                    if (!event.repeat
-                        && event.srcElement.localName !== 'input'
+                    if (event.srcElement.localName !== 'input'
                         && event.srcElement.localName !== 'textarea') {
 
-                        $timeout(function() {
+                        _.throttle(function() {
                             if (event.keyCode === 65) {
                                 actionService.previousReply();
                             } else if (event.keyCode === 90) {
@@ -16,7 +15,7 @@ angular.module('chatty')
                             } else if (event.keyCode === 27) {
                                 actionService.collapseReply();
                             }
-                        });
+                        }, 10)();
                     }
                 });
             }
