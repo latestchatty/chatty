@@ -190,6 +190,8 @@ angular.module('chatty')
                 post.tagClass = 'postInformative';
             } else if (post.category === 'nws') {
                 post.tagClass = 'postNws';
+            } else if (post.author.toLowerCase() === 'shacknews') {
+                post.tagClass = 'postFrontpage';g
             } else {
                 delete post.tagClass;
             }

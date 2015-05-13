@@ -41,3 +41,6 @@ a.showpost:hover {
 .postNws {
     border-left: 2px solid red;
 }
+.postFrontpage {
+    border-left: 2px solid mediumpurple;
+}
