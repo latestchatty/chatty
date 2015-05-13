@@ -9,12 +9,10 @@ var ngAnnotate = require('gulp-ng-annotate');
 var templateCache = require('gulp-angular-templatecache');
 var changed = require('gulp-changed');
 var gulpif = require('gulp-if');
-var connect = require('gulp-connect');
+var server = require('gulp-server-livereload');
 
 var paths = {
-    target: './build',
-    coverage: './coverage',
-    client: {
+    src: {
         base: './src/main',
         js: [
             './bower_components/lodash/lodash.js',
@@ -34,29 +32,34 @@ var paths = {
             './src/main/index.html',
             './src/main/images/**'
         ]
+    },
+    dist: {
+        root: './build',
+        bundleName: 'bundle.js',
+        coverage: './coverage'
     }
 };
 
 //clean up old build
 gulp.task('clean', function clean(callback) {
-    del([paths.target, paths.coverage], callback);
+    del([paths.dist.root, paths.dist.coverage], callback);
 });
 
 //copy over html
 gulp.task('build-html', function() {
-    gulp.src(paths.client.html)
+    gulp.src(paths.src.html)
         .pipe(clip())
         .pipe(templateCache({ module: 'chatty'}))
-        .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
-        .pipe(gulp.dest(paths.target));
+        .pipe(changed(paths.dist.root, {hasChanged: changed.compareSha1Digest}))
+        .pipe(gulp.dest(paths.dist.root));
 });
 
 //copy over html
 gulp.task('build-static', function() {
-    gulp.src(paths.client.static_content, { base: paths.client.base })
+    gulp.src(paths.src.static_content, { base: paths.src.base })
         .pipe(clip())
-        .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
-        .pipe(gulp.dest(paths.target));
+        .pipe(changed(paths.dist.root, {hasChanged: changed.compareSha1Digest}))
+        .pipe(gulp.dest(paths.dist.root));
 });
 
 //minify and concat all js
@@ -64,50 +67,46 @@ gulp.task('build-js', buildJs(false));
 gulp.task('build-js-debug', buildJs(true));
 function buildJs(debug) {
     return function() {
-        var jspaths = paths.client.js;
+        var jspaths = paths.src.js;
         if (debug) jspaths.push('./bower_components/ng-stats/dist/ng-stats.js');
         gulp.src(jspaths)
             .pipe(clip())
             .pipe(gulpif(!debug, sourcemaps.init()))
             .pipe(ngAnnotate())
             .pipe(gulpif(!debug, uglify()))
-            .pipe(concat('bundle.js'))
-            .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
+            .pipe(concat(paths.dist.bundleName))
+            .pipe(changed(paths.dist.root, {hasChanged: changed.compareSha1Digest}))
             .pipe(gulpif(!debug,sourcemaps.write('.')))
-            .pipe(gulp.dest(paths.target));
+            .pipe(gulp.dest(paths.dist.root));
     }
 }
 
 //minify and concat all css
 gulp.task('build-css', function() {
-    gulp.src(paths.client.css)
+    gulp.src(paths.src.css)
         .pipe(clip())
         .pipe(minifyCSS())
         .pipe(concat('bundle.css'))
-        .pipe(changed(paths.target, {hasChanged: changed.compareSha1Digest}))
-        .pipe(gulp.dest(paths.target));
+        .pipe(changed(paths.dist.root, {hasChanged: changed.compareSha1Digest}))
+        .pipe(gulp.dest(paths.dist.root));
 });
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-    gulp.watch(paths.client.static_content, ['build-static']);
-    gulp.watch(paths.client.html, ['build-html']);
-    gulp.watch(paths.client.js, ['build-js-debug']);
-    gulp.watch(paths.client.css, ['build-css']);
-
-    //live reload
-    gulp.watch(paths.target + '/**').on('change', function(file) {
-        gulp.src(file.path, {read: false})
-            .pipe(connect.reload());
-    });
+    gulp.watch(paths.src.static_content, ['build-static']);
+    gulp.watch(paths.src.html, ['build-html']);
+    gulp.watch(paths.src.js, ['build-js-debug']);
+    gulp.watch(paths.src.css, ['build-css']);
 });
 
 gulp.task('server', function() {
-    connect.server({
-        root: 'build',
-        port: process.env.PORT || 3000,
-        livereload: true
-    });
+    gulp.src(paths.dist.root)
+        .pipe(server({
+            port: 3000,
+            livereload: true,
+            directoryListing: false,
+            open: true
+        }));
 });
 
 gulp.task('default', ['server', 'watch', 'build-html', 'build-js-debug', 'build-css', 'build-static']);
