@@ -5,6 +5,15 @@ angular.module('chatty')
         var threads = [];
         var newThreads = [];
         var posts = {};
+        var employees = [
+            'shacknews',
+            'the man with the briefcase',
+            'ozziemejia',
+            'staymighty',
+            'hammersuit',
+            'gburke59',
+            'daniel_perez'
+        ];
 
         modelService.updateAllThreads = function() {
             _.each(threads, updateExpiration);
@@ -152,6 +161,8 @@ angular.module('chatty')
                 post.userClass = 'user_me';
             } else if (thread && post.author.toLowerCase() === thread.author.toLowerCase()) {
                 post.userClass = 'user_op';
+            } else if (_.contains(employees, post.author.toLowerCase())) {
+                post.userClass = 'user_employee';
             }
 
             //add last action date

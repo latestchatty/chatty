@@ -65,6 +65,17 @@ div.postBody a:hover {
 .user_me:hover {
     text-decoration: underline;
 }
+.user_employee {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: mediumpurple;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+.user_employee:hover {
+    text-decoration: underline;
+}
 
 /* post body date */
 .postdate {
