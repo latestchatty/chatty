@@ -1,15 +1,13 @@
 angular.module('chatty')
     .directive('compile', function ($compile) {
-        return function (scope, element, attrs) {
-            var unwatch = scope.$watch(
-                function (scope) {
-                    return scope.$eval(attrs.compile);
-                },
-                function (value) {
-                    element.html(value);
-                    $compile(element.contents())(scope);
-                    unwatch();
-                }
-            );
-        };
+        return {
+            restrict: 'A',
+            scope: {
+                compile: '='
+            },
+            link: function (scope, element) {
+                element.html(scope.compile);
+                $compile(element.contents())(scope);
+            }
+        }
     });

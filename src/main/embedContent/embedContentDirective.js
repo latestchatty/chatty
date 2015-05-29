@@ -12,8 +12,10 @@ angular.module('chatty')
                     $scope.visible = !$scope.visible;
                 };
 
-                $scope.fixYoutubeUrl = function() {
-                    return $sce.trustAsResourceUrl('https://www.youtube.com/embed/FhJmwK6wkF4');
+                $scope.fixUrl = function(regex, fixed) {
+                    var rex = new RegExp(regex);
+                    var url = $scope.url.replace(rex, fixed);
+                    return $sce.trustAsResourceUrl(url);
                 };
             }
         }

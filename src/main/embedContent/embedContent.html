@@ -18,7 +18,30 @@
             <i class="actionItem fa fa-youtube"></i>
         </a>
         <p ng-if="visible">
-            <iframe width="560" height="315" ng-src="{{::fixYoutubeUrl()}}" frameborder="0" allowfullscreen></iframe>
+            <iframe width="560" height="315" ng-src="{{::fixUrl('(.+)\\/(watch\\?v=)?(.+)', '$1/embed/$3')}}" frameborder="0" allowfullscreen></iframe>
+        </p>
+    </span>
+
+    <!-- gifv -->
+    <span ng-if="::type === 'gifv'">
+        <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
+        <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
+            <i class="actionItem fa fa-camera-retro"></i>
+        </a>
+        <p ng-if="visible">
+            <iframe width="560" height="315" frameborder="0" ng-src="{{::fixUrl('(.+)', '$1#embed')}}"></iframe>
+        </p>
+    </span>
+
+    <!-- gfycat -->
+    <span ng-if="::type === 'gfycat'">
+        <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
+        <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
+            <i class="actionItem fa fa-camera-retro"></i>
+        </a>
+        <p ng-if="visible">
+            <iframe ng-src="{{::fixUrl('(.+)\/(.+)', '$1/ifr/$2')}}" frameborder="0" width="560" height="315"
+                style="-webkit-backface-visibility: hidden;-webkit-transform: scale(1);" ></iframe>
         </p>
     </span>
 
