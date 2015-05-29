@@ -79,22 +79,9 @@ angular.module('chatty')
             localStorageService.set('credentials', credentials);
         };
 
-        settingsService.isEmbeddedInShacknews = function() {
-            return $location.host().indexOf('shacknews.com') >= 0;
-        };
-
-
         settingsService.load = function() {
             collapsedThreads = [];
             credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''};
-
-            if (settingsService.isEmbeddedInShacknews()) {
-                //Get the username from the hidden shack element.
-                var el = $document[0].getElementById('user_posts');
-                credentials = {};
-                credentials.username = !!el ? el.innerHTML || '' : '';
-                credentials.password = '';
-            }
 
             return settingsService.refresh();
         };

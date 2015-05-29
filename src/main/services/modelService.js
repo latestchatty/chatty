@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('modelService', function(settingsService) {
+    .service('modelService', function(settingsService, bodyTransformService) {
         var modelService = {};
 
         var threads = [];
@@ -141,17 +141,11 @@ angular.module('chatty')
         }
 
         function fixPost(post, thread) {
-            //fix Shacknews posts with article links
-            if (post.author === 'Shacknews') {
-                post.body = post.body.replace('href="', 'href="http://www.shacknews.com');
-            }
-
-            //fix spoiler tags not being clickable
-            post.body = post.body.replace(/onclick=[^>]+/gm, 'tabindex="1"');
+            //parse body for extra features
+            post.body = bodyTransformService.parse(post);
 
             //create the one-liner used for reply view
-            var stripped = post.body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ');
-            post.oneline = htmlSnippet(stripped, 106);
+            post.oneline = bodyTransformService.getSnippet(post.body);
 
             //create sub-post container
             post.posts = post.posts || [];
@@ -208,35 +202,6 @@ angular.module('chatty')
             } else {
                 thread.expireColor = 'red';
             }
-        }
-
-        function htmlSnippet(input, maxLength) {
-            var i = 0;
-            var len = 0;
-            var tag = false;
-            var char = false;
-            while (i < input.length && len < maxLength) {
-                if (input[i] === '<') {
-                    tag = true;
-                } else if (input[i] === '>') {
-                    tag = false;
-                } else if (input[i] === '&') {
-                    char = true;
-                } else if (input[i] === ';' && char) {
-                    char = false;
-                    len++;
-                } else if (!tag) {
-                    len++;
-                }
-
-                i++;
-            }
-
-            var output = input.slice(0, i);
-            if (i < input.length) {
-                output += '...';
-            }
-            return output;
         }
 
         function removePost(post) {

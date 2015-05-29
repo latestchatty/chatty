@@ -10,7 +10,6 @@ angular.module('chatty')
                 $scope.loginInvalid = false;
                 $scope.username = settingsService.getUsername();
                 $scope.password = null;
-                $scope.embedded = settingsService.isEmbeddedInShacknews();
                 $scope.loggedIn = settingsService.isLoggedIn;
                 $scope.getTotalMessageCount = shackMessageService.getTotalMessageCount;
                 $scope.getUnreadMessageCount = shackMessageService.getUnreadMessageCount;
