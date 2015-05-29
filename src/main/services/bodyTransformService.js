@@ -13,14 +13,19 @@ angular.module('chatty')
             //fix spoiler tags not being clickable
             fixed = fixed.replace(/onclick=[^>]+/gm, 'tabindex="1"');
 
-            //add embedded content behavior
-            fixed = fixed.replace(/<a.+?href="(.+?\.(png|jpg|jpeg|gif))".+?a>/gi, '<embed-content url="$1"></embed-content>');
+            //embedded images
+            fixed = fixed.replace(/<a.+?href="(.+?\.(png|jpg|jpeg|gif))".+?a>/gi,
+                '<embed-content url="$1" type="image"></embed-content>');
+
+            //embedded youtubes
+            fixed = fixed.replace(/<a.+?href="((https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be).+?)".+?a>/gi,
+                '<embed-content url="$1" type="youtube"></embed-content>');
 
             return fixed;
         };
 
         bodyTransformService.getSnippet = function(body) {
-            var stripped = body.replace(/<embed\-content url="(.+)"><\/embed\-content>/, '$1');
+            var stripped = body.replace(/<embed\-content url="(.+)" type=".+"><\/embed\-content>/, '$1');
             stripped = stripped.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ');
             return htmlSnippet(stripped, 106);
         };

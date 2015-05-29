@@ -1,9 +1,25 @@
 <span>
-    <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
-    <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
-        <i class="actionItem fa fa-camera-retro"></i>
-    </a>
-    <p ng-if="::visible" ng-show="visible">
-        <img style="max-width: 75%" ng-src="{{::url}}" ng-click="toggleVisibility()">
-    </p>
+
+    <!-- images -->
+    <span ng-if="::type === 'image'">
+        <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
+        <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
+            <i class="actionItem fa fa-camera-retro"></i>
+        </a>
+        <p ng-if="visible">
+            <img style="max-width: 75%" ng-src="{{::url}}" ng-click="toggleVisibility()">
+        </p>
+    </span>
+
+    <!-- youtube -->
+    <span ng-if="::type === 'youtube'">
+        <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
+        <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
+            <i class="actionItem fa fa-youtube"></i>
+        </a>
+        <p ng-if="visible">
+            <iframe width="560" height="315" ng-src="{{::fixYoutubeUrl()}}" frameborder="0" allowfullscreen></iframe>
+        </p>
+    </span>
+
 </span>
