@@ -3,11 +3,12 @@ angular.module('chatty')
         return {
             restrict: 'E',
             templateUrl: 'embedContent/embedContent.html',
-            link: function (scope, element, attrs) {
-                scope.url = attrs.url;
-                
-                scope.toggleVisibility = function() {
-                    scope.visible = !scope.visible;
+            scope: {
+                url: '@'
+            },
+            controller: function($scope) {
+                $scope.toggleVisibility = function() {
+                    $scope.visible = !$scope.visible;
                 }
             }
         }

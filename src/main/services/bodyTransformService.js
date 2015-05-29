@@ -14,7 +14,7 @@ angular.module('chatty')
             fixed = fixed.replace(/onclick=[^>]+/gm, 'tabindex="1"');
 
             //add embedded content behavior
-            fixed = fixed.replace(/<a.+href="(.+)".+\.(png|jpg|jpeg|gif)<\/a>/, '<embed-content url="$1"></embed-content>');
+            fixed = fixed.replace(/<a.+?href="(.+?\.(png|jpg|jpeg|gif))".+?a>/gi, '<embed-content url="$1"></embed-content>');
 
             return fixed;
         };
@@ -51,7 +51,7 @@ angular.module('chatty')
             if (i < input.length || !output) {
                 output += '...';
             }
-            
+
             return output;
         }
 
