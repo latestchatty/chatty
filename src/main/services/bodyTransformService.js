@@ -33,7 +33,7 @@ angular.module('chatty')
         };
 
         bodyTransformService.getSnippet = function(body) {
-            var stripped = body.replace(/<embed\-content url="(.+)" type=".+"><\/embed\-content>/, '$1');
+            var stripped = body.replace(/<embed\-content url="([^"]+)" type="[^"]+"><\/embed\-content>/gi, '$1');
             stripped = stripped.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ');
             return htmlSnippet(stripped, 106);
         };
