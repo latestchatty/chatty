@@ -13,6 +13,9 @@ angular.module('chatty')
             //fix spoiler tags not being clickable
             fixed = fixed.replace(/onclick=[^>]+/gm, 'tabindex="1"');
 
+            //add embedded content behavior
+            fixed = fixed.replace(/<a.+href="(.+)".+\.(png|jpg|jpeg|gif)<\/a>/, '<embed-content url="$1"></embed-content>');
+
             return fixed;
         };
 

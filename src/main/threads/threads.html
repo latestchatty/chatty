@@ -17,7 +17,7 @@
         <div ng-if-event-expr="post.state !== 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id">
             <div class="rootPost" ng-class="::post.tagClass">
                 <post></post>
-                <div class="postBody postBodyText" ng-bind-html="::post.body | trusted"></div>
+                <div class="postBody postBodyText" compile="post.body"></div>
             </div>
 
             <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.id"
