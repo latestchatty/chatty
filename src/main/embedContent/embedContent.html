@@ -1,10 +1,10 @@
 <div>
-    <a ng-href="{{::url}}">{{::url}}</a>
-    <a target="_blank" href="" ng-hide="visible" ng-click="toggleVisibility()">
+    <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
+    <a href="" ng-click="toggleVisibility()">
         <i class="actionItem fa fa-camera-retro"></i>
     </a>
-    <a href="" ng-if="visible" ng-show="visible" ng-click="toggleVisibility()">
+    <span ng-if="::visible" ng-show="visible">
         <br>
-        <img style="max-width: 75%" ng-src="{{::url}}">
-    </a>
+        <img style="max-width: 75%" ng-src="{{::url}}" ng-click="toggleVisibility()">
+    </span>
 </div>

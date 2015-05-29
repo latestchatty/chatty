@@ -20,7 +20,8 @@ angular.module('chatty')
         };
 
         bodyTransformService.getSnippet = function(body) {
-            var stripped = body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ');
+            var stripped = body.replace(/<embed\-content url="(.+)"><\/embed\-content>/, '$1');
+            stripped = stripped.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ');
             return htmlSnippet(stripped, 106);
         };
 
@@ -46,10 +47,11 @@ angular.module('chatty')
                 i++;
             }
 
-            var output = input.slice(0, i);
-            if (i < input.length) {
+            var output = _.trim(input.slice(0, i));
+            if (i < input.length || !output) {
                 output += '...';
             }
+            
             return output;
         }
 
