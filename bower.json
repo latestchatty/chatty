@@ -5,8 +5,8 @@
     "angular-recursion": "~1.0.5",
     "lodash": "~3.8.0",
     "ng-stats": "~2.0.4",
-    "angular": "~1.4.0-rc.2",
+    "angular": "~1.4.0",
     "angular-local-storage": "~0.2.0",
-    "angular-sanitize": "~1.4.0-rc.2"
+    "angular-sanitize": "~1.4.0"
   }
 }
