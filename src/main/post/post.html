@@ -22,7 +22,7 @@
         <i class="actionItem fa fa-comment" title="Reply to post" ng-click="openReplyBox(post)"></i>
         <i class="actionItem fa fa-bookmark" title="Save to tab" ng-if="::!post.parentId" ng-click="addPostTab(post)"></i>
         <i class="actionItem fa fa-star" title="Pin to cloud" ng-if="::!post.parentId" ng-click="pinPost(post)"></i>
-        <a ng-href="http://www.shacknews.com/chatty?id={{::post.id}}#item_{{::post.id}}">
+        <a target="_blank" ng-href="http://www.shacknews.com/chatty?id={{::post.id}}#item_{{::post.id}}">
             <i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>
         </a>
     </div>
