@@ -18,15 +18,15 @@ angular.module('chatty')
                 '<embed-content url="$1" type="image"></embed-content>');
 
             //embedded youtubes
-            fixed = fixed.replace(/<a[^<]+?href="((https?\:\/\/)?(www\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi,
+            fixed = fixed.replace(/<a[^<]+?href="((https?:\/\/)?(www\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="youtube"></embed-content>');
 
             //imgur gifv
-            fixed = fixed.replace(/<a[^<]+?href="(.+?\.(gifv))">[^<]+?<\/a>/gi,
+            fixed = fixed.replace(/<a[^<]+?href="([^"]+?\.(gifv))">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="gifv"></embed-content>');
 
             //gfycat
-            fixed = fixed.replace(/<a[^<]+?href="(.+?gfycat\.com\/.+?)">[^<]+?<\/a>/gi,
+            fixed = fixed.replace(/<a[^<]+?href="([^"]+?gfycat\.com\/[^"]+?)">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="gfycat"></embed-content>');
 
             return fixed;
