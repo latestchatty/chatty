@@ -30,6 +30,7 @@ var paths = {
         ],
         static_content: [
             './src/main/index.html',
+            './src/main/favicon.ico',
             './src/main/images/**'
         ]
     },

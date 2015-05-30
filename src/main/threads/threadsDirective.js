@@ -11,7 +11,13 @@ angular.module('chatty')
                 $scope.loadingMessages = [
                     'Think before you post...',
                     'It gets you chicks!',
-                    '<span style="color: red; font-weight: bold;"> * N U K E D *</span>'
+                    '<span style="color: red; font-weight: bold;"> * N U K E D *</span>',
+                    'I ATE A CAT',
+                    '\\<span style="text-decoration: underline">8===D</span>/',
+                    'Thanks.txt',
+                    'Welcome to the world of SPA Chatty, you\'re in for a hell of a ride.',
+                    'Please understand.',
+                    '----\\\\\\_____O_o/-----------'
                 ];
                 $scope.loadingMessage = _.sample($scope.loadingMessages);
 
