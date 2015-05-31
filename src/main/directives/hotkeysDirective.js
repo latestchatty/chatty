@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('hotkeys', function () {
+    .directive('hotkeys', function() {
         return {
             restrict: 'A',
             controller: function($document, $timeout, actionService) {
@@ -9,15 +9,15 @@ angular.module('chatty')
 
                         _.throttle(function() {
                             if (event.keyCode === 65) {
-                                actionService.previousReply();
+                                actionService.previousReply()
                             } else if (event.keyCode === 90) {
-                                actionService.nextReply();
+                                actionService.nextReply()
                             } else if (event.keyCode === 27) {
-                                actionService.collapseReply();
+                                actionService.collapseReply()
                             }
-                        }, 10)();
+                        }, 10)()
                     }
-                });
+                })
             }
         }
-    });
+    })

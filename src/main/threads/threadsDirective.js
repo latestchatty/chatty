@@ -6,8 +6,8 @@ angular.module('chatty')
             templateUrl: 'threads/threads.html',
             controller: function($scope, modelService, actionService) {
                 //load full chatty on start
-                $scope.threads = modelService.getThreads();
-                $scope.newThreads = modelService.getNewThreads();
+                $scope.threads = modelService.getThreads()
+                $scope.newThreads = modelService.getNewThreads()
                 $scope.loadingMessages = [
                     'Think before you post...',
                     'It gets you chicks!',
@@ -28,16 +28,16 @@ angular.module('chatty')
                     'u bread loaf,' +
                     ' (╯°□°）╯︵ ┻━┻ ',
                     '( ͡° ͜ʖ ͡°) '
-                ];
-                $scope.loadingMessage = _.sample($scope.loadingMessages);
+                ]
+                $scope.loadingMessage = _.sample($scope.loadingMessages)
 
                 $scope.$on('ngRepeatFinished', function() {
-                    $scope.isLoaded = true;
-                });
+                    $scope.isLoaded = true
+                })
 
                 $scope.expandThread = function(thread) {
-                    actionService.expandThread(thread);
-                };
+                    actionService.expandThread(thread)
+                }
             }
-        };
-    });
+        }
+    })

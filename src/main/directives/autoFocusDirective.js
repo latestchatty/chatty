@@ -3,8 +3,8 @@ angular.module('chatty')
         return {
             link: {
                 post: function(scope, element) {
-                    element[0].focus();
+                    element[0].focus()
                 }
             }
         }
-    });
+    })

@@ -6,12 +6,15 @@
   "license": "MIT",
   "repository": "https://github.com/NiXXeD/chatty",
   "scripts": {
+    "clean": "gulp clean",
+    "lint": "eslint src",
     "build": "npm install && bower install && gulp clean && gulp build",
     "start": "npm run build && gulp server"
   },
   "dependencies": {
     "bower": "^1.4.1",
     "del": "^1.2.0",
+    "eslint": "^0.22.1",
     "gulp": "^3.8.11",
     "gulp-angular-templatecache": "^1.6.0",
     "gulp-changed": "^1.2.1",

@@ -3,7 +3,7 @@ angular.module('chatty')
         return {
             require: '^keepScroll',
             link: function(scope, element, attr, ctrl) {
-                ctrl.itemChanged(element[0]);
+                ctrl.itemChanged(element[0])
             }
-        };
-    });
+        }
+    })

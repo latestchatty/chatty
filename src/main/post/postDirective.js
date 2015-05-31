@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('post', function () {
+    .directive('post', function() {
         return {
             restrict: 'E',
             replace: true,
@@ -7,27 +7,27 @@ angular.module('chatty')
             controller: function($scope, actionService, tabService) {
                 $scope.collapse = function(post) {
                     if (post.parentId) {
-                        actionService.collapsePostReply(post);
+                        actionService.collapsePostReply(post)
                     } else {
-                        actionService.collapseThread(post);
+                        actionService.collapseThread(post)
                     }
-                };
+                }
 
                 $scope.openReplyBox = function(post) {
-                    actionService.openReplyBox(post);
-                };
+                    actionService.openReplyBox(post)
+                }
 
                 $scope.addUserTab = function(user) {
-                    tabService.addTab('user', user);
-                };
+                    tabService.addTab('user', user)
+                }
 
                 $scope.addPostTab = function(post) {
-                    tabService.addTab('post', post.id);
-                };
+                    tabService.addTab('post', post.id)
+                }
 
                 $scope.pinPost = function(post) {
-                    actionService.togglePinThread(post);
-                };
+                    actionService.togglePinThread(post)
+                }
             }
         }
-    });
+    })

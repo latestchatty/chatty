@@ -1,39 +1,39 @@
 angular.module('chatty')
     .service('shackMessageService', function($window, settingsService, apiService) {
-        var shackMessageService = {};
+        var shackMessageService = {}
 
         shackMessageService.clear = function() {
-            shackMessageService.totalMessageCount = '...';
-            shackMessageService.unreadMessageCount = '...';
-        };
-        shackMessageService.clear();
+            shackMessageService.totalMessageCount = '...'
+            shackMessageService.unreadMessageCount = '...'
+        }
+        shackMessageService.clear()
 
         shackMessageService.getTotalMessageCount = function() {
-            return shackMessageService.totalMessageCount;
-        };
+            return shackMessageService.totalMessageCount
+        }
 
         shackMessageService.getUnreadMessageCount = function() {
-            return shackMessageService.unreadMessageCount;
-        };
+            return shackMessageService.unreadMessageCount
+        }
 
         shackMessageService.refresh = function() {
             if (settingsService.isLoggedIn()) {
                 apiService.getTotalInboxCount(settingsService.getUsername(), settingsService.getPassword())
                     .success(function(data) {
-                        shackMessageService.totalMessageCount = data.total;
-                        shackMessageService.unreadMessageCount = data.unread;
+                        shackMessageService.totalMessageCount = data.total
+                        shackMessageService.unreadMessageCount = data.unread
                     })
                     .error(function(data) {
-                        console.log('Error during shackmessage count update: ', data);
-                        shackMessageService.totalMessageCount = -1;
-                        shackMessageService.unreadMessageCount = -1;
-                    });
+                        console.log('Error during shackmessage count update: ', data)
+                        shackMessageService.totalMessageCount = -1
+                        shackMessageService.unreadMessageCount = -1
+                    })
             }
-        };
+        }
 
         shackMessageService.goToInbox = function() {
-            $window.open('https://www.shacknews.com/messages', '_blank');
-        };
+            $window.open('https://www.shacknews.com/messages', '_blank')
+        }
 
-        return shackMessageService;
-    });
+        return shackMessageService
+    })

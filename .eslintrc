@@ -1,0 +1,16 @@
+{
+  "env": {
+    "node": true
+  },
+  "globals": {
+    "_": true,
+    "angular": true
+  },
+  "rules" : {
+    "semi": [2, "never"],
+    "quotes": [2, "single", "avoid-escape"],
+    "space-before-function-paren": [2, "never"],
+    "strict": 0,
+    "no-use-before-define": 0
+  }
+}
