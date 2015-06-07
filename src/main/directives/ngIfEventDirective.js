@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('ngIfEvent', function($animate, document) {
+    .directive('ngIfEvent', function($animate) {
         return {
             multiElement: true,
             transclude: 'element',
