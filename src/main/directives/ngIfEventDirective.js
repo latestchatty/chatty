@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .directive('ngIfEvent', function($animate, $document) {
+    .directive('ngIfEvent', function($animate, document) {
         return {
             multiElement: true,
             transclude: 'element',
@@ -25,7 +25,7 @@ angular.module('chatty')
                         if (!childScope) {
                             $transclude(function(clone, newScope) {
                                 childScope = newScope
-                                clone[clone.length++] = $document.createComment(' end ngIf: ' + $attr.ngIf + ' ')
+                                clone[clone.length++] = document.createComment(' end ngIf: ' + $attr.ngIf + ' ')
                                 // Note: We only need the first/last node of the cloned nodes.
                                 // However, we need to keep the reference to the jqlite wrapper as it might be changed later
                                 // by a directive with templateUrl when its template arrives.

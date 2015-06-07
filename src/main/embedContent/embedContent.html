@@ -7,7 +7,11 @@
             <i class="actionItem fa fa-camera-retro"></i>
         </a>
         <p ng-if="visible">
-            <img style="max-width: 75%" ng-src="{{::url}}" ng-click="toggleVisibility()">
+            <img style="max-width: 75%" ng-src="{{::testFixUrl([
+            { test: 'chattypics.com\\/viewer.php\\?file=',
+            regex: '(.+?chattypics.com\\/)(viewer.php\\?file=)?(files\\/)?(.+)',
+            replace: '$1files/$4'}
+            ])}}" ng-click="toggleVisibility()">
         </p>
     </span>
 

@@ -17,6 +17,19 @@ angular.module('chatty')
                     var url = $scope.url.replace(rex, fixed)
                     return $sce.trustAsResourceUrl(url)
                 }
+
+                $scope.testFixUrl = function(tests) {
+                    var result = _.find(tests, function(test) {
+                        var rex = new RegExp(test.test)
+                        return rex.test($scope.url)
+                    })
+
+                    if (result) {
+                        return $scope.fixUrl(result.regex, result.replace)
+                    } else {
+                        return $scope.url
+                    }
+                }
             }
         }
     })
