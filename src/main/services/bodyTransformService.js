@@ -17,8 +17,8 @@ angular.module('chatty')
             fixed = fixed.replace(/<a[^<]+?href="([^"]+?\.(png|jpg|jpeg|gif))">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="image"></embed-content>')
 
-            //embedded youtubes
-            fixed = fixed.replace(/<a[^<]+?href="((https?:\/\/)?(www\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi,
+            //embedded youtubest
+            fixed = fixed.replace(/<a[^<]+?href="((https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="youtube"></embed-content>')
 
             //imgur gifv

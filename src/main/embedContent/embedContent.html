@@ -22,7 +22,7 @@
             <i class="actionItem fa fa-youtube"></i>
         </a>
         <p ng-if="visible">
-            <iframe ng-src="{{::fixUrl('(.+)\\/(watch\\?v=)?(.+)', 'https://www.youtube.com/embed/$3')}}"
+            <iframe ng-src="{{::fixUrl('(.+?)\\.(com|be)(\\/|\\/watch\\?)(.+v=)?(.+)', 'https://www.youtube.com/embed/$5')}}"
                     width="560" height="315"  frameborder="0" allowfullscreen></iframe>
         </p>
     </span>
