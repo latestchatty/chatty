@@ -27,14 +27,22 @@
         </p>
     </span>
 
-    <!-- gifv -->
-    <span ng-if="::type === 'gifv'">
+    <!-- imgur -->
+    <span ng-if="::type === 'imgur'">
         <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
         <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
             <i class="actionItem fa fa-camera-retro"></i>
         </a>
         <p ng-if="visible">
-            <iframe ng-src="{{::fixUrl('(.+)', '$1#embed')}}"
+            <iframe ng-src="{{::testFixUrl([
+            { test: '\\.gifv$',
+            regex: '(.*)',
+            replace: '$1#embed'},
+            { test: 'imgur.com\/a\/',
+            regex: '(.*)',
+            replace: '$1\/embed'
+            }
+            ])}}"
                     width="560" height="315" frameborder="0" allowfullscreen></iframe>
         </p>
     </span>

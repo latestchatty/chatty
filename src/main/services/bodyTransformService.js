@@ -17,15 +17,15 @@ angular.module('chatty')
             fixed = fixed.replace(/<a[^<]+?href="([^"]+?\.(png|jpg|jpeg|gif))">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="image"></embed-content>')
 
-            //embedded youtubest
+            //youtube embed
             fixed = fixed.replace(/<a[^<]+?href="((https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="youtube"></embed-content>')
 
-            //imgur gifv
-            fixed = fixed.replace(/<a[^<]+?href="([^"]+?\.(gifv))">[^<]+?<\/a>/gi,
-                '<embed-content url="$1" type="gifv"></embed-content>')
+            //imgur embed
+            fixed = fixed.replace(/<a[^<]+?href="((https?:\/\/)?(.+\.)?(imgur\.com).+?)">[^<]+?<\/a>/gi,
+                '<embed-content url="$1" type="imgur"></embed-content>')
 
-            //gfycat
+            //gfycat embed
             fixed = fixed.replace(/<a[^<]+?href="([^"]+?gfycat\.com\/[^"]+?)">[^<]+?<\/a>/gi,
                 '<embed-content url="$1" type="gfycat"></embed-content>')
 
