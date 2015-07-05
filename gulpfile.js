@@ -69,7 +69,6 @@ gulp.task('build-js-debug', buildJs(true))
 function buildJs(debug) {
     return function() {
         var jspaths = paths.src.js
-        if (debug) jspaths.push('./bower_components/ng-stats/dist/ng-stats.js')
         gulp.src(jspaths)
             .pipe(clip())
             .pipe(gulpif(!debug, sourcemaps.init()))

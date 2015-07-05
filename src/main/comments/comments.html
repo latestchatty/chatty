@@ -4,7 +4,7 @@
         <!--collapsed reply-->
         <div ng-if-event-expr="!post.viewFull" ng-if-event="reply-collapse" ng-if-event-id="post.id" scroll-item>
             <span class="oneline" ng-class="[post.lineClass || 'oneline9', post.tagClass]"
-                  ng-click="expandReply(post)" ng-bind-html="::post.oneline | trusted"></span>
+                  ng-click="expandReply(post)" ng-bind-html="::post.body.oneline | trusted"></span>
 
             <span class="onelineSeparator">&nbsp;:&nbsp;</span>
             <span ng-class="::post.userClass || 'user'" ng-click="addUserTab(post.author)">{{::post.author}}</span>
@@ -14,7 +14,6 @@
         <div ng-if-event-expr="post.viewFull" ng-if-event="reply-collapse" ng-if-event-id="post.id">
             <div class="replyPost" ng-class="::post.tagClass" scroll-into-view>
                 <post></post>
-                <div class="postBody postBodyText" compile="::post.body"></div>
             </div>
 
             <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.threadId"

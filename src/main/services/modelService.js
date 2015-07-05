@@ -144,9 +144,6 @@ angular.module('chatty')
             //parse body for extra features
             post.body = bodyTransformService.parse(post)
 
-            //create the one-liner used for reply view
-            post.oneline = bodyTransformService.getSnippet(post.body)
-
             //create sub-post container
             post.posts = post.posts || []
 

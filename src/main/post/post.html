@@ -1,6 +1,5 @@
 <div>
     <div class="postheader">
-
         <!-- header left -->
         <span ng-class="::post.userClass || 'user'" ng-click="addUserTab(post.author)" ng-bind="::post.author"></span>
 
@@ -13,7 +12,14 @@
                     'background-color': post.expireColor}"></div>
             </div>
         </div>
+    </div>
 
+    <!-- post content -->
+    <div class="postBody postBodyText">
+        <span ng-repeat="chunk in ::post.body.chunks">
+            <span ng-if="::chunk.type === 'html'" ng-bind-html="::chunk.value | trusted"></span>
+            <embed-content ng-if="::chunk.type === 'embed'" url="{{::chunk.value}}" type="{{::chunk.embedType}}"></embed-content>
+        </span>
     </div>
 
     <!-- action bar -->
@@ -26,4 +32,5 @@
             <i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>
         </a>
     </div>
+
 </div>

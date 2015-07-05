@@ -2,6 +2,13 @@ angular.module('chatty')
     .service('bodyTransformService', function() {
         var bodyTransformService = {}
 
+        var matchers = [
+            {regex: /<a[^<]+?href="([^"]+?\.(png|jpg|jpeg|gif))">[^<]+?<\/a>/gi, type: 'image'},
+            {regex: /<a[^<]+?href="((https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi, type: 'youtube'},
+            {regex: /<a[^<]+?href="((https?:\/\/)?(.+\.)?(imgur\.com).+?)">[^<]+?<\/a>/gi, type: 'imgur'},
+            {regex: /<a[^<]+?href="([^"]+?gfycat\.com\/[^"]+?)">[^<]+?<\/a>/gi, type: 'gfycat'}
+        ]
+
         bodyTransformService.parse = function(post) {
             var fixed = post.body
 
@@ -13,23 +20,55 @@ angular.module('chatty')
             //fix spoiler tags not being clickable
             fixed = fixed.replace(/onclick=[^>]+/gm, 'tabindex="1"')
 
-            //embedded images
-            fixed = fixed.replace(/<a[^<]+?href="([^"]+?\.(png|jpg|jpeg|gif))">[^<]+?<\/a>/gi,
-                '<embed-content url="$1" type="image"></embed-content>')
+            //find matching urls for embeds
+            var matches = []
+            _.each(matchers, function(matcher) {
+                var result
+                while ((result = matcher.regex.exec(fixed)) !== null) {
+                    result.type = matcher.type
+                    matches.push(result)
+                }
+            })
 
-            //youtube embed
-            fixed = fixed.replace(/<a[^<]+?href="((https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi,
-                '<embed-content url="$1" type="youtube"></embed-content>')
+            //split html into chunks for rendering
+            var chunks = []
+            if (matches.length) {
+                var index = 0
+                _.each(_.sortBy(matches, 'index'), function(match) {
+                    //static html prior to this chunk
+                    chunks.push({
+                        value: fixed.slice(index, match.index),
+                        type: 'html'
+                    })
 
-            //imgur embed
-            fixed = fixed.replace(/<a[^<]+?href="((https?:\/\/)?(.+\.)?(imgur\.com).+?)">[^<]+?<\/a>/gi,
-                '<embed-content url="$1" type="imgur"></embed-content>')
+                    //matching chunk
+                    chunks.push({
+                        value: match[1],
+                        type: 'embed',
+                        embedType: match.type
+                    })
 
-            //gfycat embed
-            fixed = fixed.replace(/<a[^<]+?href="([^"]+?gfycat\.com\/[^"]+?)">[^<]+?<\/a>/gi,
-                '<embed-content url="$1" type="gfycat"></embed-content>')
+                    index = match.index + match[0].length
+                })
 
-            return fixed
+                //final static chunk
+                if (index < fixed.length) {
+                    chunks.push({
+                        value: fixed.slice(index),
+                        type: 'html'
+                    })
+                }
+            } else {
+                chunks.push({
+                    value: fixed,
+                    type: 'html'
+                })
+            }
+
+            return {
+                chunks: chunks,
+                oneline: bodyTransformService.getSnippet(fixed)
+            }
         }
 
         bodyTransformService.getSnippet = function(body) {

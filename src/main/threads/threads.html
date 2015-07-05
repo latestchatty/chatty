@@ -5,45 +5,33 @@
     </div>
     <div ng-repeat="post in threads track by post.id" ng-show="post.visible" on-finish-render="ngRepeatFinished">
 
-        <!-- collapsed root post -->
-        <div ng-if-event-expr="post.state === 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id"
-             class="rootPost collapsed" ng-class="::post.tagClass">
+        <!-- root post -->
+        <div class="rootPost" ng-class="::post.tagClass">
             <post></post>
-            <div class="postBody" ng-bind-html="::post.oneline | trusted"></div>
-            <a href="" title="Show Full Post" class="showpost" ng-click="expandThread(post)">Show Full Post</a>
         </div>
 
-        <!-- expanded root post -->
-        <div ng-if-event-expr="post.state !== 'collapsed'" ng-if-event="thread-collapse" ng-if-event-id="post.id">
-            <div class="rootPost" ng-class="::post.tagClass">
-                <post></post>
-                <div class="postBody postBodyText" compile="::post.body"></div>
+        <!-- reply box -->
+        <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.id"
+                  class="replybox-op" post="post"></replybox>
+
+        <!-- truncated replies -->
+        <div ng-if-event-expr="post.state === 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
+            <p class="threadCapHeader">
+                <a href="" ng-click="expandThread(post)">
+                    &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{::post.replyCount}}+</strong> replies.
+                </a>
+            </p>
+
+            <div class="treeview">
+                <comments posts="post.recent" flat="true"></comments>
             </div>
-
-            <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.id"
-                      class="replybox-op" post="post"></replybox>
-
-            <!-- truncated replies -->
-            <div ng-if-event-expr="post.state === 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
-                <p class="threadCapHeader">
-                    <a href="" ng-click="expandThread(post)">
-                        &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{::post.replyCount}}+</strong> replies.
-                    </a>
-                </p>
-
-                <div class="treeview">
-                    <comments posts="post.recent" flat="true"></comments>
-                </div>
-            </div>
-
-            <!-- full replies -->
-            <div ng-if-event-expr="post.state !== 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
-                <div class="treeview">
-                    <comments posts="post.posts" flat="false"></comments>
-                </div>
-            </div>
-
         </div>
 
+        <!-- full replies -->
+        <div ng-if-event-expr="post.state !== 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
+            <div class="treeview">
+                <comments posts="post.posts" flat="false"></comments>
+            </div>
+        </div>
     </div>
 </div>
