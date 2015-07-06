@@ -36,10 +36,7 @@ angular.module('chatty')
                 var index = 0
                 _.each(_.sortBy(matches, 'index'), function(match) {
                     //static html prior to this chunk
-                    chunks.push({
-                        value: fixed.slice(index, match.index),
-                        type: 'html'
-                    })
+                    chunks.push(fixed.slice(index, match.index))
 
                     //matching chunk
                     chunks.push({
@@ -53,16 +50,10 @@ angular.module('chatty')
 
                 //final static chunk
                 if (index < fixed.length) {
-                    chunks.push({
-                        value: fixed.slice(index),
-                        type: 'html'
-                    })
+                    chunks.push(fixed.slice(index))
                 }
             } else {
-                chunks.push({
-                    value: fixed,
-                    type: 'html'
-                })
+                chunks.push(fixed)
             }
 
             return {

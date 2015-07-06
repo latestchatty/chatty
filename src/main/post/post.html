@@ -16,8 +16,8 @@
 
     <!-- post content -->
     <div class="postBody postBodyText">
-        <span ng-repeat="chunk in ::post.body.chunks">
-            <span ng-if="::chunk.type === 'html'" ng-bind-html="::chunk.value | trusted"></span>
+        <span ng-repeat="chunk in ::post.body.chunks track by $index">
+            <span ng-if="::!chunk.type" ng-bind-html="::chunk | trusted"></span>
             <embed-content ng-if="::chunk.type === 'embed'" url="{{::chunk.value}}" type="{{::chunk.embedType}}"></embed-content>
         </span>
     </div>
