@@ -6,7 +6,8 @@ angular.module('chatty')
             {regex: /<a[^<]+?href="([^"]+?\.(png|jpg|jpeg|gif))">[^<]+?<\/a>/gi, type: 'image'},
             {regex: /<a[^<]+?href="((https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi, type: 'youtube'},
             {regex: /<a[^<]+?href="((https?:\/\/)?(.+\.)?(imgur\.com).+?)">[^<]+?<\/a>/gi, type: 'imgur'},
-            {regex: /<a[^<]+?href="([^"]+?gfycat\.com\/[^"]+?)">[^<]+?<\/a>/gi, type: 'gfycat'}
+            {regex: /<a[^<]+?href="([^"]+?gfycat\.com\/[^"]+?)">[^<]+?<\/a>/gi, type: 'gfycat'},
+            {regex: /<a[^<]+?href="((https?:\/\/)?(www\.)?(shacknews\.com)\/chatty\?id=(\d+)(#item_(\d+))?.*?)">[^<]+?<\/a>/gi, type: 'comment'}
         ]
 
         bodyTransformService.parse = function(post) {

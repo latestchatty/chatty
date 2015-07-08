@@ -1,10 +1,18 @@
 <span>
 
+    <!-- chatty comment link -->
+    <span ng-if="::type === 'comment'">
+        <a target="_blank" ng-href="{{::fixUrl('.+?chatty\\?id=(\\d+)(#item_(\\d+))?', '#/thread/$1/$3')}}">{{::url}}</a>
+        <a style="text-decoration: none" target="_blank" ng-href="{{::url}}">
+            <i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>
+        </a>
+    </span>
+
     <!-- images -->
     <span ng-if="::type === 'image'">
         <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
         <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
-            <i class="actionItem fa fa-camera-retro"></i>
+            <i class="actionItem fa fa-camera-retro" title="View image inline"></i>
         </a>
         <p ng-if="visible">
             <img style="max-width: 75%" ng-src="{{::testFixUrl([
@@ -19,7 +27,7 @@
     <span ng-if="::type === 'youtube'">
         <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
         <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
-            <i class="actionItem fa fa-youtube"></i>
+            <i class="actionItem fa fa-youtube" title="View video inline"></i>
         </a>
         <p ng-if="visible">
             <iframe ng-src="{{::fixUrl('(.+?)\\.(com|be)(\\/|\\/watch\\?)(.+v=)?(.+)', 'https://www.youtube.com/embed/$5')}}"
@@ -31,7 +39,7 @@
     <span ng-if="::type === 'imgur'">
         <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
         <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
-            <i class="actionItem fa fa-camera-retro"></i>
+            <i class="actionItem fa fa-camera-retro" title="View image inline"></i>
         </a>
         <p ng-if="visible">
             <iframe ng-src="{{::testFixUrl([
@@ -51,7 +59,7 @@
     <span ng-if="::type === 'gfycat'">
         <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
         <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
-            <i class="actionItem fa fa-camera-retro"></i>
+            <i class="actionItem fa fa-camera-retro" title="View gif inline"></i>
         </a>
         <p ng-if="visible">
             <iframe ng-src="{{::fixUrl('(.+)\/(.+)', '$1/ifr/$2')}}"

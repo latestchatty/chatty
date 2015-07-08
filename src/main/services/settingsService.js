@@ -2,9 +2,9 @@ angular.module('chatty')
     .service('settingsService', function($document, $location, $q, apiService, localStorageService) {
         var settingsService = {}
 
-        var collapsedThreads
-        var pinnedThreads
-        var credentials
+        var collapsedThreads = []
+        var pinnedThreads = []
+        var credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''}
 
         settingsService.isCollapsed = function(id) {
             return collapsedThreads.indexOf(Number(id)) >= 0
@@ -77,13 +77,6 @@ angular.module('chatty')
             credentials.username = username
             credentials.password = password
             localStorageService.set('credentials', credentials)
-        }
-
-        settingsService.load = function() {
-            collapsedThreads = []
-            credentials = angular.fromJson(localStorageService.get('credentials')) || {username: '', password: ''}
-
-            return settingsService.refresh()
         }
 
         settingsService.refresh = function() {

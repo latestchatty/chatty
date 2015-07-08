@@ -1,13 +1,10 @@
 angular.module('chatty')
-    .directive('threads', function() {
+    .directive('loading', function() {
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'threads/threads.html',
-            controller: function($scope, modelService, actionService) {
-                //load full chatty on start
-                $scope.threads = modelService.getThreads()
-                $scope.newThreads = modelService.getNewThreads()
+            templateUrl: 'loading/loading.html',
+            controller: function($scope) {
                 $scope.loadingMessages = [
                     'Think before you post...',
                     'It gets you chicks!',
@@ -34,10 +31,6 @@ angular.module('chatty')
                 $scope.$on('ngRepeatFinished', function() {
                     $scope.isLoaded = true
                 })
-
-                $scope.expandThread = function(thread) {
-                    actionService.expandThread(thread)
-                }
             }
         }
     })

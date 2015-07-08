@@ -1,0 +1,16 @@
+angular.module('chatty')
+    .controller('viewThreadCtrl', function($scope, $routeParams, post, actionService, modelService) {
+        $scope.post = post || {}
+
+        //auto expand comments in this view
+        $scope.post.state = 'expanded'
+
+        //if we have a selected comment, expand it
+        if ($routeParams.commentId && $routeParams.commentId !== $routeParams.threadId) {
+            var id = $routeParams.commentId
+            var reply = modelService.getPost(id)
+            if (reply) {
+                actionService.expandReply(reply)
+            }
+        }
+    })

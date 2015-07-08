@@ -99,7 +99,7 @@ angular.module('chatty')
         function newEvent(event) {
             if (event.eventType === 'newPost') {
                 if (event.eventData.post.parentId === 0) {
-                    modelService.addThread(event.eventData.post, true)
+                    modelService.addThread(event.eventData.post, 'event')
                 } else {
                     var data = modelService.addPost(event.eventData.post)
                     if (data) {
