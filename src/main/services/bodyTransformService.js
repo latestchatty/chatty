@@ -35,7 +35,7 @@ angular.module('chatty')
             var chunks = []
             if (matches.length) {
                 var index = 0
-                _.each(_.sortBy(matches, 'index'), function(match) {
+                _.each(_.uniq(_.sortBy(matches, 'index'), 'index'), function(match) {
                     //static html prior to this chunk
                     chunks.push(fixed.slice(index, match.index))
 
