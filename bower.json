@@ -6,6 +6,7 @@
     "lodash": "~3.10.0",
     "angular": "~1.4.2",
     "angular-local-storage": "~0.2.2",
-    "angular-sanitize": "~1.4.2"
+    "angular-sanitize": "~1.4.2",
+    "angular-route": "~1.4.2"
   }
 }
