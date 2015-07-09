@@ -24,7 +24,8 @@ angular.module('chatty')
                     'I\'m an IT professional; well versed in the operating system and security.',
                     'u bread loaf,' +
                     ' (╯°□°）╯︵ ┻━┻ ',
-                    '( ͡° ͜ʖ ͡°) '
+                    '( ͡° ͜ʖ ͡°) ',
+                    'Part of my wages are daily Restaurant Tickets'
                 ]
                 $scope.loadingMessage = _.sample($scope.loadingMessages)
 
