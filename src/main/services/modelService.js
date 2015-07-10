@@ -12,7 +12,12 @@ angular.module('chatty')
             'staymighty',
             'hammersuit',
             'gburke59',
-            'daniel_perez'
+            'daniel_perez',
+            'sporkyreeve',
+            'joshua hawkins',
+            'steven wong',
+            'squidwizard',
+            'beardedaxe'
         ]
 
         modelService.updateAllThreads = function() {
