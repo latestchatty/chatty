@@ -1,8 +1,9 @@
 angular.module('chatty').service('eventService',
     function($timeout, $interval, $window, apiService, modelService, localStorageService,
-             settingsService, tabService, shackMessageService) {
+             settingsService, tabService, shackMessageService, titleService) {
         var eventService = {}
         var lastEventId = 0
+        var passive = false
 
         //fresh load of full chatty
         eventService.startActive = function() {
@@ -36,10 +37,17 @@ angular.module('chatty').service('eventService',
         }
 
         eventService.startPassive = function() {
+            passive = true
             $window.addEventListener('storage', function(event) {
                 if (event.key === 'chatty.event') {
                     var data = JSON.parse(event.newValue)
-                    eventResponse(data)
+                    var result = newEvent(data)
+
+                    //update title bar count
+                    if (result) {
+                        titleService.count++
+                        titleService.updateTitle(0)
+                    }
                 }
             })
         }
@@ -78,7 +86,6 @@ angular.module('chatty').service('eventService',
             apiService.waitForEvent(lastEventId)
                 .success(function(data) {
                     eventResponse(data)
-                    localStorageService.set('event', data)
                 }).error(function(data) {
                     console.log('Error during waitForEvent: ', data)
                     eventResponse(data)
@@ -108,17 +115,23 @@ angular.module('chatty').service('eventService',
         }
 
         function newEvent(event) {
+            //store the event for other tabs to process
+            if (!passive) {
+                localStorageService.set('event', event)
+            }
+
             if (event.eventType === 'newPost') {
-                if (event.eventData.post.parentId === 0) {
-                    modelService.addThread(event.eventData.post, true)
+                if (event.eventData.post.parentId === 0 && !passive) {
+                    return modelService.addThread(event.eventData.post, true)
                 } else {
                     var data = modelService.addPost(event.eventData.post)
                     if (data) {
                         tabService.newPost(data.thread, data.parent, data.post)
                     }
+                    return data
                 }
             } else if (event.eventType === 'categoryChange') {
-                modelService.changeCategory(event.eventData.postId, event.eventData.category)
+                return modelService.changeCategory(event.eventData.postId, event.eventData.category)
             } else if (event.eventType === 'lolCountsUpdate') {
                 //not supported
             } else {

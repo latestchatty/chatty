@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="chatty" ng-controller="titleCtrl as titleCtrl">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SPA Chatty</title>
+    <title ng-bind="titleCtrl.title">SPA Chatty</title>
 
     <link href="bundle.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
 </head>
-<body ng-app="chatty" hotkeys ng-cloak class="ng-cloak">
+<body hotkeys>
 
 <div ng-view></div>
 

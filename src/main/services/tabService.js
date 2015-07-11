@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('tabService', function($filter, modelService, settingsService, localStorageService) {
+    .service('tabService', function($filter, modelService, settingsService, localStorageService, titleService) {
         var tabService = {}
 
         var threads = modelService.getThreads()
@@ -102,6 +102,10 @@ angular.module('chatty')
 
                         if (increment) {
                             tab.newPostCount = (tab.newPostCount || 0) + 1
+
+                            //update title bar count
+                            titleService.count = _.sum(tabs, 'newPostCount')
+                            titleService.updateTitle(0)
                         }
                     }
                 })
