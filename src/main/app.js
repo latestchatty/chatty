@@ -29,23 +29,14 @@ angular.module('chatty', ['ngRoute', 'ngSanitize', 'RecursionHelper', 'LocalStor
                     post: function($route, $location, apiService, modelService) {
                         var threadId = $route.current.params.threadId
                         if (threadId) {
-                            var post = modelService.getPost(threadId)
-                            if (!post) {
-                                return apiService.getThread(threadId).then(function(response) {
-                                    post = response.data.threads[0]
-                                    if (threadId !== post.threadId) {
-                                        $location.url('/thread/' + post.threadId + '/' + threadId)
-                                        $route.reload()
-                                    } else {
-                                        return modelService.addThread(post)
-                                    }
-                                })
-                            } else if (threadId === post.threadId) {
-                                return post
-                            } else {
-                                $location.url('/thread/' + post.threadId + '/' + threadId)
-                                $route.reload()
-                            }
+                            return apiService.getThread(threadId).then(function(response) {
+                                var post = response.data.threads[0]
+                                if (threadId !== post.threadId) {
+                                    $location.url('/thread/' + post.threadId + '/' + threadId)
+                                } else {
+                                    return modelService.addThread(post)
+                                }
+                            })
                         }
                     }
                 }
