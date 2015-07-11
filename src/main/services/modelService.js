@@ -44,20 +44,22 @@ angular.module('chatty')
         }
 
         modelService.addPost = function(post, thread) {
-            thread = thread || posts[post.threadId]
-            var parent = posts[post.parentId]
-            if (parent && thread) {
-                var fixedPost = fixPost(post, thread)
-                updateLineClass(fixedPost, thread)
-                updateModTagClass(fixedPost)
-                fixedPost.parentAuthor = parent.author
+            if (!posts[post.id]) {
+                thread = thread || posts[post.threadId]
+                var parent = posts[post.parentId]
+                if (parent && thread) {
+                    var fixedPost = fixPost(post, thread)
+                    updateLineClass(fixedPost, thread)
+                    updateModTagClass(fixedPost)
+                    fixedPost.parentAuthor = parent.author
 
-                thread.replyCount++
+                    thread.replyCount++
 
-                parent.posts.push(fixedPost)
-                posts[fixedPost.id] = fixedPost
+                    parent.posts.push(fixedPost)
+                    posts[fixedPost.id] = fixedPost
 
-                return {thread: thread, parent: parent, post: fixedPost}
+                    return {thread: thread, parent: parent, post: fixedPost}
+                }
             }
         }
 

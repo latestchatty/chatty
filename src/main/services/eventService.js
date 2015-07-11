@@ -1,10 +1,11 @@
-angular.module('chatty')
-    .service('eventService', function($timeout, $interval, apiService, modelService, settingsService, tabService, shackMessageService) {
+angular.module('chatty').service('eventService',
+    function($timeout, $interval, $window, apiService, modelService, localStorageService,
+             settingsService, tabService, shackMessageService) {
         var eventService = {}
         var lastEventId = 0
 
         //fresh load of full chatty
-        eventService.load = function() {
+        eventService.startActive = function() {
             modelService.clear()
 
             apiService.getNewestEventId()
@@ -32,6 +33,16 @@ angular.module('chatty')
                 })
 
             shackMessageService.refresh()
+        }
+
+        eventService.startPassive = function() {
+            $window.addEventListener('storage', function(event) {
+                if (event.key === 'chatty.event') {
+                    console.log(event.key, event.oldValue, event.newValue)
+                    var data = JSON.parse(event.newValue)
+                    eventResponse(data)
+                }
+            })
         }
 
         function handlePinnedThreads() {
@@ -68,6 +79,7 @@ angular.module('chatty')
             apiService.waitForEvent(lastEventId)
                 .success(function(data) {
                     eventResponse(data)
+                    localStorageService.set('event', data)
                 }).error(function(data) {
                     console.log('Error during waitForEvent: ', data)
                     eventResponse(data)

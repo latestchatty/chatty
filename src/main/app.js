@@ -14,7 +14,7 @@ angular.module('chatty', ['ngRoute', 'ngSanitize', 'RecursionHelper', 'LocalStor
                     load: function(settingsService, eventService) {
                         settingsService.refresh()
                             .then(function() {
-                                eventService.load()
+                                eventService.startActive()
                             })
                     }
                 }
@@ -23,6 +23,9 @@ angular.module('chatty', ['ngRoute', 'ngSanitize', 'RecursionHelper', 'LocalStor
                 templateUrl: 'thread/viewThread.html',
                 controller: 'viewThreadCtrl',
                 resolve: {
+                    load: function(eventService) {
+                        eventService.startPassive()
+                    },
                     post: function($route, $location, apiService, modelService) {
                         var threadId = $route.current.params.threadId
                         if (threadId) {
