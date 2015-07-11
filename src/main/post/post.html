@@ -26,8 +26,8 @@
     <div class="actionbar">
         <i class="actionItem fa fa-close" title="Collapse post" ng-click="collapse(post)"></i>
         <i class="actionItem fa fa-comment" title="Reply to post" ng-click="openReplyBox(post)"></i>
-        <a target="_blank" ng-href="#/thread/{{::post.id}}">
-            <i class="actionItem fa fa-bookmark" title="Open in tab" ng-if="::!post.parentId" ></i>
+        <a target="_blank" ng-href="#/thread/{{::post.threadId}}/{{::post.id}}">
+            <i class="actionItem fa fa-bookmark" title="Open in tab"></i>
         </a>
         <i class="actionItem fa fa-star" title="Pin to cloud" ng-if="::!post.parentId" ng-click="pinPost(post)"></i>
         <a target="_blank" ng-href="http://www.shacknews.com/chatty?id={{::post.id}}#item_{{::post.id}}">
