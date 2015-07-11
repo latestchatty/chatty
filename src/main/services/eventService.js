@@ -38,6 +38,8 @@ angular.module('chatty').service('eventService',
 
         eventService.startPassive = function() {
             passive = true
+            titleService.clearOnReturn = true
+
             $window.addEventListener('storage', function(event) {
                 if (event.key === 'chatty.event') {
                     var data = JSON.parse(event.newValue)

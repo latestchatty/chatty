@@ -1,33 +1,27 @@
 angular.module('chatty').service('titleService',
     function($document, $timeout) {
         var titleService = {}
-        var titleOwner
         var prefix = 'SPA Chatty'
+        titleService.count = 0
+        titleService.clearOnReturn = false
+        titleService.visible = true
 
-        titleService.init = function(owner) {
-            titleOwner = owner
-            $document[0].addEventListener('visibilitychange', changed)
-            $document[0].addEventListener('webkitvisibilitychange', changed)
-            $document[0].addEventListener('msvisibilitychange', changed)
-
-            titleService.updateTitle(0)
-        }
+        //initialize stuff
+        $document[0].addEventListener('visibilitychange', changed)
+        $document[0].addEventListener('webkitvisibilitychange', changed)
+        $document[0].addEventListener('msvisibilitychange', changed)
 
         titleService.updateTitle = function(add) {
             $timeout(function() {
                 titleService.count += add
 
-                if (!titleService.visible && titleOwner && titleService.count > 0) {
-                    titleOwner.title = prefix + ' (' + titleService.count + ')'
+                if (titleService.count > 0) {
+                    document.title = prefix + ' (' + titleService.count + ')'
                 } else {
-                    titleOwner.title = prefix
+                    document.title = prefix
                 }
             })
         }
-
-        titleService.count = 0
-
-        titleService.visible = true
 
         function changed() {
             titleService.visible =
@@ -36,7 +30,7 @@ angular.module('chatty').service('titleService',
                 $document[0].mozHidden ||
                 $document[0].msHidden)
 
-            if (titleService.visible) {
+            if (titleService.visible && titleService.clearOnReturn) {
                 titleService.count = 0
                 titleService.updateTitle(0)
             }

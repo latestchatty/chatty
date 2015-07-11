@@ -77,6 +77,7 @@ angular.module('chatty')
 
             tab.selected = true
             tab.newPostCount = 0
+            updateCounts()
 
             applyFilter(getTabExpression(tab))
         }
@@ -102,10 +103,7 @@ angular.module('chatty')
 
                         if (increment) {
                             tab.newPostCount = (tab.newPostCount || 0) + 1
-
-                            //update title bar count
-                            titleService.count = _.sum(tabs, 'newPostCount')
-                            titleService.updateTitle(0)
+                            updateCounts()
                         }
                     }
                 })
@@ -138,6 +136,12 @@ angular.module('chatty')
             } else {
                 applyFilter(null)
             }
+        }
+
+        function updateCounts() {
+            //update title bar count
+            titleService.count = _.sum(tabs, 'newPostCount')
+            titleService.updateTitle(0)
         }
 
         function applyFilter(filterExpression) {
