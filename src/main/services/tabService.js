@@ -111,7 +111,7 @@ angular.module('chatty')
         tabService.addTab = function(tabType, value) {
             var tab = _.find(tabs, {'tabType': tabType, 'value': value})
 
-            if (!tab) {
+            if (!tab && tabTemplates[tabType]) {
                 tab = tabTemplates[tabType](value)
                 tabs.push(tab)
                 save()
