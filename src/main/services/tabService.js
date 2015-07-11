@@ -51,18 +51,6 @@ angular.module('chatty')
                     }
                 }
             },
-            post: function(value) {
-                return {
-                    tabType: 'post',
-                    value: value,
-                    displayText: 'post',
-                    expression: {id: value},
-                    newPostText: 'New replies in this specific post.',
-                    newPostFunction: function(thread) {
-                        return thread.id === value
-                    }
-                }
-            },
             filter: function(value) {
                 return {
                     tabType: 'filter',

@@ -38,7 +38,6 @@ angular.module('chatty').service('eventService',
         eventService.startPassive = function() {
             $window.addEventListener('storage', function(event) {
                 if (event.key === 'chatty.event') {
-                    console.log(event.key, event.oldValue, event.newValue)
                     var data = JSON.parse(event.newValue)
                     eventResponse(data)
                 }
