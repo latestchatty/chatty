@@ -12,5 +12,8 @@ angular.module('chatty')
             if (reply) {
                 actionService.expandReply(reply)
             }
+        } else {
+            //set the last reply to the top so we can a/z from the start
+            actionService.setThread(post)
         }
     })

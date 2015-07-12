@@ -8,13 +8,15 @@ angular.module('chatty')
                         && event.srcElement.localName !== 'textarea') {
 
                         _.throttle(function() {
-                            if (event.keyCode === 65) {
-                                actionService.previousReply()
-                            } else if (event.keyCode === 90) {
-                                actionService.nextReply()
-                            } else if (event.keyCode === 27) {
-                                actionService.collapseReply()
-                            }
+                            $timeout(function() {
+                                if (event.keyCode === 65) {
+                                    actionService.previousReply()
+                                } else if (event.keyCode === 90) {
+                                    actionService.nextReply()
+                                } else if (event.keyCode === 27) {
+                                    actionService.collapseReply()
+                                }
+                            })
                         }, 10)()
                     }
                 })

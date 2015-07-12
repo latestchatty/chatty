@@ -4,6 +4,10 @@ angular.module('chatty')
 
         var lastReply
 
+        actionService.setThread = function(thread) {
+            lastReply = thread
+        }
+
         actionService.login = function(username, password) {
             var deferred = $q.defer()
             settingsService.clearCredentials()
