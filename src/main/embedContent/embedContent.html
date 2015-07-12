@@ -31,7 +31,21 @@
         </a>
         <p ng-if="visible">
             <iframe ng-src="{{::fixUrl('(.+?)\\.(com|be)(\\/|\\/watch\\?)(.+v=)?(.+)', 'https://www.youtube.com/embed/$5')}}"
-                    width="560" height="315"  frameborder="0" allowfullscreen></iframe>
+                    width="560" height="315"  frameborder="0"
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </p>
+    </span>
+
+    <!-- vimeo -->
+    <span ng-if="::type === 'vimeo'">
+        <a target="_blank" ng-href="{{::url}}">{{::url}}</a>
+        <a style="text-decoration: none" href="" ng-click="toggleVisibility()">
+            <i class="actionItem fa fa-vimeo-square" title="View video inline"></i>
+        </a>
+        <p ng-if="visible">
+            <iframe ng-src="{{::fixUrl('.+vimeo\\.com\\/(\\d+)', 'https://player.vimeo.com/video/$1')}}"
+                    width="560" height="315"  frameborder="0"
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
     </span>
 
@@ -51,7 +65,8 @@
             replace: '$1\/embed'
             }
             ])}}"
-                    width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                    width="100%" height="315" frameborder="0"
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
     </span>
 
@@ -63,7 +78,8 @@
         </a>
         <p ng-if="visible">
             <iframe ng-src="{{::fixUrl('(.+)\/(.+)', '$1/ifr/$2')}}"
-                    frameborder="0" width="560" height="315" allowfullscreen></iframe>
+                    frameborder="0" width="560" height="315"
+                    webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
     </span>
 
