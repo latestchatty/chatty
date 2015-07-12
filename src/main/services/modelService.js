@@ -1,5 +1,5 @@
 angular.module('chatty')
-    .service('modelService', function(settingsService, bodyTransformService) {
+    .service('modelService', function($rootScope, settingsService, bodyTransformService) {
         var modelService = {}
 
         var threads = []
@@ -90,6 +90,7 @@ angular.module('chatty')
                 } else {
                     post.category = category
                     updateModTagClass(post)
+                    $rootScope.$broadcast('post-category-change-' + post.id)
                 }
             }
         }

@@ -3,7 +3,7 @@
 
         <!--collapsed reply-->
         <div ng-if-event-expr="!post.viewFull" ng-if-event="reply-collapse" ng-if-event-id="post.id" scroll-item>
-            <span class="oneline" ng-class="[post.lineClass || 'oneline9', post.tagClass]"
+            <span class="oneline" line-highlight post-category
                   ng-click="expandReply(post)" ng-bind-html="::post.body.oneline | trusted"></span>
 
             <span class="onelineSeparator">&nbsp;:&nbsp;</span>
