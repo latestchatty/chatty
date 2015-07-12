@@ -14,7 +14,7 @@ angular.module('chatty')
                                 } else if (event.keyCode === 90) {
                                     actionService.nextReply()
                                 } else if (event.keyCode === 27) {
-                                    actionService.collapseReply()
+                                    actionService.collapsePostReply()
                                 }
                             })
                         }, 10)()
