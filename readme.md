@@ -13,8 +13,8 @@ Features above standard chatty:
 * Tabs support: 
   * Save a post, author, filter, etc for later quick filtering.
   * Default tabs include: Chatty (all threads), Frontpage (Shacknews posts), Mine (threads containing your username)
-* Collapsed posts are stored in the cloud. Compatible with any other WinChatty V2 cloud collapse using app.
-* Collapsing a post pushes it to the end of the chatty, out of the way.
+* Collapsed post ids are stored in the cloud. Compatible with any other WinChatty V2 cloud collapse using app.
+* Collapsing a post eliminates it from view entirely, saving performance. Collapsed posts are still available to search via live filtering.
 
 ##### Example Site
 http://chatty.nixxed.com
