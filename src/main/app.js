@@ -1,9 +1,5 @@
-angular.module('chatty', ['ngRoute', 'ngSanitize', 'LocalStorageModule'],
-    function($rootScopeProvider) {
-        //necessary to allow commentDirective to be recursive
-        $rootScopeProvider.digestTtl(60)
-
-    }).config(function($routeProvider, localStorageServiceProvider) {
+angular.module('chatty', ['ngRoute', 'ngSanitize', 'LocalStorageModule'])
+    .config(function($routeProvider, localStorageServiceProvider) {
         localStorageServiceProvider.setPrefix('chatty')
 
         $routeProvider
