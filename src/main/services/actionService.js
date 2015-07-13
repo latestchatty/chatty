@@ -152,47 +152,20 @@ angular.module('chatty')
         }
 
         actionService.previousReply = function() {
-            if (lastReply) {
-                var parent = modelService.getPost(lastReply.parentId)
-                if (parent) {
-                    var index = parent.posts.indexOf(lastReply)
-                    if (index === 0 && parent.parentId > 0) {
-                        actionService.expandReply(parent)
-                    } else if (index > 0) {
-                        var next = parent.posts[index - 1]
-                        var last = findLastReply(next)
-                        actionService.expandReply(last)
-                    }
-                }
-            }
-        }
-
-        function findLastReply(post) {
-            if (post.posts.length) {
-                return findLastReply(_.last(post.posts))
-            } else {
-                return post
-            }
+            selectPost(-1)
         }
 
         actionService.nextReply = function() {
-            if (lastReply) {
-                processNextReply(lastReply)
-            }
+            selectPost(1)
         }
 
-        function processNextReply(post, skipChildren) {
-            if (!skipChildren && post.posts.length) {
-                actionService.expandReply(post.posts[0])
-            } else {
-                var parent = modelService.getPost(post.parentId)
+        function selectPost(increment) {
+            if (lastReply) {
+                var parent = modelService.getPost(lastReply.threadId)
                 if (parent) {
-                    var index = parent.posts.indexOf(post)
-                    if (index + 1 < parent.posts.length) {
-                        var next = parent.posts[index + 1]
-                        actionService.expandReply(next)
-                    } else {
-                        processNextReply(parent, true)
+                    var index = _.indexOf(parent.posts, lastReply) + increment
+                    if (index >= 0 && parent.posts.length > index) {
+                        actionService.expandReply(parent.posts[index])
                     }
                 }
             }
