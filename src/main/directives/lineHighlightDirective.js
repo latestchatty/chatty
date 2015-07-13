@@ -5,7 +5,7 @@ angular.module('chatty').directive('lineHighlight',
             link: function(scope, element) {
                 var unwatch = scope.$watch('post.lineClass', function(lineClass) {
                     //remove old classes
-                    _.each(_.range(0,9), function(i) {
+                    _.each(_.range(0, 9), function(i) {
                         element.removeClass('oneline' + i)
                     })
 

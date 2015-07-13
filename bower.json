@@ -2,7 +2,6 @@
   "name": "chatty",
   "private": true,
   "dependencies": {
-    "angular-recursion": "~1.0.5",
     "lodash": "~3.10.0",
     "angular": "~1.4.2",
     "angular-local-storage": "~0.2.2",

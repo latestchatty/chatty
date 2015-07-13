@@ -1,4 +1,4 @@
-angular.module('chatty', ['ngRoute', 'ngSanitize', 'RecursionHelper', 'LocalStorageModule'],
+angular.module('chatty', ['ngRoute', 'ngSanitize', 'LocalStorageModule'],
     function($rootScopeProvider) {
         //necessary to allow commentDirective to be recursive
         $rootScopeProvider.digestTtl(60)

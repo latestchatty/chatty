@@ -1,5 +1,5 @@
 <ul>
-    <li ng-repeat="post in posts">
+    <li ng-repeat="post in posts" ng-style="::getDepthStyle(post, flat)">
 
         <!--collapsed reply-->
         <div ng-if-event-expr="!post.viewFull" ng-if-event="reply-collapse" ng-if-event-id="post.id" scroll-item>
@@ -20,7 +20,5 @@
                     class="replybox-comment" post="post"></replybox>
         </div>
 
-        <!-- replies to this post -->
-        <comments posts="post.posts" flat="false" ng-if="::!flat" scroll-item></comments>
     </li>
 </ul>
