@@ -25,7 +25,9 @@ angular.module('chatty')
                     'u bread loaf,' +
                     ' (╯°□°）╯︵ ┻━┻ ',
                     '( ͡° ͜ʖ ͡°) ',
-                    'Part of my wages are daily Restaurant Tickets'
+                    'Part of my wages are daily Restaurant Tickets',
+                    'Congrats JT!',
+                    'It was a kite'
                 ]
                 $scope.loadingMessage = _.sample($scope.loadingMessages)
 
