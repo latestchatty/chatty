@@ -27,7 +27,7 @@ div.treeview ul li {
     font-size: 13px;
     line-height: 16px;
     padding-left: 13px;
-    background: url('../images/commentsbullet.gif') no-repeat 2px top;
+    background: url('../images/commentsbulletlast.gif') no-repeat 2px top;
 }
 div.treeview ul li:last-child {
     background: #000 url('../images/commentsbulletlast.gif') no-repeat 2px top;
