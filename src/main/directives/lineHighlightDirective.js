@@ -1,22 +1,25 @@
 angular.module('chatty').directive('lineHighlight',
-    function() {
+    function($rootScope) {
         return {
             restrict: 'A',
             link: function(scope, element) {
-                var unwatch = scope.$watch('post.lineClass', function(lineClass) {
+                function update() {
                     //remove old classes
                     _.each(_.range(0, 9), function(i) {
                         element.removeClass('oneline' + i)
                     })
 
                     //add new one
+                    var lineClass = scope.$eval('post.lineClass')
                     element.addClass(lineClass)
+                }
 
-                    //stop watching when it's maxed
-                    if (lineClass === 'oneline9') {
-                        unwatch()
-                    }
-                })
+                //initial value
+                update()
+
+                //watch for changes
+                var postId = scope.$eval('post.id')
+                $rootScope.$on('post-line-highlight-' + postId, update)
             }
         }
     })
