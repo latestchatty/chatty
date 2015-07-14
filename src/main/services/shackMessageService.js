@@ -16,6 +16,14 @@ angular.module('chatty')
             return shackMessageService.unreadMessageCount
         }
 
+        shackMessageService.getMessages = function() {
+            return apiService.getMessages(settingsService.getUsername(), settingsService.getPassword())
+                .error(function(data) {
+                    console.log('Error while getting shack messages: ', data)
+                    return []
+                })
+        }
+
         shackMessageService.refresh = function() {
             if (settingsService.isLoggedIn()) {
                 apiService.getTotalInboxCount(settingsService.getUsername(), settingsService.getPassword())

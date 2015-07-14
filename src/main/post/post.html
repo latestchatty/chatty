@@ -23,7 +23,7 @@
     </div>
 
     <!-- action bar -->
-    <div class="actionbar">
+    <div class="actionbar" ng-if="::!post.type === 'shackmessage'">
         <i class="actionItem fa fa-close" title="Collapse post" ng-click="collapse(post)"></i>
         <i class="actionItem fa fa-comment" title="Reply to post" ng-click="openReplyBox(post)"></i>
         <a target="_blank" ng-href="#/thread/{{::post.threadId}}/{{::post.id}}">

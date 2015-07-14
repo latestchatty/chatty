@@ -60,6 +60,17 @@ angular.module('chatty')
             return post('https://winchatty.com/v2/getMessageCount', opts)
         }
 
+        apiService.getMessages = function(username, password) {
+            var opts = {
+                username: username,
+                password: password,
+                folder: 'inbox',
+                page: 1
+            }
+
+            return post('https://winchatty.com/v2/getMessages', opts)
+        }
+
         function post(url, params) {
             var data = _.reduce(params, function(result, value, key) {
                 return result + (result.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(value)
