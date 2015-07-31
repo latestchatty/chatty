@@ -17,7 +17,8 @@ angular.module('chatty')
             'joshua hawkins',
             'steven wong',
             'squidwizard',
-            'beardedaxe'
+            'beardedaxe',
+            'doctorgames'
         ]
 
         modelService.updateAllThreads = function() {
