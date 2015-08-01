@@ -8,8 +8,7 @@
             <div class="postdate">{{::post.date | date : 'MMM d, yyyy h:mma' }}</div>
 
             <div class="countdown-wrap" ng-if="::!!post.expirePercent">
-                <div class="countdown-value" ng-style="{ width: post.expirePercent + '%',
-                    'background-color': post.expireColor}"></div>
+                <div class="countdown-value" countdown-timer></div>
             </div>
         </div>
     </div>

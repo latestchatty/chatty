@@ -23,6 +23,7 @@ angular.module('chatty')
 
         modelService.updateAllThreads = function() {
             _.each(threads, updateExpiration)
+            $rootScope.$broadcast('countdown-timer')
         }
 
         modelService.addThread = function(post, event) {
