@@ -106,7 +106,7 @@ angular.module('chatty').service('eventService',
             } else {
                 if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
                     console.log('Too many events since last refresh, reloading chatty.')
-                    eventService.load()
+                    eventService.startActive()
                 } else {
                     //restart events in 30s
                     $timeout(function() {
