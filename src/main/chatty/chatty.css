@@ -36,11 +36,11 @@ a.showpost:hover {
 }
 
 .postInformative {
-    border-left: 2px solid #00bff3;
+    border-left: 2px solid #00bff3!important;
 }
 .postNws {
-    border-left: 2px solid red;
+    border-left: 2px solid red!important;
 }
 .postFrontpage {
-    border-left: 2px solid mediumpurple;
+    border-left: 2px solid mediumpurple!important;
 }
