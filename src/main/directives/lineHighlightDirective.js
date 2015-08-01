@@ -3,11 +3,13 @@ angular.module('chatty').directive('lineHighlight',
         return {
             restrict: 'A',
             link: function(scope, element) {
-                function update() {
+                function update(initial) {
                     //remove old classes
-                    _.each(_.range(0, 9), function(i) {
-                        element.removeClass('oneline' + i)
-                    })
+                    if (!initial) {
+                        _.each(_.range(0, 9), function(i) {
+                            element.removeClass('oneline' + i)
+                        })
+                    }
 
                     //add new one
                     var lineClass = scope.$eval('post.lineClass')
@@ -15,7 +17,7 @@ angular.module('chatty').directive('lineHighlight',
                 }
 
                 //initial value
-                update()
+                update(true)
 
                 //watch for changes
                 var postId = scope.$eval('post.id')
