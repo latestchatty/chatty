@@ -178,11 +178,13 @@ angular.module('chatty')
             thread.recent.push(post)
 
             if (thread.recent.length > 10) {
-                thread.recent.shift()
+                var oldPost = thread.recent.shift()
+                $rootScope.$broadcast('post-line-highlight-' + oldPost.id)
             }
 
             _.each(thread.recent, function(recentPost, index) {
                 recentPost.lineClass = 'oneline' + (9 - index)
+                $rootScope.$broadcast('post-line-highlight-' + recentPost.id)
             })
         }
 

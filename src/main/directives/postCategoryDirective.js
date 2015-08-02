@@ -3,18 +3,26 @@ angular.module('chatty').directive('postCategory',
         return {
             restrict: 'A',
             link: function(scope, element) {
-                function update() {
+                function add() {
                     var tagClass = scope.$eval('post.tagClass')
                     if (tagClass) {
-                        //add new
                         element.addClass(tagClass)
                     }
                 }
 
-                //initial value
-                update()
+                function update() {
+                    //remove old
+                    _.each(['postInformative', 'postNws', 'postFrontpage'], function(c) {
+                        element.removeClass(c)
+                    })
 
-                //wait for changes without watches
+                    add()
+                }
+
+                //initial value
+                add()
+
+                //watch for changes
                 var postId = scope.$eval('post.id')
                 scope.$on('post-category-change-' + postId, update)
             }
