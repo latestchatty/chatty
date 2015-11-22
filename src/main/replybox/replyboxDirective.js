@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .directive('replybox', function() {
+module.exports = /* @ngInject */
+    function() {
         return {
             restrict: 'E',
             replace: true,
@@ -7,6 +7,7 @@ angular.module('chatty')
             scope: {
                 post: '='
             },
+            /* @ngInject */
             controller: function($scope, actionService, postService, settingsService) {
                 $scope.replyBody = ''
                 $scope.tagGroups = [
@@ -46,4 +47,4 @@ angular.module('chatty')
                 $scope.isLoggedIn = settingsService.isLoggedIn
             }
         }
-    })
+    }

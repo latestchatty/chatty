@@ -1,9 +1,10 @@
-angular.module('chatty')
-    .directive('navbar', function() {
+module.exports = /* @ngInject */
+    function() {
         return {
             restrict: 'E',
             replace: true,
             templateUrl: 'navbar/navbar.html',
+            /* @ngInject */
             controller: function($scope, $window, actionService, postService, settingsService, tabService, shackMessageService) {
                 //login related
                 $scope.loginRunning = false
@@ -81,4 +82,4 @@ angular.module('chatty')
                 $scope.goToInbox = shackMessageService.goToInbox
             }
         }
-    })
+    }

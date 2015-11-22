@@ -1,5 +1,7 @@
-angular.module('chatty').service('eventService',
-    function($timeout, $interval, $window, apiService, modelService, localStorageService,
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function($log, $timeout, $interval, $window, apiService, modelService, localStorageService,
              settingsService, tabService, shackMessageService, titleService) {
         var eventService = {}
         var lastEventId = 0
@@ -12,8 +14,9 @@ angular.module('chatty').service('eventService',
             apiService.getNewestEventId()
                 .success(function(data) {
                     lastEventId = data.eventId
-                }).error(function(data) {
-                    console.log('Error during getNewestEventId: ', data)
+                })
+                .error(function(data) {
+                    $log.error('Error during getNewestEventId: ', data)
                 })
 
             apiService.getChatty()
@@ -29,8 +32,9 @@ angular.module('chatty').service('eventService',
 
                     //start events
                     return waitForEvents()
-                }).error(function(data) {
-                    console.log('Error during getChatty: ', data)
+                })
+                .error(function(data) {
+                    $log.error('Error during getChatty: ', data)
                 })
 
             shackMessageService.refresh()
@@ -72,8 +76,9 @@ angular.module('chatty').service('eventService',
                                 _.pull(threads, thread)
                                 threads.unshift(thread)
                             }
-                        }).error(function(error) {
-                            console.log('Error loading pinned threadId=' + threadId, error)
+                        })
+                        .error(function(error) {
+                            $log.error('Error loading pinned threadId=' + threadId, error)
                         })
                 } else {
                     //put it at the top of the list
@@ -88,8 +93,9 @@ angular.module('chatty').service('eventService',
             apiService.waitForEvent(lastEventId)
                 .success(function(data) {
                     eventResponse(data)
-                }).error(function(data) {
-                    console.log('Error during waitForEvent: ', data)
+                })
+                .error(function(data) {
+                    $log.error('Error during waitForEvent: ', data)
                     eventResponse(data)
                 })
         }
@@ -105,7 +111,7 @@ angular.module('chatty').service('eventService',
                 waitForEvents()
             } else {
                 if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
-                    console.log('Too many events since last refresh, reloading chatty.')
+                    $log.error('Too many events since last refresh, reloading chatty.')
                     eventService.startActive()
                 } else {
                     //restart events in 30s
@@ -137,7 +143,7 @@ angular.module('chatty').service('eventService',
             } else if (event.eventType === 'lolCountsUpdate') {
                 //not supported
             } else {
-                console.log('Unhandled event', event)
+                $log.error('Unhandled event', event)
             }
         }
 
@@ -149,4 +155,4 @@ angular.module('chatty').service('eventService',
         }, 300000)
 
         return eventService
-    })
+    }

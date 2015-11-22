@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .directive('ngRightClick', function($parse) {
+module.exports = /* @ngInject */
+    function($parse) {
         return function(scope, element, attrs) {
             var fn = $parse(attrs.ngRightClick)
             element.bind('contextmenu', function(event) {
@@ -9,4 +9,4 @@ angular.module('chatty')
                 })
             })
         }
-    })
+    }

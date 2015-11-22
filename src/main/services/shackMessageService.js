@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .service('shackMessageService', function($window, settingsService, apiService) {
+module.exports = /* @ngInject */
+    function($log, $window, settingsService, apiService) {
         var shackMessageService = {}
 
         shackMessageService.clear = function() {
@@ -19,7 +19,7 @@ angular.module('chatty')
         shackMessageService.getMessages = function() {
             return apiService.getMessages(settingsService.getUsername(), settingsService.getPassword())
                 .error(function(data) {
-                    console.log('Error while getting shack messages: ', data)
+                    $log.error('Error while getting shack messages: ', data)
                     return []
                 })
         }
@@ -32,7 +32,7 @@ angular.module('chatty')
                         shackMessageService.unreadMessageCount = data.unread
                     })
                     .error(function(data) {
-                        console.log('Error during shackmessage count update: ', data)
+                        $log.error('Error during shackmessage count update: ', data)
                         shackMessageService.totalMessageCount = -1
                         shackMessageService.unreadMessageCount = -1
                     })
@@ -44,4 +44,4 @@ angular.module('chatty')
         }
 
         return shackMessageService
-    })
+    }

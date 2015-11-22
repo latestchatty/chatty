@@ -1,5 +1,8 @@
-angular.module('chatty')
-    .service('settingsService', function($document, $location, $q, apiService, localStorageService) {
+var _ = require('lodash')
+var angular = require('angular')
+
+module.exports = /* @ngInject */
+    function($log, $document, $location, $q, apiService, localStorageService) {
         var settingsService = {}
 
         var collapsedThreads = []
@@ -97,7 +100,7 @@ angular.module('chatty')
                     deferred.resolve()
                 })
                 .error(function(data) {
-                    console.log('Error getting marked posts: ', data)
+                    $log.error('Error getting marked posts: ', data)
                     deferred.resolve()
                 })
 
@@ -105,4 +108,4 @@ angular.module('chatty')
         }
 
         return settingsService
-    })
+    }

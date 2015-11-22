@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .directive('onFinishRender', function($timeout) {
+module.exports = /* @ngInject */
+    function($timeout) {
         return {
             restrict: 'A',
             link: function(scope) {
@@ -10,4 +10,4 @@ angular.module('chatty')
                 }
             }
         }
-    })
+    }

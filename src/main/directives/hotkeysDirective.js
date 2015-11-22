@@ -1,7 +1,10 @@
-angular.module('chatty')
-    .directive('hotkeys', function() {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function() {
         return {
             restrict: 'A',
+            /* @ngInject */
             controller: function($document, $timeout, actionService) {
                 $document.bind('keydown', function(event) {
                     if (event.srcElement.localName !== 'input'
@@ -25,4 +28,4 @@ angular.module('chatty')
                 })
             }
         }
-    })
+    }

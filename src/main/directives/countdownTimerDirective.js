@@ -1,4 +1,4 @@
-angular.module('chatty').directive('countdownTimer',
+module.exports = /* @ngInject */
     function($rootScope) {
         return {
             restrict: 'A',
@@ -16,4 +16,4 @@ angular.module('chatty').directive('countdownTimer',
                 $rootScope.$on('countdown-timer', update)
             }
         }
-    })
+    }

@@ -1,5 +1,7 @@
-angular.module('chatty')
-    .directive('embedContent', function($sce) {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function($sce) {
         return {
             restrict: 'E',
             templateUrl: 'embedContent/embedContent.html',
@@ -7,6 +9,7 @@ angular.module('chatty')
                 url: '@',
                 type: '@'
             },
+            /* @ngInject */
             controller: function($scope) {
                 $scope.toggleVisibility = function() {
                     $scope.visible = !$scope.visible
@@ -32,4 +35,4 @@ angular.module('chatty')
                 }
             }
         }
-    })
+    }

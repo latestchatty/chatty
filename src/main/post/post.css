@@ -5,7 +5,7 @@
     padding: 0 0 25px 0;
 }
 
-.postheader{
+.postheader {
     background-color: #373a3c;
     padding: 3px 3px 3px 20px;
 }
@@ -27,6 +27,7 @@ div.postBody a:link, div.postBody a:visited, div.postBody a:active, div.postBody
     text-decoration: underline;
     color: #aeae9b;
 }
+
 div.postBody a:hover {
     color: #fff;
 }
@@ -40,9 +41,11 @@ div.postBody a:hover {
     font-family: sans-serif;
     cursor: pointer;
 }
+
 .user:hover {
     text-decoration: underline;
 }
+
 .user_op {
     font-size: 14px;
     font-weight: bold;
@@ -51,9 +54,11 @@ div.postBody a:hover {
     font-family: sans-serif;
     cursor: pointer;
 }
+
 .user_op:hover {
     text-decoration: underline;
 }
+
 .user_me {
     font-size: 14px;
     font-weight: bold;
@@ -62,9 +67,11 @@ div.postBody a:hover {
     font-family: sans-serif;
     cursor: pointer;
 }
+
 .user_me:hover {
     text-decoration: underline;
 }
+
 .user_employee {
     font-size: 14px;
     font-weight: bold;
@@ -73,6 +80,7 @@ div.postBody a:hover {
     font-family: sans-serif;
     cursor: pointer;
 }
+
 .user_employee:hover {
     text-decoration: underline;
 }
@@ -97,24 +105,23 @@ div.postBody a:hover {
     position: relative;
     margin-top: 3px;
     margin-right: -1px;
-    background: rgb(221, 221, 221)
-                -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(170, 170, 170)),
-                color-stop(0.4, rgb(204, 204, 204)),
-                color-stop(0.6, rgb(204, 204, 204)), to(rgb(238, 238, 238)));
+    background: rgb(221, 221, 221) -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(170, 170, 170)),
+    color-stop(0.4, rgb(204, 204, 204)),
+    color-stop(0.6, rgb(204, 204, 204)), to(rgb(238, 238, 238)));
 }
+
 .countdown-value {
     height: 100%;
     display: block;
     background-image: -webkit-gradient(linear, 0 100%, 100% 0,
-                        color-stop(0.25, rgba(255, 255, 255, 0.4)),
-                        color-stop(0.25, transparent),
-                        color-stop(0.5, transparent),
-                        color-stop(0.5, rgba(255, 255, 255, 0.4)),
-                        color-stop(0.75, rgba(255, 255, 255, 0.4)),
-                        color-stop(0.75, transparent), to(transparent));
+    color-stop(0.25, rgba(255, 255, 255, 0.4)),
+    color-stop(0.25, transparent),
+    color-stop(0.5, transparent),
+    color-stop(0.5, rgba(255, 255, 255, 0.4)),
+    color-stop(0.75, rgba(255, 255, 255, 0.4)),
+    color-stop(0.75, transparent), to(transparent));
     -webkit-background-size: 25px;
-    -webkit-box-shadow: rgba(255, 255, 255, 0.298039) 0 2px 4px inset,
-                        rgba(0, 0, 0, 0.4) 0 -2px 3px inset;
+    -webkit-box-shadow: rgba(255, 255, 255, 0.298039) 0 2px 4px inset, rgba(0, 0, 0, 0.4) 0 -2px 3px inset;
 }
 
 .actionbar {
@@ -122,13 +129,16 @@ div.postBody a:hover {
     bottom: 2px;
     left: 6px;
 }
+
 .actionbar i {
     padding-right: 9px;
 }
+
 .actionItem {
     color: white;
     cursor: pointer;
 }
+
 .actionItem:hover {
     color: #00bff3;
 }

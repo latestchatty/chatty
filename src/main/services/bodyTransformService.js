@@ -1,5 +1,7 @@
-angular.module('chatty')
-    .service('bodyTransformService', function() {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function() {
         var bodyTransformService = {}
 
         var matchers = [
@@ -101,4 +103,4 @@ angular.module('chatty')
         }
 
         return bodyTransformService
-    })
+    }

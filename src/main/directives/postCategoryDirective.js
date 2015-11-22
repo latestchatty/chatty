@@ -1,4 +1,6 @@
-angular.module('chatty').directive('postCategory',
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
     function() {
         return {
             restrict: 'A',
@@ -27,4 +29,4 @@ angular.module('chatty').directive('postCategory',
                 scope.$on('post-category-change-' + postId, update)
             }
         }
-    })
+    }

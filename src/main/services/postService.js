@@ -1,5 +1,7 @@
-angular.module('chatty')
-    .service('postService', function($q, $timeout, apiService, settingsService) {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function($log, $q, $timeout, apiService, settingsService) {
         var postService = {}
 
         var posting = false
@@ -39,7 +41,8 @@ angular.module('chatty')
                     } else {
                         deferred.reject(data)
                     }
-                }).error(function(data) {
+                })
+                .error(function(data) {
                     deferred.reject(data)
                 })
 
@@ -61,7 +64,7 @@ angular.module('chatty')
                         postService.clearQueue()
                     } else if (data && data.error &&
                         (data.code === 'ERR_BANNED' || data.code === 'ERR_NUKED' || data.code === 'ERR_SERVER')) {
-                        console.log('Error creating post.', data)
+                        $log.error('Error creating post.', data)
                         _.pull(postQueue, post)
                     } else {
                         lastTimeout = $timeout(function() {
@@ -75,4 +78,4 @@ angular.module('chatty')
         }
 
         return postService
-    })
+    }

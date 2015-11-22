@@ -1,9 +1,12 @@
-angular.module('chatty')
-    .directive('loading', function() {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function() {
         return {
             restrict: 'E',
             replace: true,
             templateUrl: 'loading/loading.html',
+            /* @ngInject */
             controller: function($scope) {
                 $scope.loadingMessages = [
                     'Think before you post...',
@@ -36,4 +39,4 @@ angular.module('chatty')
                 })
             }
         }
-    })
+    }

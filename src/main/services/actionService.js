@@ -1,5 +1,7 @@
-angular.module('chatty')
-    .service('actionService', function($rootScope, $q, apiService, modelService, settingsService) {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function($rootScope, $q, apiService, modelService, settingsService) {
         var actionService = {}
 
         var lastReply
@@ -20,7 +22,8 @@ angular.module('chatty')
                             settingsService.setCredentials(username, password)
                         }
                         deferred.resolve(result)
-                    }).error(function() {
+                    })
+                    .error(function() {
                         deferred.resolve(false)
                     })
             } else {
@@ -230,4 +233,4 @@ angular.module('chatty')
         }
 
         return actionService
-    })
+    }

@@ -1,16 +1,28 @@
 {
-  "env": {
-    "node": true
-  },
-  "globals": {
-    "_": true,
-    "angular": true
-  },
-  "rules" : {
-    "semi": [2, "never"],
-    "quotes": [2, "single", "avoid-escape"],
-    "space-before-function-paren": [2, "never"],
-    "strict": 0,
-    "no-use-before-define": 0
-  }
+    "environments": {
+        "es6": true
+    },
+    "parser": "babel-eslint",
+    "globals": {
+        "require": true,
+        "module": true
+    },
+    "rules" : {
+        "comma-style": [2, "last"],
+        "comma-spacing": [2, {"before": false, "after": true}],
+        "semi": [2, "never"],
+        "quotes": [2, "single", "avoid-escape"],
+        "space-before-function-paren": [2, "never"],
+        "space-before-keywords": [2, "always"],
+        "space-in-parens": [2, "never"],
+        "strict": 0,
+        "brace-style": 2,
+        "indent": [2, 4, {"SwitchCase": 1}],
+        "eol-last": 2,
+        "no-undef": 2,
+        "no-unused-vars" : 2,
+        "quote-props": [2, "as-needed"],
+        "comma-dangle": [2, "never"]
+    },
+    "extends": "eslint:recommended"
 }

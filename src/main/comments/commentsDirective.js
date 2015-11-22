@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .directive('comments', function(RecursionHelper) {
+module.exports = /* @ngInject */
+    function(RecursionHelper) {
         return {
             restrict: 'E',
             replace: true,
@@ -11,6 +11,7 @@ angular.module('chatty')
             compile: function(element) {
                 return RecursionHelper.compile(element)
             },
+            /* @ngInject */
             controller: function($scope, actionService, tabService) {
                 $scope.expandReply = function(post) {
                     actionService.expandReply(post)
@@ -29,4 +30,4 @@ angular.module('chatty')
                 }
             }
         }
-    })
+    }

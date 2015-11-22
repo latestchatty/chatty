@@ -1,4 +1,6 @@
-angular.module('chatty').directive('lineHighlight',
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
     function($rootScope) {
         return {
             restrict: 'A',
@@ -25,4 +27,4 @@ angular.module('chatty').directive('lineHighlight',
                 $rootScope.$on('post-line-highlight-' + postId, update)
             }
         }
-    })
+    }

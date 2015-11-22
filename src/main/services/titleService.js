@@ -1,4 +1,4 @@
-angular.module('chatty').service('titleService',
+module.exports = /* @ngInject */
     function($document, $timeout) {
         var titleService = {}
         var prefix = 'SPA Chatty'
@@ -16,9 +16,9 @@ angular.module('chatty').service('titleService',
                 titleService.count += add
 
                 if (titleService.count > 0) {
-                    document.title = prefix + ' (' + titleService.count + ')'
+                    $document.title = prefix + ' (' + titleService.count + ')'
                 } else {
-                    document.title = prefix
+                    $document.title = prefix
                 }
             })
         }
@@ -37,4 +37,4 @@ angular.module('chatty').service('titleService',
         }
 
         return titleService
-    })
+    }

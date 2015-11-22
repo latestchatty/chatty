@@ -1,5 +1,7 @@
-angular.module('chatty')
-    .service('modelService', function($rootScope, settingsService, bodyTransformService) {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function($rootScope, settingsService, bodyTransformService) {
         var modelService = {}
 
         var threads = []
@@ -225,4 +227,4 @@ angular.module('chatty')
         }
 
         return modelService
-    })
+    }

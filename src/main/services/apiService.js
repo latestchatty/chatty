@@ -1,5 +1,7 @@
-angular.module('chatty')
-    .service('apiService', function($http) {
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
+    function($http) {
         var apiService = {}
 
         apiService.login = function(username, password) {
@@ -89,4 +91,4 @@ angular.module('chatty')
         }
 
         return apiService
-    })
+    }

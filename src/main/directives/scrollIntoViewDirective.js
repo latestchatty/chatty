@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .directive('scrollIntoView', function($timeout, $window) {
+module.exports = /* @ngInject */
+    function($timeout, $window) {
         return {
             link: {
                 post: function postLink(scope, element) {
@@ -11,4 +11,4 @@ angular.module('chatty')
                 }
             }
         }
-    })
+    }

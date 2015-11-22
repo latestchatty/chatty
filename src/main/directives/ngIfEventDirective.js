@@ -1,5 +1,7 @@
-angular.module('chatty')
-    .directive('ngIfEvent', function($animate) {
+var angular = require('angular')
+
+module.exports = /* @ngInject */
+    function($animate) {
         return {
             multiElement: true,
             transclude: 'element',
@@ -73,4 +75,4 @@ angular.module('chatty')
 
             return angular.element(blockNodes)
         }
-    })
+    }

@@ -1,6 +1,7 @@
-angular.module('chatty')
-    .directive('keepScroll', function($window) {
+module.exports = /* @ngInject */
+    function($window) {
         return {
+            /* @ngInject */
             controller: function($scope) {
                 $scope.element = 0
                 $scope.lastHeight = null
@@ -30,4 +31,4 @@ angular.module('chatty')
                 }
             }
         }
-    })
+    }

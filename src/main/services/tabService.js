@@ -1,5 +1,8 @@
-angular.module('chatty')
-    .service('tabService', function($filter, modelService, settingsService, localStorageService, titleService) {
+var _ = require('lodash')
+var angular = require('angular')
+
+module.exports = /* @ngInject */
+    function($filter, modelService, settingsService, localStorageService, titleService) {
         var tabService = {}
 
         var threads = modelService.getThreads()
@@ -83,7 +86,7 @@ angular.module('chatty')
         }
 
         function getTabExpression(tab) {
-            return angular.isFunction(tab.expression) ? tab.expression() : tab.expression
+            return _.isFunction(tab.expression) ? tab.expression() : tab.expression
         }
 
         tabService.newPost = function(thread, parent, post) {
@@ -92,7 +95,7 @@ angular.module('chatty')
                     if (!tab.selected) {
                         var increment = false
 
-                        if (angular.isFunction(tab.newPostFunction)) {
+                        if (_.isFunction(tab.newPostFunction)) {
                             increment = tab.newPostFunction(thread, parent, post)
                         } else {
                             var expression = getTabExpression(tab)
@@ -111,7 +114,7 @@ angular.module('chatty')
         }
 
         tabService.addTab = function(tabType, value) {
-            var tab = _.find(tabs, {'tabType': tabType, 'value': value})
+            var tab = _.find(tabs, {tabType: tabType, value: value})
 
             if (!tab && tabTemplates[tabType]) {
                 tab = tabTemplates[tabType](value)
@@ -183,4 +186,4 @@ angular.module('chatty')
         })
 
         return tabService
-    })
+    }

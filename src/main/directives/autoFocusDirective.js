@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .directive('autoFocus', function() {
+module.exports = /* @ngInject */
+    function() {
         return {
             link: {
                 post: function(scope, element) {
@@ -7,4 +7,4 @@ angular.module('chatty')
                 }
             }
         }
-    })
+    }

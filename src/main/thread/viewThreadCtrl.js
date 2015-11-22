@@ -1,5 +1,5 @@
-angular.module('chatty')
-    .controller('viewThreadCtrl', function($scope, $routeParams, post, actionService, modelService) {
+module.exports = /* @ngInject */
+    function($scope, $routeParams, post, actionService, modelService) {
         $scope.post = post || {}
 
         //auto expand comments in this view
@@ -16,4 +16,4 @@ angular.module('chatty')
             //set the last reply to the top so we can a/z from the start
             actionService.setThread(post)
         }
-    })
+    }

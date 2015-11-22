@@ -9,11 +9,12 @@
     <link href="bundle.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body ng-app="chatty" hotkeys ng-cloak class="ng-cloak">
+<body ng-app="chatty" hotkeys ng-cloak class="ng-cloak" ng-strict-di>
 
 <div ng-view></div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 <script src="bundle.js"></script>
-<script src="templates.js"></script>
 </body>
 </html>

@@ -1,56 +1,53 @@
-angular.module('chatty', ['ngRoute', 'ngSanitize', 'RecursionHelper', 'LocalStorageModule'],
-    function($rootScopeProvider) {
-        //necessary to allow commentDirective to be recursive
-        $rootScopeProvider.digestTtl(60)
+var angular = require('angular')
+require('angular-route')
+require('angular-local-storage')
+require('angular-recursion')
+require('angular-sanitize')
+require('lodash')
 
-    }).config(function($routeProvider, localStorageServiceProvider) {
-        localStorageServiceProvider.setPrefix('chatty')
+angular.module('chatty',
+    ['ngRoute', 'ngSanitize', 'RecursionHelper', 'LocalStorageModule'],
+    require('./config/rootScopeConfig'))
 
-        $routeProvider
-            .when('/chatty', {
-                templateUrl: 'chatty/chatty.html',
-                controller: 'chattyCtrl',
-                resolve: {
-                    load: function(settingsService, eventService) {
-                        settingsService.refresh()
-                            .then(function() {
-                                eventService.startActive()
-                            })
-                    }
-                }
-            })
-            .when('/thread/:threadId/:commentId?', {
-                templateUrl: 'thread/viewThread.html',
-                controller: 'viewThreadCtrl',
-                resolve: {
-                    load: function(eventService) {
-                        eventService.startPassive()
-                    },
-                    post: function($route, $location, apiService, modelService) {
-                        var threadId = $route.current.params.threadId
-                        if (threadId) {
-                            return apiService.getThread(threadId).then(function(response) {
-                                var post = response.data.threads[0]
-                                if (threadId !== post.threadId) {
-                                    $location.url('/thread/' + post.threadId + '/' + threadId)
-                                } else {
-                                    return modelService.addThread(post)
-                                }
-                            })
-                        }
-                    }
-                }
-            })
-            .when('/messages', {
-                templateUrl: 'messages/messages.html',
-                controller: 'messagesCtrl',
-                resolve: {
-                    load: function() {
-                        //load stuff here
-                    }
-                }
-            })
-            .otherwise({
-                redirectTo: '/chatty'
-            })
-    })
+    //config
+    .config(require('./config/routesConfig'))
+
+    //controllers
+    .controller('chattyCtrl', require('./chatty/chattyCtrl'))
+    .controller('messagesCtrl', require('./messages/messagesCtrl'))
+    .controller('viewThreadCtrl', require('./thread/viewThreadCtrl'))
+
+    //directives
+    .directive('autoFocus', require('./directives/autoFocusDirective'))
+    .directive('comments', require('./comments/commentsDirective'))
+    .directive('countdownTimer', require('./directives/countdownTimerDirective'))
+    .directive('embedContent', require('./embedContent/embedContentDirective'))
+    .directive('hotkeys', require('./directives/hotkeysDirective'))
+    .directive('keepScroll', require('./directives/keepScrollDirective'))
+    .directive('lineHighlight', require('./directives/lineHighlightDirective'))
+    .directive('loading', require('./loading/loadingDirective'))
+    .directive('navbar', require('./navbar/navbarDirective'))
+    .directive('ngIfEvent', require('./directives/ngIfEventDirective'))
+    .directive('ngRightClick', require('./directives/ngRightClickDirective'))
+    .directive('onFinishRender', require('./directives/onFinishRenderDirective'))
+    .directive('post', require('./post/postDirective'))
+    .directive('postCategory', require('./directives/postCategoryDirective'))
+    .directive('replybox', require('./replybox/replyboxDirective'))
+    .directive('scrollIntoView', require('./directives/scrollIntoViewDirective'))
+    .directive('scrollItem', require('./directives/scrollItemDirective'))
+    .directive('thread', require('./thread/threadDirective'))
+
+    //filters
+    .filter('trusted', require('./filters/trustedFilter'))
+
+    //services
+    .service('actionService', require('./services/actionService'))
+    .service('apiService', require('./services/apiService'))
+    .service('bodyTransformService', require('./services/bodyTransformService'))
+    .service('eventService', require('./services/eventService'))
+    .service('modelService', require('./services/modelService'))
+    .service('postService', require('./services/postService'))
+    .service('settingsService', require('./services/settingsService'))
+    .service('shackMessageService', require('./services/shackMessageService'))
+    .service('tabService', require('./services/tabService'))
+    .service('titleService', require('./services/titleService'))

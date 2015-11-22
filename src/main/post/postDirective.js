@@ -1,9 +1,10 @@
-angular.module('chatty')
-    .directive('post', function() {
+module.exports = /* @ngInject */
+    function() {
         return {
             restrict: 'E',
             replace: true,
             templateUrl: 'post/post.html',
+            /* @ngInject */
             controller: function($scope, actionService, tabService) {
                 $scope.collapse = function(post) {
                     if (post.parentId) {
@@ -26,4 +27,4 @@ angular.module('chatty')
                 }
             }
         }
-    })
+    }

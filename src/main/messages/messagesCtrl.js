@@ -1,4 +1,6 @@
-angular.module('chatty').controller('messagesCtrl',
+var _ = require('lodash')
+
+module.exports = /* @ngInject */
     function($scope, shackMessageService, bodyTransformService) {
         function processMessage(message) {
             return {
@@ -14,4 +16,4 @@ angular.module('chatty').controller('messagesCtrl',
             .then(function(response) {
                 $scope.messages = _.map(response.data.messages, processMessage)
             })
-    })
+    }
