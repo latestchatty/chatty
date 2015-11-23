@@ -83,28 +83,19 @@ module.exports = /* @ngInject */
         }
 
         settingsService.refresh = function() {
-            var deferred = $q.defer()
-
-            apiService.getMarkedPosts(settingsService.getUsername())
-                .success(function(data) {
+            return apiService.getMarkedPosts(settingsService.getUsername())
+                .then(function(response) {
                     collapsedThreads = []
                     pinnedThreads = []
-                    _.each(data.markedPosts, function(mark) {
+                    _.each(response.data.markedPosts, function(mark) {
                         if (mark.type === 'collapsed') {
                             collapsedThreads.push(mark.id)
                         } else if (mark.type === 'pinned') {
                             pinnedThreads.push(mark.id)
                         }
                     })
-
-                    deferred.resolve()
                 })
-                .error(function(data) {
-                    $log.error('Error getting marked posts: ', data)
-                    deferred.resolve()
-                })
-
-            return deferred.promise
+                .catch(response => $log.error('Error getting marked posts: ', response))
         }
 
         return settingsService

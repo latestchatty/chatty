@@ -12,17 +12,13 @@ module.exports = /* @ngInject */
             modelService.clear()
 
             apiService.getNewestEventId()
-                .success(function(data) {
-                    lastEventId = data.eventId
-                })
-                .error(function(data) {
-                    $log.error('Error during getNewestEventId: ', data)
-                })
+                .then(response => lastEventId = _.get(response, 'data.eventId'))
+                .catch(response => $log.error('Error during getNewestEventId: ', response))
 
             apiService.getChatty()
-                .success(function(data) {
+                .then(function(response) {
                     //process all threads
-                    _.each(data.threads, modelService.addThread)
+                    _.each(response.data.threads, modelService.addThread)
 
                     //clean collapsed thread list after initial load
                     modelService.cleanCollapsed()
@@ -33,9 +29,7 @@ module.exports = /* @ngInject */
                     //start events
                     return waitForEvents()
                 })
-                .error(function(data) {
-                    $log.error('Error during getChatty: ', data)
-                })
+                .catch(response => $log.error('Error during getChatty: ', response))
 
             shackMessageService.refresh()
         }
@@ -67,8 +61,9 @@ module.exports = /* @ngInject */
                 if (!thread) {
                     //load expired thread
                     apiService.getThread(threadId)
-                        .success(function(data) {
-                            if (data.threads && data.threads[0]) {
+                        .then(function(response) {
+                            var thread = _.get(response, 'data.threads[0]')
+                            if (thread) {
                                 thread = modelService.addThread(data.threads[0])
                                 thread.pinned = true
 
@@ -77,9 +72,7 @@ module.exports = /* @ngInject */
                                 threads.unshift(thread)
                             }
                         })
-                        .error(function(error) {
-                            $log.error('Error loading pinned threadId=' + threadId, error)
-                        })
+                        .catch(response => $log.error('Error loading pinned threadId=' + threadId, response))
                 } else {
                     //put it at the top of the list
                     thread.pinned = true
@@ -91,12 +84,10 @@ module.exports = /* @ngInject */
 
         function waitForEvents() {
             apiService.waitForEvent(lastEventId)
-                .success(function(data) {
-                    eventResponse(data)
-                })
-                .error(function(data) {
-                    $log.error('Error during waitForEvent: ', data)
-                    eventResponse(data)
+                .then(response => eventResponse(response.data))
+                .catch(function(response) {
+                    $log.error('Error during waitForEvent: ', response)
+                    eventResponse(response)
                 })
         }
 
@@ -115,9 +106,7 @@ module.exports = /* @ngInject */
                     eventService.startActive()
                 } else {
                     //restart events in 30s
-                    $timeout(function() {
-                        waitForEvents()
-                    }, 30000)
+                    $timeout(waitForEvents, 30000)
                 }
             }
         }

@@ -26,13 +26,15 @@ module.exports = /* @ngInject */
 
         shackMessageService.refresh = function() {
             if (settingsService.isLoggedIn()) {
-                apiService.getTotalInboxCount(settingsService.getUsername(), settingsService.getPassword())
-                    .success(function(data) {
-                        shackMessageService.totalMessageCount = data.total
-                        shackMessageService.unreadMessageCount = data.unread
+                var user = settingsService.getUsername()
+                var pass = settingsService.getPassword()
+                apiService.getTotalInboxCount(user, pass)
+                    .then(function(response) {
+                        shackMessageService.totalMessageCount = _.get(response, 'data.total')
+                        shackMessageService.unreadMessageCount = _.get(response, 'data.unread')
                     })
-                    .error(function(data) {
-                        $log.error('Error during shackmessage count update: ', data)
+                    .catch(function(response) {
+                        $log.error('Error during shackmessage count update: ', response)
                         shackMessageService.totalMessageCount = -1
                         shackMessageService.unreadMessageCount = -1
                     })

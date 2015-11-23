@@ -11,26 +11,20 @@ module.exports = /* @ngInject */
         }
 
         actionService.login = function(username, password) {
-            var deferred = $q.defer()
             settingsService.clearCredentials()
 
             if (username && password) {
-                apiService.login(username, password)
-                    .success(function(data) {
-                        var result = data && data.isValid
+                return apiService.login(username, password)
+                    .then(function(response) {
+                        var result = _.get(response, 'data.isValid')
                         if (result) {
                             settingsService.setCredentials(username, password)
                         }
-                        deferred.resolve(result)
-                    })
-                    .error(function() {
-                        deferred.resolve(false)
+                        return result
                     })
             } else {
-                deferred.resolve(false)
+                return $q.reject()
             }
-
-            return deferred.promise
         }
 
         actionService.logout = function() {

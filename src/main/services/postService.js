@@ -25,28 +25,20 @@ module.exports = /* @ngInject */
             postQueue.push({parentId: parentId, body: body})
 
             if (!posting) {
-                $timeout(function() {
-                    startPosting()
-                })
+                $timeout(startPosting)
             }
         }
 
         function postToApi(post) {
-            var deferred = $q.defer()
-
-            apiService.submitPost(settingsService.getUsername(), settingsService.getPassword(), post.parentId, post.body)
-                .success(function(data) {
-                    if (data.result && data.result === 'success') {
-                        deferred.resolve(true)
-                    } else {
-                        deferred.reject(data)
+            var user = settingsService.getUsername()
+            var pass = settingsService.getPassword()
+            return apiService.submitPost(user, pass, post.parentId, post.body)
+                .then(function(response) {
+                    var result = _.get(response, 'data.result')
+                    if (result !== 'success') {
+                        $q.reject(response)
                     }
                 })
-                .error(function(data) {
-                    deferred.reject(data)
-                })
-
-            return deferred.promise
         }
 
         function startPosting() {
@@ -54,24 +46,22 @@ module.exports = /* @ngInject */
                 posting = true
 
                 var post = postQueue[0]
-                postToApi(post).then(function() {
-                    _.pull(postQueue, post)
-
-                    startPosting()
-                }, function(data) {
-                    if (data && data.error && data.code === 'ERR_INVALID_LOGIN') {
-                        settingsService.clearCredentials()
-                        postService.clearQueue()
-                    } else if (data && data.error &&
-                        (data.code === 'ERR_BANNED' || data.code === 'ERR_NUKED' || data.code === 'ERR_SERVER')) {
-                        $log.error('Error creating post.', data)
+                postToApi(post)
+                    .then(function() {
                         _.pull(postQueue, post)
-                    } else {
-                        lastTimeout = $timeout(function() {
-                            startPosting()
-                        }, 60000)
-                    }
-                })
+                        startPosting()
+                    })
+                    .catch(function(data) {
+                        if (data && data.error && data.code === 'ERR_INVALID_LOGIN') {
+                            settingsService.clearCredentials()
+                            postService.clearQueue()
+                        } else if (_.get(data, 'error') && _.contains(['ERR_BANNED', 'ERR_NUKED', 'ERR_SERVER'], data.code)) {
+                            $log.error('Error creating post.', data)
+                            _.pull(postQueue, post)
+                        } else {
+                            lastTimeout = $timeout(startPosting, 60000)
+                        }
+                    })
             } else {
                 posting = false
             }
