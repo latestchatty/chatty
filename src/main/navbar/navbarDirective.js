@@ -68,7 +68,11 @@ module.exports = /* @ngInject */
                 //new thread
                 $scope.newThreadPost = {id: 0}
                 $scope.newThread = function() {
-                    actionService.openReplyBox($scope.newThreadPost)
+                    if (!$scope.newThreadPost.replying) {
+                        actionService.openReplyBox($scope.newThreadPost)
+                    } else {
+                        $scope.newThreadPost.replying = false
+                    }
                 }
 
                 //reflow
