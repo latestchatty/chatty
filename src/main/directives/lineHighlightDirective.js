@@ -12,9 +12,7 @@ module.exports = /* @ngInject */
 
                 function update() {
                     //remove old classes
-                    _.each(_.range(0, 9), function(i) {
-                        element.removeClass('oneline' + i)
-                    })
+                    _.each(_.range(0, 9), i => element.removeClass(`oneline${i}`))
 
                     add()
                 }
@@ -24,7 +22,7 @@ module.exports = /* @ngInject */
 
                 //watch for changes
                 var postId = scope.$eval('post.id')
-                $rootScope.$on('post-line-highlight-' + postId, update)
+                $rootScope.$on(`post-line-highlight-${postId}`, update)
             }
         }
     }

@@ -17,28 +17,18 @@ module.exports = /* @ngInject */
                 expression: {author: 'Shacknews'},
                 defaultTab: true,
                 newPostText: 'New front page articles.',
-                newPostFunction: function(thread, parent, post) {
-                    return post.author === 'Shacknews'
-                }
+                newPostFunction: (thread, parent, post) => post.author === 'Shacknews'
             }, {
                 displayText: 'Mine',
-                expression: function() {
-                    return {$: {author: settingsService.getUsername()}}
-                },
+                expression: () => ({$: {author: settingsService.getUsername()}}),
                 defaultTab: true,
-                newPostFunction: function() {
-                    return false
-                }
+                newPostFunction: () => false
             }, {
                 displayText: 'Replies',
-                expression: function() {
-                    return {$: {parentAuthor: settingsService.getUsername()}}
-                },
+                expression: () => ({$: {author: settingsService.getUsername()}}),
                 defaultTab: true,
                 newPostText: 'New replies to my posts.',
-                newPostFunction: function(thread, parent, post) {
-                    return post.parentAuthor === settingsService.getUsername()
-                }
+                newPostFunction: (thread, parent, post) => post.parentAuthor === settingsService.getUsername()
             }
         ]
         var tabTemplates = {
@@ -66,13 +56,8 @@ module.exports = /* @ngInject */
         }
         var selectedTab = tabs[0]
 
-        tabService.setThreads = function(newThreads) {
-            threads = newThreads
-        }
-
-        tabService.getTabs = function() {
-            return tabs
-        }
+        tabService.setThreads = newThreads => threads = newThreads
+        tabService.getTabs = () => tabs
 
         tabService.selectTab = function(tab) {
             delete selectedTab.selected
@@ -148,17 +133,15 @@ module.exports = /* @ngInject */
         }
 
         function applyFilter(filterExpression) {
-            _.forEach(threads, function(thread) {
+            _.each(threads, function(thread) {
                 delete thread.visible
             })
 
             if (filterExpression) {
                 var visibleThreads = $filter('filter')(threads, filterExpression)
-                visibleThreads.forEach(function(thread) {
-                    thread.visible = true
-                })
+                _.each(visibleThreads, thread => thread.visible = true)
             } else {
-                _.forEach(threads, function(thread) {
+                _.each(threads, thread => {
                     if (thread.state !== 'collapsed') {
                         thread.visible = true
                     }
@@ -167,23 +150,16 @@ module.exports = /* @ngInject */
         }
 
         function save() {
-            var filtered = _.filter(_.cloneDeep(tabs), function(tab) {
-                return !!tab.tabType
-            })
-            var cleaned = _.map(filtered, function(tab) {
-                return {
-                    tabType: tab.tabType,
-                    value: tab.value
-                }
-            })
+            var filtered = _.filter(_.cloneDeep(tabs), tab => !!tab.tabType)
+            var cleaned = _.map(filtered, tab => ({
+                tabType: tab.tabType,
+                value: tab.value
+            }))
             localStorageService.set('tabs', cleaned)
         }
 
         //load on startup
         var loaded = angular.fromJson(localStorageService.get('tabs')) || []
-        _.each(loaded, function(tab) {
-            tabService.addTab(tab.tabType, tab.value)
-        })
-
+        _.each(loaded, tab => tabService.addTab(tab.tabType, tab.value))
         return tabService
     }

@@ -14,9 +14,7 @@ module.exports = /* @ngInject */
 
                 function update() {
                     //remove old
-                    _.each(['postInformative', 'postNws', 'postFrontpage'], function(c) {
-                        element.removeClass(c)
-                    })
+                    _.each(['postInformative', 'postNws', 'postFrontpage'], c => element.removeClass(c))
 
                     add()
                 }
@@ -26,7 +24,7 @@ module.exports = /* @ngInject */
 
                 //watch for changes
                 var postId = scope.$eval('post.id')
-                scope.$on('post-category-change-' + postId, update)
+                scope.$on(`post-category-change-${postId}`, update)
             }
         }
     }

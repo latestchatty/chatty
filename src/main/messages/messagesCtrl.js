@@ -13,7 +13,5 @@ module.exports = /* @ngInject */
 
         //messages controller
         shackMessageService.getMessages()
-            .then(function(response) {
-                $scope.messages = _.map(response.data.messages, processMessage)
-            })
+            .then(response => $scope.messages = _.map(response.data.messages, processMessage))
     }

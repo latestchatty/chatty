@@ -85,7 +85,7 @@ module.exports = /* @ngInject */
         function waitForEvents() {
             apiService.waitForEvent(lastEventId)
                 .then(response => eventResponse(response.data))
-                .catch(function(response) {
+                .catch(response => {
                     $log.error('Error during waitForEvent: ', response)
                     eventResponse(response)
                 })
@@ -96,7 +96,7 @@ module.exports = /* @ngInject */
                 lastEventId = data.lastEventId
 
                 //process the events
-                data.events.forEach(newEvent)
+                _.each(data.events, newEvent)
 
                 //wait for more
                 waitForEvents()
