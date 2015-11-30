@@ -4,7 +4,7 @@
 
     <div class="threads" keep-scroll>
         <loading></loading>
-        <div ng-repeat="post in threads track by post.id" ng-show="post.visible" on-finish-render="ngRepeatFinished">
+        <div ng-repeat="post in chatty.threads track by post.id" ng-show="post.visible" on-finish-render="ngRepeatFinished">
             <thread></thread>
         </div>
     </div>

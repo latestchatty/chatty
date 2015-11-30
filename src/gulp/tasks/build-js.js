@@ -12,6 +12,7 @@ var merge2 = require('merge2')
 var watchify = require('watchify')
 var sourcemaps = require('gulp-sourcemaps')
 var config = require('../gulp-config')
+var gulpif = require('gulp-if')
 
 gulp.task('build-js-debug', _.partial(bundleJs, true))
 gulp.task('build-js', _.partial(bundleJs, false))
@@ -50,10 +51,10 @@ function bundleJs(debug) {
 
         merge2(bundleStream, templateStream)
             .pipe(buffer())
-            .pipe(sourcemaps.init())
+            .pipe(gulpif(!debug, sourcemaps.init()))
             .pipe(concat(config.jsBundleName))
-            .pipe(uglify())
-            .pipe(sourcemaps.write('.'))
+            .pipe(gulpif(!debug, uglify()))
+            .pipe(gulpif(!debug, sourcemaps.write('.')))
             .pipe(gulp.dest(config.dist))
     }
 

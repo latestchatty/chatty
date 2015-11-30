@@ -4,23 +4,21 @@ module.exports = /* @ngInject */
 
         $routeProvider
             .when('/chatty', {
-                templateUrl: 'chatty/chatty.html',
-                controller: 'chattyCtrl',
+                template: '<chatty></chatty>',
                 resolve: {
                     load: function(settingsService, eventService) {
-                        settingsService.refresh()
-                            .then(function() {
-                                eventService.startActive()
-                            })
+                        return settingsService.refresh()
+                            .then(() => eventService.startActive())
                     }
                 }
             })
+
             .when('/thread/:threadId/:commentId?', {
                 templateUrl: 'thread/viewThread.html',
                 controller: 'viewThreadCtrl',
                 resolve: {
                     load: function(eventService) {
-                        eventService.startPassive()
+                        return eventService.startPassive()
                     },
                     post: function($route, $location, apiService, modelService) {
                         var threadId = $route.current.params.threadId
@@ -37,6 +35,7 @@ module.exports = /* @ngInject */
                     }
                 }
             })
+
             .when('/messages', {
                 templateUrl: 'messages/messages.html',
                 controller: 'messagesCtrl',
@@ -46,6 +45,7 @@ module.exports = /* @ngInject */
                     }
                 }
             })
+
             .otherwise({
                 redirectTo: '/chatty'
             })

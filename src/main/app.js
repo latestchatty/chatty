@@ -13,12 +13,12 @@ angular.module('chatty',
     .config(require('./config/routesConfig'))
 
     //controllers
-    .controller('chattyCtrl', require('./chatty/chattyCtrl'))
     .controller('messagesCtrl', require('./messages/messagesCtrl'))
     .controller('viewThreadCtrl', require('./thread/viewThreadCtrl'))
 
     //directives
     .directive('autoFocus', require('./directives/autoFocusDirective'))
+    .directive('chatty', require('./chatty/chattyDirective'))
     .directive('comments', require('./comments/commentsDirective'))
     .directive('countdownTimer', require('./directives/countdownTimerDirective'))
     .directive('embedContent', require('./embedContent/embedContentDirective'))
