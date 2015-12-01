@@ -93,21 +93,19 @@ module.exports = /* @ngInject */
 
         function eventResponse(data) {
             if (data && !data.error) {
-                lastEventId = data.lastEventId
+                lastEventId = data.lastEventId || lastEventId
 
                 //process the events
                 _.each(data.events, newEvent)
 
                 //wait for more
                 waitForEvents()
+            } else if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
+                $log.error('Too many events since last refresh, reloading chatty.')
+                eventService.startActive()
             } else {
-                if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
-                    $log.error('Too many events since last refresh, reloading chatty.')
-                    eventService.startActive()
-                } else {
-                    //restart events in 30s
-                    $timeout(waitForEvents, 30000)
-                }
+                //restart events in 30s
+                $timeout(waitForEvents, 30000)
             }
         }
 
