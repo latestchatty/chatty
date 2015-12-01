@@ -14,7 +14,9 @@ gulp.task('server', function() {
             port: 9001
         },
         port: 3000,
-        notify: false
+        notify: false,
+        open: false,
+        ghostMode: false
     })
 
     gulp.watch(['**/*.*', '!**/*.css'], {cwd: config.dist}, browserSync.reload)
