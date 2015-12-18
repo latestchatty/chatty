@@ -3,9 +3,6 @@ Chatty
 A single-page-application alternative client for the shacknews chatty (http://www.shacknews.com/chatty).
 
 Features above standard chatty:
-* Reduced page load size / requests.
-  * Shacknews is ~1.2mb / ~125 http requests
-  * NiXXeD Chatty is ~150kb / 14 http requests (excluding chatty data itself, which varies)
 * Event based: Replies and new root posts are loaded live. No more F5 necessary.
 * Reflow action: Re-sorts the chatty instantly, active posts on top, no http call required.
 * Live filtering. No more reposts! Filter works without API call in the background (against live threads only).
