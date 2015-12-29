@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>NG2 Chatty</title>
+    <!-- 1. Load libraries -->
+    <script src="system.src.js"></script>
+    <script src="angular2-polyfills.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.0/Rx.js"></script>
+    <script src="angular2.dev.js"></script>
+    <script src="http.dev.js"></script>
+    <script src="router.dev.js"></script>
+
+    <!-- 2. Configure SystemJS -->
+    <script>
+        System.config({
+            packages: {
+                app: {
+                    format: 'register',
+                    defaultExtension: 'js'
+                }
+            }
+        })
+        System.import('app/boot')
+                .then(null, console.error.bind(console))
+    </script>
+</head>
+
+<!-- 3. Display the application -->
+<body>
+<app>Loading...</app>
+</body>
+</html>
