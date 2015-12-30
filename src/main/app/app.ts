@@ -3,7 +3,7 @@ import {ApiService} from './services/ApiService'
 
 @Component({
     selector: 'app',
-    template: 'wat',
+    template: 'wat...',
     providers: [ApiService]
 })
 export class App  {

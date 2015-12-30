@@ -6,7 +6,7 @@ module.exports = {
     jsBundleInput: './src/main/app.js',
     jsBundleName: 'bundle.js',
     jsPaths: [
-        './src/main/**/*.js',
+        './src/main/**/*.js'
     ],
 
     cssBundleName: 'bundle.css',

@@ -19,5 +19,5 @@ gulp.task('server', function() {
         ghostMode: false
     })
 
-    gulp.watch(['**/*.*', '!**/*.css'], {cwd: config.dist}, browserSync.reload)
+    gulp.watch(['**/*.*', '!**/*.css'], {cwd: config.dist}, _.debounce(browserSync.reload, 1000, {leading: true, trailing: false}))
 })
