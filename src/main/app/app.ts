@@ -1,16 +1,13 @@
 import {Component} from 'angular2/core'
-import {ApiService} from './services/ApiService'
+import {EventService} from './services/EventService'
 
 @Component({
     selector: 'app',
     template: 'wat...',
-    providers: [ApiService]
+    providers: [EventService]
 })
 export class App  {
-    constructor(private apiService:ApiService) {
-        apiService.getChatty()
-            .then(threads => {
-                console.log('threads', threads)
-            })
+    constructor(private eventService:EventService) {
+        eventService.startActive()
     }
 }
