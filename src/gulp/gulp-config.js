@@ -7,11 +7,6 @@ module.exports = {
         './src/main/**/*.css'
     ],
 
-    views: [
-        './src/main/**/*.html',
-        '!./src/main/index.html'
-    ],
-
     //TODO: swap dev -> min
     dependencyPaths: [
         './node_modules/angular2/bundles/angular2.dev.js',
@@ -25,6 +20,7 @@ module.exports = {
     staticPaths: [
         './src/main/index.html',
         './src/main/favicon.ico',
-        './src/main/images/**'
+        './src/main/images/**',
+        './src/main/app/**/*.html'
     ]
 }
