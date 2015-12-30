@@ -1,0 +1,25 @@
+<ul>
+    <li *ngFor="#post of posts">
+        <!--collapsed reply-->
+        <div ngIf="!post.viewFull" ngIf="reply-collapse" ngIf="post.id" scroll-item>
+            <span class="oneline" line-highlight post-category
+                  (click)="expandReply(post)" [innerHTML]="post.body.oneline | trusted"></span>
+
+            <span class="onelineSeparator">&nbsp;:&nbsp;</span>
+            <span ngClass="post.userClass || 'user'" (click)="addUserTab(post.author)">{{post.author}}</span>
+        </div>
+
+        <!--expanded reply-->
+        <div ngIf="post.viewFull" ngIf="reply-collapse" ngIf="post.id">
+            <div class="replyPost" post-category scroll-into-view>
+                <post></post>
+            </div>
+
+            <!-- <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.threadId"
+                    class="replybox-comment" post="post"></replybox> -->
+        </div>
+
+        <!-- replies to this post -->
+        <comments posts="post.posts" flat="false" ngIf="::!flat" scroll-item></comments>
+    </li>
+</ul>

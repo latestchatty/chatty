@@ -42,7 +42,7 @@ function buildCss(debug) {
         stream.on('error', err => gutil.log(gutil.colors.red('CSS Error:\n'), err.message))
     }
 
-    stream.pipe(concat(config.cssBundleName))
+    return stream.pipe(concat(config.cssBundleName))
         .pipe(gulp.dest(config.dist))
         .pipe(browserSync.stream())
 }
