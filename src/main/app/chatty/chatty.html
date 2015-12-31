@@ -1,10 +1,10 @@
 <div>
-    <navbar></navbar>
+    <!--<navbar></navbar>-->
+    Chatty Root
     <div class="threads" keep-scroll>
-        <loading></loading>
+        <!--<loading></loading>-->
         <div *ngFor="#post of threads">
-            <thread></thread>-
+            <thread [value]="post"></thread>
         </div>
     </div>
-
 </div>

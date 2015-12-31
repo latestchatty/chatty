@@ -1,4 +1,4 @@
-declare var _ : any
+declare var _:any
 import {Component} from 'angular2/core'
 
 @Component({
@@ -15,13 +15,11 @@ export class EmbedContent {
         this.visible = !this.visible
     }
 
-
     fixUrl(regex, fixed) {
         var rex = new RegExp(regex)
         var fixedUrl = this.url.replace(rex, fixed)
         return fixedUrl
     }
-
 
     testFixUrl(tests) {
         var result = _.find(tests, function (test) {

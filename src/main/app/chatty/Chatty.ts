@@ -1,21 +1,22 @@
-//import {ModelService} from '../../services/ModelService'
 import {Component} from 'angular2/core'
+import {OnInit} from 'angular2/core'
+import {ModelService} from '../services/ModelService'
+import {Thread} from '../thread/Thread'
 
 @Component({
     selector: 'chatty',
     templateUrl: 'app/chatty/chatty.html',
-    directives: [Chatty]
+    directives: [Chatty, Thread]
 })
-export class Chatty {
+export class Chatty implements OnInit {
     public threads
-    private newThreads
+    public newThreads
 
-    constructor(){
-        //this.threads = modelService.getThreads()
-        //this.newThreads = modelService.getNewThreads()
-        this.threads = [
-            {text:'asd', posts: [{text: 'blah', posts:[{text:'aaa!', posts: []}]}]}
-        ]
-        console.log(this.threads)
+    constructor(private modelService:ModelService) {
+    }
+
+    ngOnInit() {
+        this.threads = this.modelService.getThreads()
+        this.newThreads = this.modelService.getNewThreads()
     }
 }

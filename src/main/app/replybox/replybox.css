@@ -1,0 +1,39 @@
+.replybox-op {
+    background-color: #141414;
+    margin: -4px 0 3px 8px;
+    border: 1px solid #666;
+    position: relative;
+    padding: 3px 0 25px 0;
+}
+
+.replybox-comment {
+    background-color: #141414;
+    margin: -4px 0 3px 0;
+    border: 1px solid #666;
+    position: relative;
+    padding: 3px 0 25px 0;
+}
+
+.replybox-input {
+    position: relative;
+    margin: 15px 5px 5px 17px;
+    border: 1px solid white;
+    color: white;
+    width: 50%;
+    height: 150px;
+    background-color: black;
+}
+
+.replybox-submit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0 5px 5px 17px;
+}
+
+.replybox-close {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    padding: 0;
+}

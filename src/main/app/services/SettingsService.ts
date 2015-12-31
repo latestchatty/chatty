@@ -79,7 +79,7 @@ export class SettingsService implements OnInit {
     }
 
     isLoggedIn() {
-        return this.credentials.username && this.credentials.password
+        return this.credentials && this.credentials.username && this.credentials.password
     }
 
     clearCredentials() {

@@ -34,7 +34,7 @@ export class EventService implements OnInit {
         this.modelService.clear()
 
         this.apiService.getNewestEventId()
-            .then(response => this.lastEventId = response.eventId)
+            .then(response => this.lastEventId = _.get(response, 'eventId'))
             .catch(response => console.error('Error during getNewestEventId: ', response))
 
         this.apiService.getChatty()

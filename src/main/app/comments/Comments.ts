@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core'
+import {Component, Input} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
 import {TabService} from '../services/TabService'
 import {ApiService} from "../services/ApiService";
@@ -7,20 +7,15 @@ import {ApiService} from "../services/ApiService";
     selector: 'comments',
     templateUrl: './app/comments/comments.html',
     providers: [ActionService, TabService, ApiService],
-    directives: [Comments],
-    inputs: ['posts', 'flat']
+    directives: [Comments]
 })
 export class Comments {
+    @Input() public flat
+    @Input() public posts
 
-    public flat
-    public posts
     constructor(private actionService:ActionService,
                 private tabService:TabService,
                 private apiService:ApiService) {
-        apiService.getChatty().then(threads => {
-            console.log('threads here ', threads.threads)
-            this.posts = threads.threads
-        })
     }
 
     expandReply(post) {
@@ -36,6 +31,7 @@ export class Comments {
     }
 
     addUserTab(user) {
-        this.tabService.addTab('user', user)
+        //TODO: fix tabs
+        //this.tabService.addTab('user', user)
     }
 }

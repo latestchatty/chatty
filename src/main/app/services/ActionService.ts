@@ -120,10 +120,6 @@ export class ActionService {
 
     expandThread(thread) {
         thread.state = 'expanded'
-        //$rootScope.$broadcast('thread-collapse' + thread.id)
-        //$rootScope.$broadcast('thread-truncate' + thread.id)
-        console.log('Would have broadcast thread-collapse' + thread.id)
-        console.log('Would have broadcast thread-truncate' + thread.id)
 
         //update local storage
         this.settingsService.uncollapseThread(thread.id)

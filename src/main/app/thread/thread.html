@@ -2,30 +2,29 @@
 
     <!-- root post -->
     <div class="rootPost" post-category>
-        <post></post>
+        <post [post]="post"></post>
     </div>
 
     <!-- reply box -->
-    <!-- <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.id"
-              class="replybox-op" post="post"></replybox> -->
+    <!--<replybox *ngIf="post.replying" class="replybox-op" [post]="post"></replybox>-->
 
     <!-- truncated replies -->
-    <div ng-if-event-expr="post.state === 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
+    <div *ngIf="post.state === 'truncated'">
         <p class="threadCapHeader">
-            <a href="" ng-click="expandThread(post)">
-                &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{::post.replyCount}}+</strong> replies.
+            <a href="" (click)="expandThread()">
+                &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{post.replyCount}}+</strong> replies.
             </a>
         </p>
 
         <div class="treeview">
-            <comments posts="post.recent" flat="true"></comments>
+            <comments [posts]="post.recent" [flat]="true"></comments>
         </div>
     </div>
 
     <!-- full replies -->
-    <div ng-if-event-expr="post.state !== 'truncated'" ng-if-event="thread-truncate" ng-if-event-id="post.id">
+    <div *ngIf="post.state !== 'truncated'">
         <div class="treeview">
-            <comments posts="post.posts" flat="false"></comments>
+            <comments [posts]="post.posts" [flat]="false"></comments>
         </div>
     </div>
 

@@ -8,6 +8,7 @@
     top: 0;
     border-top: 1px solid #575757;
     border-bottom: 1px dotted #fff;
+    cursor: pointer;
 }
 .threadCapHeader a:link, .threadCapHeader a:visited,
 .threadCapHeader a:active, .threadCapHeader a:hover {
