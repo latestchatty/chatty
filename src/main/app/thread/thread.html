@@ -10,10 +10,8 @@
 
     <!-- truncated replies -->
     <div *ngIf="post.state === 'truncated'">
-        <p class="threadCapHeader">
-            <a href="" (click)="expandThread()">
-                &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{post.replyCount}}+</strong> replies.
-            </a>
+        <p class="threadCapHeader" (click)="expandThread()">
+            &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all <strong>{{post.replyCount}}+</strong> replies.
         </p>
 
         <div class="treeview">

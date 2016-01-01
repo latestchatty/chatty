@@ -10,14 +10,13 @@
         </div>
 
         <!--expanded reply-->
-        <!--<div ngIf="post.viewFull" ngIf="reply-collapse" ngIf="post.id">-->
-            <!--<div class="replyPost" post-category scroll-into-view>-->
-                <!--<post></post>-->
-            <!--</div>-->
+        <div *ngIf="post.viewFull">
+            <div class="replyPost" post-category scroll-into-view>
+                <post [post]="post"></post>
+            </div>
 
-            <!-- <replybox ng-if-event-expr="post.replying" ng-if-event="post-reply" ng-if-event-id="post.threadId"
-                    class="replybox-comment" post="post"></replybox> -->
-        <!--</div>-->
+            <!--<replybox *ngIf="post.replying" class="replybox-comment" post="post"></replybox>-->
+        </div>
 
         <!-- replies to this post -->
         <comments [posts]="post.posts" flat="false" *ngIf="!flat" scroll-item></comments>

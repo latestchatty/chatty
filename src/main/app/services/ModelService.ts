@@ -149,6 +149,9 @@ export class ModelService {
         //parse body for extra features
         post.body = this.bodyTransformService.parse(post)
 
+        //date object for date pipe
+        post.date = new Date(post.date)
+
         //create sub-post container
         post.posts = post.posts || []
 
@@ -198,7 +201,7 @@ export class ModelService {
     }
 
     private updateExpiration(thread) {
-        thread.expirePercent = Math.min(((((new Date().getTime()) - new Date(thread.date).getTime()) / 3600000) / 18) * 100, 100)
+        thread.expirePercent = Math.min(((((new Date().getTime()) - thread.date.getTime()) / 3600000) / 18) * 100, 100)
         if (thread.expirePercent <= 25) {
             thread.expireColor = 'springgreen'
         } else if (thread.expirePercent <= 50) {

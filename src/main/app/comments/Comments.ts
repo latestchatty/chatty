@@ -2,12 +2,13 @@ import {Component, Input} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
 import {TabService} from '../services/TabService'
 import {ApiService} from "../services/ApiService";
+import {Post} from '../post/Post'
 
 @Component({
     selector: 'comments',
     templateUrl: './app/comments/comments.html',
     providers: [ActionService, TabService, ApiService],
-    directives: [Comments]
+    directives: [Comments, Post]
 })
 export class Comments {
     @Input() public flat

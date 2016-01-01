@@ -1,11 +1,12 @@
 import {Component, Input} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
 import {TabService} from '../services/TabService'
+import {EmbedContent} from '../embedContent/EmbedContent'
 
 @Component({
     selector: 'post',
     templateUrl: 'app/post/post.html',
-    directives: []
+    directives: [EmbedContent]
 })
 export class Post {
     @Input() public post
@@ -22,8 +23,8 @@ export class Post {
         }
     }
 
-    openReplyBox(post) {
-        this.actionService.openReplyBox(post)
+    openReplyBox() {
+        this.actionService.openReplyBox(this.post)
     }
 
     addUserTab(user) {

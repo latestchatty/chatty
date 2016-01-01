@@ -10,7 +10,7 @@ export class ApiService {
     }
 
     getChatty() {
-        return this.get('getChatty?count=5')
+        return this.get('getChatty')
     }
 
     getNewestEventId() {

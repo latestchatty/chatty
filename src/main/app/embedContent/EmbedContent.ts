@@ -1,15 +1,14 @@
 declare var _:any
-import {Component} from 'angular2/core'
+import {Component, Input} from 'angular2/core'
 
 @Component({
-    selector: 'embedContent',
-    templateUrl: './embedContent.html',
-    inputs: ['url', 'type']
+    selector: 'embed-content',
+    templateUrl: 'app/embedContent/embedContent.html'
 })
 export class EmbedContent {
-    private visible = false
-    private url
-    private type
+    public visible = false
+    @Input() public url
+    @Input() public type
 
     toggleVisibility() {
         this.visible = !this.visible
@@ -17,13 +16,12 @@ export class EmbedContent {
 
     fixUrl(regex, fixed) {
         var rex = new RegExp(regex)
-        var fixedUrl = this.url.replace(rex, fixed)
-        return fixedUrl
+        return this.url.replace(rex, fixed)
     }
 
     testFixUrl(tests) {
         var result = _.find(tests, function (test) {
-            var rex = new RegExp(test.test)
+            var rex = new RegExp(<any>test.test)
             return rex.test(this.url)
         })
 

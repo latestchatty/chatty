@@ -5,11 +5,11 @@
 
         <!-- header right -->
         <div class="headerright">
-            <!--<div class="postdate">{{post.date | date : 'MMM d, yyyy h:mma' }}</div>-->
-            <div class="postdate">{{post.date}}</div>
+            <div class="postdate">{{post.date | date : 'MMM d, yyyy h:mma' }}</div>
 
             <div class="countdown-wrap" *ngIf="!!post.expirePercent">
-                <div class="countdown-value" countdown-timer></div>
+                <div class="countdown-value" [style.width]="post.expirePercent + '%'"
+                     [style.background-color]="post.expireColor"></div>
             </div>
         </div>
     </div>
@@ -18,20 +18,20 @@
     <div class="postBody postBodyText">
         <span *ngFor="#chunk of post.body.chunks">
             <span *ngIf="!chunk.type" [innerHTML]="chunk"></span>
-            <embed-content *ngIf="chunk.type === 'embed'" url="{{chunk.value}}" type="{{chunk.embedType}}"></embed-content>
+            <embed-content *ngIf="chunk.type === 'embed'" [url]="chunk.value" [type]="chunk.embedType"></embed-content>
         </span>
     </div>
 
     <!-- action bar -->
-    <!--<div class="actionbar" ng-if="::post.type !== 'shackmessage'">-->
-        <!--<i class="actionItem fa fa-close" title="Collapse post" ng-click="collapse(post)"></i>-->
-        <!--<i class="actionItem fa fa-comment" title="Reply to post" ng-click="openReplyBox(post)"></i>-->
-        <!--<a target="_blank" ng-href="#/thread/{{::post.threadId}}/{{::post.id}}"-->
-                <!--&gt;<i class="actionItem fa fa-bookmark" title="Open in tab"></i></a>-->
-        <!--<i class="actionItem fa fa-star" title="Pin to cloud" ng-if="::!post.parentId" ng-click="pinPost(post)"></i>-->
-        <!--<a target="_blank" ng-href="http://www.shacknews.com/chatty?id={{::post.id}}#item_{{::post.id}}"-->
-                <!--&gt;<i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>-->
-        <!--</a>-->
-    <!--</div>-->
+    <div class="actionbar" *ngIf="post.type !== 'shackmessage'">
+        <i class="actionItem fa fa-close" title="Collapse post" (click)="collapse()"></i>
+        <i class="actionItem fa fa-comment" title="Reply to post" (click)="openReplyBox()"></i>
+        <a target="_blank" [href]="'#/thread/' + post.threadId + '/' + post.id"
+                ><i class="actionItem fa fa-bookmark" title="Open in tab"></i></a>
+        <i class="actionItem fa fa-star" title="Pin to cloud" ng-if="!post.parentId" (click)="pinPost()"></i>
+        <a target="_blank" [href]="'http://www.shacknews.com/chatty?id=' + post.id + '#item_' + post.id"
+                ><i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>
+        </a>
+    </div>
 
 </div>

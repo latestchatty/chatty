@@ -9,13 +9,9 @@ import {Post} from '../post/Post'
     directives: [Comments, Post]
 })
 export class Thread {
-    public post
+    @Input() public post
 
     constructor(private actionService:ActionService){
-    }
-
-    @Input() set value(post) {
-        this.post = post
     }
 
     expandThread() {
