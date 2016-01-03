@@ -19,6 +19,6 @@
         </div>
 
         <!-- replies to this post -->
-        <comments [posts]="post.posts" flat="false" *ngIf="!flat" scroll-item></comments>
+        <comments [posts]="post.posts" [flat]="false" *ngIf="!flat" scroll-item></comments>
     </li>
 </ul>
