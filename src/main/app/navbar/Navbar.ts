@@ -5,11 +5,12 @@ import {SettingsService} from '../services/SettingsService'
 import {ShackMessageService} from '../services/ShackMessageService'
 import {TabService} from '../services/TabService'
 import {ModelService} from '../services/ModelService'
+import {ReplyBox} from '../replybox/ReplyBox'
 
 @Component({
     selector: 'navbar',
     templateUrl: 'app/navbar/navbar.html',
-    directives: []
+    directives: [ReplyBox]
 })
 export class Navbar implements OnInit {
     public loginRunning = false

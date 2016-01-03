@@ -59,7 +59,7 @@
         </div>
 
         <div class="newThreadContainer" *ngIf="newThreadPost.replying">
-            <replybox class="replybox-op" post="newThreadPost"></replybox>
+            <replybox replyclass="replybox-op" [post]="newThreadPost"></replybox>
         </div>
     </div>
 </div>
