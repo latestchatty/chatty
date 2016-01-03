@@ -2,16 +2,16 @@
     <li *ngFor="#post of posts">
         <!--collapsed reply-->
         <div *ngIf="!post.viewFull" scroll-item>
-            <span class="oneline" [ngClass]="post.lineClass" post-category
+            <span class="oneline" [ngClass]="post.lineClass" [ngClass]="post.tagClass"
                   (click)="expandReply(post)" [innerHTML]="post.body.oneline"></span>
 
             <span class="onelineSeparator">&nbsp;:&nbsp;</span>
-            <span [class]="post.userClass || 'user'" (click)="addUserTab(post.author)">{{post.author}}</span>
+            <span [ngClass]="post.userClass || 'user'" (click)="addUserTab(post.author)">{{post.author}}</span>
         </div>
 
         <!--expanded reply-->
         <div *ngIf="post.viewFull">
-            <div class="replyPost" post-category scroll-into-view>
+            <div class="replyPost" [ngClass]="post.tagClass" scroll-into-view>
                 <post [post]="post"></post>
             </div>
 

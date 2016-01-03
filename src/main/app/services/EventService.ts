@@ -1,6 +1,5 @@
 declare var _: any
 import {Injectable} from 'angular2/core'
-import {OnInit} from 'angular2/core'
 import {ApiService} from './ApiService'
 import {ModelService} from './ModelService'
 import {SettingsService} from './SettingsService'
@@ -9,7 +8,7 @@ import {TabService} from './TabService'
 import {TitleService} from './TitleService'
 
 @Injectable()
-export class EventService implements OnInit {
+export class EventService {
     private lastEventId = 0
     private passiveMode = false
 
@@ -19,9 +18,6 @@ export class EventService implements OnInit {
                 private shackMessageService:ShackMessageService,
                 private tabService:TabService,
                 private titleService:TitleService) {
-    }
-
-    public ngOnInit() {
         //update loop every 5 min
         setInterval(() => {
             this.modelService.updateAllThreads()

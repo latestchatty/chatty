@@ -2,9 +2,14 @@
     <!-- Discard Post 'x' -->
     <i class="actionItem fa fa-times replybox-close" title="Discard comment" (click)="close()"></i>
 
-    <!--Post Input -->
-    <textarea class="replybox-input" placeholder="Type something interesting..."
-              [(ngModel)]="replyBody" required auto-focus></textarea>
+    <form (ngSubmit)="submitPost()">
+        <!--Post Input -->
+        <textarea class="replybox-input" placeholder="Type something interesting..."
+                  [(ngModel)]="replyBody" required auto-focus></textarea>
+
+        <!-- Submit button -->
+        <input type="submit" value="Submit Post" class="button replybox-submit">
+    </form>
 
     <!-- Tag Legend -->
     <table class="tagLegend">
@@ -19,7 +24,4 @@
             </template>
         </tr>
     </table>
-
-    <!-- Submit button -->
-    <input type="button" value="Submit Post" class="button replybox-submit" (click)="submitPost()">
 </div>

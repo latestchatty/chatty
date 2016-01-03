@@ -43,7 +43,7 @@
                 <input type="password" class="navbar-textinput" placeholder="Password"
                        [class]="{ 'navbar-textinput-invalid': loginInvalid }"
                        [(ngModel)]="password" [disabled]="loginRunning" required>
-                <input type="button" value="Login" class="button" [disabled]="loginRunning">
+                <input type="submit" value="Login" class="button" [disabled]="loginRunning">
             </form>
 
             <!-- Logout Form -->

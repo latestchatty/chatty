@@ -1,18 +1,17 @@
 import {Injectable} from 'angular2/core'
-import {OnInit} from 'angular2/core'
 
 @Injectable()
-export class TitleService implements OnInit{
+export class TitleService {
     private prefix = 'NG2 Chatty'
     private count = 0
     private passiveMode = false
     private visible = true
 
-    ngOnInit() {
+    constructor() {
         //initialize stuff
-        document[0].addEventListener('visibilitychange', this.changed)
-        document[0].addEventListener('webkitvisibilitychange', this.changed)
-        document[0].addEventListener('msvisibilitychange', this.changed)
+        document.addEventListener('visibilitychange', this.changed)
+        document.addEventListener('webkitvisibilitychange', this.changed)
+        document.addEventListener('msvisibilitychange', this.changed)
     }
 
     setPassive() {
@@ -33,10 +32,10 @@ export class TitleService implements OnInit{
 
     private changed() {
         this.visible =
-            !(document[0].hidden ||
-            document[0].webkitHidden ||
-            document[0].mozHidden ||
-            document[0].msHidden)
+            !(document['hidden'] ||
+            document['webkitHidden'] ||
+            document['mozHidden'] ||
+            document['msHidden'])
 
         if (this.visible && this.passiveMode) {
             this.count = 0

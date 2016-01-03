@@ -1,7 +1,7 @@
-<div>
+<div *ngIf="post.visible">
 
     <!-- root post -->
-    <div class="rootPost" post-category>
+    <div class="rootPost" [ngClass]="post.tagClass">
         <post [post]="post"></post>
     </div>
 

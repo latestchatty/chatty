@@ -15,6 +15,9 @@ export class SettingsService {
         } else {
             this.credentials = {username: '', password: ''}
         }
+
+        //initial load of settings
+        this.refresh()
     }
 
     isCollapsed(id) {
@@ -93,15 +96,9 @@ export class SettingsService {
     refresh() {
         return this.apiService.getMarkedPosts(this.getUsername())
             .then(response => {
-                this.collapsedThreads = []
-                this.pinnedThreads = []
-                _.each(response.data.markedPosts, mark => {
-                    if (mark.type === 'collapsed') {
-                        this.collapsedThreads.push(mark.id)
-                    } else if (mark.type === 'pinned') {
-                        this.pinnedThreads.push(mark.id)
-                    }
-                })
+                let markedPosts = _.get(response, 'markedPosts')
+                this.collapsedThreads = _(markedPosts).filter({type: 'collapsed'}).map('id').value()
+                this.pinnedThreads = _(markedPosts).filter({type: 'pinned'}).map('id').value()
             })
             .catch(response => console.error('Error getting marked posts: ', response))
     }
