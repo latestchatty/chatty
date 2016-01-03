@@ -16,8 +16,6 @@ export class ModelService {
 
     updateAllThreads() {
         _.each(this.threads, this.updateExpiration)
-        //$rootScope.$broadcast('countdown-timer')
-        console.log('Would have broadcast countdown-timer here...')
     }
 
     addThread(post, event) {
@@ -86,8 +84,6 @@ export class ModelService {
             } else {
                 post.category = category
                 this.updateModTagClass(post)
-                //$rootScope.$broadcast('post-category-change-' + post.id)
-                console.log('Would have broadcast post-category-change-' + post.id, 'here')
             }
         }
     }
@@ -176,15 +172,11 @@ export class ModelService {
         thread.recent.push(post)
 
         if (thread.recent.length > 10) {
-            var oldPost = thread.recent.shift()
-            //$rootScope.$broadcast('post-line-highlight-' + oldPost.id)
-            //console.log('Would have broadcast post-line-highlight-' + oldPost.id, 'here')
+            thread.recent.shift()
         }
 
         _.each(thread.recent, (recentPost, index) => {
             recentPost.lineClass = 'oneline' + (9 - index)
-            //$rootScope.$broadcast('post-line-highlight-' + recentPost.id)
-            //console.log('Would have broadcast post-line-highlight-' + recentPost.id, 'here')
         })
     }
 
