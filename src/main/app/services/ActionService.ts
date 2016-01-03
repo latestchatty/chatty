@@ -23,7 +23,7 @@ export class ActionService {
         if (username && password) {
             return this.apiService.login(username, password)
                 .then(response => {
-                    var result = _.get(response, 'data.isValid')
+                    var result = _.get(response, 'isValid')
                     if (result) {
                         this.settingsService.setCredentials(username, password)
                     }

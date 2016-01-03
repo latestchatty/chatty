@@ -30,7 +30,7 @@ export class ApiService {
     }
 
     login(username, password) {
-        return this.post('https://winchatty.com/v2/verifyCredentials', {
+        return this.post('verifyCredentials', {
             username: username,
             password: password
         })

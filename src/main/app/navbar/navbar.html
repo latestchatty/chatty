@@ -40,8 +40,8 @@
             <form class="navbar-form" (ngSubmit)="doLogin()" *ngIf="!isLoggedIn() || embedded">
                 <input type="text" class="navbar-textinput"
                        placeholder="Username" [(ngModel)]="username" [disabled]="loginRunning" required>
+
                 <input type="password" class="navbar-textinput" placeholder="Password"
-                       [class]="{ 'navbar-textinput-invalid': loginInvalid }"
                        [(ngModel)]="password" [disabled]="loginRunning" required>
                 <input type="submit" value="Login" class="button" [disabled]="loginRunning">
             </form>

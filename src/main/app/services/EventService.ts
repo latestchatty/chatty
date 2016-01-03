@@ -130,7 +130,7 @@ export class EventService {
     private newEvent(event) {
         //store the event for other tabs to process
         if (!this.passiveMode) {
-            localStorage.setItem('event', event)
+            localStorage.setItem('event', JSON.stringify(event))
         }
 
         if (event.eventType === 'newPost') {

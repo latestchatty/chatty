@@ -82,15 +82,13 @@ export class SettingsService {
     }
 
     clearCredentials() {
-        this.credentials.username = ''
-        this.credentials.password = ''
+        this.credentials = {username: '', password: ''}
         localStorage.removeItem('credentials')
     }
 
     setCredentials(username, password) {
-        this.credentials.username = username
-        this.credentials.password = password
-        localStorage.setItem('credentials', this.credentials)
+        this.credentials = {username, password}
+        localStorage.setItem('credentials', JSON.stringify(this.credentials))
     }
 
     refresh() {
