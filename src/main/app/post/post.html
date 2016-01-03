@@ -25,10 +25,12 @@
     <!-- action bar -->
     <div class="actionbar" *ngIf="post.type !== 'shackmessage'">
         <i class="actionItem fa fa-close" title="Collapse post" (click)="collapse()"></i>
-        <i class="actionItem fa fa-comment" title="Reply to post" (click)="openReplyBox()"></i>
+        <i class="actionItem fa fa-comment" title="Reply to post" (click)="openReplyBox()"
+                *ngIf="isLoggedIn()"></i>
         <a target="_blank" [href]="'#/thread/' + post.threadId + '/' + post.id"
                 ><i class="actionItem fa fa-bookmark" title="Open in tab"></i></a>
-        <i class="actionItem fa fa-star" title="Pin to cloud" ng-if="!post.parentId" (click)="pinPost()"></i>
+        <i class="actionItem fa fa-star" title="Pin to cloud"
+           *ngIf="isLoggedIn() && !post.parentId" (click)="pinPost()"></i>
         <a target="_blank" [href]="'http://www.shacknews.com/chatty?id=' + post.id + '#item_' + post.id"
                 ><i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>
         </a>

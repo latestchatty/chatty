@@ -56,19 +56,13 @@ export class ActionService {
                     if (thread.state !== 'collapsed') {
                         thread.state = 'collapsed'
                         thread.visible = false
-                        //$rootScope.$broadcast('thread-collapse' + thread.id)
-                        console.log('Would have broadcast thread-collapse here')
                     }
                     threads.push(thread)
                 } else {
                     if (thread.replyCount > 10 && thread.state !== 'truncated') {
                         thread.state = 'truncated'
-                        //$rootScope.$broadcast('thread-truncate' + thread.id)
-                        console.log('Would have broadcast thread-truncate here')
                     } else if (thread.state === 'collapsed') {
                         delete thread.state
-                        //$rootScope.$broadcast('thread-collapse' + thread.id)
-                        console.log('Would have broadcast thread-collapse here')
                     }
                     this.collapseReply(thread)
                     this.closeReplyBox(thread)
@@ -111,8 +105,6 @@ export class ActionService {
         thread.visible = false
         this.closeReplyBox(thread)
         thread.state = 'collapsed'
-        //$rootScope.$broadcast('thread-collapse' + thread.id)
-        console.log('Would have broadcast thread-collapse here')
 
         //update local storage
         this.settingsService.collapseThread(thread.id)
@@ -132,9 +124,6 @@ export class ActionService {
         thread.currentComment = post
         this.lastReply = post
         post.viewFull = true
-
-        //$rootScope.$broadcast('reply-collapse' + post.id)
-        console.log('Would have broadcast reply-collapse' + post.id)
     }
 
     private resetThread(post, closeComment) {
@@ -151,11 +140,7 @@ export class ActionService {
 
     private collapseReply(thread) {
         if (thread.currentComment) {
-            var id = thread.currentComment.id
             delete thread.currentComment.viewFull
-
-            //$rootScope.$broadcast('reply-collapse' + id)
-            console.log('Would have broadcast reply-collapse' + id)
         }
     }
 
@@ -221,8 +206,6 @@ export class ActionService {
         //open reply
         thread.replyingToPost = post
         post.replying = true
-        //$rootScope.$broadcast('post-reply' + thread.id)
-        console.log('Would have broadcast post-reply' + thread.id)
     }
 
     closePostReplyBox(post) {
@@ -234,8 +217,6 @@ export class ActionService {
         if (thread.replyingToPost) {
             delete thread.replyingToPost.replying
             delete thread.replyingToPost
-            //$rootScope.$broadcast('post-reply' + thread.id)
-            console.log('Would have broadcast post-reply' + thread.id)
         }
     }
 }

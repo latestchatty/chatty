@@ -1,18 +1,14 @@
 declare var _ : any
 import {Injectable} from 'angular2/core'
-import {OnInit} from 'angular2/core'
 import {ApiService} from './ApiService'
 
 @Injectable()
-export class SettingsService implements OnInit {
+export class SettingsService {
     private collapsedThreads = []
     private pinnedThreads = []
     private credentials
 
     constructor(private apiService:ApiService){
-    }
-
-    ngOnInit() {
         let storageCredentials = localStorage.getItem('credentials')
         if (storageCredentials) {
             this.credentials = JSON.parse(storageCredentials)
@@ -79,7 +75,7 @@ export class SettingsService implements OnInit {
     }
 
     isLoggedIn() {
-        return this.credentials && this.credentials.username && this.credentials.password
+        return this.credentials.username && this.credentials.password
     }
 
     clearCredentials() {

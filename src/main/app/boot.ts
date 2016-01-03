@@ -15,6 +15,7 @@ import {SettingsService} from './services/SettingsService'
 import {ShackMessageService} from './services/ShackMessageService'
 import {TabService} from './services/TabService'
 import {TitleService} from './services/TitleService'
+import {PostService} from './services/PostService'
 
 bootstrap(<Type>App, [
     //core
@@ -26,6 +27,7 @@ bootstrap(<Type>App, [
     BodyTransformService,
     EventService,
     ModelService,
+    PostService,
     SettingsService,
     ShackMessageService,
     TabService,

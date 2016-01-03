@@ -6,7 +6,7 @@
     </div>
 
     <!-- reply box -->
-    <!--<replybox *ngIf="post.replying" class="replybox-op" [post]="post"></replybox>-->
+    <replybox *ngIf="post.replying" replyclass="replybox-op" [post]="post"></replybox>
 
     <!-- truncated replies -->
     <div *ngIf="post.state === 'truncated'">

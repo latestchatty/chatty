@@ -1,5 +1,6 @@
 import {Component, Input} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
+import {SettingsService} from '../services/SettingsService'
 import {TabService} from '../services/TabService'
 import {EmbedContent} from '../embedContent/EmbedContent'
 
@@ -12,6 +13,7 @@ export class Post {
     @Input() public post
 
     constructor(private actionService:ActionService,
+                private settingsService:SettingsService,
                 private tabService:TabService) {
     }
 
@@ -34,5 +36,9 @@ export class Post {
 
     pinPost() {
         this.actionService.togglePinThread(this.post)
+    }
+
+    isLoggedIn() {
+        return this.settingsService.isLoggedIn()
     }
 }

@@ -1,6 +1,6 @@
 declare var _ : any
 import {Injectable} from 'angular2/core'
-import * as EmployeeList from '../util/EmployeeList'
+import {EmployeeList}  from '../util/EmployeeList'
 import {SettingsService} from './SettingsService'
 import {BodyTransformService} from './BodyTransformService'
 

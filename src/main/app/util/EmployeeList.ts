@@ -1,4 +1,4 @@
-export default [
+export const EmployeeList = [
     'shacknews',
     'the man with the briefcase',
     'ozziemejia',

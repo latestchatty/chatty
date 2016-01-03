@@ -1,17 +1,16 @@
-.replybox-op {
+.replybox {
     background-color: #141414;
-    margin: -4px 0 3px 8px;
     border: 1px solid #666;
     position: relative;
     padding: 3px 0 25px 0;
 }
 
+.replybox-op {
+    margin: 0 0 3px 8px;
+}
+
 .replybox-comment {
-    background-color: #141414;
-    margin: -4px 0 3px 0;
-    border: 1px solid #666;
-    position: relative;
-    padding: 3px 0 25px 0;
+    margin: -3px 0 3px 0;
 }
 
 .replybox-input {
@@ -20,7 +19,8 @@
     border: 1px solid white;
     color: white;
     width: 50%;
-    height: 150px;
+    max-width: 50%;
+    min-height: 176px;
     background-color: black;
 }
 

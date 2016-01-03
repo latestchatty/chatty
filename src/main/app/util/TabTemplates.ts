@@ -1,4 +1,4 @@
-export default {
+export const TabTemplates = {
     user: function(value) {
         return {
             tabType: 'user',
@@ -6,8 +6,9 @@ export default {
             displayText: value,
             expression: {author: value},
             newPostText: 'New replies in threads participated in by this user.',
-            newPostFunction: function(thread, parent, post) {
-                return post.author === this.displayText
+            newPostFunction: (thread, parent, post) => {
+                //TODO fix tabs
+                //return post.author === this.displayText
             }
         }
     },
