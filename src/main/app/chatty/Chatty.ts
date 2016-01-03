@@ -2,11 +2,12 @@ import {Component} from 'angular2/core'
 import {OnInit} from 'angular2/core'
 import {ModelService} from '../services/ModelService'
 import {Thread} from '../thread/Thread'
+import {Navbar} from '../navbar/Navbar'
 
 @Component({
     selector: 'chatty',
     templateUrl: 'app/chatty/chatty.html',
-    directives: [Chatty, Thread]
+    directives: [Chatty, Navbar, Thread]
 })
 export class Chatty implements OnInit {
     public threads

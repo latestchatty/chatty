@@ -1,0 +1,65 @@
+<div>
+    <div class="navbar">
+        <ul class="navbar-tabs">
+            <!-- Reflow Thread Button -->
+            <li title="Reflow thread order" (click)="reflowThreads()">
+                <i class="actionItem fa fa-history"></i>
+                <span class="navbarNewThreads" *ngIf="newThreads?.length"
+                      title="New threads">+{{newThreads.length}}</span>
+            </li>
+
+            <!-- Chatty Tabs -->
+            <!--ng-right-click="removeTab(tab)"-->
+            <li *ngFor="#tab of tabs" (click)="selectTab(tab)"
+                [class]="{ navbarTabSelected:tab.selected }">
+                <span [innerHTML]="tab.displayText" class="hoverable"></span>
+                <span class="navbarNewThreads" *ngIf="tab.newPostCount"
+                      title="{{tab.newPostText}}">+{{tab.newPostCount}}</span>
+            </li>
+        </ul>
+
+        <div class="navbar-right">
+            <!-- Post Queue -->
+            <form class="navbar-form" *ngIf="postQueue.length">
+                <input type="button" value="Clear Post Queue ({{postQueue.length}})"
+                       class="button" (click)="clearPostQueue()">
+            </form>
+
+            <!-- Shack Message Count -->
+            <form class="navbar-form" *ngIf="isLoggedIn()">
+                <input type="button" value="Inbox ({{getUnreadMessageCount()}}/{{getTotalMessageCount()}})"
+                       class="button" (click)="goToInbox()">
+            </form>
+
+            <!-- New Thread Button -->
+            <form class="navbar-form" *ngIf="isLoggedIn()">
+                <input type="button" value="New Thread" class="button" (click)="newThread()">
+            </form>
+
+            <!-- Login Form -->
+            <form class="navbar-form" (ngSubmit)="doLogin()" *ngIf="!isLoggedIn() || embedded">
+                <input type="text" class="navbar-textinput"
+                       placeholder="Username" [(ngModel)]="username" [disabled]="loginRunning" required>
+                <input type="password" class="navbar-textinput" placeholder="Password"
+                       [class]="{ 'navbar-textinput-invalid': loginInvalid }"
+                       [(ngModel)]="password" [disabled]="loginRunning" required>
+                <input type="button" value="Login" class="button" [disabled]="loginRunning">
+            </form>
+
+            <!-- Logout Form -->
+            <div class="navbar-form" *ngIf="isLoggedIn() && !embedded">
+                <input type="button" value="Logout: {{username}}" class="button" (click)="doLogout()">
+            </div>
+
+            <!-- Filter Form -->
+            <form class="navbar-form" (ngSubmit)="selectTab(addTab(filterExpression))">
+                <input type="text" class="navbar-textinput" placeholder="Filter" [(ngModel)]="filterExpression">
+                <!--ng-model-options="{ debounce: 250 }"-->
+            </form>
+        </div>
+
+        <div class="newThreadContainer" *ngIf="newThreadPost.replying">
+            <replybox class="replybox-op" post="newThreadPost"></replybox>
+        </div>
+    </div>
+</div>

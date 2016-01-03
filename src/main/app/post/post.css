@@ -8,6 +8,10 @@
 .postheader {
     background-color: #373a3c;
     padding: 3px 3px 3px 20px;
+
+    .user {
+        line-height: 18px;
+    }
 }
 
 .headerright {

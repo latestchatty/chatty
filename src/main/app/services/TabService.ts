@@ -1,39 +1,36 @@
 declare var _: any
 import {Injectable} from 'angular2/core'
-import * as DefaultTabs from '../util/DefaultTabs'
-import * as TabTemplates from '../util/TabTemplates'
+import {DefaultTabs} from '../util/DefaultTabs'
+import {TabTemplates} from '../util/TabTemplates'
 import {ModelService} from './ModelService'
 import {SettingsService} from './SettingsService'
 import {TitleService} from './TitleService'
 
 @Injectable()
 export class TabService {
-    //private threads
-    //private selectedTab
-    //
-    //constructor(private modelService:ModelService,
-    //            private settingsService:SettingsService,
-    //            private titleService:TitleService) {
-    //}
-    //
-    //ngOnInit() {
-    //    this.threads = this.modelService.getThreads()
-    //    this.selectedTab = this.tabs[0]
-    //
-    //    var storageTabs = localStorage.getItem('tabs')
-    //    var loaded = storageTabs ? JSON.parse(storageTabs) : []
-    //    _.each(loaded, tab => this.addTab(tab.tabType, tab.value))
-    //}
-    //
-    //setThreads(newThreads) {
-    //    this.threads = newThreads
-    //}
-    //
-    //getTabs() {
-    //    return DefaultTabs
-    //}
-    //
-    //selectTab(tab) {
+    private threads
+    private selectedTab
+
+    constructor(private modelService:ModelService,
+                private settingsService:SettingsService,
+                private titleService:TitleService) {
+        this.threads = this.modelService.getThreads()
+        this.selectedTab = DefaultTabs[0]
+
+        //var storageTabs = localStorage.getItem('tabs')
+        //var loaded = storageTabs ? JSON.parse(storageTabs) : []
+        //_.each(loaded, tab => this.addTab(tab.tabType, tab.value))
+    }
+
+    setThreads(newThreads) {
+        this.threads = newThreads
+    }
+
+    getTabs() {
+        return DefaultTabs
+    }
+
+    selectTab(tab) {
     //    delete this.selectedTab.selected
     //    this.selectedTab = tab
     //
@@ -42,7 +39,7 @@ export class TabService {
     //    this.updateCounts()
     //
     //    this.applyFilter(this.getTabExpression(tab))
-    //}
+    }
     //
     //private getTabExpression(tab) {
     //    return _.isFunction(tab.expression) ? tab.expression() : tab.expression
@@ -72,7 +69,7 @@ export class TabService {
     //    }
     //}
     //
-    //addTab(tabType, value) {
+    addTab(tabType, value) {
     //    var tab = _.find(this.tabs, {tabType: tabType, value: value})
     //
     //    if (!tab && TabTemplates[tabType]) {
@@ -82,15 +79,15 @@ export class TabService {
     //    }
     //
     //    return tab
-    //}
+    }
     //
-    //removeTab(tab) {
+    removeTab(tab) {
     //    if (!tab.defaultTab) {
     //        _.pull(tabs, tab)
     //        this.selectTab(tabs[0])
     //        this.save()
     //    }
-    //}
+    }
     //
     //filterThreads(expression) {
     //    if (expression) {
