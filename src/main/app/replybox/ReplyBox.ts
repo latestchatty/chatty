@@ -2,11 +2,12 @@ import {Component, Input} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
 import {TagGroups} from '../util/TagGroups'
 import {PostService} from '../services/PostService'
+import {AutoFocus} from '../directives/AutoFocus'
 
 @Component({
     selector: 'replybox',
     templateUrl: 'app/replybox/replybox.html',
-    directives: []
+    directives: [AutoFocus]
 })
 export class ReplyBox {
     @Input() public post
