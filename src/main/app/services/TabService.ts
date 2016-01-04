@@ -1,4 +1,5 @@
-declare var _: any
+declare var _:any
+import {Filter} from '../util/Filter'
 import {Injectable} from 'angular2/core'
 import {DefaultTabs} from '../util/DefaultTabs'
 import {TabTemplates} from '../util/TabTemplates'
@@ -8,43 +9,34 @@ import {TitleService} from './TitleService'
 
 @Injectable()
 export class TabService {
-    private threads
     private selectedTab
+    private tabs = _.cloneDeep(DefaultTabs)
 
     constructor(private modelService:ModelService,
                 private settingsService:SettingsService,
                 private titleService:TitleService) {
-        this.threads = this.modelService.getThreads()
         this.selectedTab = DefaultTabs[0]
 
-        //var storageTabs = localStorage.getItem('tabs')
-        //var loaded = storageTabs ? JSON.parse(storageTabs) : []
-        //_.each(loaded, tab => this.addTab(tab.tabType, tab.value))
-    }
-
-    setThreads(newThreads) {
-        this.threads = newThreads
+        var storageTabs = localStorage.getItem('tabs')
+        var loaded = storageTabs ? JSON.parse(storageTabs) : []
+        _.each(loaded, tab => this.addTab(tab.tabType, tab.value))
     }
 
     getTabs() {
-        return DefaultTabs
+        return this.tabs
     }
 
     selectTab(tab) {
-    //    delete this.selectedTab.selected
-    //    this.selectedTab = tab
-    //
-    //    tab.selected = true
-    //    tab.newPostCount = 0
-    //    this.updateCounts()
-    //
-    //    this.applyFilter(this.getTabExpression(tab))
+        this.selectedTab.selected = false
+        this.selectedTab = tab
+
+        tab.selected = true
+        tab.newPostCount = 0
+
+        this.applyFilter(tab.expression)
     }
-    //
-    //private getTabExpression(tab) {
-    //    return _.isFunction(tab.expression) ? tab.expression() : tab.expression
-    //}
-    //
+
+    //TODO: Fix new post tab counts
     //newPost(thread, parent, post) {
     //    if (thread.state !== 'collapsed' && post.author !== this.settingsService.getUsername()) {
     //        _.each(this.tabs, function(tab) {
@@ -56,76 +48,71 @@ export class TabService {
     //                } else {
     //                    var expression = this.getTabExpression(tab)
     //                    if (expression) {
-    //                        increment = !!$filter('filter')([post], expression).length
+    //                        increment = Filter.matches(post, expression).length
+    //                        //increment = !!$filter('filter')([post], expression).length
     //                    }
     //                }
     //
     //                if (increment) {
     //                    tab.newPostCount = (tab.newPostCount || 0) + 1
-    //                    this.updateCounts()
+    //                    this.titleService.updateTitle(1)
     //                }
     //            }
     //        })
     //    }
     //}
-    //
+
     addTab(tabType, value) {
-    //    var tab = _.find(this.tabs, {tabType: tabType, value: value})
-    //
-    //    if (!tab && TabTemplates[tabType]) {
-    //        tab = TabTemplates[tabType](value)
-    //        this.tabs.push(tab)
-    //        this.save()
-    //    }
-    //
-    //    return tab
+        var tab = _.find(this.tabs, {tabType: tabType, value: value})
+
+        if (!tab && TabTemplates[tabType]) {
+            tab = TabTemplates[tabType](value)
+            this.tabs.push(tab)
+            this.save()
+        }
+
+        return tab
     }
-    //
+
     removeTab(tab) {
-    //    if (!tab.defaultTab) {
-    //        _.pull(tabs, tab)
-    //        this.selectTab(tabs[0])
-    //        this.save()
-    //    }
+        if (!tab.defaultTab) {
+            _.pull(this.tabs, tab)
+            this.selectTab(this.tabs[0])
+            this.save()
+        }
     }
-    //
-    //filterThreads(expression) {
-    //    if (expression) {
-    //        this.applyFilter({$: expression})
-    //    } else {
-    //        this.applyFilter(null)
-    //    }
-    //}
-    //
-    //private updateCounts() {
-    //    //update title bar count
-    //    this.titleService.count = _.sum(tabs, 'newPostCount')
-    //    this.titleService.updateTitle(0)
-    //}
-    //
-    //private applyFilter(filterExpression) {
-    //    _.each(threads, function(thread) {
-    //        delete thread.visible
-    //    })
-    //
-    //    if (filterExpression) {
-    //        var visibleThreads = $filter('filter')(threads, filterExpression)
-    //        _.each(visibleThreads, thread => thread.visible = true)
-    //    } else {
-    //        _.each(threads, thread => {
-    //            if (thread.state !== 'collapsed') {
-    //                thread.visible = true
-    //            }
-    //        })
-    //    }
-    //}
-    //
-    //private save() {
-    //    var filtered = _.filter(_.cloneDeep(tabs), tab => !!tab.tabType)
-    //    var cleaned = _.map(filtered, tab => ({
-    //        tabType: tab.tabType,
-    //        value: tab.value
-    //    }))
-    //    localStorageService.set('tabs', cleaned)
-    //}
+
+    filterThreads(expression) {
+        this.applyFilter(expression)
+    }
+
+    private applyFilter(filterExpression) {
+        let threads = this.modelService.getThreads()
+        let misc = {username: this.settingsService.getUsername()}
+
+        if (filterExpression) {
+            let visibleThreads
+            if (_.isString(filterExpression)) {
+                visibleThreads = Filter.filter(threads, filterExpression)
+            } else if (_.isFunction(filterExpression)) {
+                visibleThreads = _.filter(threads, thread => filterExpression(thread, misc))
+            }
+            _.each(threads, thread => {
+                thread.visible = _.contains(visibleThreads, thread)
+            })
+        } else {
+            _.each(threads, thread => {
+                thread.visible = thread.state !== 'collapsed'
+            })
+        }
+    }
+
+    private save() {
+        var filtered = _.filter(_.cloneDeep(this.tabs), tab => !!tab.tabType)
+        var cleaned = _.map(filtered, tab => ({
+            tabType: tab.tabType,
+            value: tab.value
+        }))
+        localStorage.setItem('tabs', JSON.stringify(cleaned))
+    }
 }

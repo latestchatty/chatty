@@ -11,7 +11,7 @@
             <!-- Chatty Tabs -->
             <!--ng-right-click="removeTab(tab)"-->
             <li *ngFor="#tab of tabs" (click)="selectTab(tab)"
-                [class]="{ navbarTabSelected:tab.selected }">
+                [ngClass]="{ navbarTabSelected: tab.selected }">
                 <span [innerHTML]="tab.displayText" class="hoverable"></span>
                 <span class="navbarNewThreads" *ngIf="tab.newPostCount"
                       title="{{tab.newPostText}}">+{{tab.newPostCount}}</span>
@@ -53,8 +53,7 @@
 
             <!-- Filter Form -->
             <form class="navbar-form" (ngSubmit)="selectTab(addTab(filterExpression))">
-                <input type="text" class="navbar-textinput" placeholder="Filter" [(ngModel)]="filterExpression">
-                <!--ng-model-options="{ debounce: 250 }"-->
+                <input type="text" class="navbar-textinput" placeholder="Filter" [(ngModel)]="filterExpression" (keyup)="filterChanged()">
             </form>
         </div>
 
