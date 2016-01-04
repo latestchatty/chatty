@@ -5,13 +5,14 @@ export class TitleService {
     private prefix = 'NG2 Chatty'
     private count = 0
     private passiveMode = false
-    private visible = true
+    private visible
 
     constructor() {
         //initialize stuff
-        document.addEventListener('visibilitychange', this.changed)
-        document.addEventListener('webkitvisibilitychange', this.changed)
-        document.addEventListener('msvisibilitychange', this.changed)
+        document.addEventListener('visibilitychange', () => this.changed())
+        document.addEventListener('webkitvisibilitychange', () => this.changed())
+        document.addEventListener('msvisibilitychange', () => this.changed())
+        this.changed()
     }
 
     setPassive() {
@@ -19,10 +20,10 @@ export class TitleService {
     }
 
     updateTitle(add) {
-        setTimeout(() =>{
+        setTimeout(() => {
             this.count += add
 
-            if (this.count > 0) {
+            if (this.count > 0 && !this.visible) {
                 document.title = this.prefix + ' (' + this.count + ')'
             } else {
                 document.title = this.prefix
@@ -37,7 +38,7 @@ export class TitleService {
             document['mozHidden'] ||
             document['msHidden'])
 
-        if (this.visible && this.passiveMode) {
+        if (this.visible) {
             this.count = 0
             this.updateTitle(0)
         }
