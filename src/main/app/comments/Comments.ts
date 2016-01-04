@@ -9,7 +9,6 @@ import {ScrollIntoView} from '../directives/ScrollIntoView'
 @Component({
     selector: 'comments',
     templateUrl: './app/comments/comments.html',
-    providers: [ActionService, TabService, ApiService],
     directives: [Comments, Post, ReplyBox, ScrollIntoView]
 })
 export class Comments {
