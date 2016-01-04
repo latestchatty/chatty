@@ -14,6 +14,7 @@ import {ActionService} from '../services/ActionService'
 })
 export class SingleThread implements OnInit {
     public post
+    public error
 
     constructor(private actionService:ActionService,
                 private apiService:ApiService,
@@ -50,6 +51,9 @@ export class SingleThread implements OnInit {
                         this.actionService.setThread(post)
                     }
                 })
+            .catch(() => {
+                this.error = true
+            })
         }
     }
 }
