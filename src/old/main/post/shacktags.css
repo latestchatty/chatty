@@ -1,0 +1,19 @@
+.jt_red          { color: #f00; }
+.jt_green        { color: #8dc63f; }
+.jt_pink         { color: #f49ac1; }
+.jt_olive        { color: olive; }
+.jt_fuchsia      { color: #c0ffc0; }
+.jt_yellow       { color: #ffde00; }
+.jt_blue         { color: #44aedf; }
+.jt_lime         { color: #c0ffc0; }
+.jt_orange       { color: #f7941c; }
+.jt_italic       { font-style: italic; }
+.jt_bold         { font-weight: bold; }
+.jt_underline    { text-decoration: underline; }
+.jt_strike       { text-decoration: line-through; }
+.jt_sample       { font-size: 80%; line-height: 10px; }
+.jt_quote        { font-family: serif; font-size: 110%; }
+.jt_spoiler      { cursor: help; color: #383838; background-color: #383838; }
+.jt_spoiler:focus { color: #f00; }
+.jt_codesmall    { font-family: monospace; }
+.jt_code         { display: block; font-family: monospace; border-left: 1px solid #666; padding: 3px 0 3px 10px; margin: 5px 0 5px 10px; }

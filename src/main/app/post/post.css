@@ -1,0 +1,148 @@
+.rootPost {
+    background-color: #202224;
+    margin: 25px 0 0 8px;
+    position: relative;
+    padding: 0 0 25px 0;
+}
+
+.postheader {
+    background-color: #373a3c;
+    padding: 3px 3px 3px 20px;
+
+    .user {
+        line-height: 18px;
+    }
+}
+
+.headerright {
+    float: right;
+    margin-right: 5px;
+}
+
+.postBody {
+    color: lightgray;
+    font-size: 13px;
+    line-height: 16px;
+    margin: 5px 0 0 22px;
+}
+
+/* links within a body */
+div.postBody a:link, div.postBody a:visited, div.postBody a:active, div.postBody a:hover {
+    text-decoration: underline;
+    color: #aeae9b;
+}
+
+div.postBody a:hover {
+    color: #fff;
+}
+
+/* post author */
+.user {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #f3e7b5;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+.user:hover {
+    text-decoration: underline;
+}
+
+.user_op {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #6aff94;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+.user_op:hover {
+    text-decoration: underline;
+}
+
+.user_me {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #66CCFF;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+.user_me:hover {
+    text-decoration: underline;
+}
+
+.user_employee {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: mediumpurple;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+.user_employee:hover {
+    text-decoration: underline;
+}
+
+/* post body date */
+.postdate {
+    display: inline;
+    text-align: right;
+    font-size: 10px;
+    color: #888888;
+    width: 200px;
+    vertical-align: middle;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 5px;
+}
+
+.countdown-wrap {
+    display: inline-block;
+    height: 8px;
+    width: 48px;
+    position: relative;
+    margin-top: 3px;
+    margin-right: -1px;
+    background: rgb(221, 221, 221) -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(170, 170, 170)),
+    color-stop(0.4, rgb(204, 204, 204)),
+    color-stop(0.6, rgb(204, 204, 204)), to(rgb(238, 238, 238)));
+}
+
+.countdown-value {
+    height: 100%;
+    display: block;
+    background-image: -webkit-gradient(linear, 0 100%, 100% 0,
+    color-stop(0.25, rgba(255, 255, 255, 0.4)),
+    color-stop(0.25, transparent),
+    color-stop(0.5, transparent),
+    color-stop(0.5, rgba(255, 255, 255, 0.4)),
+    color-stop(0.75, rgba(255, 255, 255, 0.4)),
+    color-stop(0.75, transparent), to(transparent));
+    -webkit-background-size: 25px;
+    -webkit-box-shadow: rgba(255, 255, 255, 0.298039) 0 2px 4px inset, rgba(0, 0, 0, 0.4) 0 -2px 3px inset;
+}
+
+.actionbar {
+    position: absolute;
+    bottom: 2px;
+    left: 6px;
+}
+
+.actionbar i {
+    padding-right: 9px;
+}
+
+.actionItem {
+    color: white;
+    cursor: pointer;
+}
+
+.actionItem:hover {
+    color: #00bff3;
+}

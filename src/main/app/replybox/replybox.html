@@ -1,0 +1,27 @@
+<div class="replybox" [ngClass]="replyclass">
+    <!-- Discard Post 'x' -->
+    <i class="actionItem fa fa-times replybox-close" title="Discard comment" (click)="close()"></i>
+
+    <form (ngSubmit)="submitPost()">
+        <!--Post Input -->
+        <textarea class="replybox-input" placeholder="Type something interesting..."
+                  [(ngModel)]="replyBody" required auto-focus></textarea>
+
+        <!-- Submit button -->
+        <input type="submit" value="Submit Post" class="button replybox-submit">
+    </form>
+
+    <!-- Tag Legend -->
+    <table class="tagLegend">
+        <tr *ngFor="#tagGroup of tagGroups">
+            <template ngFor #tag [ngForOf]="tagGroup">
+                <td>
+                    <span class="tagLegendClicky" [ngClass]="tag.tag_class" [innerHTML]="tag.name" (click)="addTag(tag)"></span>
+                </td>
+                <td class="tagLegendClicky">
+                    <span (click)="addTag(tag)">{{tag.open + ' ... ' + tag.close}}</span>
+                </td>
+            </template>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,24 @@
+<ul>
+    <li *ngFor="#post of posts">
+        <!--collapsed reply-->
+        <div *ngIf="!post.viewFull" scroll-item>
+            <span class="oneline" [ngClass]="post.lineClass" [ngClass]="post.tagClass"
+                  (click)="expandReply(post)" [innerHTML]="post.body.oneline"></span>
+
+            <span class="onelineSeparator">&nbsp;:&nbsp;</span>
+            <span [ngClass]="post.userClass || 'user'" (click)="addUserTab(post.author)">{{post.author}}</span>
+        </div>
+
+        <!--expanded reply-->
+        <div *ngIf="post.viewFull">
+            <div class="replyPost" [ngClass]="post.tagClass" scroll-into-view>
+                <post [post]="post"></post>
+            </div>
+
+            <replybox *ngIf="post.replying" replyclass="replybox-comment" [post]="post"></replybox>
+        </div>
+
+        <!-- replies to this post -->
+        <comments [posts]="post.posts" [flat]="false" *ngIf="!flat" scroll-item></comments>
+    </li>
+</ul>

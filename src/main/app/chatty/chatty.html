@@ -1,0 +1,9 @@
+<div>
+    <navbar></navbar>
+    <div class="threads">
+        <!--<loading></loading>-->
+        <div *ngFor="#post of threads">
+            <thread [post]="post"></thread>
+        </div>
+    </div>
+</div>
