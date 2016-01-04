@@ -57,7 +57,7 @@ export class EventService {
         this.titleService.setPassive()
 
         window.addEventListener('storage', event => {
-            if (event.key === 'chatty.event') {
+            if (event.key === 'event') {
                 var data = JSON.parse(event.newValue)
                 var result = this.newEvent(data)
 
@@ -79,7 +79,7 @@ export class EventService {
                 //load expired thread
                 this.apiService.getThread(threadId)
                     .then(response => {
-                        var thread = _.get(response, 'data.threads[0]')
+                        var thread = _.get(response, 'threads[0]')
                         if (thread) {
                             thread = this.modelService.addThread(thread, false)
                             thread.pinned = true
