@@ -8,7 +8,7 @@ export class HotkeyService {
     }
 
     startListening() {
-        document.addEventListener('keydown', $event => this.handleEvent($event))
+        document.body.addEventListener('keydown', $event => this.handleEvent($event))
     }
 
     private handleEvent(event) {
