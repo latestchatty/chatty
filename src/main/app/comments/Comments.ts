@@ -1,7 +1,7 @@
 import {Component, Input} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
 import {TabService} from '../services/TabService'
-import {ApiService} from "../services/ApiService";
+import {ApiService} from '../services/ApiService'
 import {Post} from '../post/Post'
 import {ReplyBox} from '../replybox/ReplyBox'
 import {ScrollIntoView} from '../directives/ScrollIntoView'

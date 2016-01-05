@@ -6,7 +6,6 @@ import {ShackMessageService} from '../services/ShackMessageService'
 import {TabService} from '../services/TabService'
 import {ModelService} from '../services/ModelService'
 import {ReplyBox} from '../replybox/ReplyBox'
-import {Filter} from "../util/Filter";
 
 @Component({
     selector: 'navbar',
