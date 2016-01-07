@@ -19,7 +19,7 @@ http://chatty.nixxed.com
 ##### How to run:
 ---------
 Notes
-  1. Uses gulp-server, IE not a real web server
+  1. Uses browser-sync, IE not a real web server
   2. Access it at http://localhost:3000
 ~~~~
 npm start
@@ -33,3 +33,10 @@ Notes:
 ~~~~
 npm run build
 ~~~~
+
+##### Technology Used
+---------------------
+
+* [Angular2](https://angular.io/) (SPA Framework)
+* [TypeScript](https://github.com/Microsoft/TypeScript) (Language)
+* [Gulp](https://github.com/gulpjs/gulp) (Build automation)
