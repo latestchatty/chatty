@@ -53,10 +53,8 @@ export class ActionService {
 
             if (thread.expirePercent < 100 || thread.pinned) {
                 if (this.settingsService.isCollapsed(thread.id)) {
-                    if (thread.state !== 'collapsed') {
-                        thread.state = 'collapsed'
-                        thread.visible = false
-                    }
+                    thread.state = 'collapsed'
+                    thread.visible = false
                     threads.push(thread)
                 } else {
                     if (thread.replyCount > 10 && thread.state !== 'truncated') {
