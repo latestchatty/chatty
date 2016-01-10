@@ -11,12 +11,11 @@ export const DefaultTabs = [
         expression: thread => thread.author === 'Shacknews',
         defaultTab: true,
         newPostText: 'New front page articles.',
-        //newPostFunction: (thread, parent, post) => post.author === 'Shacknews'
+        newPostFunction: (thread, parent, post) => thread.author === 'Shacknews'
     }, {
         displayText: 'Mine',
         expression: (thread, misc) => thread.author === misc.username,
-        defaultTab: true,
-        //newPostFunction: () => false
+        defaultTab: true
     }, {
         displayText: 'Replies',
         expression: (thread, misc) => {
@@ -28,6 +27,6 @@ export const DefaultTabs = [
         },
         defaultTab: true,
         newPostText: 'New replies to my posts.',
-        //newPostFunction: (thread, parent, post, misc) => post.parentAuthor === misc.username
+        newPostFunction: (thread, parent, post, misc) => parent.author === misc.username
     }
 ]

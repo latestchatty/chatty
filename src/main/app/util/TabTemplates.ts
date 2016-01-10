@@ -1,3 +1,5 @@
+import {Filter} from './Filter'
+
 export const TabTemplates = {
     user: value => {
         return {
@@ -5,11 +7,8 @@ export const TabTemplates = {
             value: value,
             displayText: value,
             expression: value,
-            newPostText: 'New replies in threads participated in by this user.',
-            //newPostFunction: (thread, parent, post) => {
-                //TODO fix tabs
-                //return post.author === this.displayText
-            //}
+            newPostText: 'Posts and replies by this user.',
+            newPostFunction: (thread, parent, post) => post.author === this.displayText
         }
     },
     filter: value => {
@@ -17,8 +16,9 @@ export const TabTemplates = {
             tabType: 'filter',
             value: value,
             displayText: value,
-            expression: {$: value},
-            //newPostText: 'New posts containing this search term.'
+            expression: value,
+            newPostText: 'New posts containing this search term.',
+            newPostFunction: (thread, parent, post) => Filter.filter([post], value).length > 0
         }
     }
 }

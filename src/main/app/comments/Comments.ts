@@ -33,7 +33,6 @@ export class Comments {
     }
 
     addUserTab(user) {
-        //TODO: fix tabs
-        //this.tabService.addTab('user', user)
+        this.tabService.addTab('user', user)
     }
 }

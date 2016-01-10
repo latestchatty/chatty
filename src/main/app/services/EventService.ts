@@ -138,10 +138,9 @@ export class EventService {
                 return this.modelService.addThread(event.eventData.post, true)
             } else {
                 var data = this.modelService.addPost(event.eventData.post, null)
-                //TODO re-implement tab service
-                //if (data) {
-                //    this.tabService.newPost(data.thread, data.parent, data.post)
-                //}
+                if (data) {
+                    this.tabService.newPost(data.thread, data.parent, data.post)
+                }
                 return data
             }
         } else if (event.eventType === 'categoryChange') {

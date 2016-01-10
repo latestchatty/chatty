@@ -36,31 +36,18 @@ export class TabService {
         this.applyFilter(tab.expression)
     }
 
-    //TODO: Fix new post tab counts
-    //newPost(thread, parent, post) {
-    //    if (thread.state !== 'collapsed' && post.author !== this.settingsService.getUsername()) {
-    //        _.each(this.tabs, function(tab) {
-    //            if (!tab.selected) {
-    //                var increment = false
-    //
-    //                if (_.isFunction(tab.newPostFunction)) {
-    //                    increment = tab.newPostFunction(thread, parent, post)
-    //                } else {
-    //                    var expression = this.getTabExpression(tab)
-    //                    if (expression) {
-    //                        increment = Filter.matches(post, expression).length
-    //                        //increment = !!$filter('filter')([post], expression).length
-    //                    }
-    //                }
-    //
-    //                if (increment) {
-    //                    tab.newPostCount = (tab.newPostCount || 0) + 1
-    //                    this.titleService.updateTitle(1)
-    //                }
-    //            }
-    //        })
-    //    }
-    //}
+    newPost(thread, parent, post) {
+        if (thread.state !== 'collapsed' && post.author !== this.settingsService.getUsername()) {
+            let misc = {username: this.settingsService.getUsername()}
+
+            _.each(this.tabs, tab => {
+                if (!tab.selected && tab.newPostFunction && tab.newPostFunction(thread, parent, post, misc)) {
+                    tab.newPostCount = (tab.newPostCount || 0) + 1
+                    this.titleService.updateTitle(1)
+                }
+            })
+        }
+    }
 
     addTab(tabType, value) {
         var tab = _.find(this.tabs, {tabType: tabType, value: value})
