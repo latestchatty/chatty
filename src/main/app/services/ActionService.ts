@@ -26,6 +26,7 @@ export class ActionService {
                     var result = _.get(response, 'isValid')
                     if (result) {
                         this.settingsService.setCredentials(username, password)
+                        this.modelService.updateAllThreads()
                     }
                     return result
                 })
@@ -36,6 +37,7 @@ export class ActionService {
 
     logout() {
         this.settingsService.clearCredentials()
+        this.modelService.updateAllThreads()
 
         //close reply boxes
         var threads = this.modelService.getThreads()

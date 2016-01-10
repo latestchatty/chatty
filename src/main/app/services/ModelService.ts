@@ -15,7 +15,13 @@ export class ModelService {
     }
 
     updateAllThreads() {
-        _.each(this.threads, this.updateExpiration)
+        //fix thread expirations
+        _.each(this.threads, thread => this.updateExpiration(thread))
+
+        //fix user class
+        _.forIn(this.posts, post => {
+            this.updateUserClass(post, this.posts[post.threadId])
+        })
     }
 
     addThread(post, event) {
@@ -152,13 +158,7 @@ export class ModelService {
         post.posts = post.posts || []
 
         //add user class highlight
-        if (post.author.toLowerCase() === this.settingsService.getUsername().toLowerCase()) {
-            post.userClass = 'user_me'
-        } else if (thread && post.author.toLowerCase() === thread.author.toLowerCase()) {
-            post.userClass = 'user_op'
-        } else if (_.contains(EmployeeList, post.author.toLowerCase())) {
-            post.userClass = 'user_employee'
-        }
+        this.updateUserClass(post, thread)
 
         //add last action date
         if (thread) {
@@ -166,6 +166,16 @@ export class ModelService {
         }
 
         return post
+    }
+
+    private updateUserClass(post, thread) {
+        if (post.author.toLowerCase() === this.settingsService.getUsername().toLowerCase()) {
+            post.userClass = 'user_me'
+        } else if (thread && post.author.toLowerCase() === thread.author.toLowerCase()) {
+            post.userClass = 'user_op'
+        } else if (_.contains(EmployeeList, post.author.toLowerCase())) {
+            post.userClass = 'user_employee'
+        }
     }
 
     private updateLineClass(post, thread) {

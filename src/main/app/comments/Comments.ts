@@ -12,8 +12,8 @@ import {ScrollIntoView} from '../directives/ScrollIntoView'
     directives: [Comments, Post, ReplyBox, ScrollIntoView]
 })
 export class Comments {
-    @Input() public flat
-    @Input() public posts
+    @Input() public flat = false
+    @Input() public posts = []
 
     constructor(private actionService:ActionService,
                 private tabService:TabService,

@@ -9,13 +9,15 @@
             </li>
 
             <!-- Chatty Tabs -->
-            <!--ng-right-click="removeTab(tab)"-->
-            <li *ngFor="#tab of tabs" (click)="selectTab(tab)" (contextmenu)="removeTab($event, tab)"
-                [ngClass]="{ navbarTabSelected: tab.selected }">
-                <span [innerHTML]="tab.displayText" class="hoverable"></span>
+            <template ngFor #tab [ngForOf]="tabs">
+                <li *ngIf="!tab.loginRequired || isLoggedIn()"
+                    (click)="selectTab(tab)" (contextmenu)="removeTab($event, tab)"
+                    [ngClass]="{ navbarTabSelected: tab.selected }">
+                    <span [innerHTML]="tab.displayText" class="hoverable"></span>
                 <span class="navbarNewThreads" *ngIf="tab.newPostCount"
                       title="{{tab.newPostText}}">+{{tab.newPostCount}}</span>
-            </li>
+                </li>
+            </template>
         </ul>
 
         <div class="navbar-right">
