@@ -85,7 +85,8 @@ export class Navbar implements OnInit {
         return this.tabService.addTab('filter', expression)
     }
 
-    removeTab(tab) {
+    removeTab($event, tab) {
+        $event.preventDefault()
         this.tabService.removeTab(tab)
     }
 

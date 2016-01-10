@@ -27,6 +27,6 @@ export const DefaultTabs = [
         },
         defaultTab: true,
         newPostText: 'New replies to my posts.',
-        newPostFunction: (thread, parent, post, misc) => parent.author === misc.username
+        newPostFunction: (thread, parent, post, misc) => post.parentAuthor === misc.username
     }
 ]
