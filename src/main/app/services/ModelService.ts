@@ -175,6 +175,8 @@ export class ModelService {
             post.userClass = 'user_op'
         } else if (_.contains(EmployeeList, post.author.toLowerCase())) {
             post.userClass = 'user_employee'
+        } else {
+            post.userClass = null
         }
     }
 
