@@ -5,6 +5,6 @@ import {Directive, ElementRef} from 'angular2/core'
 })
 export class AutoFocus {
     constructor(el: ElementRef) {
-        el.nativeElement.focus()
+        setTimeout(() => el.nativeElement.focus())
     }
 }
