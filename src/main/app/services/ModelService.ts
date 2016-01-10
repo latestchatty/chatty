@@ -171,7 +171,7 @@ export class ModelService {
     private updateUserClass(post, thread) {
         if (post.author.toLowerCase() === this.settingsService.getUsername().toLowerCase()) {
             post.userClass = 'user_me'
-        } else if (thread && post.author.toLowerCase() === thread.author.toLowerCase()) {
+        } else if (thread && post.id !== thread.id && post.author.toLowerCase() === thread.author.toLowerCase()) {
             post.userClass = 'user_op'
         } else if (_.contains(EmployeeList, post.author.toLowerCase())) {
             post.userClass = 'user_employee'
