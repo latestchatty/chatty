@@ -54,8 +54,9 @@
             </div>
 
             <!-- Filter Form -->
-            <form class="navbar-form" (ngSubmit)="selectTab(addTab(filterExpression))">
-                <input type="text" class="navbar-textinput" placeholder="Filter" [(ngModel)]="filterExpression" (keyup)="filterChangedDebounce()">
+            <form class="navbar-form" (ngSubmit)="addFilterTab()">
+                <input type="text" class="navbar-textinput" placeholder="Filter"
+                       [(ngModel)]="filterExpression" (keyup)="filterChangedDebounce()">
             </form>
         </div>
 

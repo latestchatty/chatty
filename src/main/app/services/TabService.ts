@@ -15,7 +15,7 @@ export class TabService {
     constructor(private modelService:ModelService,
                 private settingsService:SettingsService,
                 private titleService:TitleService) {
-        this.selectedTab = DefaultTabs[0]
+        this.selectedTab = this.tabs[0]
 
         var storageTabs = localStorage.getItem('tabs')
         var loaded = storageTabs ? JSON.parse(storageTabs) : []

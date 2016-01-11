@@ -23,6 +23,7 @@ export class Navbar implements OnInit {
     public newThreadPost = {id: 0, replying: false}
     public tabs
     public filterExpression
+    private skipFilter = false
 
     constructor(private actionService:ActionService,
                 private modelService:ModelService,
@@ -73,18 +74,25 @@ export class Navbar implements OnInit {
     }
 
     filterChanged() {
-        setTimeout(() => this.tabService.filterThreads(this.filterExpression))
+        if (!this.skipFilter) {
+            setTimeout(() => this.tabService.filterThreads(this.filterExpression))
+        }
     }
     filterChangedDebounce = _.debounce(() => this.filterChanged(), 150)
 
     selectTab(tab) {
-        this.tabService.selectTab(tab)
-        window.scrollTo(0, 0)
+        //don't filter back, just select tab
+        this.skipFilter = true
         this.filterExpression = null
+        this.skipFilter = false
+
+        window.scrollTo(0, 0)
+        this.tabService.selectTab(tab)
     }
 
-    addTab(expression) {
-        return this.tabService.addTab('filter', expression)
+    addFilterTab() {
+        let tab = this.tabService.addTab('filter', this.filterExpression)
+        this.selectTab(tab)
     }
 
     removeTab($event, tab) {
