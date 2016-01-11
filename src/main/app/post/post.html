@@ -1,7 +1,7 @@
 <div>
     <div class="postheader">
         <!-- header left -->
-        <span [class]="post.userClass || 'user'" (click)="addUserTab(post.author)" [innerHTML]="post.author"></span>
+        <span class="user" [ngClass]="post.userClass" (click)="addUserTab(post.author)" [innerHTML]="post.author"></span>
 
         <!-- header right -->
         <div class="headerright">

@@ -4,7 +4,8 @@ module.exports = {
 
     cssBundleName: 'bundle.css',
     cssPaths: [
-        './src/main/**/*.css'
+        './src/main/**/*.css',
+        './src/main/**/*.scss'
     ],
 
     dependencyPaths: [

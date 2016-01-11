@@ -51,42 +51,19 @@ div.postBody a:hover {
 }
 
 .user_op {
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 14px;
     color: #6aff94;
-    font-family: sans-serif;
-    cursor: pointer;
-}
-
-.user_op:hover {
-    text-decoration: underline;
 }
 
 .user_me {
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 14px;
     color: #66CCFF;
-    font-family: sans-serif;
-    cursor: pointer;
-}
-
-.user_me:hover {
-    text-decoration: underline;
 }
 
 .user_employee {
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 14px;
-    color: mediumpurple;
-    font-family: sans-serif;
-    cursor: pointer;
+    color: #9370db;
 }
 
-.user_employee:hover {
-    text-decoration: underline;
+.user_mod {
+    color: #af0000;
 }
 
 /* post body date */

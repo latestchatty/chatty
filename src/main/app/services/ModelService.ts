@@ -1,6 +1,7 @@
 declare var _ : any
 import {Injectable} from 'angular2/core'
 import {EmployeeList}  from '../util/EmployeeList'
+import {ModList} from '../util/ModList'
 import {SettingsService} from './SettingsService'
 import {BodyTransformService} from './BodyTransformService'
 
@@ -175,6 +176,8 @@ export class ModelService {
             post.userClass = 'user_op'
         } else if (_.contains(EmployeeList, post.author.toLowerCase())) {
             post.userClass = 'user_employee'
+        } else if (_.contains(ModList, post.author.toLowerCase())) {
+            post.userClass = 'user_mod'
         } else {
             post.userClass = null
         }

@@ -6,7 +6,7 @@
                   (click)="expandReply(post)" [innerHTML]="post.body.oneline"></span>
 
             <span class="onelineSeparator">&nbsp;:&nbsp;</span>
-            <span [ngClass]="post.userClass || 'user'" (click)="addUserTab(post.author)">{{post.author}}</span>
+            <span class="user" [ngClass]="post.userClass" (click)="addUserTab(post.author)">{{post.author}}</span>
         </div>
 
         <!--expanded reply-->
