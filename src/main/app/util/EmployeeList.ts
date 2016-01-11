@@ -12,4 +12,4 @@ export const EmployeeList = [
     'squidwizard',
     'beardedaxe',
     'doctorgames'
-]
+].map(s => s.toLowerCase())
