@@ -4,5 +4,6 @@ export const ModList = [
     'evildolemite',
     'hirez',
     'serpico74',
-    'morgin'
+    'morgin',
+    'ninjase'
 ].map(s => s.toLowerCase())
