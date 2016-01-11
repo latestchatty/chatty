@@ -1,3 +1,4 @@
+declare var _:any
 import {Component, OnInit} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
 import {PostService} from '../services/PostService'
@@ -74,6 +75,7 @@ export class Navbar implements OnInit {
     filterChanged() {
         setTimeout(() => this.tabService.filterThreads(this.filterExpression))
     }
+    filterChangedDebounce = _.debounce(() => this.filterChanged(), 150)
 
     selectTab(tab) {
         this.tabService.selectTab(tab)
