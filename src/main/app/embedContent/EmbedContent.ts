@@ -20,7 +20,7 @@ export class EmbedContent {
     }
 
     testFixUrl(tests) {
-        var result = _.find(tests, function (test) {
+        var result = _.find(tests, test => {
             var rex = new RegExp(<any>test.test)
             return rex.test(this.url)
         })

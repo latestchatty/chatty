@@ -25,7 +25,7 @@ export class BodyTransformService {
 
         //find matching urls for embeds
         var matches = []
-        _.each(this.matchers, function(matcher) {
+        _.each(this.matchers, matcher => {
             var result
             while ((result = matcher.regex.exec(fixed)) !== null) {
                 result.type = matcher.type
@@ -37,7 +37,7 @@ export class BodyTransformService {
         var chunks = []
         if (matches.length) {
             var index = 0
-            _.each(_.uniq(_.sortBy(matches, 'index'), 'index'), function(match) {
+            _.each(_.uniq(_.sortBy(matches, 'index'), 'index'), match => {
                 //static html prior to this chunk
                 chunks.push(fixed.slice(index, match.index))
 
