@@ -1,15 +1,15 @@
-<span>
+<span [ngSwitch]="type">
 
     <!-- chatty comment link -->
-    <span *ngIf="type === 'comment'">
+    <template ngSwitchWhen="comment">
         <a target="_blank" [href]="fixUrl('.+?chatty\\?id=(\\d+)(#item_(\\d+))?', '#/thread/$1/$3')">{{url}}</a>
         <a style="text-decoration: none" target="_blank" [href]="url">
             <i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>
         </a>
-    </span>
+    </template>
 
     <!-- images -->
-    <span *ngIf="type === 'image'">
+    <template ngSwitchWhen="image">
         <a target="_blank" [href]="url">{{url}}</a>
         <a style="text-decoration: none" (click)="toggleVisibility()">
             <i class="actionItem fa fa-camera-retro" title="View image inline"></i>
@@ -21,10 +21,10 @@
             replace: '$1files/$4'}
             ])" (click)="toggleVisibility()">
         </p>
-    </span>
+    </template>
 
     <!-- youtube -->
-    <span *ngIf="type === 'youtube'">
+    <template ngSwitchWhen="youtube">
         <a target="_blank" [href]="url">{{url}}</a>
         <a style="text-decoration: none" (click)="toggleVisibility()">
             <i class="actionItem fa fa-youtube" title="View video inline"></i>
@@ -34,10 +34,10 @@
                     width="560" height="315"  frameborder="0"
                     webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
-    </span>
+    </template>
 
     <!-- vimeo -->
-    <span *ngIf="type === 'vimeo'">
+    <template ngSwitchWhen="vimeo">
         <a target="_blank" [href]="url">{{url}}</a>
         <a style="text-decoration: none" (click)="toggleVisibility()">
             <i class="actionItem fa fa-vimeo-square" title="View video inline"></i>
@@ -47,31 +47,32 @@
                     width="560" height="315"  frameborder="0"
                     webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
-    </span>
+    </template>
 
     <!-- imgur -->
-    <span *ngIf="type === 'imgur'">
+    <template ngSwitchWhen="imgur">
         <a target="_blank" [href]="url">{{url}}</a>
         <a style="text-decoration: none" (click)="toggleVisibility()">
             <i class="actionItem fa fa-camera-retro" title="View image inline"></i>
         </a>
         <p *ngIf="visible">
             <iframe [src]="testFixUrl([
-            { test: '\\.gifv$',
-            regex: '(.*)',
-            replace: '$1#embed'},
-            { test: 'imgur.com\/a\/',
-            regex: '(.*)',
-            replace: '$1\/embed'
+            {
+                test: '\\.gifv$',
+                regex: '(.*)',
+                replace: '$1#embed'
+            }, {
+                test: 'imgur.com\/a\/',
+                regex: '(.*)',
+                replace: '$1\/embed'
             }
-            ])"
-                    width="560" height="315" frameborder="0"
-                    webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            ])" width="560" height="315" frameborder="0"
+            webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
-    </span>
+    </template>
 
     <!-- gfycat -->
-    <span *ngIf="type === 'gfycat'">
+    <template ngSwitchWhen="gfycat">
         <a target="_blank" [href]="url">{{url}}</a>
         <a style="text-decoration: none" (click)="toggleVisibility()">
             <i class="actionItem fa fa-camera-retro" title="View gif inline"></i>
@@ -81,6 +82,6 @@
                     width="560" height="315" frameborder="0"
                     webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
-    </span>
+    </template>
 
 </span>
