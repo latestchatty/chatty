@@ -2,9 +2,13 @@ module.exports = {
     baseDir: './src/main',
     dist: './build',
 
+    tsPaths: [
+        './src/main/app/*.ts',
+        './src/main/app/**/*.ts'
+    ],
+
     cssBundleName: 'bundle.css',
     cssPaths: [
-        './src/main/**/*.css',
         './src/main/**/*.scss'
     ],
 
