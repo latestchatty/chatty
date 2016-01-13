@@ -3,11 +3,12 @@ import {ActionService} from '../services/ActionService'
 import {TagGroups} from '../util/TagGroups'
 import {PostService} from '../services/PostService'
 import {AutoFocus} from '../directives/AutoFocus'
+import {DisableHotkeys} from '../directives/DisableHotkeys'
 
 @Component({
     selector: 'replybox',
     templateUrl: 'app/replybox/replybox.html',
-    directives: [AutoFocus]
+    directives: [AutoFocus, DisableHotkeys]
 })
 export class ReplyBox {
     @Input() public post

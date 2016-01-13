@@ -38,6 +38,6 @@ import {SingleThread} from './singleThread/SingleThread'
 ])
 export class App  {
     constructor(private hotkeyService:HotkeyService) {
-        hotkeyService.startListening()
+        hotkeyService.start()
     }
 }

@@ -40,10 +40,10 @@
 
             <!-- Login Form -->
             <form class="navbar-form" (ngSubmit)="doLogin()" *ngIf="!isLoggedIn() || embedded">
-                <input type="text" class="navbar-textinput"
+                <input type="text" class="navbar-textinput" disable-hotkeys
                        placeholder="Username" [(ngModel)]="username" [disabled]="loginRunning" required>
 
-                <input type="password" class="navbar-textinput" placeholder="Password"
+                <input type="password" class="navbar-textinput" placeholder="Password" disable-hotkeys
                        [(ngModel)]="password" [disabled]="loginRunning" required>
                 <input type="submit" value="Login" class="button" [disabled]="loginRunning">
             </form>
@@ -55,7 +55,7 @@
 
             <!-- Filter Form -->
             <form class="navbar-form" (ngSubmit)="addFilterTab()">
-                <input type="text" class="navbar-textinput" placeholder="Filter"
+                <input type="text" class="navbar-textinput" placeholder="Filter" disable-hotkeys
                        [(ngModel)]="filterExpression" (keyup)="filterChangedDebounce()">
             </form>
         </div>
