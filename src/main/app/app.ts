@@ -13,6 +13,7 @@ import {TitleService} from './services/TitleService'
 import {PostService} from './services/PostService'
 import {HotkeyService} from './services/HotkeyService'
 import {SingleThread} from './singleThread/SingleThread'
+import {ToastService} from "./toast/ToastService";
 
 @Component({
     selector: 'app',
@@ -24,6 +25,7 @@ import {SingleThread} from './singleThread/SingleThread'
         EventService,
         HotkeyService,
         ModelService,
+        ToastService,
         PostService,
         SettingsService,
         ShackMessageService,

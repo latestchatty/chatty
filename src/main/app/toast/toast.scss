@@ -1,0 +1,23 @@
+.toastContainer {
+    position: fixed;
+    left: auto;
+    right: 16px;
+    z-index: 999;
+}
+
+.toast {
+    padding: 10px;
+    max-width: 200px;
+    clear: both;
+    float:right;
+    display:inline-block;
+    margin-bottom: 10px;
+    text-align: center;
+    color: white;
+    background-color: #233548;
+    border-radius: 5px;
+}
+
+.toast-warn {
+    background-color: darkred;
+}
