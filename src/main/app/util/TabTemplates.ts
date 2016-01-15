@@ -7,7 +7,7 @@ export const TabTemplates = {
             value: value,
             displayText: value,
             expression: value,
-            newPostText: 'Posts and replies by this user.',
+            hoverText: 'Posts and replies by this user.',
             newPostFunction: (thread, parent, post) => post.author === this.displayText
         }
     },
@@ -17,7 +17,7 @@ export const TabTemplates = {
             value: value,
             displayText: value,
             expression: value,
-            newPostText: 'New posts containing this search term.',
+            hoverText: 'Posts containing this search term.',
             newPostFunction: (thread, parent, post) => Filter.filter([post], value).length > 0
         }
     }

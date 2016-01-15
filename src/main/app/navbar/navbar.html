@@ -13,9 +13,8 @@
                 <li *ngIf="!tab.loginRequired || isLoggedIn()"
                     (click)="selectTab(tab)" (contextmenu)="removeTab($event, tab)"
                     [ngClass]="{ navbarTabSelected: tab.selected }">
-                    <span [innerHTML]="tab.displayText" class="hoverable"></span>
-                <span class="navbarNewThreads" *ngIf="tab.newPostCount"
-                      title="{{tab.newPostText}}">+{{tab.newPostCount}}</span>
+                    <span [innerHTML]="tab.displayText" [title]="tab.hoverText" class="hoverable"></span>
+                <span class="navbarNewThreads" *ngIf="tab.newPostCount">+{{tab.newPostCount}}</span>
                 </li>
             </template>
         </ul>
