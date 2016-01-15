@@ -1,6 +1,7 @@
 declare var _:any
 import {Component, OnInit} from 'angular2/core'
 import {ActionService} from '../services/ActionService'
+import {DisableHotkeys} from '../directives/DisableHotkeys'
 import {PostService} from '../services/PostService'
 import {SettingsService} from '../services/SettingsService'
 import {ShackMessageService} from '../services/ShackMessageService'
@@ -11,7 +12,7 @@ import {ReplyBox} from '../replybox/ReplyBox'
 @Component({
     selector: 'navbar',
     templateUrl: 'app/navbar/navbar.html',
-    directives: [ReplyBox]
+    directives: [DisableHotkeys, ReplyBox]
 })
 export class Navbar implements OnInit {
     public loginRunning = false
