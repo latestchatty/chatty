@@ -6,6 +6,7 @@ import {SettingsService} from './SettingsService'
 import {ShackMessageService} from './ShackMessageService'
 import {TabService} from './TabService'
 import {TitleService} from './TitleService'
+import {ToastService} from './ToastService'
 
 @Injectable()
 export class EventService {
@@ -17,7 +18,9 @@ export class EventService {
                 private settingsService:SettingsService,
                 private shackMessageService:ShackMessageService,
                 private tabService:TabService,
-                private titleService:TitleService) {
+                private titleService:TitleService,
+                private toastService:ToastService) {
+
         //update loop every 5 min
         setInterval(() => {
             this.modelService.updateAllThreads()
@@ -31,7 +34,10 @@ export class EventService {
 
         this.apiService.getNewestEventId()
             .then(response => this.lastEventId = _.get(response, 'eventId'))
-            .catch(response => console.error('Error during getNewestEventId: ', response))
+            .catch(response => {
+                console.error('Error during getNewestEventId.', response)
+                this.toastService.create('Error getting newest event id.')
+            })
 
         this.apiService.getChatty()
             .then(response => {
@@ -47,7 +53,10 @@ export class EventService {
                 //start events
                 return this.waitForEvents()
             })
-            .catch(response => console.error('Error during getChatty: ', response))
+            .catch(response => {
+                console.error('Error during getChatty: ', response)
+                this.toastService.create('Error getting chatty. Please reload page.')
+            })
 
         this.shackMessageService.refresh()
     }
@@ -89,7 +98,11 @@ export class EventService {
                             threads.unshift(thread)
                         }
                     })
-                    .catch(response => console.error('Error loading pinned threadId=' + threadId, response))
+                    .catch(response => {
+                        let msg = `Error loading pinned threadId=${threadId}.`
+                        console.error(msg, response)
+                        this.toastService.create(msg)
+                    })
             } else {
                 //put it at the top of the list
                 thread.pinned = true
@@ -103,7 +116,8 @@ export class EventService {
         this.apiService.waitForEvent(this.lastEventId)
             .then(response => this.eventResponse(response))
             .catch(response => {
-                console.error('Error during waitForEvent: ', response)
+                console.error('Error during waitForEvent', response)
+                this.toastService.create('Error getting next chatty event.')
                 this.eventResponse(response)
             })
     }
@@ -119,10 +133,12 @@ export class EventService {
             this.waitForEvents()
         } else if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
             console.error('Too many events since last refresh, reloading chatty.')
+            this.toastService.create('Too many events since last refresh. Reloading full chatty.')
             this.startActive()
         } else {
             //restart events in 30s
             console.error('Unknown error', data)
+            this.toastService.create('Unknown error with event. Restarting events in 30 seconds.')
             setTimeout(() => this.waitForEvents(), 30000)
         }
     }
@@ -149,6 +165,7 @@ export class EventService {
             //not supported
         } else {
             console.error('Unhandled event', event)
+            this.toastService.create('Unhandled chatty event.')
         }
     }
 }

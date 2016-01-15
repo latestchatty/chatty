@@ -12,12 +12,10 @@ export class ToastService {
     create(toast, timeout = 5000) {
         this.toasts.push(toast)
 
-        setTimeout(() => {
-            this.remove(toast)
-        }, timeout)
+        setTimeout(() => this.remove(toast), timeout)
     }
 
-    remove(toast){
+    remove(toast) {
         _.pull(this.toasts, toast)
     }
 }

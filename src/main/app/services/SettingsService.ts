@@ -1,6 +1,7 @@
 declare var _ : any
 import {Injectable} from 'angular2/core'
 import {ApiService} from './ApiService'
+import {ToastService} from './ToastService'
 
 @Injectable()
 export class SettingsService {
@@ -8,7 +9,8 @@ export class SettingsService {
     private pinnedThreads = []
     private credentials
 
-    constructor(private apiService:ApiService){
+    constructor(private apiService:ApiService,
+                private toastService:ToastService){
         let storageCredentials = localStorage.getItem('credentials')
         if (storageCredentials) {
             this.credentials = JSON.parse(storageCredentials)
@@ -98,6 +100,9 @@ export class SettingsService {
                 this.collapsedThreads = _(markedPosts).filter({type: 'collapsed'}).map('id').value()
                 this.pinnedThreads = _(markedPosts).filter({type: 'pinned'}).map('id').value()
             })
-            .catch(response => console.error('Error getting marked posts: ', response))
+            .catch(response => {
+                console.error('Error getting marked posts: ', response)
+                this.toastService.create('Error getting marked posts.')
+            })
     }
 }

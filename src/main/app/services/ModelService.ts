@@ -11,8 +11,8 @@ export class ModelService {
     private newThreads = []
     private posts = {}
 
-    constructor(private settingsService:SettingsService,
-                private bodyTransformService:BodyTransformService) {
+    constructor(private bodyTransformService:BodyTransformService,
+                private settingsService:SettingsService) {
     }
 
     updateAllThreads() {

@@ -1,7 +1,8 @@
-declare var _: any
+declare var _:any
 import {Injectable} from 'angular2/core'
 import {ApiService} from '../services/ApiService'
 import {SettingsService} from '../services/SettingsService'
+import {ToastService} from '../services/ToastService'
 
 @Injectable()
 export class ShackMessageService {
@@ -9,7 +10,8 @@ export class ShackMessageService {
     public unreadMessageCount = '...'
 
     constructor(private apiService:ApiService,
-                private settingsService:SettingsService) {
+                private settingsService:SettingsService,
+                private toastService:ToastService) {
     }
 
     clear() {
@@ -31,6 +33,7 @@ export class ShackMessageService {
         return this.apiService.getMessages(user, pass)
             .catch(err => {
                 console.error('Error while getting shack messages: ', err)
+                this.toastService.create('Error getting shack messages.')
                 return []
             })
     }
@@ -46,6 +49,7 @@ export class ShackMessageService {
                 })
                 .catch(err => {
                     console.error('Error during shackmessage count update: ', err)
+                    this.toastService.create('Error refreshing shack messages.')
                     this.totalMessageCount = 'err'
                     this.unreadMessageCount = 'err'
                 })

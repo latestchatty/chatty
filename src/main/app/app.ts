@@ -12,8 +12,8 @@ import {TabService} from './services/TabService'
 import {TitleService} from './services/TitleService'
 import {PostService} from './services/PostService'
 import {HotkeyService} from './services/HotkeyService'
+import {ToastService} from './services/ToastService'
 import {SingleThread} from './singleThread/SingleThread'
-import {ToastService} from "./toast/ToastService";
 
 @Component({
     selector: 'app',

@@ -1,7 +1,9 @@
 declare var _ : any
 import {Injectable} from 'angular2/core'
 import {ApiService} from './ApiService'
+import {ServerErrors} from '../util/ServerErrors'
 import {SettingsService} from './SettingsService'
+import {ToastService} from './ToastService'
 
 @Injectable()
 export class PostService {
@@ -10,7 +12,8 @@ export class PostService {
     private postQueue = []
 
     constructor(private apiService:ApiService,
-                private settingsService:SettingsService) {
+                private settingsService:SettingsService,
+                private toastService:ToastService) {
     }
 
     getQueue() {
@@ -58,10 +61,17 @@ export class PostService {
                 })
                 .catch(data => {
                     if (data && data.error && data.code === 'ERR_INVALID_LOGIN') {
+                        let msg = 'Error creating post: Invalid login'
+                        console.log(msg, data)
+                        this.toastService.create(msg)
+
                         this.settingsService.clearCredentials()
                         this.clearQueue()
-                    } else if (_.get(data, 'error') && _.contains(['ERR_BANNED', 'ERR_NUKED', 'ERR_SERVER'], data.code)) {
-                        console.error('Error creating post.', data)
+                    } else if (_.get(data, 'error') && _.contains(_.keys(ServerErrors), data.code)) {
+                        let msg = `Error creating post: ${ServerErrors[data.code]}`
+                        console.error(msg, data)
+                        this.toastService.create(msg)
+
                         _.pull(this.postQueue, post)
                     } else {
                         this.lastTimeout = setTimeout(this.startPosting, 60000)
