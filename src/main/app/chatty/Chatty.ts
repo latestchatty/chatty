@@ -4,10 +4,11 @@ import {ModelService} from '../services/ModelService'
 import {Thread} from '../thread/Thread'
 import {Navbar} from '../navbar/Navbar'
 import {EventService} from '../services/EventService'
+import {Toast} from '../toast/Toast'
 
 @Component({
     templateUrl: 'app/chatty/chatty.html',
-    directives: [Navbar, Thread]
+    directives: [Navbar, Thread, Toast]
 })
 export class Chatty implements OnInit {
     public threads
