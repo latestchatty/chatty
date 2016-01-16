@@ -1,4 +1,4 @@
-declare var _: any
+declare var _:any
 import {Injectable} from 'angular2/core'
 import {ApiService} from './ApiService'
 import {ModelService} from './ModelService'
@@ -34,8 +34,8 @@ export class EventService {
 
         this.apiService.getNewestEventId()
             .then(response => this.lastEventId = _.get(response, 'eventId'))
-            .catch(response => {
-                console.error('Error during getNewestEventId.', response)
+            .catch(error => {
+                console.error('Error during getNewestEventId.', error)
                 this.toastService.warn('Error getting newest event id.')
             })
 
@@ -53,8 +53,8 @@ export class EventService {
                 //start events
                 return this.waitForEvents()
             })
-            .catch(response => {
-                console.error('Error during getChatty: ', response)
+            .catch(error => {
+                console.error('Error during getChatty: ', error)
                 this.toastService.warn('Error getting chatty. Please reload page.')
             })
 
@@ -98,9 +98,9 @@ export class EventService {
                             threads.unshift(thread)
                         }
                     })
-                    .catch(response => {
+                    .catch(error => {
                         let msg = `Error loading pinned threadId=${threadId}.`
-                        console.error(msg, response)
+                        console.error(msg, error)
                         this.toastService.warn(msg)
                     })
             } else {
@@ -115,29 +115,31 @@ export class EventService {
     private waitForEvents() {
         this.apiService.waitForEvent(this.lastEventId)
             .then(response => this.eventResponse(response))
-            .catch(response => {
-                console.error('Error during waitForEvent', response)
-                this.toastService.warn('Error getting next chatty event.')
-                this.eventResponse(response)
-            })
+            .catch(error => this.handleEventError(error))
     }
 
-    private eventResponse(data) {
-        if (data && !data.error) {
-            this.lastEventId = data.lastEventId || this.lastEventId
+    private eventResponse(response) {
+        if (response && !response.error) {
+            this.lastEventId = response.lastEventId || this.lastEventId
 
             //process the events
-            _.each(data.events, event => this.newEvent(event))
+            _.each(response.events, event => this.newEvent(event))
 
             //wait for more
             this.waitForEvents()
-        } else if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
+        } else {
+            this.handleEventError(response)
+        }
+    }
+
+    private handleEventError(event) {
+        if (event && event.error && event.code === 'ERR_TOO_MANY_EVENTS') {
             console.error('Too many events since last refresh, reloading chatty.')
             this.toastService.warn('Too many events since last refresh. Reloading full chatty.')
             this.startActive()
         } else {
             //restart events in 30s
-            console.error('Unknown error', data)
+            console.error('Unknown error', event)
             this.toastService.warn('Unknown error with event. Restarting events in 30 seconds.')
             setTimeout(() => this.waitForEvents(), 30000)
         }

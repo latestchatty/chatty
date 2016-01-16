@@ -31,8 +31,8 @@ export class ShackMessageService {
         var user = this.settingsService.getUsername()
         var pass = this.settingsService.getPassword()
         return this.apiService.getMessages(user, pass)
-            .catch(err => {
-                console.error('Error while getting shack messages: ', err)
+            .catch(error => {
+                console.error('Error while getting shack messages: ', error)
                 this.toastService.warn('Error getting shack messages.')
                 return []
             })

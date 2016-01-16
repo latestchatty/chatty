@@ -3,6 +3,7 @@ import {Injectable} from 'angular2/core'
 import {ApiService} from './ApiService'
 import {ModelService} from './ModelService'
 import {SettingsService} from './SettingsService'
+import {ToastService} from './ToastService'
 
 @Injectable()
 export class ActionService {
@@ -10,7 +11,8 @@ export class ActionService {
 
     constructor(private apiService:ApiService,
                 private modelService:ModelService,
-                private settingsService:SettingsService) {
+                private settingsService:SettingsService,
+                private toastService:ToastService) {
     }
 
     setThread(thread) {
@@ -29,6 +31,10 @@ export class ActionService {
                         this.modelService.updateAllThreads()
                     }
                     return result
+                })
+                .catch(error => {
+                    console.log('Error while logging in', error)
+                    this.toastService.warn('Error while logging in.')
                 })
         } else {
             return Promise.reject('')
