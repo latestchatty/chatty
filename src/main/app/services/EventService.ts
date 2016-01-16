@@ -1,5 +1,6 @@
 declare var _:any
 import {Injectable} from 'angular2/core'
+import {Subscription} from 'rxjs/Subscription'
 import {ApiService} from './ApiService'
 import {ModelService} from './ModelService'
 import {SettingsService} from './SettingsService'
@@ -10,8 +11,9 @@ import {ToastService} from './ToastService'
 
 @Injectable()
 export class EventService {
-    private lastEventId = 0
-    private passiveMode = false
+    private lastEventId:Number = 0
+    private passiveMode:Boolean = false
+    private waitingEvent:Subscription<any> = null
 
     constructor(private apiService:ApiService,
                 private modelService:ModelService,
@@ -20,27 +22,22 @@ export class EventService {
                 private tabService:TabService,
                 private titleService:TitleService,
                 private toastService:ToastService) {
-
-        //update loop every 5 min
-        setInterval(() => {
-            this.modelService.updateAllThreads()
-            this.shackMessageService.refresh()
-            this.settingsService.refresh()
-        }, 300000)
     }
 
     public startActive() {
         this.modelService.clear()
 
+        //get newest event at the time
         this.apiService.getNewestEventId()
-            .then(response => this.lastEventId = _.get(response, 'eventId'))
-            .catch(error => {
-                console.error('Error during getNewestEventId.', error)
-                this.toastService.warn('Error getting newest event id.')
-            })
+            .subscribe(response => this.lastEventId = _.get(response, 'eventId'),
+                error => {
+                    console.error('Error during getNewestEventId.', error)
+                    this.toastService.warn('Error getting newest event id.')
+                })
 
+        //load initial full chatty
         this.apiService.getChatty()
-            .then(response => {
+            .subscribe(response => {
                 //process all threads
                 _.each(response.threads, thread => this.modelService.addThread(thread, null))
 
@@ -52,12 +49,20 @@ export class EventService {
 
                 //start events
                 return this.waitForEvents()
-            })
-            .catch(error => {
+            }, error => {
                 console.error('Error during getChatty: ', error)
                 this.toastService.warn('Error getting chatty. Please reload page.')
             })
 
+        //update loop every 5 min
+        setInterval(() => {
+            this.modelService.updateAllThreads()
+            this.shackMessageService.refresh()
+            this.settingsService.refresh()
+            this.waitForEvents()
+        }, 300000)
+
+        //initial refresh of shack messages
         this.shackMessageService.refresh()
     }
 
@@ -87,7 +92,7 @@ export class EventService {
             if (!thread) {
                 //load expired thread
                 this.apiService.getThread(threadId)
-                    .then(response => {
+                    .subscribe(response => {
                         var thread = _.get(response, 'threads[0]')
                         if (thread) {
                             thread = this.modelService.addThread(thread, false)
@@ -97,8 +102,7 @@ export class EventService {
                             _.pull(threads, thread)
                             threads.unshift(thread)
                         }
-                    })
-                    .catch(error => {
+                    }, error => {
                         let msg = `Error loading pinned threadId=${threadId}.`
                         console.error(msg, error)
                         this.toastService.warn(msg)
@@ -113,9 +117,14 @@ export class EventService {
     }
 
     private waitForEvents() {
-        this.apiService.waitForEvent(this.lastEventId)
-            .then(response => this.eventResponse(response))
-            .catch(error => this.handleEventError(error))
+        //if we duplicate call, just cancel last
+        if (this.waitingEvent) {
+            this.waitingEvent.unsubscribe()
+        }
+
+        this.waitingEvent = this.apiService.waitForEvent(this.lastEventId)
+            .subscribe(response => this.eventResponse(response),
+                error => this.handleEventError(error))
     }
 
     private eventResponse(response) {

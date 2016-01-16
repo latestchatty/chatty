@@ -1,12 +1,12 @@
-import {Component} from 'angular2/core'
-import {OnInit} from 'angular2/core'
-import {ModelService} from '../services/ModelService'
-import {Thread} from '../thread/Thread'
-import {Navbar} from '../navbar/Navbar'
+import {Component, OnInit} from 'angular2/core'
 import {RouteParams} from 'angular2/router'
+import {Navbar} from '../navbar/Navbar'
+import {Thread} from '../thread/Thread'
 import {ApiService} from '../services/ApiService'
-import {EventService} from '../services/EventService'
 import {ActionService} from '../services/ActionService'
+import {EventService} from '../services/EventService'
+import {ModelService} from '../services/ModelService'
+import {ToastService} from '../services/ToastService'
 
 @Component({
     templateUrl: 'app/singleThread/singleThread.html',
@@ -20,8 +20,8 @@ export class SingleThread implements OnInit {
                 private apiService:ApiService,
                 private eventService:EventService,
                 private modelService:ModelService,
-                private routeParams:RouteParams) {
-
+                private routeParams:RouteParams,
+                private toastService:ToastService) {
     }
 
     ngOnInit() {
@@ -32,7 +32,7 @@ export class SingleThread implements OnInit {
         var commentId = this.routeParams.params['commentId']
         if (threadId) {
             return this.apiService.getThread(threadId)
-                .then(response => {
+                .subscribe(response => {
                     let post = response.threads[0]
                     let fixed = this.modelService.addThread(post, null)
                     fixed.state = 'expanded'
@@ -50,10 +50,11 @@ export class SingleThread implements OnInit {
                         //set the last reply to the top so we can a/z from the start
                         this.actionService.setThread(post)
                     }
+                }, error => {
+                    this.error = true
+                    console.log('Error loading single thread', error)
+                    this.toastService.warn('Error loading thread.')
                 })
-            .catch(() => {
-                this.error = true
-            })
         }
     }
 }

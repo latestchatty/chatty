@@ -72,7 +72,6 @@ export class ApiService {
     private get(url) {
         return this.http.get(this.base + url)
             .map(res => res.json())
-            .toPromise()
     }
 
     private post(url, params) {
