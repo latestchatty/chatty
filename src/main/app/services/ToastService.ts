@@ -9,13 +9,22 @@ export class ToastService {
         return this.toasts
     }
 
-    create(toast, timeout = 5000) {
-        this.toasts.push(toast)
+    info(message:String, timeout = 5000) {
+        this.show(message, 'info', timeout)
+    }
 
-        setTimeout(() => this.remove(toast), timeout)
+    warn(message:String, timeout = 5000) {
+        this.show(message, 'warn', timeout)
     }
 
     remove(toast) {
         _.pull(this.toasts, toast)
+    }
+
+    private show(message:String, theme:String = 'warn', timeout = 5000) {
+        let toast = {message, theme}
+        this.toasts.push(toast)
+
+        setTimeout(() => this.remove(toast), timeout)
     }
 }

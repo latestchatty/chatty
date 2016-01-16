@@ -221,8 +221,10 @@ export class ModelService {
     }
 
     private removePost(post) {
-        delete this.posts[post.id]
-        _.each(post.posts, this.removePost)
+        if (post) {
+            delete this.posts[post.id]
+            _.each(post.posts, reply => this.removePost(reply))
+        }
     }
 
     private countReplies(post) {

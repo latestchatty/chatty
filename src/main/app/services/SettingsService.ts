@@ -102,7 +102,7 @@ export class SettingsService {
             })
             .catch(response => {
                 console.error('Error getting marked posts: ', response)
-                this.toastService.create('Error getting marked posts.')
+                this.toastService.warn('Error getting marked posts.')
             })
     }
 }

@@ -33,7 +33,7 @@ export class ShackMessageService {
         return this.apiService.getMessages(user, pass)
             .catch(err => {
                 console.error('Error while getting shack messages: ', err)
-                this.toastService.create('Error getting shack messages.')
+                this.toastService.warn('Error getting shack messages.')
                 return []
             })
     }
@@ -49,7 +49,7 @@ export class ShackMessageService {
                 })
                 .catch(err => {
                     console.error('Error during shackmessage count update: ', err)
-                    this.toastService.create('Error refreshing shack messages.')
+                    this.toastService.warn('Error refreshing shack messages.')
                     this.totalMessageCount = 'err'
                     this.unreadMessageCount = 'err'
                 })

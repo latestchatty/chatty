@@ -36,7 +36,7 @@ export class EventService {
             .then(response => this.lastEventId = _.get(response, 'eventId'))
             .catch(response => {
                 console.error('Error during getNewestEventId.', response)
-                this.toastService.create('Error getting newest event id.')
+                this.toastService.warn('Error getting newest event id.')
             })
 
         this.apiService.getChatty()
@@ -55,7 +55,7 @@ export class EventService {
             })
             .catch(response => {
                 console.error('Error during getChatty: ', response)
-                this.toastService.create('Error getting chatty. Please reload page.')
+                this.toastService.warn('Error getting chatty. Please reload page.')
             })
 
         this.shackMessageService.refresh()
@@ -101,7 +101,7 @@ export class EventService {
                     .catch(response => {
                         let msg = `Error loading pinned threadId=${threadId}.`
                         console.error(msg, response)
-                        this.toastService.create(msg)
+                        this.toastService.warn(msg)
                     })
             } else {
                 //put it at the top of the list
@@ -117,7 +117,7 @@ export class EventService {
             .then(response => this.eventResponse(response))
             .catch(response => {
                 console.error('Error during waitForEvent', response)
-                this.toastService.create('Error getting next chatty event.')
+                this.toastService.warn('Error getting next chatty event.')
                 this.eventResponse(response)
             })
     }
@@ -133,12 +133,12 @@ export class EventService {
             this.waitForEvents()
         } else if (data && data.error && data.code === 'ERR_TOO_MANY_EVENTS') {
             console.error('Too many events since last refresh, reloading chatty.')
-            this.toastService.create('Too many events since last refresh. Reloading full chatty.')
+            this.toastService.warn('Too many events since last refresh. Reloading full chatty.')
             this.startActive()
         } else {
             //restart events in 30s
             console.error('Unknown error', data)
-            this.toastService.create('Unknown error with event. Restarting events in 30 seconds.')
+            this.toastService.warn('Unknown error with event. Restarting events in 30 seconds.')
             setTimeout(() => this.waitForEvents(), 30000)
         }
     }
@@ -165,7 +165,7 @@ export class EventService {
             //not supported
         } else {
             console.error('Unhandled event', event)
-            this.toastService.create('Unhandled chatty event.')
+            this.toastService.warn('Unhandled chatty event.')
         }
     }
 }

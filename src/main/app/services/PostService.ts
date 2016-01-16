@@ -63,14 +63,14 @@ export class PostService {
                     if (data && data.error && data.code === 'ERR_INVALID_LOGIN') {
                         let msg = 'Error creating post: Invalid login'
                         console.log(msg, data)
-                        this.toastService.create(msg)
+                        this.toastService.warn(msg)
 
                         this.settingsService.clearCredentials()
                         this.clearQueue()
                     } else if (_.get(data, 'error') && _.contains(_.keys(ServerErrors), data.code)) {
                         let msg = `Error creating post: ${ServerErrors[data.code]}`
                         console.error(msg, data)
-                        this.toastService.create(msg)
+                        this.toastService.warn(msg)
 
                         _.pull(this.postQueue, post)
                     } else {
