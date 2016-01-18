@@ -32,5 +32,9 @@ module.exports = {
         './src/main/favicon.ico',
         './src/main/images/**',
         './src/main/app/**/*.html'
+    ],
+
+    publishPaths: [
+        './build/**'
     ]
 }
