@@ -76,7 +76,10 @@ export class Navbar implements OnInit {
 
     filterChanged() {
         if (!this.skipFilter) {
-            setTimeout(() => this.tabService.filterThreads(this.filterExpression))
+            this.tabService.selectTab(this.tabs[0], true)
+            this.tabService.filterThreads(this.filterExpression)
+        } else {
+            this.skipFilter = false
         }
     }
     filterChangedDebounce = _.debounce(() => this.filterChanged(), 150)
@@ -85,9 +88,9 @@ export class Navbar implements OnInit {
         //don't filter back, just select tab
         this.skipFilter = true
         this.filterExpression = null
-        this.skipFilter = false
 
         window.scrollTo(0, 0)
+
         this.tabService.selectTab(tab)
     }
 

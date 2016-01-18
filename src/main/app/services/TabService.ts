@@ -26,14 +26,16 @@ export class TabService {
         return this.tabs
     }
 
-    selectTab(tab) {
+    selectTab(tab, skipApply = false) {
         this.selectedTab.selected = false
         this.selectedTab = tab
 
         tab.selected = true
         tab.newPostCount = 0
 
-        this.applyFilter(tab.expression)
+        if (!skipApply) {
+            this.applyFilter(tab.expression)
+        }
     }
 
     newPost(thread, parent, post) {
