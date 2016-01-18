@@ -11,11 +11,18 @@
     color: #fff;
     vertical-align: middle;
 }
-/* uncollapse post link */
-a.showpost:link, a.showpost:visited, a.showpost:active, a.showpost:hover {
+
+a.showpost:link,
+a.showpost:visited,
+a.showpost:active,
+a.showpost:hover {
     display: none;
 }
-a.showpost:link, a.showpost:visited, a.showpost:active, a.showpost:hover {
+
+a.showpost:link,
+a.showpost:visited,
+a.showpost:active,
+a.showpost:hover {
     display: block;
     position: absolute;
     width: 100%;
@@ -30,17 +37,20 @@ a.showpost:link, a.showpost:visited, a.showpost:active, a.showpost:hover {
     background: #222;
     font-weight: bold;
 }
+
 a.showpost:hover {
     text-decoration: none;
     background-color: #393939;
 }
 
 .postInformative {
-    border-left: 2px solid #00bff3!important;
+    border-left: 2px solid #00bff3 !important;
 }
+
 .postNws {
-    border-left: 2px solid red!important;
+    border-left: 2px solid red !important;
 }
+
 .postFrontpage {
-    border-left: 2px solid mediumpurple!important;
+    border-left: 2px solid mediumpurple !important;
 }

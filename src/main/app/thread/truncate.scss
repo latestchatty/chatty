@@ -1,10 +1,10 @@
 .threadCapHeader {
-    color: #E9E9DE;
+    color: #e9e9de;
     background-color: #181818;
     font-size: 12px;
     font-weight: bold;
     padding: 0;
-    height: 19px!important;
+    height: 19px !important;
     line-height: 17px;
     margin: 0 0 -3px 8px;
     text-align: left;
@@ -15,10 +15,12 @@
     cursor: pointer;
     text-decoration: none;
 }
+
 .threadCapHeader:hover {
     color: #fff;
     background-color: #222;
 }
+
 .threadCapHeader strong {
     color: #00bff3;
     font-size: 14px;
