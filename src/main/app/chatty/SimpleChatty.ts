@@ -9,7 +9,7 @@ import {Thread} from '../thread/Thread'
 import {Toast} from '../toast/Toast'
 
 @Component({
-    templateUrl: 'app/chatty/simpleChatty.html',
+    template: require('./simpleChatty.html'),
     directives: [Navbar, Post, Thread, Toast]
 })
 export class SimpleChatty implements OnInit {

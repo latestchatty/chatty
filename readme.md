@@ -7,7 +7,7 @@ Features above standard chatty:
 * Reflow action: Re-sorts the chatty instantly, active posts on top, no http call required.
 * Live filtering. No more reposts! Filter works without API call in the background (against live threads only).
 * Content embed in-post for: raw images, imgur (gifv, albums), gfycat, youtube, vimeo.
-* Tabs support: 
+* Tabs support:
   * Save a post, author, filter, etc for later quick filtering.
   * Default tabs include: Chatty (all threads), Frontpage (Shacknews posts), Mine (threads containing your username)
 * Collapsed post ids are stored in the cloud. Compatible with any other WinChatty V2 cloud collapse using app.
@@ -19,7 +19,7 @@ http://chatty.nixxed.com
 ##### How to run:
 ---------
 Notes
-  1. Uses browser-sync, IE not a real web server
+  1. Uses webpack-dev-server, not a real web server
   2. Access it at http://localhost:3000
 ~~~~
 npm start
@@ -32,6 +32,15 @@ Notes:
   2. Serve build dir as the public root
 ~~~~
 npm run build
+~~~~
+
+##### How to test production build locally:
+---------
+Notes:
+  1. Hosts whatever is in the 'build' directory
+  2. Access it at http://localhost:3000
+~~~~
+npm run server
 ~~~~
 
 ##### Technology Used

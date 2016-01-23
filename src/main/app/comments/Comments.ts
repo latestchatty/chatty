@@ -6,9 +6,11 @@ import {Post} from '../post/Post'
 import {ReplyBox} from '../replybox/ReplyBox'
 import {ScrollIntoView} from '../directives/ScrollIntoView'
 
+import './comments.scss';
+
 @Component({
     selector: 'comments',
-    templateUrl: './app/comments/comments.html',
+    template: require('./comments.html'),
     directives: [Comments, Post, ReplyBox, ScrollIntoView]
 })
 export class Comments {

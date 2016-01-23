@@ -3,7 +3,7 @@ import {Component, Input} from 'angular2/core'
 
 @Component({
     selector: 'embed-content',
-    templateUrl: 'app/embedContent/embedContent.html'
+    template: require('./embedContent.html')
 })
 export class EmbedContent {
     public visible = false
