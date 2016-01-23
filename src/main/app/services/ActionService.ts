@@ -8,6 +8,7 @@ import {ToastService} from './ToastService'
 @Injectable()
 export class ActionService {
     private lastReply
+    private selectedPostContainer = {post: null}
 
     constructor(private apiService:ApiService,
                 private modelService:ModelService,
@@ -65,9 +66,8 @@ export class ActionService {
                     thread.visible = false
                     threads.push(thread)
                 } else {
-                    if (thread.replyCount > 10 && thread.state !== 'truncated') {
-                        thread.state = 'truncated'
-                    } else if (thread.state === 'collapsed') {
+                    //cloud says this is not collapsed
+                    if (thread.state === 'collapsed') {
                         delete thread.state
                     }
                     this.collapseReply(thread)
@@ -110,17 +110,14 @@ export class ActionService {
         //collapse thread
         thread.visible = false
         this.closeReplyBox(thread)
-        thread.state = 'collapsed'
+
+        if (this.selectedPostContainer.post === thread) {
+            //TODO instead of unselecting, select the next thread
+            this.selectedPostContainer.post = null
+        }
 
         //update local storage
         this.settingsService.collapseThread(thread.id)
-    }
-
-    expandThread(thread) {
-        thread.state = 'expanded'
-
-        //update local storage
-        this.settingsService.uncollapseThread(thread.id)
     }
 
     expandReply(post) {
@@ -132,11 +129,18 @@ export class ActionService {
         post.viewFull = true
     }
 
+    selectPost(post) {
+        this.selectedPostContainer.post = post
+    }
+
+    getSelectedPost() {
+        return this.selectedPostContainer
+    }
+
     private resetThread(post, closeComment) {
         var thread = this.modelService.getPostThread(post)
 
         //close any other actions
-        this.expandThread(thread)
         this.closeReplyBox(thread)
         if (closeComment) {
             this.collapseReply(thread)

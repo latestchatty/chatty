@@ -35,7 +35,6 @@ export class SingleThread implements OnInit {
                 .subscribe(response => {
                     let post = response.threads[0]
                     let fixed = this.modelService.addThread(post, null)
-                    fixed.state = 'expanded'
                     threadId = fixed.threadId
 
                     this.post = fixed

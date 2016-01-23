@@ -23,7 +23,7 @@
     </div>
 
     <!-- action bar -->
-    <div class="actionbar" *ngIf="post.type !== 'shackmessage'">
+    <div class="actionbar">
         <i class="actionItem fa fa-close" title="Collapse post" (click)="collapse()"></i>
         <i class="actionItem fa fa-comment" title="Reply to post" (click)="openReplyBox()"
                 *ngIf="isLoggedIn()"></i>

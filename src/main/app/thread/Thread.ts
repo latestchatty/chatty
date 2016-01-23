@@ -14,8 +14,4 @@ export class Thread {
 
     constructor(private actionService:ActionService){
     }
-
-    expandThread() {
-        this.actionService.expandThread(this.post)
-    }
 }

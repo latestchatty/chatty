@@ -1,15 +1,32 @@
-.threads {
-    margin-top: 55px;
+#pane-sidebar {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    bottom: 0;
+    width: 30%;
+    background-color: black;
+    overflow-y: scroll;
+    margin-top: 5px;
 }
 
-.collapsed {
-    opacity: 0.5;
-    border-bottom: 3px double #dedecd;
+#pane-content {
+    position: fixed;
+    top: 40px;
+    left: 30%;
+    bottom: 0;
+    right: 0;
+    background-color: black;
+    overflow-y: scroll;
+    padding-right: 5px;
+    margin: 5px 0 0 5px;
 }
 
-.loader {
-    color: #fff;
-    vertical-align: middle;
+.splitPost {
+    margin-bottom: 5px;
+}
+
+.splitPost:hover {
+    border: 1px solid lightgray;
 }
 
 a.showpost:link,

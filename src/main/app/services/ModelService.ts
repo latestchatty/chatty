@@ -141,8 +141,6 @@ export class ModelService {
         if (this.settingsService.isCollapsed(thread.threadId)) {
             thread.state = 'collapsed'
             thread.visible = false
-        } else if (thread.replyCount > 10) {
-            thread.state = 'truncated'
         }
 
         return thread

@@ -1,6 +1,7 @@
 declare var _:any
 import {Injectable} from 'angular2/core'
 import {Subscription} from 'rxjs/Subscription'
+import {ActionService} from './ActionService'
 import {ApiService} from './ApiService'
 import {ModelService} from './ModelService'
 import {SettingsService} from './SettingsService'
@@ -15,7 +16,8 @@ export class EventService {
     private passiveMode:Boolean = false
     private waitingEvent:Subscription<any> = null
 
-    constructor(private apiService:ApiService,
+    constructor(private actionService:ActionService,
+                private apiService:ApiService,
                 private modelService:ModelService,
                 private settingsService:SettingsService,
                 private shackMessageService:ShackMessageService,
@@ -46,6 +48,10 @@ export class EventService {
 
                 //reorder pinned threads
                 this.handlePinnedThreads()
+
+                //select first post
+                let firstThread = _.find(this.modelService.getThreads(), post => post.state !== 'collapsed')
+                this.actionService.selectPost(firstThread)
 
                 //start events
                 return this.waitForEvents()
