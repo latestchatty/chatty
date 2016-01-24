@@ -9,7 +9,7 @@
     <replybox *ngIf="post.replying" replyclass="replybox-op" [post]="post"></replybox>
 
     <!-- truncated replies -->
-    <div *ngIf="post.state === 'truncated'">
+    <div *ngIf="post.state === 'truncated' && !alwaysExpanded">
         <p class="threadCapHeader" (click)="expandThread()">
             &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all
             <strong>{{post.replyCount}}</strong> replies.
@@ -21,7 +21,7 @@
     </div>
 
     <!-- full replies -->
-    <div *ngIf="post.state !== 'truncated'">
+    <div *ngIf="alwaysExpanded ||post.state !== 'truncated'">
         <div class="treeview">
             <comments [posts]="post.posts" [flat]="false"></comments>
         </div>

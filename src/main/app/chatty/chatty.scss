@@ -10,7 +10,6 @@
     width: 30%;
     background-color: black;
     overflow-y: scroll;
-    margin-top: 5px;
 }
 
 #pane-content {
@@ -22,7 +21,14 @@
     background-color: black;
     overflow-y: scroll;
     padding-right: 5px;
-    margin: 5px 0 0 5px;
+}
+
+#pane-leftnav {
+    margin: 5px 5px 0 0;
+}
+
+#pane-rightnav {
+    margin: 5px;
 }
 
 .simplePost {

@@ -11,6 +11,7 @@ import {ReplyBox} from '../replybox/ReplyBox'
 })
 export class Thread {
     @Input() public post
+    @Input() public alwaysExpanded
 
     constructor(private actionService:ActionService) {
     }
