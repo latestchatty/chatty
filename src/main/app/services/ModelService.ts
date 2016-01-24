@@ -1,4 +1,4 @@
-declare var _ : any
+declare var _:any
 import {Injectable} from 'angular2/core'
 import {EmployeeList}  from '../util/EmployeeList'
 import {ModList} from '../util/ModList'
@@ -141,6 +141,8 @@ export class ModelService {
         if (this.settingsService.isCollapsed(thread.threadId)) {
             thread.state = 'collapsed'
             thread.visible = false
+        } else if (thread.replyCount > 10) {
+            thread.state = 'truncated'
         }
 
         return thread

@@ -1,0 +1,9 @@
+<div>
+    <navbar></navbar>
+    <toast></toast>
+    <div id="pane-simple-threads">
+        <div *ngFor="#post of threads" class="simplePost">
+            <thread [post]="post"></thread>
+        </div>
+    </div>
+</div>

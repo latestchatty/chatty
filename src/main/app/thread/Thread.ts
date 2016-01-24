@@ -12,6 +12,10 @@ import {ReplyBox} from '../replybox/ReplyBox'
 export class Thread {
     @Input() public post
 
-    constructor(private actionService:ActionService){
+    constructor(private actionService:ActionService) {
+    }
+
+    expandThread() {
+        this.actionService.expandThread(this.post)
     }
 }

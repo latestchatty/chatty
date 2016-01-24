@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core'
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router'
-import {Chatty} from './chatty/Chatty'
+import {SimpleChatty} from './chatty/SimpleChatty'
+import {SplitChatty} from './chatty/SplitChatty'
 import {ActionService} from './services/ActionService'
 import {ApiService} from './services/ApiService'
 import {BodyTransformService} from './services/BodyTransformService'
@@ -35,7 +36,9 @@ import {SingleThread} from './singleThread/SingleThread'
     directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
-    {path: '/chatty', name: 'Chatty', component: Chatty, useAsDefault: true},
+    {path: '/chatty', name: 'Chatty', component: SimpleChatty, useAsDefault: true},
+    {path: '/chatty/simple', name: 'Chatty', component: SimpleChatty},
+    {path: '/chatty/split', name: 'Chatty', component: SplitChatty},
     {path: '/thread/:threadId/:commentId', name: 'Thread', component: SingleThread}
 ])
 export class App  {

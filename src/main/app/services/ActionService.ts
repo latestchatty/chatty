@@ -1,4 +1,4 @@
-declare var _ : any
+declare var _:any
 import {Injectable} from 'angular2/core'
 import {ApiService} from './ApiService'
 import {ModelService} from './ModelService'
@@ -66,8 +66,10 @@ export class ActionService {
                     thread.visible = false
                     threads.push(thread)
                 } else {
-                    //cloud says this is not collapsed
-                    if (thread.state === 'collapsed') {
+                    if (thread.replyCount > 10 && thread.state !== 'truncated') {
+                        thread.state = 'truncated'
+                    } else if (thread.state === 'collapsed') {
+                        //cloud says this is not collapsed
                         delete thread.state
                     }
                     this.collapseReply(thread)
@@ -110,6 +112,7 @@ export class ActionService {
         //collapse thread
         thread.visible = false
         this.closeReplyBox(thread)
+        thread.state = 'collapsed'
 
         if (this.selectedPostContainer.post === thread) {
             //TODO instead of unselecting, select the next thread
@@ -118,6 +121,11 @@ export class ActionService {
 
         //update local storage
         this.settingsService.collapseThread(thread.id)
+    }
+
+    expandThread(thread) {
+        thread.state = 'expanded'
+        this.settingsService.uncollapseThread(thread.id)
     }
 
     expandReply(post) {
@@ -141,6 +149,7 @@ export class ActionService {
         var thread = this.modelService.getPostThread(post)
 
         //close any other actions
+        this.expandThread(thread)
         this.closeReplyBox(thread)
         if (closeComment) {
             this.collapseReply(thread)

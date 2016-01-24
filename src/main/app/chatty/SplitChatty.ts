@@ -9,10 +9,10 @@ import {Thread} from '../thread/Thread'
 import {Toast} from '../toast/Toast'
 
 @Component({
-    templateUrl: 'app/chatty/chatty.html',
+    templateUrl: 'app/chatty/splitChatty.html',
     directives: [Navbar, Post, Thread, Toast]
 })
-export class Chatty implements OnInit {
+export class SplitChatty implements OnInit {
     public threads
     public newThreads
     public selectedPost
