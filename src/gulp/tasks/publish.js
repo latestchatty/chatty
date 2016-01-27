@@ -9,5 +9,6 @@ gulp.task('publish', function() {
     return gulp.src(config.publishPaths)
         .pipe(publisher.publish({}))
         .pipe(publisher.cache())
+        .pipe(publisher.sync())
         .pipe(awspublish.reporter())
 })
