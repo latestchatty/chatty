@@ -7,7 +7,6 @@
   "repository": "https://github.com/NiXXeD/chatty",
   "scripts": {
     "build": "gulp clean && gulp build",
-    "publish": "npm run build && gulp publish",
     "watch": "gulp",
     "start": "npm run build && gulp server"
   },
@@ -20,7 +19,6 @@
     "es6-promise": "3.0.2",
     "es6-shim": "0.33.3",
     "gulp": "3.9.0",
-    "gulp-awspublish": "3.0.1",
     "gulp-concat": "2.6.0",
     "gulp-postcss": "6.0.1",
     "gulp-rename": "1.2.2",
