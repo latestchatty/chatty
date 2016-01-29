@@ -42,10 +42,11 @@ export class PostService {
         var pass = this.settingsService.getPassword()
         return this.apiService.submitPost(user, pass, post.parentId, post.body)
             .then(response => {
-                var result = _.get(response, 'data.result')
+                var result = _.get(response, 'result')
                 if (result !== 'success') {
                     Promise.reject(response)
                 }
+                return response
             })
     }
 
@@ -59,22 +60,27 @@ export class PostService {
                     _.pull(this.postQueue, post)
                     this.startPosting()
                 })
-                .catch(data => {
-                    if (data && data.error && data.code === 'ERR_INVALID_LOGIN') {
+                .catch(response => {
+                    if (response && response.error && response.code === 'ERR_INVALID_LOGIN') {
                         let msg = 'Error creating post: Invalid login'
-                        console.log(msg, data)
+                        console.log(msg, response)
                         this.toastService.warn(msg)
 
                         this.settingsService.clearCredentials()
                         this.clearQueue()
-                    } else if (_.get(data, 'error') && _.contains(_.keys(ServerErrors), data.code)) {
-                        let msg = `Error creating post: ${ServerErrors[data.code]}`
-                        console.error(msg, data)
+                    } else if (_.get(response, 'error') && _.contains(_.keys(ServerErrors), response.code)) {
+                        let msg = `Error creating post: ${ServerErrors[response.code]}`
+                        console.error(msg, response)
                         this.toastService.warn(msg)
 
                         _.pull(this.postQueue, post)
                     } else {
-                        this.lastTimeout = setTimeout(this.startPosting, 60000)
+                        if (response.code === 'ERR_POST_RATE_LIMIT') {
+                            let msg = 'Post Rate Limit hit, trying again in 60 seconds.'
+                            console.error(msg, response)
+                            this.toastService.warn(msg)
+                        }
+                        this.lastTimeout = setTimeout(() => this.startPosting(), 60000)
                     }
                 })
         } else {
