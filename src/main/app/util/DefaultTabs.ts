@@ -13,8 +13,7 @@ export const DefaultTabs = [
         hoverText: 'Front page articles.',
         expression: thread => thread.author === 'Shacknews',
         defaultTab: true,
-        loginRequired: false,
-        newPostFunction: (thread, parent, post) => thread.author === 'Shacknews'
+        loginRequired: false
     }, {
         displayText: 'Mine',
         hoverText: 'Threads created by you.',
