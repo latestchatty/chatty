@@ -40,4 +40,8 @@ export class Post {
     isLoggedIn() {
         return this.settingsService.isLoggedIn()
     }
+
+    getTagWidth(count) {
+        return Math.min(15 + count * 5, 45)
+    }
 }

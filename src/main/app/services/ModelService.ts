@@ -10,6 +10,7 @@ export class ModelService {
     private threads = []
     private newThreads = []
     private posts = {}
+    private supportedTags = ['lol', 'inf', 'unf', 'wtf']
 
     constructor(private bodyTransformService:BodyTransformService,
                 private settingsService:SettingsService) {
@@ -22,6 +23,22 @@ export class ModelService {
         //fix user class
         _.forIn(this.posts, post => {
             this.updateUserClass(post, this.posts[post.threadId])
+        })
+    }
+
+    updateTags(updates) {
+        _.each(updates, update => {
+            if (this.supportedTags.indexOf(update.tag) >= 0) {
+                var post = this.posts[update.postId]
+                if (post) {
+                    var tag = _.find(post.lols, {'tag': update.tag})
+                    if (tag) {
+                        tag.count = update.count
+                    } else {
+                        post.lols.push({tag: update.tag, count: update.count})
+                    }
+                }
+            }
         })
     }
 
@@ -160,6 +177,14 @@ export class ModelService {
 
         //add user class highlight
         this.updateUserClass(post, thread)
+
+        //default tags as necessary
+        var tags = post.lols
+        post.lols = []
+        _.each(this.supportedTags, tag => {
+            var found = _.find(tags, {'tag': tag})
+            post.lols.push(found || {tag: tag})
+        })
 
         //add last action date
         if (thread) {

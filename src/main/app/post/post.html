@@ -3,6 +3,14 @@
         <!-- header left -->
         <span class="user" [ngClass]="post.userClass" (click)="addUserTab(post.author)" [innerHTML]="post.author"></span>
 
+        <div class="tags">
+            <template ngFor #tag [ngForOf]="post.lols">
+                 <span *ngIf="tag.count > 0" class="tag" [ngClass]="'tag_' + tag.tag"
+                       [title]="tag.tag" [innerHTML]="tag.count" [style.width]="getTagWidth(tag.count)">
+                 </span>
+            </template>
+        </div>
+
         <!-- header right -->
         <div class="headerright">
             <div class="postdate">{{post.date | date : 'MMM d, yyyy h:mma' }}</div>

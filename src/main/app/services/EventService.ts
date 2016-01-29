@@ -179,7 +179,7 @@ export class EventService {
         } else if (event.eventType === 'categoryChange') {
             return this.modelService.changeCategory(event.eventData.postId, event.eventData.category)
         } else if (event.eventType === 'lolCountsUpdate') {
-            //not supported
+            return this.modelService.updateTags(event.eventData.updates)
         } else {
             console.error('Unhandled event', event)
             this.toastService.warn('Unhandled chatty event.')

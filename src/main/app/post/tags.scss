@@ -1,0 +1,38 @@
+.tags {
+    margin-left: 5px;
+    display: inline;
+}
+
+.tag {
+    margin: 0 3px;
+    display: inline-block;
+    width: 35px;
+    height: 14px;
+    line-height: 14px;
+    color: #fff;
+    font-size: 11px;
+    text-align: center;
+    text-shadow: 0 0 3px #000;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.tag_default {
+    background-color: #7a0fbb;
+}
+
+.tag_wtf {
+    background-color: #c000c0;
+}
+
+.tag_unf {
+    background-color: #f00;
+}
+
+.tag_inf {
+    background-color: #09c;
+}
+
+.tag_lol {
+    background-color: #f80;
+}
