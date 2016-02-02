@@ -28,14 +28,17 @@ export class ModelService {
 
     updateTags(updates) {
         _.each(updates, update => {
-            if (this.supportedTags.indexOf(update.tag) >= 0) {
-                var post = this.posts[update.postId]
+            if (_.contains(this.supportedTags, update.tag)) {
+                let post = this.posts[update.postId]
                 if (post) {
-                    var tag = _.find(post.lols, {'tag': update.tag})
+                    let tag = _.find(post.lols, {tag: update.tag})
                     if (tag) {
                         tag.count = update.count
                     } else {
-                        post.lols.push({tag: update.tag, count: update.count})
+                        post.lols.push({
+                            tag: update.tag,
+                            count: update.count
+                        })
                     }
                 }
             }
@@ -43,7 +46,7 @@ export class ModelService {
     }
 
     addThread(post, event) {
-        var thread = this.fixThread(post)
+        let thread = this.fixThread(post)
         if (event === true) {
             this.newThreads.push(thread)
         } else {
@@ -64,9 +67,9 @@ export class ModelService {
     addPost(post, thread) {
         if (!this.posts[post.id]) {
             thread = thread || this.posts[post.threadId]
-            var parent = this.posts[post.parentId]
+            let parent = this.posts[post.parentId]
             if (parent && thread) {
-                var fixedPost = this.fixPost(post, thread)
+                let fixedPost = this.fixPost(post, thread)
                 this.updateLineClass(fixedPost, thread)
                 this.updateModTagClass(fixedPost)
                 fixedPost.parentAuthor = parent.author
@@ -94,7 +97,7 @@ export class ModelService {
     }
 
     changeCategory(id, category) {
-        var post = this.posts[id]
+        let post = this.posts[id]
         if (post) {
             if (category === 'nuked') {
                 //remove if it's a root post
@@ -124,11 +127,11 @@ export class ModelService {
     }
 
     private fixThread(thread) {
-        var threadPosts = _.sortBy(thread.posts, 'id')
+        let threadPosts = _.sortBy(thread.posts, 'id')
 
         //handle root post
         if (thread.posts) {
-            var rootPost = _.find(threadPosts, {parentId: 0})
+            let rootPost = _.find(threadPosts, {parentId: 0})
             _.pull(threadPosts, rootPost)
             thread.id = rootPost.id
             thread.threadId = rootPost.id
@@ -149,10 +152,7 @@ export class ModelService {
         this.updateModTagClass(thread)
         this.updateExpiration(thread)
 
-        while (threadPosts.length > 0) {
-            var post = threadPosts.shift()
-            this.addPost(post, thread)
-        }
+        _.each(threadPosts, post => this.addPost(post, thread))
 
         //check if it's supposed to be collapsed
         if (this.settingsService.isCollapsed(thread.threadId)) {
@@ -179,10 +179,10 @@ export class ModelService {
         this.updateUserClass(post, thread)
 
         //default tags as necessary
-        var tags = post.lols
+        let tags = post.lols
         post.lols = []
         _.each(this.supportedTags, tag => {
-            var found = _.find(tags, {'tag': tag})
+            let found = _.find(tags, {tag: tag})
             post.lols.push(found || {tag: tag})
         })
 
@@ -195,13 +195,15 @@ export class ModelService {
     }
 
     private updateUserClass(post, thread) {
-        if (post.author.toLowerCase() === this.settingsService.getUsername().toLowerCase()) {
+        let postAuthor = post.author.toLowerCase()
+
+        if (postAuthor === this.settingsService.getUsername().toLowerCase()) {
             post.userClass = 'user_me'
-        } else if (thread && post.id !== thread.id && post.author.toLowerCase() === thread.author.toLowerCase()) {
+        } else if (thread && post.id !== thread.id && postAuthor === thread.author.toLowerCase()) {
             post.userClass = 'user_op'
-        } else if (_.contains(EmployeeList, post.author.toLowerCase())) {
+        } else if (_.contains(EmployeeList, postAuthor)) {
             post.userClass = 'user_employee'
-        } else if (_.contains(ModList, post.author.toLowerCase())) {
+        } else if (_.contains(ModList, postAuthor)) {
             post.userClass = 'user_mod'
         } else {
             post.userClass = null
@@ -228,7 +230,7 @@ export class ModelService {
         } else if (post.author.toLowerCase() === 'shacknews') {
             post.tagClass = 'postFrontpage'
         } else {
-            delete post.tagClass
+            post.tagClass = null
         }
     }
 
