@@ -1,9 +1,11 @@
 import {Component} from 'angular2/core'
 import {ToastService} from '../services/ToastService'
 
+import './toast.scss';
+
 @Component({
     selector: 'toast',
-    templateUrl: 'app/toast/toast.html'
+    template: require('./toast.html')
 })
 export class Toast {
     public toasts

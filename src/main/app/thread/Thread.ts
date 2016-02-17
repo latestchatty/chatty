@@ -4,9 +4,11 @@ import {Comments} from '../comments/Comments'
 import {Post} from '../post/Post'
 import {ReplyBox} from '../replybox/ReplyBox'
 
+import './truncate.scss';
+
 @Component({
     selector: 'thread',
-    templateUrl: 'app/thread/thread.html',
+    template: require('./thread.html'),
     directives: [Comments, Post, ReplyBox]
 })
 export class Thread {

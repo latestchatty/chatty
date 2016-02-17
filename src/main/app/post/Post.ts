@@ -4,9 +4,13 @@ import {SettingsService} from '../services/SettingsService'
 import {TabService} from '../services/TabService'
 import {EmbedContent} from '../embedContent/EmbedContent'
 
+import './post.scss';
+import './shacktags.scss';
+import './tags.scss';
+
 @Component({
     selector: 'post',
-    templateUrl: 'app/post/post.html',
+    template: require('./post.html'),
     directives: [EmbedContent]
 })
 export class Post {

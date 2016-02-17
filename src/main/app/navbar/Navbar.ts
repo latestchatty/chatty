@@ -9,9 +9,11 @@ import {TabService} from '../services/TabService'
 import {ModelService} from '../services/ModelService'
 import {ReplyBox} from '../replybox/ReplyBox'
 
+import './navbar.scss';
+
 @Component({
     selector: 'navbar',
-    templateUrl: 'app/navbar/navbar.html',
+    template: require('./navbar.html'),
     directives: [DisableHotkeys, ReplyBox]
 })
 export class Navbar implements OnInit {

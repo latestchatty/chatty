@@ -5,9 +5,12 @@ import {PostService} from '../services/PostService'
 import {AutoFocus} from '../directives/AutoFocus'
 import {DisableHotkeys} from '../directives/DisableHotkeys'
 
+import './replybox.scss';
+import './tagLegend.scss';
+
 @Component({
     selector: 'replybox',
-    templateUrl: 'app/replybox/replybox.html',
+    template: require('./replybox.html'),
     directives: [AutoFocus, DisableHotkeys]
 })
 export class ReplyBox {

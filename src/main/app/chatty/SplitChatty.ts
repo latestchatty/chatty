@@ -8,8 +8,11 @@ import {Post} from '../post/Post'
 import {Thread} from '../thread/Thread'
 import {Toast} from '../toast/Toast'
 
+import './body.scss';
+import './chatty.scss';
+
 @Component({
-    templateUrl: 'app/chatty/splitChatty.html',
+    template: require('./splitChatty.html'),
     directives: [Navbar, Post, Thread, Toast]
 })
 export class SplitChatty implements OnInit {

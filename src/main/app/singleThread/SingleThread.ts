@@ -9,7 +9,7 @@ import {ModelService} from '../services/ModelService'
 import {ToastService} from '../services/ToastService'
 
 @Component({
-    templateUrl: 'app/singleThread/singleThread.html',
+    template: require('./singleThread.html'),
     directives: [Thread]
 })
 export class SingleThread implements OnInit {
