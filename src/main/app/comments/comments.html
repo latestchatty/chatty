@@ -5,7 +5,7 @@
             <span class="oneline" [ngClass]="post.lineClass" [ngClass]="post.tagClass"
                   (click)="expandReply(post)" [innerHTML]="post.body.oneline"></span>
 
-            <span class="onelineSeparator">&nbsp;:&nbsp;</span>
+            <span class="onelineSeparator">:</span>
             <span class="user" [ngClass]="post.userClass" (click)="addUserTab(post.author)">{{post.author}}</span>
         </div>
 

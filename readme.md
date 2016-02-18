@@ -48,4 +48,4 @@ npm run server
 
 * [Angular2](https://angular.io/) (SPA Framework)
 * [TypeScript](https://github.com/Microsoft/TypeScript) (Language)
-* [Gulp](https://github.com/gulpjs/gulp) (Build automation)
+* [Webpack](http://webpack.github.io/docs/) (Build automation)

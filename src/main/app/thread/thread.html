@@ -11,8 +11,9 @@
     <!-- truncated replies -->
     <div *ngIf="post.state === 'truncated' && !alwaysExpanded">
         <p class="threadCapHeader" (click)="expandThread()">
-            &nbsp;Thread Truncated. Showing 10 most recent replies. Click to see all
-            <strong>{{post.replyCount}}</strong> replies.
+            <span class="threadCapText">Thread Truncated. Showing 10 most recent replies. Click to see all
+                <strong>{{post.replyCount}}</strong> replies.
+            </span>
         </p>
 
         <div class="treeview">
