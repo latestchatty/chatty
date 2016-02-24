@@ -12,8 +12,8 @@ body {
     padding: 5px 5px 5px 5px;
     color: white;
     cursor: pointer;
-}
 
-.button:hover {
-    background-color: #528090;
+    &:hover {
+        background-color: #528090;
+    }
 }
