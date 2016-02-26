@@ -14,18 +14,18 @@
     border-bottom: 1px dotted #fff;
     cursor: pointer;
     text-decoration: none;
+
+    &:hover {
+        color: #fff;
+        background-color: #222;
+    }
+
+    strong {
+        color: #00bff3;
+        font-size: 14px;
+    }
 }
 
 .threadCapText {
     padding-left: 7px;
-}
-
-.threadCapHeader:hover {
-    color: #fff;
-    background-color: #222;
-}
-
-.threadCapHeader strong {
-    color: #00bff3;
-    font-size: 14px;
 }

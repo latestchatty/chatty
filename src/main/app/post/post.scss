@@ -44,10 +44,10 @@
     color: #f3e7b5;
     font-family: sans-serif;
     cursor: pointer;
-}
 
-.user:hover {
-    text-decoration: underline;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .user_op {
@@ -121,17 +121,17 @@
     position: absolute;
     bottom: 2px;
     left: 6px;
-}
 
-.actionbar i {
-    padding-right: 9px;
+    i {
+        padding-right: 9px;
+    }
 }
 
 .actionItem {
     color: white;
     cursor: pointer;
-}
 
-.actionItem:hover {
-    color: #00bff3;
+    &:hover {
+        color: #00bff3;
+    }
 }

@@ -7,21 +7,21 @@
     border: 1px solid #6cb0c0;
     color: white;
     margin-right: 10px;
-}
 
-.tagLegend td {
-    padding: 0 10px 0 10px;
-}
+    td {
+        padding: 0 10px 0 10px;
+    }
 
-.tagLegend h4 {
-    text-align: center;
-    margin: 0;
+    h4 {
+        text-align: center;
+        margin: 0;
+    }
 }
 
 .tagLegendClicky {
     cursor: pointer;
-}
 
-.tagLegendClicky:hover {
-    text-decoration: underline;
+    &:hover {
+        text-decoration: underline;
+    }
 }

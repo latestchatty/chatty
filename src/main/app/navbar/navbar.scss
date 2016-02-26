@@ -20,21 +20,21 @@
     border-bottom: none;
     text-shadow: 0 1px 1px black;
     line-height: 21px;
-}
 
-.navbar-tabs li {
-    display: inline-block;
-    padding: 0 5px 0 5px;
-    border-right: 1px solid black;
-    cursor: pointer;
-}
+    li {
+        display: inline-block;
+        padding: 0 5px 0 5px;
+        border-right: 1px solid black;
+        cursor: pointer;
 
-.navbar-tabs .hoverable:hover {
-    text-decoration: underline;
-}
+        &:last-child {
+            border-right: 0;
+        }
+    }
 
-.navbar-tabs li:last-child {
-    border-right: 0;
+    .hoverable:hover {
+        text-decoration: underline;
+    }
 }
 
 .navbarTabSelected {

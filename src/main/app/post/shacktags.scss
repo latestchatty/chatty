@@ -64,10 +64,10 @@
     cursor: help;
     color: #383838;
     background-color: #383838;
-}
 
-.jt_spoiler:focus {
-    color: #f00;
+    &:focus {
+        color: #f00;
+    }
 }
 
 .jt_codesmall {
