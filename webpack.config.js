@@ -11,9 +11,9 @@ const stylelint = require('stylelint');
 
 const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
-    app: path.join(__dirname, 'src/main'),
+    app: path.join(__dirname, 'src'),
     build: path.join(__dirname, 'build'),
-    images: path.join(__dirname, 'src/main/images')
+    images: path.join(__dirname, 'src/images')
 };
 
 const common = {
