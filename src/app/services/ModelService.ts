@@ -1,5 +1,6 @@
 declare var _:any
-import {Injectable} from 'angular2/core'
+import {Injectable} from '@angular/core'
+import {DomSanitizationService} from "@angular/platform-browser"
 import {EmployeeList}  from '../util/EmployeeList'
 import {ModList} from '../util/ModList'
 import {SettingsService} from './SettingsService'
@@ -12,7 +13,8 @@ export class ModelService {
     private posts = {}
     private supportedTags = ['lol', 'inf', 'unf', 'wtf']
 
-    constructor(private bodyTransformService:BodyTransformService,
+    constructor(private sanitizer: DomSanitizationService,
+                private bodyTransformService:BodyTransformService,
                 private settingsService:SettingsService) {
     }
 
@@ -28,7 +30,7 @@ export class ModelService {
 
     updateTags(updates) {
         _.each(updates, update => {
-            if (_.contains(this.supportedTags, update.tag)) {
+            if (_.includes(this.supportedTags, update.tag)) {
                 let post = this.posts[update.postId]
                 if (post) {
                     let tag = _.find(post.lols, {tag: update.tag})
@@ -168,6 +170,8 @@ export class ModelService {
     private fixPost(post, thread) {
         //parse body for extra features
         post.body = this.bodyTransformService.parse(post)
+        post.body.oneline = this.sanitizer.bypassSecurityTrustHtml(post.body.oneline)
+        post.body.chunks = _.map(post.body.chunks, c => this.sanitizer.bypassSecurityTrustHtml(c))
 
         //date object for date pipe
         post.date = new Date(post.date)
@@ -201,9 +205,9 @@ export class ModelService {
             post.userClass = 'user_me'
         } else if (thread && post.id !== thread.id && postAuthor === thread.author.toLowerCase()) {
             post.userClass = 'user_op'
-        } else if (_.contains(EmployeeList, postAuthor)) {
+        } else if (_.includes(EmployeeList, postAuthor)) {
             post.userClass = 'user_employee'
-        } else if (_.contains(ModList, postAuthor)) {
+        } else if (_.includes(ModList, postAuthor)) {
             post.userClass = 'user_mod'
         } else {
             post.userClass = null

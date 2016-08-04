@@ -1,7 +1,7 @@
 <navbar></navbar>
 <toast></toast>
 <div id="pane-sidebar">
-    <div *ngFor="#post of threads" id="pane-leftnav">
+    <div *ngFor="let post of threads" id="pane-leftnav">
         <div class="rootPost splitPost" *ngIf="post.visible"
              [ngClass]="post.tagClass" (click)="selectPost(post)">
             <post [post]="post"></post>

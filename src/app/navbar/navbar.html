@@ -9,7 +9,7 @@
             </li>
 
             <!-- Chatty Tabs -->
-            <template ngFor #tab [ngForOf]="tabs">
+            <template ngFor let-tab [ngForOf]="tabs">
                 <li *ngIf="!tab.loginRequired || isLoggedIn()"
                     (click)="selectTab(tab)" (contextmenu)="removeTab($event, tab)"
                     [ngClass]="{ navbarTabSelected: tab.selected }">

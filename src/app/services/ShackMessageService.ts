@@ -1,5 +1,5 @@
 declare var _:any
-import {Injectable} from 'angular2/core'
+import {Injectable} from '@angular/core'
 import {ApiService} from '../services/ApiService'
 import {SettingsService} from '../services/SettingsService'
 import {ToastService} from '../services/ToastService'

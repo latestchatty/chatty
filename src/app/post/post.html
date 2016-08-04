@@ -4,11 +4,11 @@
         <span class="user" [ngClass]="post.userClass" (click)="addUserTab(post.author)" [innerHTML]="post.author"></span>
 
         <div class="tags">
-            <template ngFor #tag [ngForOf]="post.lols">
+            <div template="ngFor let tag of post.lols">
                  <span *ngIf="tag.count > 0" class="tag" [ngClass]="'tag_' + tag.tag"
                        [title]="tag.tag" [innerHTML]="tag.count" [style.width]="getTagWidth(tag.count)">
                  </span>
-            </template>
+            </div>
         </div>
 
         <!-- header right -->
@@ -24,7 +24,7 @@
 
     <!-- post content -->
     <div class="postBody postBodyText">
-        <span *ngFor="#chunk of post.body.chunks">
+        <span *ngFor="let chunk of post.body.chunks">
             <span *ngIf="!chunk.type" [innerHTML]="chunk"></span>
             <embed-content *ngIf="chunk.type === 'embed'" [url]="chunk.value" [type]="chunk.embedType"></embed-content>
         </span>

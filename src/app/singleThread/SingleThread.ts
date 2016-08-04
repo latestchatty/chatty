@@ -1,6 +1,5 @@
-import {Component, OnInit} from 'angular2/core'
-import {RouteParams} from 'angular2/router'
-import {Navbar} from '../navbar/Navbar'
+import {Component, OnInit} from '@angular/core'
+import {RouteParams} from '@angular/router-deprecated'
 import {Thread} from '../thread/Thread'
 import {ApiService} from '../services/ApiService'
 import {ActionService} from '../services/ActionService'

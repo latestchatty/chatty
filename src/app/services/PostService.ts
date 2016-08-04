@@ -1,5 +1,5 @@
 declare var _ : any
-import {Injectable} from 'angular2/core'
+import {Injectable} from '@angular/core'
 import {ApiService} from './ApiService'
 import {ServerErrors} from '../util/ServerErrors'
 import {SettingsService} from './SettingsService'
@@ -68,7 +68,7 @@ export class PostService {
 
                         this.settingsService.clearCredentials()
                         this.clearQueue()
-                    } else if (_.get(response, 'error') && _.contains(_.keys(ServerErrors), response.code)) {
+                    } else if (_.get(response, 'error') && _.includes(_.keys(ServerErrors), response.code)) {
                         let msg = `Error creating post: ${ServerErrors[response.code]}`
                         console.error(msg, response)
                         this.toastService.warn(msg)

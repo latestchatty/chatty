@@ -1,5 +1,5 @@
 <div *ngIf="toasts.length > 0" class="toastContainer">
-    <div *ngFor="#toast of toasts">
+    <div *ngFor="let toast of toasts">
         <div class="toast toast-{{toast.theme}} fade-in" (click)="remove(toast)">
             {{toast.message}}
         </div>

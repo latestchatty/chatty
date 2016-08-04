@@ -13,7 +13,7 @@
 
     <!-- Tag Legend -->
     <table class="tagLegend">
-        <tr *ngFor="#tagGroup of tagGroups">
+        <tr *ngFor="let tagGroup of tagGroups">
             <template ngFor #tag [ngForOf]="tagGroup">
                 <td>
                     <span class="tagLegendClicky" [ngClass]="tag.tag_class" [innerHTML]="tag.name" (click)="addTag(tag)"></span>

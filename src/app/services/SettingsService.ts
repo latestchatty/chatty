@@ -1,5 +1,5 @@
 declare var _:any
-import {Injectable} from 'angular2/core'
+import {Injectable} from '@angular/core'
 import {ApiService} from './ApiService'
 import {ToastService} from './ToastService'
 
@@ -34,7 +34,7 @@ export class SettingsService {
     }
 
     uncollapseThread(id) {
-        if (this.isLoggedIn() && _.contains(this.collapsedThreads, id)) {
+        if (this.isLoggedIn() && _.includes(this.collapsedThreads, id)) {
             this.apiService.markPost(this.getUsername(), id, 'unmarked')
         }
         _.pull(this.collapsedThreads, id)
@@ -64,7 +64,7 @@ export class SettingsService {
     }
 
     unpinThread(id) {
-        if (this.isLoggedIn() && _.contains(this.pinnedThreads, id)) {
+        if (this.isLoggedIn() && _.includes(this.pinnedThreads, id)) {
             this.apiService.markPost(this.getUsername(), id, 'unmarked')
         }
         _.pull(this.pinnedThreads, id)

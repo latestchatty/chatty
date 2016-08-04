@@ -1,5 +1,5 @@
 declare var _:any
-import {Component, OnInit} from 'angular2/core'
+import {Component, OnInit} from '@angular/core'
 import {ActionService} from '../services/ActionService'
 import {DisableHotkeys} from '../directives/DisableHotkeys'
 import {PostService} from '../services/PostService'

@@ -1,4 +1,4 @@
-import {Component, Input} from 'angular2/core'
+import {Component, Input} from '@angular/core'
 import {ActionService} from '../services/ActionService'
 import {Comments} from '../comments/Comments'
 import {Post} from '../post/Post'

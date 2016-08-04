@@ -1,4 +1,4 @@
-import {Component, Input} from 'angular2/core'
+import {Component, Input} from '@angular/core'
 import {ActionService} from '../services/ActionService'
 import {TagGroups} from '../util/TagGroups'
 import {PostService} from '../services/PostService'
