@@ -28,7 +28,7 @@ export class SingleThread implements OnInit {
         this.eventService.startPassive()
 
         var threadId = this.routeParams.params['threadId']
-        var commentId = this.routeParams.params['commentId']
+        var commentId = this.routeParams.params['commentId'] || threadId
         if (threadId) {
             return this.apiService.getThread(threadId)
                 .subscribe(response => {
