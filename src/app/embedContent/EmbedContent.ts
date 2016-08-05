@@ -9,7 +9,6 @@ import {DomSanitizationService} from '@angular/platform-browser'
 export class EmbedContent implements OnInit {
     public visible = false
     public text
-    public resource
     @Input() public url
     @Input() public type
 
@@ -24,10 +23,10 @@ export class EmbedContent implements OnInit {
         this.visible = !this.visible
     }
 
-    fixUrl(regex, fixed) {
+    fixUrl(regex, fixed, asUrl) {
         let rex = new RegExp(regex)
         let url = this.text.replace(rex, fixed)
-        return this.sanitizer.bypassSecurityTrustResourceUrl(url)
+        return asUrl ? this.sanitizer.bypassSecurityTrustUrl(url) : this.sanitizer.bypassSecurityTrustResourceUrl(url)
     }
 
     testFixUrl(tests) {
@@ -37,7 +36,7 @@ export class EmbedContent implements OnInit {
         })
 
         if (result) {
-            return this.fixUrl(result.regex, result.replace)
+            return this.fixUrl(result.regex, result.replace, false)
         } else {
             return this.sanitizer.bypassSecurityTrustResourceUrl(this.url)
         }
