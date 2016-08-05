@@ -4,11 +4,11 @@
         <span class="user" [ngClass]="post.userClass" (click)="addUserTab(post.author)" [innerHTML]="post.author"></span>
 
         <div class="tags">
-            <div template="ngFor let tag of post.lols">
+            <template ngFor let-tag [ngForOf]="post.lols">
                  <span *ngIf="tag.count > 0" class="tag" [ngClass]="'tag_' + tag.tag"
                        [title]="tag.tag" [innerHTML]="tag.count" [style.width]="getTagWidth(tag.count)">
                  </span>
-            </div>
+            </template>
         </div>
 
         <!-- header right -->
