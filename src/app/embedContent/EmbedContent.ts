@@ -1,5 +1,5 @@
 declare var _:any
-import {Component, Input} from 'angular2/core'
+import {Component, Input} from '@angular/core'
 
 @Component({
     selector: 'embed-content',

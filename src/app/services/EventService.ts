@@ -1,5 +1,5 @@
 declare var _:any
-import {Injectable} from 'angular2/core'
+import {Injectable} from '@angular/core'
 import {Subscription} from 'rxjs/Subscription'
 import {ActionService} from './ActionService'
 import {ApiService} from './ApiService'
@@ -14,7 +14,7 @@ import {ToastService} from './ToastService'
 export class EventService {
     private lastEventId:Number = 0
     private passiveMode:Boolean = false
-    private waitingEvent:Subscription<any> = null
+    private waitingEvent:Subscription = null
 
     constructor(private actionService:ActionService,
                 private apiService:ApiService,

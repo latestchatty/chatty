@@ -1,6 +1,6 @@
 declare var _:any
 import {Filter} from '../util/Filter'
-import {Injectable} from 'angular2/core'
+import {Injectable} from '@angular/core'
 import {DefaultTabs} from '../util/DefaultTabs'
 import {TabTemplates} from '../util/TabTemplates'
 import {ModelService} from './ModelService'
@@ -87,7 +87,7 @@ export class TabService {
                 visibleThreads = _.filter(threads, thread => filterExpression(thread, misc))
             }
             _.each(threads, thread => {
-                thread.visible = _.contains(visibleThreads, thread)
+                thread.visible = _.includes(visibleThreads, thread)
             })
         } else {
             _.each(threads, thread => {

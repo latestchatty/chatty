@@ -1,25 +1,23 @@
 // Polyfills
-import 'es6-shim';
-import 'es6-promise';
-import 'zone.js/lib/browser/zone-microtask';
-import 'es7-reflect-metadata/dist/browser';
+import 'zone.js/dist/zone.min.js'
+import 'reflect-metadata'
 
 if ('production' === process.env.ENV) {
   // placeholder for any production-specific vendor includes
 } else {
-  Error['stackTraceLimit'] = Infinity;
-  require('zone.js/lib/zones/long-stack-trace.js');
+  Error['stackTraceLimit'] = Infinity
+  require('zone.js/dist/long-stack-trace-zone.js')
 }
 
 // Angular 2
-import 'angular2/platform/browser';
-import 'angular2/platform/common_dom';
-import 'angular2/router';
-import 'angular2/http';
-import 'angular2/core';
+import '@angular/platform-browser'
+import '@angular/platform-browser-dynamic'
+import '@angular/router-deprecated'
+import '@angular/http'
+import '@angular/core'
 
 // RxJS
-import 'rxjs';
+import 'rxjs'
 
 // Other vendors
-import 'lodash';
+import 'lodash'
