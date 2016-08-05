@@ -1,6 +1,5 @@
 declare var _:any
 import {Injectable} from '@angular/core'
-import {DomSanitizationService} from "@angular/platform-browser"
 import {EmployeeList}  from '../util/EmployeeList'
 import {ModList} from '../util/ModList'
 import {SettingsService} from './SettingsService'
@@ -13,8 +12,7 @@ export class ModelService {
     private posts = {}
     private supportedTags = ['lol', 'inf', 'unf', 'wtf']
 
-    constructor(private sanitizer: DomSanitizationService,
-                private bodyTransformService:BodyTransformService,
+    constructor(private bodyTransformService:BodyTransformService,
                 private settingsService:SettingsService) {
     }
 
@@ -170,8 +168,6 @@ export class ModelService {
     private fixPost(post, thread) {
         //parse body for extra features
         post.body = this.bodyTransformService.parse(post)
-        post.body.oneline = this.sanitizer.bypassSecurityTrustHtml(post.body.oneline)
-        post.body.chunks = _.map(post.body.chunks, c => this.sanitizer.bypassSecurityTrustHtml(c))
 
         //date object for date pipe
         post.date = new Date(post.date)

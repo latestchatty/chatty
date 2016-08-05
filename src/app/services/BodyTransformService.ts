@@ -1,5 +1,6 @@
 declare var _ : any
 import {Injectable} from '@angular/core'
+import {DomSanitizationService} from '@angular/platform-browser'
 
 @Injectable()
 export class BodyTransformService {
@@ -7,10 +8,11 @@ export class BodyTransformService {
         {regex: /<a[^<]+?href="([^"]+?\.(png|jpg|jpeg|gif))">[^<]+?<\/a>/gi, type: 'image'},
         {regex: /<a[^<]+?href="((https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be).+?)">[^<]+?<\/a>/gi, type: 'youtube'},
         {regex: /<a[^<]+?href="((https?:\/\/)?(www\.|m\.)?vimeo\.com\/.+?)">[^<]+?<\/a>/gi, type: 'vimeo'},
-        {regex: /<a[^<]+?href="((https?:\/\/)?([A-Za-z]+\.)?(imgur\.com).+?)">[^<]+?<\/a>/gi, type: 'imgur'},
         {regex: /<a[^<]+?href="([^"]+?gfycat\.com\/[^"]+?)">[^<]+?<\/a>/gi, type: 'gfycat'},
         {regex: /<a[^<]+?href="((https?:\/\/)?(www\.)?(shacknews\.com)\/chatty\?id=(\d+)(#item_(\d+))?.*?)">[^<]+?<\/a>/gi, type: 'comment'}
     ]
+
+    constructor(private sanitizer: DomSanitizationService) {}
 
     parse(post) {
         var fixed = post.body
@@ -39,7 +41,8 @@ export class BodyTransformService {
             var index = 0
             _.each(_.uniq(_.sortBy(matches, 'index'), 'index'), match => {
                 //static html prior to this chunk
-                chunks.push(fixed.slice(index, match.index))
+                let chunk = this.sanitizer.bypassSecurityTrustHtml(fixed.slice(index, match.index))
+                chunks.push(chunk)
 
                 //matching chunk
                 chunks.push({
@@ -53,10 +56,12 @@ export class BodyTransformService {
 
             //final static chunk
             if (index < fixed.length) {
-                chunks.push(fixed.slice(index))
+                let chunk = this.sanitizer.bypassSecurityTrustHtml(fixed.slice(index))
+                chunks.push(chunk)
             }
         } else {
-            chunks.push(fixed)
+            let chunk = this.sanitizer.bypassSecurityTrustHtml(fixed)
+            chunks.push(chunk)
         }
 
         return {
@@ -66,9 +71,10 @@ export class BodyTransformService {
     }
 
     getSnippet(body) {
-        var stripped = body.replace(/<embed\-content url="([^"]+)" type="[^"]+"><\/embed\-content>/gi, '$1')
+        let stripped = body.replace(/<embed\-content url="([^"]+)" type="[^"]+"><\/embed\-content>/gi, '$1')
         stripped = stripped.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ')
-        return this.htmlSnippet(stripped, 106)
+        stripped = this.htmlSnippet(stripped, 106)
+        return this.sanitizer.bypassSecurityTrustHtml(stripped)
     }
 
     private htmlSnippet(input, maxLength) {
