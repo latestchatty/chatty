@@ -94,7 +94,7 @@
             color-stop(0.4, rgb(204, 204, 204)),
             color-stop(0.6, rgb(204, 204, 204)),
             to(rgb(238, 238, 238))
-    );
+        );
 }
 
 .countdown-value {
@@ -112,7 +112,7 @@
             color-stop(0.75, rgba(255, 255, 255, 0.4)),
             color-stop(0.75, transparent),
             to(transparent)
-    );
+        );
     -webkit-background-size: 25px;
     -webkit-box-shadow: rgba(255, 255, 255, 0.298039) 0 2px 4px inset, rgba(0, 0, 0, 0.4) 0 -2px 3px inset;
 }
