@@ -2,7 +2,7 @@
 
     <!-- chatty comment link -->
     <template ngSwitchCase="comment">
-        <a target="_blank" [href]="fixUrl('.+?chatty\\?id=(\\d+)(#item_(\\d+))?', '#/thread/$1/$3', true)" [innerHTML]="text"></a>
+        <a target="_blank" [href]="resource" [innerHTML]="text"></a>
         <a style="text-decoration: none" target="_blank" [href]="url">
             <i class="actionItem fa fa-external-link" title="View at shacknews.com"></i>
         </a>
@@ -15,11 +15,7 @@
             <i class="actionItem fa fa-camera-retro" title="View image inline"></i>
         </a>
         <p *ngIf="visible">
-            <img style="max-width: 75%" [src]="testFixUrl([
-            { test: 'chattypics.com\\/viewer.php\\?file=',
-            regex: '(.+?chattypics.com\\/)(viewer.php\\?file=)?(files\\/)?(.+)',
-            replace: '$1files/$4'}
-            ])" (click)="toggleVisibility()">
+            <img style="max-width: 75%" [src]="resource" (click)="toggleVisibility()">
         </p>
     </template>
 
@@ -30,8 +26,7 @@
             <i class="actionItem fa fa-youtube" title="View video inline"></i>
         </a>
         <p *ngIf="visible">
-            <iframe [src]="fixUrl('(.+?)\\.(com|be)(\\/|\\/watch\\?)(.+v=)?([^&]+)(.+)?', 'https://www.youtube.com/embed/$5?rel=0')"
-                    width="560" height="315"  frameborder="0"
+            <iframe [src]="resource" width="560" height="315"  frameborder="0"
                     webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
     </template>
@@ -43,8 +38,7 @@
             <i class="actionItem fa fa-vimeo-square" title="View video inline"></i>
         </a>
         <p *ngIf="visible">
-            <iframe [src]="fixUrl('.+vimeo\\.com\\/(\\d+)', 'https://player.vimeo.com/video/$1')"
-                    width="560" height="315"  frameborder="0"
+            <iframe [src]="resource" width="560" height="315"  frameborder="0"
                     webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
     </template>
@@ -56,8 +50,7 @@
             <i class="actionItem fa fa-camera-retro" title="View gif inline"></i>
         </a>
         <p *ngIf="visible">
-            <iframe [src]="fixUrl('(.+)\/(.+)', '$1/ifr/$2')"
-                    width="560" height="315" frameborder="0"
+            <iframe [src]="resource" width="560" height="315" frameborder="0"
                     webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </p>
     </template>
