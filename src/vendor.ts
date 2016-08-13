@@ -12,8 +12,8 @@ if ('production' === process.env.ENV) {
 // Angular 2
 import '@angular/platform-browser'
 import '@angular/platform-browser-dynamic'
-import '@angular/router-deprecated'
 import '@angular/http'
+import '@angular/router'
 import '@angular/core'
 
 // RxJS

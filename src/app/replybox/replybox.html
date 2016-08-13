@@ -4,7 +4,7 @@
 
     <form (ngSubmit)="submitPost()">
         <!--Post Input -->
-        <textarea class="replybox-input" placeholder="Type something interesting..."
+        <textarea class="replybox-input" placeholder="Type something interesting..." name="replyBody"
                   disable-hotkeys [(ngModel)]="replyBody" required auto-focus></textarea>
 
         <!-- Submit button -->
