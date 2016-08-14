@@ -10,12 +10,11 @@ export class HotkeyService {
     }
 
     start() {
-        //TODO re-enable hotkeys once they work in all browsers
-        //document.body.addEventListener('keydown', this.handler)
+        document.body.addEventListener('keydown', this.handler)
     }
 
     stop() {
-        //document.body.removeEventListener('keydown', this.handler)
+        document.body.removeEventListener('keydown', this.handler)
     }
 
     private handleEvent(event) {
