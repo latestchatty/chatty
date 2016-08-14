@@ -2,11 +2,13 @@
 import 'zone.js/dist/zone.min.js'
 import 'reflect-metadata'
 
+import {enableProdMode} from '@angular/core'
+
 if ('production' === process.env.ENV) {
-  // placeholder for any production-specific vendor includes
+    enableProdMode()
 } else {
-  Error['stackTraceLimit'] = Infinity
-  require('zone.js/dist/long-stack-trace-zone.js')
+    Error['stackTraceLimit'] = Infinity
+    require('zone.js/dist/long-stack-trace-zone.js')
 }
 
 // Angular 2

@@ -126,7 +126,9 @@ if (TARGET === 'build' || TARGET === 'stats') {
             new webpack.optimize.UglifyJsPlugin({
                 compress: {
                     warnings: false
-                }
+                },
+                //TODO: re-enable in rc6?
+                mangle: false
             })
         ]
     })
