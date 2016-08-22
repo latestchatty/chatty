@@ -18,9 +18,10 @@ export class HotkeyService {
     }
 
     private handleEvent(event) {
+        let isSpace = event.keyCode === 32
         if (event.defaultPrevented) return
 
-        if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if (!isSpace && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             //disable further processing
             event.preventDefault()
 
