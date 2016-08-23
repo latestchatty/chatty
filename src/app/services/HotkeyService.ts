@@ -18,23 +18,20 @@ export class HotkeyService {
     }
 
     private handleEvent(event) {
-        let isSpace = event.keyCode === 32
         if (event.defaultPrevented) return
-
-        if (!isSpace && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            //disable further processing
+        
+        if (event.keyCode === 65) {
+            //a key for previous reply
             event.preventDefault()
-
-            if (event.keyCode === 65) {
-                //a key for previous reply
-                this.actionService.previousReply()
-            } else if (event.keyCode === 90) {
-                //z key for next reply
-                this.actionService.nextReply()
-            } else if (event.keyCode === 27) {
-                //esc key for collapse current reply
-                this.actionService.collapsePostReply(null)
-            }
+            this.actionService.previousReply()
+        } else if (event.keyCode === 90) {
+            //z key for next reply
+            event.preventDefault()
+            this.actionService.nextReply()
+        } else if (event.keyCode === 27) {
+            event.preventDefault()
+            //esc key for collapse current reply
+            this.actionService.collapsePostReply(null)
         }
     }
 }
