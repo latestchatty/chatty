@@ -1,4 +1,8 @@
 // Polyfills
+if (!global.Intl) {
+    require('intl')
+    require('intl/locale-data/jsonp/en.js')
+}
 import 'zone.js/dist/zone.min.js'
 import 'reflect-metadata'
 
