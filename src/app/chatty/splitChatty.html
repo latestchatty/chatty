@@ -2,7 +2,7 @@
 <toast></toast>
 <div id="pane-sidebar">
     <div *ngFor="let post of threads" id="pane-leftnav">
-        <div class="rootPost splitPost" *ngIf="post.visible"
+        <div class="rootPost splitPost" *ngIf="post.visible && !post.filtered"
              [ngClass]="post.tagClass" (click)="selectPost(post)">
             <post [post]="post"></post>
         </div>

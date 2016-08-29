@@ -1,7 +1,7 @@
 <ul>
     <li *ngFor="let post of posts">
         <!--collapsed reply-->
-        <div *ngIf="!post.viewFull">
+        <div *ngIf="!post.viewFull && !post.filtered">
             <span class="oneline" [ngClass]="post.lineClass" [ngClass]="post.tagClass"
                   (click)="expandReply(post)" [innerHTML]="post.body.oneline"></span>
 
@@ -10,7 +10,7 @@
         </div>
 
         <!--expanded reply-->
-        <div *ngIf="post.viewFull">
+        <div *ngIf="post.viewFull && !post.filtered">
             <div class="replyPost" [ngClass]="post.tagClass" scroll-into-view>
                 <post [post]="post"></post>
             </div>
@@ -19,6 +19,6 @@
         </div>
 
         <!-- replies to this post -->
-        <comments [posts]="post.posts" [flat]="false" *ngIf="!flat"></comments>
+        <comments [posts]="post.posts" [flat]="false" *ngIf="!flat && !post.filtered"></comments>
     </li>
 </ul>

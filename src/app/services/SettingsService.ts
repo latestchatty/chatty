@@ -7,10 +7,13 @@ import {ToastService} from './ToastService'
 export class SettingsService {
     private collapsedThreads = []
     private pinnedThreads = []
+    private filteredKeywords = []
+    private filteredAuthors = []
     private credentials
 
     constructor(private apiService:ApiService,
                 private toastService:ToastService) {
+        //load credentials
         let storageCredentials = localStorage.getItem('credentials')
         if (storageCredentials) {
             this.credentials = JSON.parse(storageCredentials)
@@ -18,7 +21,14 @@ export class SettingsService {
             this.credentials = {username: '', password: ''}
         }
 
-        //initial load of settings
+        //load filtered things
+        this.filteredAuthors = JSON.parse(localStorage.getItem('filteredAuthors') || '[]')
+            .map(author => author.toLowerCase())
+
+        this.filteredKeywords = JSON.parse(localStorage.getItem('filteredKeywords') || '[]')
+            .map(keyword => new RegExp(_.escapeRegExp(keyword), 'gmi'))
+
+        //initial load of marked posts
         this.refresh()
     }
 
@@ -48,12 +58,16 @@ export class SettingsService {
         })
     }
 
-    getPinned() {
-        return this.pinnedThreads
+    getFilteredAuthors() {
+        return this.filteredAuthors
     }
 
-    isPinned(id) {
-        return this.pinnedThreads.indexOf(Number(id)) >= 0
+    getFilteredKeywords() {
+        return this.filteredKeywords
+    }
+
+    getPinned() {
+        return this.pinnedThreads
     }
 
     pinThread(id) {

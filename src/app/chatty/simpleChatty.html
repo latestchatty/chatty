@@ -3,7 +3,7 @@
     <toast></toast>
     <div id="pane-simple-threads">
         <div *ngFor="let post of threads" class="simplePost">
-            <thread [post]="post"></thread>
+            <thread [post]="post" *ngIf="!post.filtered"></thread>
         </div>
     </div>
 </div>

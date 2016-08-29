@@ -166,6 +166,15 @@ export class ModelService {
     }
 
     private fixPost(post, thread) {
+        //check if post is filtered
+        let filteredByAuthor = this.settingsService.getFilteredAuthors()
+            .some(author => author.toLowerCase() === post.author.toLowerCase())
+
+        let filteredByKeyword = this.settingsService.getFilteredKeywords()
+            .some(keyword => keyword.test(post.body))
+
+        post.filtered = filteredByAuthor || filteredByKeyword
+
         //parse body for extra features
         post.body = this.bodyTransformService.parse(post)
 
