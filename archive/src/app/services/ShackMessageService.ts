@@ -1,8 +1,8 @@
 declare var _:any
 import {Injectable} from '@angular/core'
-import {ApiService} from '../services/ApiService'
-import {SettingsService} from '../services/SettingsService'
-import {ToastService} from '../services/ToastService'
+import {ApiService} from './ApiService'
+import {SettingsService} from './SettingsService'
+import {ToastService} from './ToastService'
 
 @Injectable()
 export class ShackMessageService {

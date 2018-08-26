@@ -43,8 +43,8 @@ Notes:
 npm run server
 ~~~~
 
-##### Technology Used
----------------------
+Technology Used
+---
 
 * [Angular2](https://angular.io/) (SPA Framework)
 * [TypeScript](https://github.com/Microsoft/TypeScript) (Language)
