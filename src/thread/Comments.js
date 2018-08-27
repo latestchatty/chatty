@@ -5,8 +5,8 @@ import OneLine from './OneLine'
 class Comments extends React.PureComponent {
     render() {
         const {
-            thread = {}, parent = thread, onCollapseReply, onExpandReply, onOpenReplyBox, expandedReplyId, replyBoxOpenForId,
-            onCloseReplyBox
+            thread = {}, parent = thread, onCollapseReply, onExpandReply, onOpenReplyBox, expandedReplyId,
+            replyBoxOpenForId, onCloseReplyBox
         } = this.props
 
         return (
