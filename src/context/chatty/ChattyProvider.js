@@ -1,6 +1,7 @@
 import React from 'react'
 import ChattyContext from './ChattyContext'
 import fetchJson from '../../util/fetchJson'
+import withIndicators from '../indicators/withIndicators'
 
 class ChattyProvider extends React.PureComponent {
     state = {
@@ -19,7 +20,13 @@ class ChattyProvider extends React.PureComponent {
     }
 
     async getChatty(threadCount) {
-        return await fetchJson(`getChatty${threadCount > 0 ? `?count=${threadCount}` : ''}`)
+        const {setLoading} = this.props
+        try {
+            setLoading('async')
+            return await fetchJson(`getChatty${threadCount > 0 ? `?count=${threadCount}` : ''}`)
+        } finally {
+            setLoading(false)
+        }
     }
 
     async waitForEvent(lastEventId) {
@@ -39,4 +46,4 @@ class ChattyProvider extends React.PureComponent {
     }
 }
 
-export default ChattyProvider
+export default withIndicators(ChattyProvider)

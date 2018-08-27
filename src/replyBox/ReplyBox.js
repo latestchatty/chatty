@@ -8,6 +8,7 @@ import Input from '@material-ui/core/Input'
 import fetchJson from '../util/fetchJson'
 import withAuth from '../context/auth/withAuth'
 import querystring from 'querystring'
+import withIndicators from '../context/indicators/withIndicators'
 
 class ReplyBox extends React.Component {
     state = {
@@ -18,11 +19,11 @@ class ReplyBox extends React.Component {
     handleChange = event => this.setState({text: event.target.value})
 
     handleSubmit = async () => {
-        // TODO: loading indicator
+        const {setLoading, username, password, parentId} = this.props
+        const {text} = this.state
         try {
+            setLoading('async')
             this.setState({posting: true})
-            const {username, password, parentId} = this.props
-            const {text} = this.state
             let response = await fetchJson('postComment', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -38,6 +39,7 @@ class ReplyBox extends React.Component {
             return false
         } finally {
             this.setState({posting: false})
+            setLoading(false)
         }
     }
 
@@ -103,4 +105,8 @@ const styles = {
     }
 }
 
-export default withAuth(withStyles(styles)(ReplyBox))
+export default withAuth(
+    withIndicators(
+        withStyles(styles)(ReplyBox)
+    )
+)
