@@ -1,5 +1,4 @@
 import React from 'react'
-import {trim} from 'lodash'
 import PostAuthor from './PostAuthor'
 import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
@@ -36,7 +35,7 @@ class OneLine extends React.PureComponent {
             i++
         }
 
-        let output = trim(input.slice(0, i))
+        let output = input.slice(0, i).trim()
         if (i < input.length || !output) {
             output += '...'
         }

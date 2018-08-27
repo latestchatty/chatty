@@ -2,7 +2,7 @@ import React from 'react'
 import Thread from '../thread/Thread'
 import withChatty from '../context/chatty/withChatty'
 
-class Chatty extends React.Component {
+class Chatty extends React.PureComponent {
     render() {
         let {threads} = this.props
         return (

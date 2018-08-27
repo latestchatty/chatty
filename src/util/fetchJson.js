@@ -1,9 +1,6 @@
-import {isString} from 'lodash'
 const base = 'https://winchatty.com/v2'
 
 export default async (url, options = {}) => {
-    if (options.body && !isString(options.body)) options.body = JSON.stringify(options.body)
-
     let res = await fetch(`${base}/${url}`, options)
     if (res.ok) {
         return await tryJson(res)

@@ -1,37 +1,35 @@
 import React from 'react'
 import Post from './Post'
-import {find, sortBy, keyBy} from 'lodash'
 import Comments from './Comments'
 import {withStyles} from '@material-ui/core/styles'
 
 class Thread extends React.PureComponent {
     state = {
-        thread: {},
+        thread: {
+            posts: []
+        },
         collapsed: false,
-        replies: [],
         expandedReplyId: null,
         replyBoxOpenForId: null
     }
 
     componentDidMount() {
-        const {thread: rawThread} = this.props
+        this.loadThread()
+    }
 
-        const posts = sortBy(rawThread.posts, 'id')
-        const postsById = keyBy(posts, 'id')
+    componentDidUpdate(prevProps) {
+        if (prevProps.thread !== this.props.thread) this.loadThread()
+    }
 
-        const thread = find(posts, {parentId: 0})
-        posts.forEach(post => {
-            post.thread = thread
-            if (post.parentId) {
-                const parent = postsById[post.parentId]
-                parent.posts = parent.posts || []
-                parent.posts.push(post)
-            }
-        })
-        posts.slice(-10).reverse().forEach((post, index) => post.recentReplyNumber = index + 1)
-        const replies = posts.filter(post => post.parentId === thread.id)
-
-        this.setState({thread, replies})
+    loadThread() {
+        const {thread: raw} = this.props
+        const post = raw.posts.find(post => !post.parentId)
+        const thread = {
+            ...post,
+            id: +raw.threadId,
+            posts: raw.posts
+        }
+        this.setState({thread})
     }
 
     handleCollapseReply = () => this.setState({expandedReplyId: null, replyBoxOpenForId: null})
@@ -42,7 +40,7 @@ class Thread extends React.PureComponent {
 
     render() {
         const {classes} = this.props
-        const {collapsed, thread, replies, expandedReplyId, replyBoxOpenForId} = this.state
+        const {collapsed, thread, expandedReplyId, replyBoxOpenForId} = this.state
         if (collapsed) return null
 
         return (
@@ -56,7 +54,7 @@ class Thread extends React.PureComponent {
                 />
 
                 <Comments
-                    replies={replies}
+                    thread={thread}
                     expandedReplyId={expandedReplyId}
                     replyBoxOpenForId={replyBoxOpenForId}
                     onExpandReply={this.handleExpandReply}
