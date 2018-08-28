@@ -8,15 +8,15 @@ import Divider from '@material-ui/core/Divider'
 import PersonIcon from '@material-ui/icons/Person'
 import withAuth from '../context/auth/withAuth'
 
-class UserMenu extends React.Component {
+class UserMenu extends React.PureComponent {
     state = {open: false}
 
     handleClick = event => this.setState({open: true, anchorEl: event.target})
-    handleClose = () => this.setState({open: false})
+    handleClose = () => this.setState({open: false, anchorEl: null})
 
     render() {
         const {open, anchorEl} = this.state
-        const {isLoggedIn} = this.props
+        const {isLoggedIn, username} = this.props
 
         if (!isLoggedIn) return <LoginButton/>
         return (
@@ -31,9 +31,9 @@ class UserMenu extends React.Component {
                     anchorEl={anchorEl}
                     onClose={this.handleClose}
                 >
-                    <MenuItem disabled>{this.props.username}</MenuItem>
+                    <MenuItem disabled>{username}</MenuItem>
                     <Divider/>
-                    <LogoutButton/>
+                    <LogoutButton onClick={this.handleClose}/>
                 </Menu>
             </React.Fragment>
         )

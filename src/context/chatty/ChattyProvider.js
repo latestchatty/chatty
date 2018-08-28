@@ -5,8 +5,7 @@ import withIndicators from '../indicators/withIndicators'
 
 class ChattyProvider extends React.PureComponent {
     state = {
-        threads: [],
-        newThreads: []
+        threads: []
     }
 
     componentDidMount() {

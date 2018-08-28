@@ -17,8 +17,9 @@ class LoginDialog extends React.Component {
     handleClick = async () => {
         const {username, password} = this.state
         const {login, onClose} = this.props
-        let result = await login(username, password)
-        if (result) onClose()
+        login(username, password)
+        this.setState({username: '', password: ''})
+        onClose()
     }
 
     render() {

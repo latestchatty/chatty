@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import LoginDialog from './LoginDialog'
 
-class LoginButton extends React.Component {
+class LoginButton extends React.PureComponent {
     state = {open: false}
 
     handleClick = () => this.setState({open: true})

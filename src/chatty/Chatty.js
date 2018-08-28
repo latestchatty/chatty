@@ -4,7 +4,7 @@ import withChatty from '../context/chatty/withChatty'
 
 class Chatty extends React.PureComponent {
     render() {
-        let {threads} = this.props
+        let {threads = []} = this.props
         return (
             <div style={styles.chatty}>
                 {threads.map(thread => <Thread key={thread.threadId} thread={thread}/>)}
