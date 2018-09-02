@@ -9,7 +9,12 @@ class ChattyProvider extends React.PureComponent {
     }
 
     componentDidMount() {
+        this.mounted = true
         return this.startActive()
+    }
+
+    componentWillUnmount() {
+        this.mounted = false
     }
 
     async startActive() {
@@ -33,15 +38,18 @@ class ChattyProvider extends React.PureComponent {
     }
 
     async waitForEvent(lastEventId) {
-        if (!this.waiting) {
+        if (this.mounted) {
             const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
 
-            if (!error) {
-                events.forEach(event => this.handleEvent(event))
+            if (this.mounted) {
+                if (!error) {
+                    events.forEach(event => this.handleEvent(event))
 
-                return this.waitForEvent(newerEventId)
-            } else {
-                // TODO: handle eventing error
+                    return this.waitForEvent(newerEventId)
+                } else {
+                    // TODO: handle eventing error
+                    console.log('Error from API:waitForLastEvent call.', error)
+                }
             }
         }
     }
@@ -69,10 +77,10 @@ class ChattyProvider extends React.PureComponent {
                 }))
             } else {
                 this.setState(oldState => ({
-                    threads: {
+                    threads: [
                         ...oldState.threads,
                         post
-                    }
+                    ]
                 }))
             }
         } else if (eventType === 'categoryChange') {
