@@ -14,7 +14,13 @@ class PostAuthor extends React.PureComponent {
         else if (employees.find(employee => isSameUser(employee, author))) userClass = 'employee'
         else if (mods.find(mod => isSameUser(mod, author))) userClass = 'mod'
 
-        return <span className={classnames(classes.user, classes[userClass])}>{author}</span>
+        // Don't let the browser line break in the middle of author name
+        const nonBreakingAuthor = author.replace(/\s/g, String.fromCharCode(160))
+        return (
+            <span className={classnames(classes.user, classes[userClass])}>
+                {nonBreakingAuthor}
+            </span>
+        )
     }
 }
 

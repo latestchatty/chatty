@@ -42,7 +42,7 @@ class Post extends React.PureComponent {
                         {post.parentId === 0 && <PostExpirationBar date={post.date}/>}
                     </div>
 
-                    <CardContent className={classes.content}>
+                    <CardContent className={classnames('postbody', classes.content)}>
                         <span dangerouslySetInnerHTML={html}/>
                     </CardContent>
 
@@ -92,6 +92,7 @@ const styles = {
         borderLeft: '3px solid mediumpurple !important'
     },
     content: {
+        maxWidth: 'calc(100vw - 32)',
         color: 'lightgray',
         fontSize: 13,
         padding: '8px 16px'

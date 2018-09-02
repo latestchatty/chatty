@@ -11,3 +11,7 @@ a {
 a:hover {
     color: #fff;
 }
+
+.postbody a {
+    word-break: break-all;
+}

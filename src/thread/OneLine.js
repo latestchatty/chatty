@@ -61,7 +61,7 @@ class OneLine extends React.PureComponent {
         const lineClass = `oneline${post.recentReplyNumber || 9}`
 
         return (
-            <React.Fragment>
+            <div className={classes.container}>
                 <span
                     className={classnames(classes.oneline, classes[lineClass])}
                     dangerouslySetInnerHTML={{__html: oneline}}
@@ -69,18 +69,25 @@ class OneLine extends React.PureComponent {
                 />
                 <span className={classes.separator}>:</span>
                 <PostAuthor post={post}/>
-            </React.Fragment>
+            </div>
         )
     }
 }
 
 const styles = {
+    container: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
     separator: {
         padding: '0 3px',
         fontSize: 11,
         color: '#fff'
     },
     oneline: {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
         '&:hover': {
             color: '#fff',
             backgroundColor: '#233548',
