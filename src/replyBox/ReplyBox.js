@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
@@ -9,6 +10,7 @@ import fetchJson from '../util/fetchJson'
 import withAuth from '../context/auth/withAuth'
 import querystring from 'querystring'
 import withIndicators from '../context/indicators/withIndicators'
+import classnames from 'classnames'
 
 class ReplyBox extends React.Component {
     state = {
@@ -44,11 +46,12 @@ class ReplyBox extends React.Component {
     }
 
     render() {
-        const {classes, onCloseReplyBox} = this.props
+        const {classes, onCloseReplyBox, parentId, className} = this.props
         const {posting, text} = this.state
 
         return (
-            <Card className={classes.card}>
+            <Card className={classnames(className, classes.card)}>
+                {parentId === 0 && <CardHeader title='New Thread'/>}
                 <CardContent>
                     <div className={classes.flexRow}>
                         <Input
@@ -87,7 +90,6 @@ class ReplyBox extends React.Component {
 const styles = {
     card: {
         backgroundColor: '#202224',
-        marginTop: -3,
         borderRadius: 0,
         border: '1px solid #656565'
     },

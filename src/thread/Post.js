@@ -67,7 +67,9 @@ class Post extends React.PureComponent {
                     </CardActions>
                 </Card>
 
-                {replyBoxOpenForId === post.id && <ReplyBox parentId={post.id} onCloseReplyBox={onCloseReplyBox}/>}
+                {
+                    replyBoxOpenForId === post.id &&
+                    <ReplyBox parentId={post.id} onCloseReplyBox={onCloseReplyBox} className={classes.replyBox}/>}
             </React.Fragment>
         )
     }
@@ -81,6 +83,9 @@ const styles = {
     },
     replyBorder: {
         border: '1px solid #656565'
+    },
+    replyBox: {
+        marginTop: -3
     },
     tagNws: {
         borderLeft: '3px solid red !important'
