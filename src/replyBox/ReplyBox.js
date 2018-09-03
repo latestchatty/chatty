@@ -85,6 +85,7 @@ class ReplyBox extends React.Component {
                     </Button>
                     <Button
                         variant='outlined'
+                        disabled={posting}
                         onClick={onCloseReplyBox}
                     >Cancel
                     </Button>
