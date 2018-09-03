@@ -62,26 +62,32 @@ class ChattyProvider extends React.PureComponent {
             const {post} = eventData
             if (post.parentId) {
                 const threadId = `${post.threadId}`
-                this.setState(oldState => ({
-                    threads: oldState.threads.map(thread => {
-                        if (thread.threadId === threadId) {
-                            return {
-                                ...thread,
-                                posts: [
-                                    ...thread.posts,
-                                    post
-                                ]
-                            }
+                const addReply = thread => {
+                    if (thread.threadId === threadId) {
+                        return {
+                            ...thread,
+                            posts: [
+                                ...thread.posts,
+                                post
+                            ]
                         }
-                        return thread
-                    })
+                    }
+                    return thread
+                }
+                this.setState(oldState => ({
+                    threads: oldState.threads.map(addReply),
+                    newThreads: oldState.newThreads.map(addReply)
                 }))
             } else {
-                // TODO: some sort of display of how many new threads exist
                 this.setState(oldState => ({
                     newThreads: [
                         ...oldState.newThreads,
-                        post
+                        {
+                            threadId: `${post.id}`,
+                            posts: [
+                                post
+                            ]
+                        }
                     ]
                 }))
             }

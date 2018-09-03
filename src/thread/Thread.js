@@ -22,8 +22,8 @@ class Thread extends React.PureComponent {
     }
 
     loadThread() {
-        const {thread: raw = {posts: []}} = this.props
-        const posts = raw.posts.sort((a, b) => a.id - b.id)
+        const {thread: raw} = this.props
+        const posts = raw.posts ? raw.posts.sort((a, b) => a.id - b.id) : []
 
         // oneline highlights
         posts.slice(-10)
