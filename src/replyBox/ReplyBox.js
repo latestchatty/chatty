@@ -18,6 +18,14 @@ class ReplyBox extends React.Component {
         posting: false
     }
 
+    componentDidMount() {
+        this.mounted = true
+    }
+
+    componentWillUnmount() {
+        this.mounted = false
+    }
+
     handleChange = event => this.setState({text: event.target.value})
 
     handleSubmit = async () => {
@@ -38,9 +46,8 @@ class ReplyBox extends React.Component {
         } catch (ex) {
             console.log('Error while posting comment', ex)
             // TODO: toast user
-            return false
         } finally {
-            this.setState({posting: false})
+            if (this.mounted) this.setState({posting: false})
             setLoading(false)
         }
     }
