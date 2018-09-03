@@ -23,13 +23,14 @@ class Thread extends React.PureComponent {
 
     loadThread() {
         const {thread: raw = {posts: []}} = this.props
-        const post = raw.posts.find(post => !post.parentId)
-        const posts = raw.posts.filter(post => post.parentId).reverse()
-        // TODO: Does this work with event updates?
+        const posts = raw.posts.sort((a, b) => a.id - b.id)
+
+        // oneline highlights
         posts.slice(-10)
             .reverse()
             .forEach((post, index) => post.recentReplyNumber = index + 1)
 
+        const [post] = posts
         const thread = {
             ...post,
             id: +raw.threadId,
