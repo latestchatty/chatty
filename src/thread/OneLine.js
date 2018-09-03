@@ -56,7 +56,7 @@ class OneLine extends React.PureComponent {
     }
 
     render() {
-        const {classes, post} = this.props
+        const {classes, post, thread} = this.props
         const {oneline} = this.state
         const lineClass = `oneline${post.recentReplyNumber || 9}`
 
@@ -68,7 +68,7 @@ class OneLine extends React.PureComponent {
                     onClick={this.handleClick}
                 />
                 <span className={classes.separator}>:</span>
-                <PostAuthor post={post}/>
+                <PostAuthor post={post} thread={thread}/>
             </div>
         )
     }

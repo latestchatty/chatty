@@ -27,6 +27,7 @@ class Comments extends React.PureComponent {
                                         />
                                         : <OneLine
                                             post={post}
+                                            thread={thread}
                                             onExpandReply={onExpandReply}
                                         />
                                 }

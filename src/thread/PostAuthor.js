@@ -5,8 +5,8 @@ import classnames from 'classnames'
 
 class PostAuthor extends React.PureComponent {
     render() {
-        const {classes, post = {}, username} = this.props
-        const {author = '', thread = {}} = post
+        const {classes, post = {}, thread = {}, username} = this.props
+        const {author = ''} = post
 
         let userClass = 'normal'
         if (username && isSameUser(author, username)) userClass = 'self'
