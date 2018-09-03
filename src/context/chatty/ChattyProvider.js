@@ -111,6 +111,7 @@ class ChattyProvider extends React.PureComponent {
                 }, {})
             const threads = oldState.newThreads
                 .concat(oldState.threads.sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId]))
+            window.scrollTo(0, 0)
             return {newThreads: [], threads}
         })
     }
