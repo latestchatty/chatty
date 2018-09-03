@@ -5,19 +5,20 @@ import withIndicators from '../indicators/withIndicators'
 
 class ChattyProvider extends React.PureComponent {
     state = {
-        threads: []
+        threads: [],
+        newThreads: []
     }
 
     componentDidMount() {
         this.mounted = true
-        return this.startActive()
+        return this.fullReload()
     }
 
     componentWillUnmount() {
         this.mounted = false
     }
 
-    async startActive() {
+    async fullReload() {
         const {setLoading} = this.props
         try {
             setLoading('async')
@@ -76,9 +77,10 @@ class ChattyProvider extends React.PureComponent {
                     })
                 }))
             } else {
+                // TODO: some sort of display of how many new threads exist
                 this.setState(oldState => ({
-                    threads: [
-                        ...oldState.threads,
+                    newThreads: [
+                        ...oldState.newThreads,
                         post
                     ]
                 }))
@@ -93,15 +95,31 @@ class ChattyProvider extends React.PureComponent {
             //     console.log('TODO: Category change', event)
             // }
         } else if (eventType === 'lolCountsUpdate') {
-            console.log('TODO: event lol updates', event)
+            console.debug('TODO: event lol updates', event)
             // TODO: handle lol tags in general honestly
         } else {
-            console.log('Unhandled event type:', event)
+            console.debug('Unhandled event type:', event)
         }
     }
 
+    refreshChatty = () => {
+        this.setState(oldState => {
+            const maxPostIdByThread = oldState.threads
+                .reduce((acc, thread) => {
+                    acc[thread.threadId] = thread.posts.reduce((acc, post) => Math.max(post.id, acc), 0)
+                    return acc
+                }, {})
+            const threads = oldState.newThreads
+                .concat(oldState.threads.sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId]))
+            return {newThreads: [], threads}
+        })
+    }
+
     render() {
-        const contextValue = {...this.state}
+        const contextValue = {
+            ...this.state,
+            refreshChatty: this.refreshChatty
+        }
 
         return (
             <ChattyContext.Provider value={contextValue}>

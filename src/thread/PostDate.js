@@ -8,7 +8,7 @@ class PostDate extends React.Component {
     render() {
         const {classes, date} = this.props
         return (
-            <Tooltip title={format(date, 'MMM DD, YYYY h:mma')} enterDelay={350}>
+            <Tooltip disableFocusListener title={format(date, 'MMM DD, YYYY h:mma')} enterDelay={350}>
                 <div className={classes.date}>{distanceInWordsToNow(date)} ago</div>
             </Tooltip>
         )

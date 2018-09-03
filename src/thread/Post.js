@@ -47,15 +47,15 @@ class Post extends React.PureComponent {
                     </CardContent>
 
                     <CardActions className={classes.actions} disableActionSpacing>
-                        <Tooltip title='Collapse' enterDelay={350}>
+                        <Tooltip disableFocusListener title='Collapse' enterDelay={350}>
                             <CloseIcon className={classes.toolbarButton} onClick={onCollapse}/>
                         </Tooltip>
 
-                        <Tooltip title='Reply' enterDelay={350}>
+                        <Tooltip disableFocusListener title='Reply' enterDelay={350}>
                             <ReplyIcon className={classes.toolbarButton} onClick={this.handleReplyClick}/>
                         </Tooltip>
 
-                        <Tooltip title='View Post @ Shacknews.com' enterDelay={350}>
+                        <Tooltip disableFocusListener title='View Post @ Shacknews.com' enterDelay={350}>
                             <a
                                 className={classes.toolbarButton}
                                 target='_blank'
