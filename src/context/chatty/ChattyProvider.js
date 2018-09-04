@@ -191,10 +191,41 @@ class ChattyProvider extends React.PureComponent {
         window.scrollTo(0, 0)
     }
 
+    markThread = async (postId, type, updateThreads = true) => {
+        const {isLoggedIn, username} = this.props
+
+        if (isLoggedIn) {
+            await fetchJson('clientData/markPost', {
+                method: 'POST',
+                body: {username, postId, type}
+            })
+
+            if (updateThreads) {
+                this.setState(oldState => {
+                    const threadId = `${postId}`
+                    return {
+                        threads: oldState.threads
+                            .map(thread => {
+                                if (thread.threadId === threadId) {
+                                    return {
+                                        ...thread,
+                                        pinned: type === 'pinned',
+                                        collapsed: type === 'collapsed'
+                                    }
+                                }
+                                return thread
+                            })
+                    }
+                })
+            }
+        }
+    }
+
     render() {
         const contextValue = {
             ...this.state,
-            refreshChatty: this.refreshChatty
+            refreshChatty: this.refreshChatty,
+            markThread: this.markThread
         }
 
         return (

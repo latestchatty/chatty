@@ -2,8 +2,7 @@ import React from 'react'
 import Post from './Post'
 import Comments from './Comments'
 import {withStyles} from '@material-ui/core/styles'
-import fetchJson from '../util/fetchJson'
-import withAuth from '../context/auth/withAuth'
+import withChatty from '../context/chatty/withChatty'
 
 class Thread extends React.PureComponent {
     state = {
@@ -47,48 +46,18 @@ class Thread extends React.PureComponent {
     handleExpandReply = expandedReplyId => this.setState({expandedReplyId, replyBoxOpenForId: null})
 
     handleCollapse = async () => {
-        const {isLoggedIn, username} = this.props
+        const {markThread} = this.props
         const {thread} = this.state
-
-        this.setState(oldState => ({
-            thread: {
-                ...oldState.thread,
-                collapsed: !oldState.thread.collapsed
-            }
-        }), async () => {
-            if (isLoggedIn) await fetchJson('clientData/markPost', {
-                method: 'POST',
-                body: {
-                    username: username,
-                    postId: thread.threadId,
-                    type: this.state.thread.collapsed ? 'collapsed' : 'unmarked'
-                }
-            })
-        })
+        markThread(thread.threadId, thread.collapsed ? 'unmarked' : 'collapsed')
     }
 
     handleOpenReplyBox = id => this.setState({replyBoxOpenForId: id})
     handleCloseReplyBox = () => this.setState({replyBoxOpenForId: null})
 
     togglePinned = async () => {
-        const {isLoggedIn, username} = this.props
+        const {markThread} = this.props
         const {thread} = this.state
-
-        this.setState(oldState => ({
-            thread: {
-                ...oldState.thread,
-                pinned: !oldState.thread.pinned
-            }
-        }), async () => {
-            if (isLoggedIn) await fetchJson('clientData/markPost', {
-                method: 'POST',
-                body: {
-                    username: username,
-                    postId: thread.threadId,
-                    type: this.state.thread.pinned ? 'pinned' : 'unmarked'
-                }
-            })
-        })
+        markThread(thread.threadId, thread.pinned ? 'unmarked' : 'pinned')
     }
 
     render() {
@@ -127,8 +96,8 @@ const styles = {
     }
 }
 
-export default withAuth(
-    withStyles(styles)(
+export default withStyles(styles)(
+    withChatty(
         Thread
     )
 )
