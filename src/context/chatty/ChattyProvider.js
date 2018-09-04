@@ -81,7 +81,6 @@ class ChattyProvider extends React.PureComponent {
 
             // TODO: remove expired threads
 
-            // TODO: pinned threads during this session aren't sorted here
             // sort by activity, pinned first
             threads = threads
                 .sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId])
