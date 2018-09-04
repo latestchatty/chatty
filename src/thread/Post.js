@@ -4,6 +4,8 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Tooltip from '@material-ui/core/Tooltip'
 import CloseIcon from '@material-ui/icons/Close'
+import StarIcon from '@material-ui/icons/Star'
+import StarBorderIcon from '@material-ui/icons/StarBorder'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import ReplyIcon from '@material-ui/icons/Reply'
 import {withStyles} from '@material-ui/core/styles'
@@ -12,12 +14,13 @@ import PostDate from './PostDate'
 import PostAuthor from './PostAuthor'
 import classnames from 'classnames'
 import ReplyBox from '../replyBox/ReplyBox'
+import withAuth from '../context/auth/withAuth'
 
 class Post extends React.PureComponent {
     handleReplyClick = () => this.props.onOpenReplyBox(this.props.post.id)
 
     render() {
-        const {classes, post, onCollapse, replyBoxOpenForId, onCloseReplyBox} = this.props
+        const {classes, isLoggedIn, post, onCollapse, onPinned, replyBoxOpenForId, onCloseReplyBox} = this.props
         const html = {__html: post.body}
         let tagClass
         if (post.category === 'nws') {
@@ -51,9 +54,30 @@ class Post extends React.PureComponent {
                             <CloseIcon className={classes.toolbarButton} onClick={onCollapse}/>
                         </Tooltip>
 
-                        <Tooltip disableFocusListener title='Reply' enterDelay={350}>
-                            <ReplyIcon className={classes.toolbarButton} onClick={this.handleReplyClick}/>
-                        </Tooltip>
+                        {
+                            isLoggedIn &&
+                            <Tooltip disableFocusListener title='Reply' enterDelay={350}>
+                                <ReplyIcon className={classes.toolbarButton} onClick={this.handleReplyClick}/>
+                            </Tooltip>
+                        }
+
+                        {
+                            isLoggedIn && post.parentId === 0 &&
+                            <React.Fragment>
+                                {
+                                    post.pinned &&
+                                    <Tooltip disableFocusListener title='Unpin Thread' enterDelay={350}>
+                                        <StarIcon className={classes.toolbarButton} onClick={onPinned}/>
+                                    </Tooltip>
+                                }
+                                {
+                                    !post.pinned &&
+                                    <Tooltip disableFocusListener title='Pin Thread' enterDelay={350}>
+                                        <StarBorderIcon className={classes.toolbarButton} onClick={onPinned}/>
+                                    </Tooltip>
+                                }
+                            </React.Fragment>
+                        }
 
                         <Tooltip disableFocusListener title='View Post @ Shacknews.com' enterDelay={350}>
                             <a
@@ -123,4 +147,8 @@ const styles = {
     }
 }
 
-export default withStyles(styles)(Post)
+export default withAuth(
+    withStyles(styles)(
+        Post
+    )
+)

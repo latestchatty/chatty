@@ -2,13 +2,16 @@ import React from 'react'
 import Post from './Post'
 import Comments from './Comments'
 import {withStyles} from '@material-ui/core/styles'
+import fetchJson from '../util/fetchJson'
+import withAuth from '../context/auth/withAuth'
 
 class Thread extends React.PureComponent {
     state = {
         thread: {
+            pinned: false,
+            collapsed: false,
             posts: []
         },
-        collapsed: false,
         expandedReplyId: null,
         replyBoxOpenForId: null
     }
@@ -32,6 +35,7 @@ class Thread extends React.PureComponent {
 
         const [post] = posts
         const thread = {
+            ...raw,
             ...post,
             id: +raw.threadId,
             posts: posts
@@ -41,14 +45,56 @@ class Thread extends React.PureComponent {
 
     handleCollapseReply = () => this.setState({expandedReplyId: null, replyBoxOpenForId: null})
     handleExpandReply = expandedReplyId => this.setState({expandedReplyId, replyBoxOpenForId: null})
-    handleCollapse = () => this.setState({collapsed: true, replyBoxOpenForId: null})
+
+    handleCollapse = async () => {
+        const {isLoggedIn, username} = this.props
+        const {thread} = this.state
+
+        this.setState(oldState => ({
+            thread: {
+                ...oldState.thread,
+                collapsed: !oldState.thread.collapsed
+            }
+        }), async () => {
+            if (isLoggedIn) await fetchJson('clientData/markPost', {
+                method: 'POST',
+                body: {
+                    username: username,
+                    postId: thread.threadId,
+                    type: this.state.thread.collapsed ? 'collapsed' : 'unmarked'
+                }
+            })
+        })
+    }
+
     handleOpenReplyBox = id => this.setState({replyBoxOpenForId: id})
     handleCloseReplyBox = () => this.setState({replyBoxOpenForId: null})
 
+    togglePinned = async () => {
+        const {isLoggedIn, username} = this.props
+        const {thread} = this.state
+
+        this.setState(oldState => ({
+            thread: {
+                ...oldState.thread,
+                pinned: !oldState.thread.pinned
+            }
+        }), async () => {
+            if (isLoggedIn) await fetchJson('clientData/markPost', {
+                method: 'POST',
+                body: {
+                    username: username,
+                    postId: thread.threadId,
+                    type: this.state.thread.pinned ? 'pinned' : 'unmarked'
+                }
+            })
+        })
+    }
+
     render() {
         const {classes} = this.props
-        const {collapsed, thread, expandedReplyId, replyBoxOpenForId} = this.state
-        if (collapsed) return null
+        const {thread, expandedReplyId, replyBoxOpenForId} = this.state
+        if (thread.collapsed) return null
 
         return (
             <div className={classes.thread}>
@@ -58,6 +104,7 @@ class Thread extends React.PureComponent {
                     onCollapse={this.handleCollapse}
                     onOpenReplyBox={this.handleOpenReplyBox}
                     onCloseReplyBox={this.handleCloseReplyBox}
+                    onPinned={this.togglePinned}
                 />
 
                 <Comments
@@ -80,4 +127,8 @@ const styles = {
     }
 }
 
-export default withStyles(styles)(Thread)
+export default withAuth(
+    withStyles(styles)(
+        Thread
+    )
+)

@@ -1,7 +1,6 @@
 import React from 'react'
 import AuthContext from './AuthContext'
 import fetchJson from '../../util/fetchJson'
-import querystring from 'querystring'
 import withIndicators from '../indicators/withIndicators'
 
 class AuthProvider extends React.PureComponent {
@@ -29,16 +28,13 @@ class AuthProvider extends React.PureComponent {
         try {
             setLoading('async')
 
-            const result = await fetchJson(`verifyCredentials`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: querystring.stringify({username, password})
-            })
+            const result = await fetchJson(`verifyCredentials`, {method: 'POST', body: {username, password}})
 
             if (result.isValid) {
                 localStorage.setItem('auth', JSON.stringify({username, password}))
                 this.setState({isLoggedIn: true, username, password})
             } else {
+                console.log('Invalid login credentials.')
                 // TODO: toast user
             }
         } catch (ex) {

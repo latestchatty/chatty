@@ -1,6 +1,18 @@
+import querystring from 'querystring'
+
 const base = 'https://winchatty.com/v2'
 
 export default async (url, options = {}) => {
+    if (options.body) {
+        options = {
+            ...options,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                ...options.headers
+            },
+            body: querystring.stringify(options.body)
+        }
+    }
     let res = await fetch(`${base}/${url}`, options)
     if (res.ok) {
         return await tryJson(res)

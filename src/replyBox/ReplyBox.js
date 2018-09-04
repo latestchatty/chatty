@@ -8,7 +8,6 @@ import {withStyles} from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import fetchJson from '../util/fetchJson'
 import withAuth from '../context/auth/withAuth'
-import querystring from 'querystring'
 import withIndicators from '../context/indicators/withIndicators'
 import classnames from 'classnames'
 
@@ -34,11 +33,7 @@ class ReplyBox extends React.Component {
         try {
             setLoading('async')
             this.setState({posting: true})
-            let response = await fetchJson('postComment', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: querystring.stringify({username, password, parentId, text})
-            })
+            let response = await fetchJson('postComment', {method: 'POST', body: {username, password, parentId, text}})
             if (response.result === 'success') {
                 this.props.onCloseReplyBox()
                 // TODO: toast user
