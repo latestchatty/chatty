@@ -54,6 +54,7 @@ class ChattyProvider extends React.PureComponent {
 
             // only add in new threads when needed
             threads = includeNewThreads ? oldState.newThreads.concat(threads) : threads
+            let newThreads = includeNewThreads ? [] : oldState.newThreads
 
             // if we're loading marked posts, process the data
             if (markedPosts) {
@@ -86,7 +87,7 @@ class ChattyProvider extends React.PureComponent {
                 .sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId])
                 .sort((a, b) => b.pinned - a.pinned)
 
-            return {threads}
+            return {threads, newThreads}
         }, async () => {
             if (markedPosts) {
                 // clean up any old collapsed posts after loading, doesn't impact state
