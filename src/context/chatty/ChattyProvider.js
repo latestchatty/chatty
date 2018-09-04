@@ -90,14 +90,10 @@ class ChattyProvider extends React.PureComponent {
             return {threads}
         }, async () => {
             if (markedPosts) {
-                const {username} = this.props
                 // clean up any old collapsed posts after loading, doesn't impact state
                 let promises = markedPosts
                     .filter(post => !maxPostIdByThread[post.id])
-                    .map(({id: postId}) => fetchJson('clientData/markPost', {
-                        method: 'POST',
-                        body: {username, postId, type: 'unmarked'}
-                    }))
+                    .map(({id}) => this.markThread(id, 'unmarked', false))
                 await Promise.all(promises)
             }
         })
