@@ -16,11 +16,13 @@ class MessagesButton extends React.Component {
     async componentDidMount() {
         this.mounted = true
 
-        // initial value
-        this.getCounts()
+        this.restartTimer()
+    }
 
-        // update counts every 15 minutes
-        this.interval = setInterval(() => this.getCounts(), 15 * 60 * 1000)
+    componentDidUpdate(oldProps) {
+        if (oldProps.isLoggedIn !== this.props.isLoggedIn) {
+            this.restartTimer()
+        }
     }
 
     componentWillUnmount() {
@@ -29,10 +31,26 @@ class MessagesButton extends React.Component {
         clearInterval(this.interval)
     }
 
+    restartTimer() {
+        const {isLoggedIn} = this.props
+
+        clearInterval(this.interval)
+
+        if (isLoggedIn) {
+            // initial value
+            this.getCounts()
+
+            // update counts every 15 minutes
+            this.interval = setInterval(() => this.getCounts(), 15 * 60 * 1000)
+        }
+    }
+
     async getCounts() {
-        const {username, password} = this.props
-        const {total, unread} = await fetchJson('getMessageCount', {method: 'POST', body: {username, password}})
-        this.mounted && this.setState({totalMessagesCount: total, unreadMessagesCount: unread})
+        const {isLoggedIn, username, password} = this.props
+        if (isLoggedIn) {
+            const {total, unread} = await fetchJson('getMessageCount', {method: 'POST', body: {username, password}})
+            this.mounted && this.setState({totalMessagesCount: total, unreadMessagesCount: unread})
+        }
     }
 
     render() {
