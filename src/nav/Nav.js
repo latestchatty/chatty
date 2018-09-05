@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import UserMenu from '../userMenu/UserMenu'
 import RefreshButton from './RefreshButton'
 import NewThreadButton from './NewThreadButton'
+import MessagesButton from './MessagesButton'
 
 class Nav extends React.Component {
     render() {
@@ -24,6 +25,7 @@ class Nav extends React.Component {
                         <Typography variant='headline' className={classes.title}>Chatty</Typography>
 
                         <NewThreadButton/>
+                        <MessagesButton/>
                         <RefreshButton/>
                         <UserMenu/>
                     </Toolbar>
