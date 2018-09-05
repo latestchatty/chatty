@@ -195,25 +195,25 @@ class ChattyProvider extends React.PureComponent {
                 method: 'POST',
                 body: {username, postId, type}
             })
+        }
 
-            if (updateThreads) {
-                this.setState(oldState => {
-                    const threadId = `${postId}`
-                    return {
-                        threads: oldState.threads
-                            .map(thread => {
-                                if (thread.threadId === threadId) {
-                                    return {
-                                        ...thread,
-                                        pinned: type === 'pinned',
-                                        collapsed: type === 'collapsed'
-                                    }
+        if (updateThreads) {
+            this.setState(oldState => {
+                const threadId = `${postId}`
+                return {
+                    threads: oldState.threads
+                        .map(thread => {
+                            if (thread.threadId === threadId) {
+                                return {
+                                    ...thread,
+                                    pinned: type === 'pinned',
+                                    collapsed: type === 'collapsed'
                                 }
-                                return thread
-                            })
-                    }
-                })
-            }
+                            }
+                            return thread
+                        })
+                }
+            })
         }
     }
 
