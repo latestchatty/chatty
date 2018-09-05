@@ -5,17 +5,24 @@ import withAuth from '../auth/withAuth'
 
 class MessagesProvider extends React.PureComponent {
     state = {
-        totalMessagesCount: 0,
-        unreadMessagesCount: 0
+        totalMessagesCount: null,
+        unreadMessagesCount: null
     }
 
     async componentDidMount() {
         this.mounted = true
-        await this.getCounts()
+
+        // initial value
+        this.getCounts()
+
+        // update counts every 15 minutes
+        this.interval = setInterval(() => this.getCounts(), 15 * 60 * 1000)
     }
 
     componentWillUnmount() {
         this.mounted = false
+
+        clearInterval(this.interval)
     }
 
     async getCounts() {
