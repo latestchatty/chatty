@@ -16,6 +16,7 @@ import classnames from 'classnames'
 import ReplyBox from '../replyBox/ReplyBox'
 import withAuth from '../context/auth/withAuth'
 import Tags from './Tags'
+import TagButton from './TagButton'
 
 class Post extends React.PureComponent {
     handleReplyClick = () => this.props.onOpenReplyBox(this.props.post.id)
@@ -84,6 +85,8 @@ class Post extends React.PureComponent {
                                 }
                             </React.Fragment>
                         }
+
+                        <TagButton postId={post.id} className={classes.toolbarButton}/>
 
                         <Tooltip disableFocusListener title='View Post @ Shacknews.com' enterDelay={350}>
                             <a
