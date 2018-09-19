@@ -35,7 +35,7 @@ class TagButton extends React.PureComponent {
     }
 
     async tagPost(who, what, tag, action) {
-        const base = 'http://www.lmnopc.com/greasemonkey/shacklol/report.php'
+        const base = 'https://www.lmnopc.com/greasemonkey/shacklol/report.php'
         const params = querystring.stringify({who, what, tag, version: '-1'})
         if (action) params.action = action
         const response = await fetch(`${base}?${params}`)
