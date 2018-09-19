@@ -66,7 +66,8 @@ const styles = {
         marginLeft: 12
     },
     containerOneline: {
-        marginLeft: 4
+        marginLeft: 4,
+        whiteSpace: 'nowrap'
     },
     chip: {
         height: 16,
