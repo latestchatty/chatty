@@ -15,6 +15,7 @@ import PostAuthor from './PostAuthor'
 import classnames from 'classnames'
 import ReplyBox from '../replyBox/ReplyBox'
 import withAuth from '../context/auth/withAuth'
+import Tags from './Tags'
 
 class Post extends React.PureComponent {
     handleReplyClick = () => this.props.onOpenReplyBox(this.props.post.id)
@@ -37,6 +38,8 @@ class Post extends React.PureComponent {
                 <Card className={classnames(classes.card, classes[tagClass], classes[replyBorder])}>
                     <div className={classes.header}>
                         <PostAuthor post={post} thread={thread}/>
+
+                        <Tags tags={post.lols} variant='post'/>
 
                         <span className={classes.flex}/>
 

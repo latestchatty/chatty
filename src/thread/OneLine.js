@@ -2,6 +2,7 @@ import React from 'react'
 import PostAuthor from './PostAuthor'
 import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
+import Tags from './Tags'
 
 class OneLine extends React.PureComponent {
     state = {
@@ -67,7 +68,7 @@ class OneLine extends React.PureComponent {
                     dangerouslySetInnerHTML={{__html: oneline}}
                     onClick={this.handleClick}
                 />
-                <span className={classes.separator}>:</span>
+                <Tags tags={post.lols} variant='oneline'/>
                 <PostAuthor post={post} thread={thread}/>
             </div>
         )
