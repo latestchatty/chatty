@@ -3,7 +3,7 @@ import Chip from '@material-ui/core/Chip'
 import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
 
-class Tags extends React.Component {
+class Tags extends React.PureComponent {
     state = {
         tags: []
     }

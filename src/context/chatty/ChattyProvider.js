@@ -166,17 +166,56 @@ class ChattyProvider extends React.PureComponent {
                 }))
             }
         } else if (eventType === 'categoryChange') {
-            console.log('TODO: event categoryChange', event)
-            // if (category === 'nuked') {
-            //     // TODO: Handle nuked post
-            //     console.log('TODO: Nuked post', event)
-            // } else {
-            //     // TODO: Handle category change
-            //     console.log('TODO: Category change', event)
-            // }
+            const {postId, category} = eventData
+            const updateCategory = thread => {
+                const threadContainsUpdate = thread.posts.find(post => post.id === postId)
+                if (threadContainsUpdate) {
+                    const posts = thread.posts
+                        .map(post => {
+                            if (post.id === postId) {
+                                return {...post, category}
+                            }
+                            return post
+                        })
+                    return {...thread, posts}
+                }
+                return thread
+            }
+
+            this.setState(oldState => ({
+                threads: oldState.threads.map(updateCategory),
+                newThreads: oldState.newThreads.map(updateCategory)
+            }))
         } else if (eventType === 'lolCountsUpdate') {
-            console.debug('TODO: event lol updates', event)
-            // TODO: handle lol tags in general honestly
+            const {updates} = eventData
+            const updatedPostsById = updates
+                .reduce(((acc, {postId, tag, count}) => ({
+                    ...acc,
+                    [postId]: {tag, count}
+                })), {})
+            const updateTags = thread => {
+                const threadContainsUpdate = thread.posts.find(post => updatedPostsById[post.id])
+                if (threadContainsUpdate) {
+                    const posts = thread.posts
+                        .map(post => {
+                            const updated = updatedPostsById[post.id]
+                            if (updated) {
+                                const lols = (post.lols || [])
+                                    .filter(tag => tag.tag !== updated.tag)
+                                    .concat([updated])
+                                return {...post, lols}
+                            }
+                            return post
+                        })
+                    return {...thread, posts}
+                }
+                return thread
+            }
+
+            this.setState(oldState => ({
+                threads: oldState.threads.map(updateTags),
+                newThreads: oldState.newThreads.map(updateTags)
+            }))
         } else {
             console.debug('Unhandled event type:', event)
         }

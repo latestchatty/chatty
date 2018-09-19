@@ -23,8 +23,11 @@ class Post extends React.PureComponent {
     render() {
         const {classes, isLoggedIn, post, thread, onCollapse, onPinned, replyBoxOpenForId, onCloseReplyBox} = this.props
         const html = {__html: post.body}
+
         let tagClass
-        if (post.category === 'nws') {
+        if (post.category === 'nuked') {
+            return null
+        } else if (post.category === 'nws') {
             tagClass = 'tagNws'
         } else if (post.category === 'informative') {
             tagClass = 'tagInformative'
