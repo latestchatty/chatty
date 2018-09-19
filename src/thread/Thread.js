@@ -69,6 +69,7 @@ class Thread extends React.PureComponent {
             <div className={classes.thread}>
                 <Post
                     post={thread}
+                    thread={thread}
                     replyBoxOpenForId={replyBoxOpenForId}
                     onCollapse={this.handleCollapse}
                     onOpenReplyBox={this.handleOpenReplyBox}

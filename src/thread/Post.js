@@ -20,7 +20,7 @@ class Post extends React.PureComponent {
     handleReplyClick = () => this.props.onOpenReplyBox(this.props.post.id)
 
     render() {
-        const {classes, isLoggedIn, post, onCollapse, onPinned, replyBoxOpenForId, onCloseReplyBox} = this.props
+        const {classes, isLoggedIn, post, thread, onCollapse, onPinned, replyBoxOpenForId, onCloseReplyBox} = this.props
         const html = {__html: post.body}
         let tagClass
         if (post.category === 'nws') {
@@ -36,7 +36,7 @@ class Post extends React.PureComponent {
             <React.Fragment>
                 <Card className={classnames(classes.card, classes[tagClass], classes[replyBorder])}>
                     <div className={classes.header}>
-                        <PostAuthor post={post}/>
+                        <PostAuthor post={post} thread={thread}/>
 
                         <span className={classes.flex}/>
 

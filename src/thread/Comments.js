@@ -20,6 +20,7 @@ class Comments extends React.PureComponent {
                                     expandedReplyId === post.id
                                         ? <Post
                                             post={post}
+                                            thread={thread}
                                             onCollapse={onCollapseReply}
                                             replyBoxOpenForId={replyBoxOpenForId}
                                             onOpenReplyBox={onOpenReplyBox}
