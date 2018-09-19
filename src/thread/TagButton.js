@@ -26,6 +26,7 @@ class TagButton extends React.PureComponent {
             if (!text.match(/^ok /)) {
                 console.warn('Error tagging post', text)
             }
+            // TODO: toast user
         } catch (err) {
             console.error('Exception while tagging post', err)
         } finally {
