@@ -8,6 +8,7 @@ import './global.css'
 import './shacktags.css'
 import './comment_tree.css'
 import IndicatorProvider from '../context/indicators/IndicatorProvider'
+import FilterProvider from '../context/filter/FilterProvider'
 
 class Root extends React.Component {
     render() {
@@ -15,9 +16,11 @@ class Root extends React.Component {
             <MuiThemeProvider theme={Theme}>
                 <IndicatorProvider>
                     <AuthProvider>
-                            <ChattyProvider>
+                        <ChattyProvider>
+                            <FilterProvider>
                                 <App/>
-                            </ChattyProvider>
+                            </FilterProvider>
+                        </ChattyProvider>
                     </AuthProvider>
                 </IndicatorProvider>
             </MuiThemeProvider>

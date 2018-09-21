@@ -9,6 +9,7 @@ import UserMenu from '../userMenu/UserMenu'
 import RefreshButton from './RefreshButton'
 import NewThreadButton from './NewThreadButton'
 import MessagesButton from './MessagesButton'
+import FilterButton from '../filter/FilterButton'
 
 class Nav extends React.Component {
     render() {
@@ -24,6 +25,7 @@ class Nav extends React.Component {
 
                         <Typography variant='headline' className={classes.title}>Chatty</Typography>
 
+                        <FilterButton/>
                         <NewThreadButton/>
                         <MessagesButton/>
                         <RefreshButton/>

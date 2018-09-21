@@ -3,6 +3,7 @@ import Post from './Post'
 import Comments from './Comments'
 import {withStyles} from '@material-ui/core/styles'
 import withChatty from '../context/chatty/withChatty'
+import withFilter from '../context/filter/withFilter'
 
 class Thread extends React.PureComponent {
     state = {
@@ -49,6 +50,12 @@ class Thread extends React.PureComponent {
         const {markThread} = this.props
         const {thread} = this.state
         markThread(thread.threadId, thread.collapsed ? 'unmarked' : 'collapsed')
+        this.setState(oldState => ({
+            thread: {
+                ...oldState.thread,
+                collapsed: !thread.collapsed
+            }
+        }))
     }
 
     handleOpenReplyBox = id => this.setState({replyBoxOpenForId: id})
@@ -58,12 +65,18 @@ class Thread extends React.PureComponent {
         const {markThread} = this.props
         const {thread} = this.state
         markThread(thread.threadId, thread.pinned ? 'unmarked' : 'pinned')
+        this.setState(oldState => ({
+            thread: {
+                ...oldState.thread,
+                pinned: !thread.pinned
+            }
+        }))
     }
 
     render() {
-        const {classes} = this.props
+        const {classes, isPostVisible} = this.props
         const {thread, expandedReplyId, replyBoxOpenForId} = this.state
-        if (thread.collapsed) return null
+        if (!isPostVisible(thread)) return null
 
         return (
             <div className={classes.thread}>
@@ -99,6 +112,8 @@ const styles = {
 
 export default withStyles(styles)(
     withChatty(
-        Thread
+        withFilter(
+            Thread
+        )
     )
 )

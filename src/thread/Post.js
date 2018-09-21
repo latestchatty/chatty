@@ -17,13 +17,17 @@ import ReplyBox from '../replyBox/ReplyBox'
 import withAuth from '../context/auth/withAuth'
 import Tags from './Tags'
 import TagButton from './TagButton'
+import withFilter from '../context/filter/withFilter'
 
 class Post extends React.PureComponent {
     handleReplyClick = () => this.props.onOpenReplyBox(this.props.post.id)
 
     render() {
-        const {classes, isLoggedIn, post, thread, onCollapse, onPinned, replyBoxOpenForId, onCloseReplyBox} = this.props
+        const {
+            classes, isLoggedIn, post, thread, onCollapse, onPinned, replyBoxOpenForId, onCloseReplyBox, isPostVisible
+        } = this.props
         const html = {__html: post.body}
+        if (!isPostVisible(thread, post)) return null
 
         let tagClass
         if (post.category === 'nuked') {
@@ -57,8 +61,17 @@ class Post extends React.PureComponent {
                     </CardContent>
 
                     <CardActions className={classes.actions} disableActionSpacing>
-                        <Tooltip disableFocusListener title='Collapse' enterDelay={350}>
-                            <CloseIcon className={classes.toolbarButton} onClick={onCollapse}/>
+                        <Tooltip
+                            disableFocusListener
+                            title={post.collapsed ? 'Uncollapse' : 'Collapse'}
+                            enterDelay={350}
+                        >
+                            <CloseIcon
+                                className={
+                                    classnames(classes.toolbarButton, post.collapsed ? classes.collapsed : null)
+                                }
+                                onClick={onCollapse}
+                            />
                         </Tooltip>
 
                         {
@@ -153,11 +166,16 @@ const styles = {
         cursor: 'pointer',
         color: '#fff',
         marginRight: 6
+    },
+    collapsed: {
+        color: '#f00'
     }
 }
 
 export default withAuth(
-    withStyles(styles)(
-        Post
+    withFilter(
+        withStyles(styles)(
+            Post
+        )
     )
 )

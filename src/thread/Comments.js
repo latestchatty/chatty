@@ -1,19 +1,21 @@
 import React from 'react'
 import Post from './Post'
 import OneLine from './OneLine'
+import withFilter from '../context/filter/withFilter'
 
 class Comments extends React.PureComponent {
     render() {
         const {
             thread = {}, parent = thread, onCollapseReply, onExpandReply, onOpenReplyBox, expandedReplyId,
-            replyBoxOpenForId, onCloseReplyBox
+            replyBoxOpenForId, onCloseReplyBox, isPostVisible
         } = this.props
 
         return (
-            <ul className="comments">
+            <ul className='comments'>
                 {
                     thread.posts
                         .filter(post => post.parentId === parent.id)
+                        .filter(post => isPostVisible(thread, post))
                         .map(post =>
                             <li key={post.id}>
                                 {
@@ -32,7 +34,7 @@ class Comments extends React.PureComponent {
                                             onExpandReply={onExpandReply}
                                         />
                                 }
-                                <Comments
+                                <Self
                                     thread={thread}
                                     parent={post}
                                     expandedReplyId={expandedReplyId}
@@ -50,4 +52,5 @@ class Comments extends React.PureComponent {
     }
 }
 
-export default Comments
+const Self = withFilter(Comments)
+export default Self
