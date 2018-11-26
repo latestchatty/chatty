@@ -22,11 +22,18 @@ import withFilter from '../context/filter/withFilter'
 class Post extends React.PureComponent {
     handleReplyClick = () => this.props.onOpenReplyBox(this.props.post.id)
 
+    fixBody(post) {
+        if (post.author === 'Shacknews') {
+            return post.body.replace('href="/', 'href="https://www.shacknews.com/');
+        }
+        return post.body;
+    }
+
     render() {
         const {
             classes, isLoggedIn, post, thread, onCollapse, onPinned, replyBoxOpenForId, onCloseReplyBox, isPostVisible
         } = this.props
-        const html = {__html: post.body}
+        const html = {__html: this.fixBody(post)}
         if (!isPostVisible(thread, post)) return null
 
         let tagClass
