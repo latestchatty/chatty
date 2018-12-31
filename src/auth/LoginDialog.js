@@ -14,7 +14,8 @@ class LoginDialog extends React.Component {
     }
 
     handleChange = event => this.setState({[event.target.id]: event.target.value})
-    handleClick = async () => {
+    handleSubmit = async event => {
+        event.preventDefault()
         const {username, password} = this.state
         const {login, onClose} = this.props
         login(username, password)
@@ -26,30 +27,32 @@ class LoginDialog extends React.Component {
         const {open, onClose} = this.props
         return (
             <Dialog open={open} onClose={onClose}>
-                <DialogTitle>Log in</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin='dense'
-                        id='username'
-                        label='Username'
-                        type='text'
-                        fullWidth
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        margin='dense'
-                        id='password'
-                        label='Password'
-                        type='password'
-                        fullWidth
-                        onChange={this.handleChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose}>Cancel</Button>
-                    <Button onClick={this.handleClick}>Log in</Button>
-                </DialogActions>
+                <form onSubmit={this.handleSubmit}>
+                    <DialogTitle>Log in</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin='dense'
+                            id='username'
+                            label='Username'
+                            type='text'
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                        <TextField
+                            margin='dense'
+                            id='password'
+                            label='Password'
+                            type='password'
+                            fullWidth
+                            onChange={this.handleChange}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button type='submit'>Log in</Button>
+                    </DialogActions>
+                </form>
             </Dialog>
         )
     }
