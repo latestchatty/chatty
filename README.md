@@ -3,7 +3,7 @@ Chatty
 A single-page-application alternative client for the shacknews chatty (http://www.shacknews.com/chatty).
 
 ##### Example Sites
-* https://latestchatty.github.io/chatty (React version)
+* https://latestchatty.org (React version)
 * http://chatty.nixxed.com (old Angular2 version)
 
 ##### How to run:
