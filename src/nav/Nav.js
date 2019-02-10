@@ -42,10 +42,18 @@ function Nav({classes}) {
                     </Toolbar>
                 </AppBar>
 
-                <a href="https://github.com/latestchatty/chatty" className={classes.menuItem}>
+                <a
+                    href="https://github.com/latestchatty/chatty"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={classes.menuItem}>
                     <MenuItem onClick={closeDrawer}>Contribute</MenuItem>
                 </a>
-                <a href="https://github.com/latestchatty/chatty/issues" className={classes.menuItem}>
+                <a
+                    href="https://github.com/latestchatty/chatty/issues"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={classes.menuItem}>
                     <MenuItem onClick={closeDrawer}>Feedback</MenuItem>
                 </a>
             </Drawer>
