@@ -112,6 +112,7 @@ class Post extends React.PureComponent {
                             <a
                                 className={classes.toolbarButton}
                                 target='_blank'
+                                rel="noopener noreferrer"
                                 href={`http://www.shacknews.com/chatty?id=${post.id}#item_${post.id}`}
                             >
                                 <ExitToAppIcon className={classes.toolbarButton}/>
