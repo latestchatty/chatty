@@ -1,83 +1,56 @@
-import React from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import MessageIcon from '@material-ui/icons/Message'
 import Badge from '@material-ui/core/Badge'
 import {withStyles} from '@material-ui/core/styles'
-import withAuth from '../context/auth/withAuth'
 import fetchJson from '../util/fetchJson'
+import AuthContext from '../context/auth/AuthContext'
 
-class MessagesButton extends React.Component {
-    state = {
-        totalMessagesCount: 0,
-        unreadMessagesCount: 0
-    }
+function MessagesButton({classes}) {
+    const {isLoggedIn, username, password} = useContext(AuthContext)
 
-    async componentDidMount() {
-        this.mounted = true
+    const [totalMessagesCount, setTotalMessagesCount] = useState(0)
+    const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
 
-        this.restartTimer()
-    }
+    const displayBadge = unreadMessagesCount > 0
+    const title = `( ${unreadMessagesCount} / ${totalMessagesCount} ) unread messages`
 
-    componentDidUpdate(oldProps) {
-        if (oldProps.isLoggedIn !== this.props.isLoggedIn) {
-            this.restartTimer()
-        }
-    }
-
-    componentWillUnmount() {
-        this.mounted = false
-
-        clearInterval(this.interval)
-    }
-
-    restartTimer() {
-        const {isLoggedIn} = this.props
-
-        clearInterval(this.interval)
-
+    const getCounts = async () => {
         if (isLoggedIn) {
-            // initial value
-            this.getCounts()
-
-            // update counts every 15 minutes
-            this.interval = setInterval(() => this.getCounts(), 15 * 60 * 1000)
+            const options = {method: 'POST', body: {username, password}}
+            const {total, unread} = await fetchJson('getMessageCount', options)
+            setTotalMessagesCount(total)
+            setUnreadMessagesCount(unread)
         }
     }
 
-    async getCounts() {
-        const {isLoggedIn, username, password} = this.props
-        if (isLoggedIn) {
-            const {total, unread} = await fetchJson('getMessageCount', {method: 'POST', body: {username, password}})
-            this.mounted && this.setState({totalMessagesCount: total, unreadMessagesCount: unread})
-        }
-    }
+    // update counts every 15 minutes
+    useEffect(() => {
+        getCounts()
 
-    render() {
-        const {classes, isLoggedIn} = this.props
-        const {totalMessagesCount, unreadMessagesCount} = this.state
-        const displayBadge = unreadMessagesCount > 0
-        const title = `( ${unreadMessagesCount} / ${totalMessagesCount} ) unread messages`
-        if (!isLoggedIn) return null
+        const id = setInterval(() => getCounts(), 15 * 60 * 1000)
+        return () => clearInterval(id)
+    }, [isLoggedIn])
 
-        return (
-            <Tooltip disableFocusListener title={title} enterDelay={350}>
-                <IconButton href='https://www.shacknews.com/messages' target='_blank'>
-                    {
-                        displayBadge
-                            ? <Badge
-                                badgeContent={unreadMessagesCount}
-                                color='secondary'
-                                classes={{badge: classes.badge}}
-                            >
-                                <MessageIcon/>
-                            </Badge>
-                            : <MessageIcon/>
-                    }
-                </IconButton>
-            </Tooltip>
-        )
-    }
+    if (!isLoggedIn) return null
+    return (
+        <Tooltip disableFocusListener title={title} enterDelay={350}>
+            <IconButton href='https://www.shacknews.com/messages' target='_blank'>
+                {
+                    displayBadge
+                        ? <Badge
+                            badgeContent={unreadMessagesCount}
+                            color='secondary'
+                            classes={{badge: classes.badge}}
+                        >
+                            <MessageIcon/>
+                        </Badge>
+                        : <MessageIcon/>
+                }
+            </IconButton>
+        </Tooltip>
+    )
 }
 
 const styles = {
@@ -86,8 +59,4 @@ const styles = {
     }
 }
 
-export default withAuth(
-    withStyles(styles)(
-        MessagesButton
-    )
-)
+export default withStyles(styles)(MessagesButton)

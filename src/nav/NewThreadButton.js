@@ -1,43 +1,36 @@
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '../../node_modules/@material-ui/icons/Add'
 import Tooltip from '@material-ui/core/Tooltip'
-import withAuth from '../context/auth/withAuth'
 import Dialog from '@material-ui/core/Dialog'
 import ReplyBox from '../replyBox/ReplyBox'
 import {withStyles} from '@material-ui/core/styles'
+import AuthContext from '../context/auth/AuthContext'
 
-class NewThreadButton extends React.Component {
-    state = {open: false}
+function NewThreadButton({classes}) {
+    const {isLoggedIn} = useContext(AuthContext)
+    const [open, setOpen] = useState(false)
+    if (!isLoggedIn) return null
 
-    handleClick = () => this.setState({open: true})
-    handleClose = () => this.setState({open: false})
-
-    render() {
-        const {classes, isLoggedIn} = this.props
-        const {open} = this.state
-        if (!isLoggedIn) return null
-
-        return (
-            <React.Fragment>
-                <Tooltip disableFocusListener title='New Thread' enterDelay={350}>
-                    <IconButton onClick={this.handleClick}>
-                        <AddIcon/>
-                    </IconButton>
-                </Tooltip>
-                <Dialog
-                    open={open}
-                    onClose={this.handleClose}
-                    classes={{paper: classes.dialogPaper}}
-                >
-                    <ReplyBox
-                        parentId={0}
-                        onCloseReplyBox={this.handleClose}
-                    />
-                </Dialog>
-            </React.Fragment>
-        )
-    }
+    return (
+        <React.Fragment>
+            <Tooltip disableFocusListener title='New Thread' enterDelay={350}>
+                <IconButton onClick={() => setOpen(true)}>
+                    <AddIcon/>
+                </IconButton>
+            </Tooltip>
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                classes={{paper: classes.dialogPaper}}
+            >
+                <ReplyBox
+                    parentId={0}
+                    onCloseReplyBox={() => setOpen(false)}
+                />
+            </Dialog>
+        </React.Fragment>
+    )
 }
 
 const styles = {
@@ -46,8 +39,4 @@ const styles = {
     }
 }
 
-export default withAuth(
-    withStyles(styles)(
-        NewThreadButton
-    )
-)
+export default withStyles(styles)(NewThreadButton)

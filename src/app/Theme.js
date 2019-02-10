@@ -13,5 +13,8 @@ export default createMuiTheme({
             main: '#00e5ff',
             dark: '#00a0b2'
         }
+    },
+    typography: {
+        useNextVariants: true
     }
 })

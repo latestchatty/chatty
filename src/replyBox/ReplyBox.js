@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
@@ -7,32 +7,21 @@ import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import fetchJson from '../util/fetchJson'
-import withAuth from '../context/auth/withAuth'
-import withIndicators from '../context/indicators/withIndicators'
 import classnames from 'classnames'
+import AuthContext from '../context/auth/AuthContext'
+import IndicatorContext from '../context/indicators/IndicatorContext'
 
-class ReplyBox extends React.Component {
-    state = {
-        text: '',
-        posting: false
-    }
+function ReplyBox({classes, onCloseReplyBox, parentId, className}) {
+    const {username, password} = useContext(AuthContext)
+    const {setLoading} = useContext(IndicatorContext)
+    const [text, setText] = useState('')
+    const [posting, setPosting] = useState(false)
 
-    componentDidMount() {
-        this.mounted = true
-    }
-
-    componentWillUnmount() {
-        this.mounted = false
-    }
-
-    handleChange = event => this.setState({text: event.target.value})
-
-    handleSubmit = async () => {
-        const {setLoading, username, password, parentId} = this.props
+    const handleSubmit = async () => {
         const {text} = this.state
         try {
             setLoading('async')
-            this.setState({posting: true})
+            setPosting(true)
             let response = await fetchJson('postComment', {method: 'POST', body: {username, password, parentId, text}})
             if (response.result === 'success') {
                 this.props.onCloseReplyBox()
@@ -42,52 +31,47 @@ class ReplyBox extends React.Component {
             console.log('Error while posting comment', ex)
             // TODO: toast user
         } finally {
-            if (this.mounted) this.setState({posting: false})
+            setPosting(true)
             setLoading(false)
         }
     }
 
-    render() {
-        const {classes, onCloseReplyBox, parentId, className} = this.props
-        const {posting, text} = this.state
-
-        return (
-            <Card className={classnames(className, classes.card)}>
-                {parentId === 0 && <CardHeader title='New Thread'/>}
-                <CardContent>
-                    <div className={classes.flexRow}>
-                        <Input
-                            multiline
-                            autoFocus
-                            disableUnderline
-                            rows={5}
-                            fullWidth
-                            className={classes.textarea}
-                            placeholder='Type something interesting...'
-                            name='replyBody'
-                            required
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                </CardContent>
-                <CardActions className={classes.actions}>
-                    <Button
-                        color='primary'
-                        variant='outlined'
-                        disabled={posting || !text.length}
-                        onClick={this.handleSubmit}
-                    >Post
-                    </Button>
-                    <Button
-                        variant='outlined'
-                        disabled={posting}
-                        onClick={onCloseReplyBox}
-                    >Cancel
-                    </Button>
-                </CardActions>
-            </Card>
-        )
-    }
+    return (
+        <Card className={classnames(className, classes.card)}>
+            {parentId === 0 && <CardHeader title='New Thread'/>}
+            <CardContent>
+                <div className={classes.flexRow}>
+                    <Input
+                        multiline
+                        autoFocus
+                        disableUnderline
+                        rows={5}
+                        fullWidth
+                        className={classes.textarea}
+                        placeholder='Type something interesting...'
+                        name='replyBody'
+                        required
+                        onChange={event => setText(event.target.value)}
+                    />
+                </div>
+            </CardContent>
+            <CardActions className={classes.actions}>
+                <Button
+                    color='primary'
+                    variant='outlined'
+                    disabled={posting || !text.length}
+                    onClick={handleSubmit}
+                >Post
+                </Button>
+                <Button
+                    variant='outlined'
+                    disabled={posting}
+                    onClick={onCloseReplyBox}
+                >Cancel
+                </Button>
+            </CardActions>
+        </Card>
+    )
 }
 
 const styles = {
@@ -110,8 +94,4 @@ const styles = {
     }
 }
 
-export default withAuth(
-    withIndicators(
-        withStyles(styles)(ReplyBox)
-    )
-)
+export default withStyles(styles)(ReplyBox)

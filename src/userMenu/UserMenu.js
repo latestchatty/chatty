@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import LoginButton from '../auth/LoginButton'
@@ -6,38 +6,31 @@ import LogoutButton from '../auth/LogoutButton'
 import IconButton from '@material-ui/core/IconButton'
 import Divider from '@material-ui/core/Divider'
 import PersonIcon from '@material-ui/icons/Person'
-import withAuth from '../context/auth/withAuth'
+import AuthContext from '../context/auth/AuthContext'
 
-class UserMenu extends React.PureComponent {
-    state = {open: false}
+function UserMenu() {
+    const {isLoggedIn, username} = useContext(AuthContext)
+    const [anchorEl, setAnchorEl] = useState(null)
 
-    handleClick = event => this.setState({open: true, anchorEl: event.target})
-    handleClose = () => this.setState({open: false, anchorEl: null})
+    if (!isLoggedIn) return <LoginButton/>
+    return (
+        <React.Fragment>
+            <IconButton onClick={event => setAnchorEl(event.target)}>
+                <PersonIcon/>
+            </IconButton>
 
-    render() {
-        const {open, anchorEl} = this.state
-        const {isLoggedIn, username} = this.props
-
-        if (!isLoggedIn) return <LoginButton/>
-        return (
-            <React.Fragment>
-                <IconButton onClick={this.handleClick}>
-                    <PersonIcon/>
-                </IconButton>
-
-                <Menu
-                    keepMounted
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={this.handleClose}
-                >
-                    <MenuItem disabled>{username}</MenuItem>
-                    <Divider/>
-                    <LogoutButton onClick={this.handleClose}/>
-                </Menu>
-            </React.Fragment>
-        )
-    }
+            {anchorEl && <Menu
+                keepMounted
+                open={!!anchorEl}
+                anchorEl={anchorEl}
+                onClose={() => setAnchorEl(null)}
+            >
+                <MenuItem disabled>{username}</MenuItem>
+                <Divider/>
+                <LogoutButton onClick={() => setAnchorEl(null)}/>
+            </Menu>}
+        </React.Fragment>
+    )
 }
 
-export default withAuth(UserMenu)
+export default UserMenu

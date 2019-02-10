@@ -1,16 +1,14 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Thread from '../thread/Thread'
-import withChatty from '../context/chatty/withChatty'
+import ChattyContext from '../context/chatty/ChattyContext'
 
-class Chatty extends React.PureComponent {
-    render() {
-        let {threads = []} = this.props
-        return (
-            <div style={styles.chatty}>
-                {threads.map(thread => <Thread key={thread.threadId} thread={thread}/>)}
-            </div>
-        )
-    }
+function Chatty() {
+    const {threads} = useContext(ChattyContext)
+    return (
+        <div style={styles.chatty}>
+            {threads.map(thread => <Thread key={thread.threadId} thread={thread}/>)}
+        </div>
+    )
 }
 
 const styles = {
@@ -20,4 +18,4 @@ const styles = {
     }
 }
 
-export default withChatty(Chatty)
+export default Chatty

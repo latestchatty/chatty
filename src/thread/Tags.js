@@ -1,65 +1,45 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import Chip from '@material-ui/core/Chip'
 import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
+import supportedTags from './supportedTags'
 
-class Tags extends React.PureComponent {
-    state = {
-        tags: []
-    }
-
-    componentDidMount() {
-        this.loadTags()
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.tags !== this.props.tags) this.loadTags()
-    }
-
-    loadTags() {
-        const {tags = []} = this.props
+function Tags({classes, tags = [], variant}) {
+    const fixedTags = useMemo(() => {
         const validTags = tags.filter(tag => supportedTags.includes(tag.tag))
         const miscTagCount = tags.filter(tag => !supportedTags.includes(tag.tag))
             .reduce((acc, tag) => acc + tag.count, 0)
-        this.setState({
-            tags: [
-                ...validTags,
-                {tag: 'tag', count: miscTagCount}
-            ]
-        })
-    }
+        return [
+            ...validTags,
+            {tag: 'tag', count: miscTagCount}
+        ]
+    }, [tags])
 
-    renderTag(tag) {
-        const {classes, variant} = this.props
-        if (tag.count < 1) return null
-
-        if (variant === 'post') {
-            return <Chip
-                key={tag.tag}
-                className={classnames(classes.chip, classes[tag.tag], classes[`${tag.tag}Border`])}
-                label={`${tag.count} ${tag.tag}`}
-                variant='outlined'
-            />
-        } else if (variant === 'oneline') {
-            return <span
-                key={tag.tag}
-                className={classnames(classes.nonChip, classes[tag.tag])}
-            >{`${tag.count} ${tag.tag}`}</span>
-        }
-    }
-
-    render() {
-        const {classes, variant} = this.props
-        const {tags} = this.state
-        return (
-            <div className={variant === 'post' ? classes.containerPost : classes.containerOneline}>
-                {tags.map(tag => this.renderTag(tag))}
-            </div>
-        )
-    }
+    return (
+        <div className={variant === 'post' ? classes.containerPost : classes.containerOneline}>
+            {fixedTags.map(tag => {
+                if (tag.count < 1) return null
+                else if (variant === 'post') {
+                    return (
+                        <Chip
+                            key={tag.tag}
+                            className={classnames(classes.chip, classes[tag.tag], classes[`${tag.tag}Border`])}
+                            label={`${tag.count} ${tag.tag}`}
+                            variant='outlined'
+                        />
+                    )
+                } else if (variant === 'oneline') {
+                    return (
+                        <span key={tag.tag} className={classnames(classes.nonChip, classes[tag.tag])}>
+                            {`${tag.count} ${tag.tag}`}
+                        </span>
+                    )
+                }
+                return null
+            })}
+        </div>
+    )
 }
-
-const supportedTags = ['lol', 'inf', 'unf', 'wtf']
 
 const styles = {
     containerPost: {

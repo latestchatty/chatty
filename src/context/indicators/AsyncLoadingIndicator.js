@@ -2,18 +2,9 @@ import React from 'react'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import {withStyles} from '@material-ui/core/styles'
 
-class AsyncLoadingIndicator extends React.Component {
-    render() {
-        const {classes, loading} = this.props
-
-        if (loading !== 'async') return null
-        return (
-            <LinearProgress
-                className={classes.progress}
-                color='secondary'
-            />
-        )
-    }
+function AsyncLoadingIndicator({classes, loading}) {
+    if (loading !== 'async') return null
+    return <LinearProgress className={classes.progress} color='secondary'/>
 }
 
 const styles = {

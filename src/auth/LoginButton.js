@@ -1,27 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Button from '@material-ui/core/Button'
 import LoginDialog from './LoginDialog'
 
-class LoginButton extends React.PureComponent {
-    state = {open: false}
+function LoginButton() {
+    const [open, setOpen] = useState(false)
+    return (
+        <React.Fragment>
+            <Button onClick={() => setOpen(true)}>Log in</Button>
 
-    handleClick = () => this.setState({open: true})
-    handleClose = () => this.setState({open: false})
-
-    render() {
-        const {open} = this.state
-
-        return (
-            <React.Fragment>
-                <Button onClick={this.handleClick}>Log in</Button>
-
-                <LoginDialog
-                    open={open}
-                    onClose={this.handleClose}
-                />
-            </React.Fragment>
-        )
-    }
+            <LoginDialog open={open} onClose={() => setOpen(false)}/>
+        </React.Fragment>
+    )
 }
 
 export default LoginButton

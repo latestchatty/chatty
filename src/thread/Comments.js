@@ -1,56 +1,49 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Post from './Post'
 import OneLine from './OneLine'
-import withFilter from '../context/filter/withFilter'
+import FilterContext from '../context/filter/FilterContext'
 
-class Comments extends React.PureComponent {
-    render() {
-        const {
-            thread = {}, parent = thread, onCollapseReply, onExpandReply, onOpenReplyBox, expandedReplyId,
-            replyBoxOpenForId, onCloseReplyBox, isPostVisible
-        } = this.props
-
-        return (
-            <ul className='comments'>
-                {
-                    thread.posts
-                        .filter(post => post.parentId === parent.id)
-                        .filter(post => isPostVisible(thread, post))
-                        .map(post =>
-                            <li key={post.id}>
-                                {
-                                    expandedReplyId === post.id
-                                        ? <Post
-                                            post={post}
-                                            thread={thread}
-                                            onCollapse={onCollapseReply}
-                                            replyBoxOpenForId={replyBoxOpenForId}
-                                            onOpenReplyBox={onOpenReplyBox}
-                                            onCloseReplyBox={onCloseReplyBox}
-                                        />
-                                        : <OneLine
-                                            post={post}
-                                            thread={thread}
-                                            onExpandReply={onExpandReply}
-                                        />
-                                }
-                                <Self
-                                    thread={thread}
-                                    parent={post}
-                                    expandedReplyId={expandedReplyId}
-                                    replyBoxOpenForId={replyBoxOpenForId}
-                                    onExpandReply={onExpandReply}
-                                    onCollapseReply={onCollapseReply}
-                                    onOpenReplyBox={onOpenReplyBox}
-                                    onCloseReplyBox={onCloseReplyBox}
-                                />
-                            </li>
-                        )
-                }
-            </ul>
-        )
-    }
+function Comments({thread = {}, parent = thread, onCollapseReply, onExpandReply, onOpenReplyBox, expandedReplyId, replyBoxOpenForId, onCloseReplyBox}) {
+    const {isPostVisible} = useContext(FilterContext)
+    return (
+        <ul className='comments'>
+            {
+                thread.posts
+                    .filter(post => post.parentId === parent.id)
+                    .filter(post => isPostVisible(thread, post))
+                    .map(post =>
+                        <li key={post.id}>
+                            {
+                                expandedReplyId === post.id
+                                    ? <Post
+                                        post={post}
+                                        thread={thread}
+                                        onCollapse={onCollapseReply}
+                                        replyBoxOpenForId={replyBoxOpenForId}
+                                        onOpenReplyBox={onOpenReplyBox}
+                                        onCloseReplyBox={onCloseReplyBox}
+                                    />
+                                    : <OneLine
+                                        post={post}
+                                        thread={thread}
+                                        onExpandReply={onExpandReply}
+                                    />
+                            }
+                            <Comments
+                                thread={thread}
+                                parent={post}
+                                expandedReplyId={expandedReplyId}
+                                replyBoxOpenForId={replyBoxOpenForId}
+                                onExpandReply={onExpandReply}
+                                onCollapseReply={onCollapseReply}
+                                onOpenReplyBox={onOpenReplyBox}
+                                onCloseReplyBox={onCloseReplyBox}
+                            />
+                        </li>
+                    )
+            }
+        </ul>
+    )
 }
 
-const Self = withFilter(Comments)
-export default Self
+export default Comments

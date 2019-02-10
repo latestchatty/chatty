@@ -1,18 +1,14 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
-import withAuth from '../context/auth/withAuth'
+import AuthContext from '../context/auth/AuthContext'
 
-class LoginButton extends React.Component {
-    handleClick = () => {
-        const {logout, onClick} = this.props
+function LoginButton({onClick}) {
+    const {logout} = useContext(AuthContext)
+    const handleClick = () => {
         onClick && onClick()
         logout()
     }
-    render() {
-        return (
-            <MenuItem onClick={this.handleClick}>Logout</MenuItem>
-        )
-    }
+    return <MenuItem onClick={handleClick}>Logout</MenuItem>
 }
 
-export default withAuth(LoginButton)
+export default LoginButton

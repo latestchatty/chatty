@@ -4,15 +4,12 @@ import format from 'date-fns/format'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import {withStyles} from '@material-ui/core/styles'
 
-class PostDate extends React.Component {
-    render() {
-        const {classes, date} = this.props
-        return (
-            <Tooltip disableFocusListener title={format(date, 'MMM DD, YYYY h:mma')} enterDelay={350}>
-                <div className={classes.date}>{distanceInWordsToNow(date)} ago</div>
-            </Tooltip>
-        )
-    }
+function PostDate({classes, date}) {
+    return (
+        <Tooltip disableFocusListener title={format(date, 'MMM DD, YYYY h:mma')} enterDelay={350}>
+            <div className={classes.date}>{distanceInWordsToNow(date)} ago</div>
+        </Tooltip>
+    )
 }
 
 const styles = {

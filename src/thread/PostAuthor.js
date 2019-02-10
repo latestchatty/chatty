@@ -1,33 +1,34 @@
-import React from 'react'
+import React, {useContext, useMemo} from 'react'
 import {withStyles} from '@material-ui/core/styles'
-import withAuth from '../context/auth/withAuth'
 import classnames from 'classnames'
+import AuthContext from '../context/auth/AuthContext'
 
-class PostAuthor extends React.PureComponent {
-    render() {
-        const {classes, post = {}, thread = {}, username} = this.props
-        const {author = ''} = post
+function PostAuthor({classes, post = {}, thread = {}}) {
+    const {username} = useContext(AuthContext)
+    const {author = ''} = post
 
-        let userClass = 'normal'
-        if (username && isSameUser(author, username)) userClass = 'self'
-        else if (thread.id !== post.id && isSameUser(thread.author, author)) userClass = 'op'
-        else if (employees.find(employee => isSameUser(employee, author))) userClass = 'employee'
-        else if (mods.find(mod => isSameUser(mod, author))) userClass = 'mod'
-
-        // Don't let the browser line break in the middle of author name
-        const nonBreakingAuthor = author.replace(/\s/g, String.fromCharCode(160))
-        return (
-            <span className={classnames(classes.user, classes[userClass])}>
-                {nonBreakingAuthor}
-            </span>
-        )
+    const isSameUser = (one = '', two = '') => {
+        const left = one.toLowerCase().replace(/\s/g, '')
+        const right = two.toLowerCase().replace(/\s/g, '')
+        return left === right
     }
-}
 
-const isSameUser = (one = '', two = '') => {
-    const left = one.toLowerCase().replace(/\s/g, '')
-    const right = two.toLowerCase().replace(/\s/g, '')
-    return left === right
+    const userClass = useMemo(() => {
+        if (username && isSameUser(author, username)) return 'self'
+        else if (thread.id !== post.id && isSameUser(thread.author, author)) return 'op'
+        else if (employees.find(employee => isSameUser(employee, author))) return 'employee'
+        else if (mods.find(mod => isSameUser(mod, author))) return 'mod'
+        return 'normal'
+    }, [username, author, thread.id, post.id, thread.author])
+
+    // Don't let the browser line break in the middle of author name
+    const nonBreakingAuthor = useMemo(() => author.replace(/\s/g, String.fromCharCode(160)), [author])
+
+    return (
+        <span className={classnames(classes.user, classes[userClass])}>
+            {nonBreakingAuthor}
+        </span>
+    )
 }
 
 const employees = [
@@ -62,4 +63,4 @@ const styles = {
     }
 }
 
-export default withAuth(withStyles(styles)(PostAuthor))
+export default withStyles(styles)(PostAuthor)

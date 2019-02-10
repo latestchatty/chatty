@@ -1,32 +1,17 @@
-import React from 'react'
+import React, {useContext, useMemo, useState} from 'react'
 import Post from './Post'
 import Comments from './Comments'
 import {withStyles} from '@material-ui/core/styles'
-import withChatty from '../context/chatty/withChatty'
-import withFilter from '../context/filter/withFilter'
+import ChattyContext from '../context/chatty/ChattyContext'
+import FilterContext from '../context/filter/FilterContext'
 
-class Thread extends React.PureComponent {
-    state = {
-        thread: {
-            pinned: false,
-            collapsed: false,
-            posts: []
-        },
-        expandedReplyId: null,
-        replyBoxOpenForId: null
-    }
-
-    componentDidMount() {
-        this.loadThread()
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.thread !== this.props.thread) this.loadThread()
-    }
-
-    loadThread() {
-        const {thread: raw} = this.props
-        const posts = raw.posts ? raw.posts.sort((a, b) => a.id - b.id) : []
+function Thread({classes, thread: rawThread}) {
+    const [expandedReplyId, setExpandedReplyId] = useState(null)
+    const [replyBoxOpenForId, setReplyBoxOpenForId] = useState(null)
+    const {markThread} = useContext(ChattyContext)
+    const {isPostVisible} = useContext(FilterContext)
+    const thread = useMemo(() => {
+        const posts = rawThread.posts ? rawThread.posts.sort((a, b) => a.id - b.id) : []
 
         // oneline highlights
         posts.slice(-10)
@@ -34,74 +19,52 @@ class Thread extends React.PureComponent {
             .forEach((post, index) => post.recentReplyNumber = index + 1)
 
         const [post] = posts
-        const thread = {
-            ...raw,
+        return {
+            ...rawThread,
             ...post,
-            id: +raw.threadId,
+            id: +rawThread.threadId,
             posts: posts
         }
-        this.setState({thread})
+    }, [rawThread])
+    if (!isPostVisible(rawThread)) return null
+
+    const handleExpandReply = expandedReplyId => {
+        setExpandedReplyId(expandedReplyId)
+        setReplyBoxOpenForId(null)
     }
-
-    handleCollapseReply = () => this.setState({expandedReplyId: null, replyBoxOpenForId: null})
-    handleExpandReply = expandedReplyId => this.setState({expandedReplyId, replyBoxOpenForId: null})
-
-    handleCollapse = async () => {
-        const {markThread} = this.props
-        const {thread} = this.state
-        markThread(thread.threadId, thread.collapsed ? 'unmarked' : 'collapsed')
-        this.setState(oldState => ({
-            thread: {
-                ...oldState.thread,
-                collapsed: !thread.collapsed
-            }
-        }))
+    const handleCollapseReply = () => {
+        setExpandedReplyId(null)
+        setReplyBoxOpenForId(null)
     }
+    const handleOpenReplyBox = id => setReplyBoxOpenForId(id)
+    const handleCloseReplyBox = () => setReplyBoxOpenForId(null)
 
-    handleOpenReplyBox = id => this.setState({replyBoxOpenForId: id})
-    handleCloseReplyBox = () => this.setState({replyBoxOpenForId: null})
+    const handleCollapse = () => markThread(thread.threadId, thread.collapsed ? 'unmarked' : 'collapsed')
+    const togglePinned = () => markThread(thread.threadId, thread.pinned ? 'unmarked' : 'pinned')
 
-    togglePinned = async () => {
-        const {markThread} = this.props
-        const {thread} = this.state
-        markThread(thread.threadId, thread.pinned ? 'unmarked' : 'pinned')
-        this.setState(oldState => ({
-            thread: {
-                ...oldState.thread,
-                pinned: !thread.pinned
-            }
-        }))
-    }
+    return (
+        <div className={classes.thread}>
+            <Post
+                post={thread}
+                thread={thread}
+                replyBoxOpenForId={replyBoxOpenForId}
+                onCollapse={handleCollapse}
+                onOpenReplyBox={handleOpenReplyBox}
+                onCloseReplyBox={handleCloseReplyBox}
+                onPinned={togglePinned}
+            />
 
-    render() {
-        const {classes, isPostVisible} = this.props
-        const {thread, expandedReplyId, replyBoxOpenForId} = this.state
-        if (!isPostVisible(thread)) return null
-
-        return (
-            <div className={classes.thread}>
-                <Post
-                    post={thread}
-                    thread={thread}
-                    replyBoxOpenForId={replyBoxOpenForId}
-                    onCollapse={this.handleCollapse}
-                    onOpenReplyBox={this.handleOpenReplyBox}
-                    onCloseReplyBox={this.handleCloseReplyBox}
-                    onPinned={this.togglePinned}
-                />
-
-                <Comments
-                    thread={thread}
-                    expandedReplyId={expandedReplyId}
-                    replyBoxOpenForId={replyBoxOpenForId}
-                    onExpandReply={this.handleExpandReply}
-                    onCollapseReply={this.handleCollapseReply}
-                    onOpenReplyBox={this.handleOpenReplyBox}
-                    onCloseReplyBox={this.handleCloseReplyBox}
-                />
-            </div>
-        )
-    }
+            <Comments
+                thread={thread}
+                expandedReplyId={expandedReplyId}
+                replyBoxOpenForId={replyBoxOpenForId}
+                onExpandReply={handleExpandReply}
+                onCollapseReply={handleCollapseReply}
+                onOpenReplyBox={handleOpenReplyBox}
+                onCloseReplyBox={handleCloseReplyBox}
+            />
+        </div>
+    )
 }
 
 const styles = {
@@ -110,10 +73,4 @@ const styles = {
     }
 }
 
-export default withStyles(styles)(
-    withChatty(
-        withFilter(
-            Thread
-        )
-    )
-)
+export default withStyles(styles)(Thread)

@@ -1,20 +1,14 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import PostAuthor from './PostAuthor'
 import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
 import Tags from './Tags'
 
-class OneLine extends React.PureComponent {
-    state = {
-        oneline: ''
-    }
+function OneLine({classes, post, thread, onExpandReply}) {
+    const getSnippet = body => {
+        const input = body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ')
+        const maxLength = 106
 
-    getSnippet(body) {
-        const stripped = body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ')
-        return this.htmlSnippet(stripped, 106)
-    }
-
-    htmlSnippet(input, maxLength) {
         let i = 0
         let len = 0
         let tag = false
@@ -44,35 +38,20 @@ class OneLine extends React.PureComponent {
         return output
     }
 
-    componentDidMount() {
-        const {post} = this.props
-        const {body} = post
-        const oneline = this.getSnippet(body)
-        this.setState({oneline})
-    }
+    const lineClass = `oneline${post.recentReplyNumber || 9}`
+    const oneline = useMemo(() => getSnippet(post.body), [post.body])
 
-    handleClick = () => {
-        const {post, onExpandReply} = this.props
-        onExpandReply(post.id)
-    }
-
-    render() {
-        const {classes, post, thread} = this.props
-        const {oneline} = this.state
-        const lineClass = `oneline${post.recentReplyNumber || 9}`
-
-        return (
-            <div className={classes.container}>
+    return (
+        <div className={classes.container}>
                 <span
                     className={classnames(classes.oneline, classes[lineClass])}
                     dangerouslySetInnerHTML={{__html: oneline}}
-                    onClick={this.handleClick}
+                    onClick={() => onExpandReply(post.id)}
                 />
-                <Tags tags={post.lols} variant='oneline'/>
-                <PostAuthor post={post} thread={thread}/>
-            </div>
-        )
-    }
+            <Tags tags={post.lols} variant='oneline'/>
+            <PostAuthor post={post} thread={thread}/>
+        </div>
+    )
 }
 
 const styles = {

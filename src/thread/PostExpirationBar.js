@@ -1,30 +1,28 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 
-class PostExpirationBar extends React.Component {
-    render() {
-        const {classes, date} = this.props
-        const now = (new Date().getTime())
-        const then = new Date(date).getTime()
-        const percent = Math.min((((now - then) / 3600000) / 18) * 100, 100)
-        let backgroundColor = 'red'
-        if (percent <= 25) {
-            backgroundColor = 'springgreen'
-        } else if (percent <= 50) {
-            backgroundColor = 'yellow'
-        } else if (percent <= 75) {
-            backgroundColor = 'orange'
-        }
+function PostExpirationBar({classes, date}) {
+    const now = (new Date().getTime())
+    const then = new Date(date).getTime()
+    const percent = Math.min((((now - then) / 3600000) / 18) * 100, 100)
 
-        return (
-            <div className={classes.wrapper}>
-                <div
-                    className={classes.value}
-                    style={{width: `${percent}%`, backgroundColor}}
-                />
-            </div>
-        )
+    let backgroundColor = 'red'
+    if (percent <= 25) {
+        backgroundColor = 'springgreen'
+    } else if (percent <= 50) {
+        backgroundColor = 'yellow'
+    } else if (percent <= 75) {
+        backgroundColor = 'orange'
     }
+
+    return (
+        <div className={classes.wrapper}>
+            <div
+                className={classes.value}
+                style={{width: `${percent}%`, backgroundColor}}
+            />
+        </div>
+    )
 }
 
 const styles = {

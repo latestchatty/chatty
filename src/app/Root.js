@@ -9,10 +9,12 @@ import './shacktags.css'
 import './comment_tree.css'
 import IndicatorProvider from '../context/indicators/IndicatorProvider'
 import FilterProvider from '../context/filter/FilterProvider'
+import {Router} from 'react-router-dom'
+import history from '../history'
 
-class Root extends React.Component {
-    render() {
-        return (
+function Root() {
+    return (
+        <Router history={history}>
             <MuiThemeProvider theme={Theme}>
                 <IndicatorProvider>
                     <AuthProvider>
@@ -24,8 +26,8 @@ class Root extends React.Component {
                     </AuthProvider>
                 </IndicatorProvider>
             </MuiThemeProvider>
-        )
-    }
+        </Router>
+    )
 }
 
 export default Root

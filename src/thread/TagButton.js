@@ -1,27 +1,28 @@
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import Tooltip from '@material-ui/core/Tooltip'
 import LabelIcon from '@material-ui/icons/Label'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import withAuth from '../context/auth/withAuth'
-import withIndicators from '../context/indicators/withIndicators'
 import querystring from 'querystring'
+import AuthContext from '../context/auth/AuthContext'
+import supportedTags from './supportedTags'
+import IndicatorContext from '../context/indicators/IndicatorContext'
 
-class TagButton extends React.PureComponent {
-    state = {open: false}
+function TagButton({className, postId}) {
+    const {isLoggedIn, username} = useContext(AuthContext)
+    const {setLoading} = useContext(IndicatorContext)
+    const [anchorEl, setAnchorEl] = useState(null)
 
-    handleClick = event => this.setState({open: true, anchorEl: event.target})
-    handleClose = () => this.setState({open: false, anchorEl: null})
+    const tags = supportedTags.map(tag => tag.toUpperCase())
 
-    handleTag = tag => async () => {
-        const {setLoading, username, postId} = this.props
+    const handleTag = async tag => {
         try {
             setLoading('async')
-            this.setState({open: false})
+            setAnchorEl(null)
 
-            let text = await this.tagPost(username, postId, tag)
+            let text = await tagPost(username, postId, tag)
             if (text.includes('already tagged')) {
-                text = await this.tagPost(username, postId, tag, 'untag')
+                text = await tagPost(username, postId, tag, 'untag')
             }
             if (!text.match(/^ok /)) {
                 console.warn('Error tagging post', text)
@@ -34,7 +35,7 @@ class TagButton extends React.PureComponent {
         }
     }
 
-    async tagPost(who, what, tag, action) {
+    const tagPost = async (who, what, tag, action) => {
         const base = 'https://www.lmnopc.com/greasemonkey/shacklol/report.php'
         const params = querystring.stringify({who, what, tag, version: '-1'})
         if (action) params.action = action
@@ -42,37 +43,25 @@ class TagButton extends React.PureComponent {
         return response.text()
     }
 
-    render() {
-        const {className, isLoggedIn} = this.props
-        const {anchorEl, open} = this.state
+    if (!isLoggedIn) return null
+    return (
+        <React.Fragment>
+            <Tooltip disableFocusListener title='Tag Post' enterDelay={350}>
+                <LabelIcon className={className} onClick={event => setAnchorEl(event.target)}/>
+            </Tooltip>
 
-        if (!isLoggedIn) return null
-        return (
-            <React.Fragment>
-                <Tooltip disableFocusListener title='Tag Post' enterDelay={350}>
-                    <LabelIcon className={className} onClick={this.handleClick}/>
-                </Tooltip>
-
-                {
-                    open && <Menu
-                        keepMounted
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={this.handleClose}
-                    >
-                        <MenuItem onClick={this.handleTag('LOL')}>LOL</MenuItem>
-                        <MenuItem onClick={this.handleTag('INF')}>INF</MenuItem>
-                        <MenuItem onClick={this.handleTag('UNF')}>UNF</MenuItem>
-                        <MenuItem onClick={this.handleTag('WTF')}>WTF</MenuItem>
-                    </Menu>
-                }
-            </React.Fragment>
-        )
-    }
+            {
+                anchorEl && <Menu
+                    keepMounted
+                    open={!!anchorEl}
+                    anchorEl={anchorEl}
+                    onClose={() => setAnchorEl(null)}
+                >
+                    {tags.map(tag => <MenuItem onClick={() => handleTag(tag)}>{tag}</MenuItem>)}
+                </Menu>
+            }
+        </React.Fragment>
+    )
 }
 
-export default withAuth(
-    withIndicators(
-        TagButton
-    )
-)
+export default TagButton
