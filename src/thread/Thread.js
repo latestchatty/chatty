@@ -10,6 +10,7 @@ function Thread({thread: rawThread}) {
     const classes = useStyles()
     const [expandedReplyId, setExpandedReplyId] = useState(null)
     const [replyBoxOpenForId, setReplyBoxOpenForId] = useState(null)
+    const [truncated, setTruncated] = useState(rawThread.posts.length > 20)
     const [markType, setMarkType] = useState(rawThread.markType)
     const {username} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
@@ -66,15 +67,27 @@ function Thread({thread: rawThread}) {
                 onPinned={togglePinned}
             />
 
-            <Comments
-                thread={thread}
-                expandedReplyId={expandedReplyId}
-                replyBoxOpenForId={replyBoxOpenForId}
-                onExpandReply={handleExpandReply}
-                onCollapseReply={handleCollapseReply}
-                onOpenReplyBox={handleOpenReplyBox}
-                onCloseReplyBox={handleCloseReplyBox}
-            />
+            {
+                truncated &&
+                <div className={classes.truncatedMessage} onClick={() => setTruncated(false)}>
+                    Thread truncated. Click to see all&nbsp;
+                    <span className={classes.replyCount}>{thread.posts.length - 1}</span>
+                    &nbsp;replies.
+                </div>
+            }
+
+            <div className={truncated ? classes.truncatedContainer : null}>
+                <Comments
+                    className={truncated ? classes.truncatedComments : null}
+                    thread={thread}
+                    expandedReplyId={expandedReplyId}
+                    replyBoxOpenForId={replyBoxOpenForId}
+                    onExpandReply={handleExpandReply}
+                    onCollapseReply={handleCollapseReply}
+                    onOpenReplyBox={handleOpenReplyBox}
+                    onCloseReplyBox={handleCloseReplyBox}
+                />
+            </div>
         </div>
     )
 }
@@ -82,6 +95,30 @@ function Thread({thread: rawThread}) {
 const useStyles = makeStyles({
     thread: {
         marginBottom: 15
+    },
+    truncatedMessage: {
+        color: '#fff',
+        fontWeight: 'bold',
+        borderTop: '1px solid #656565',
+        borderBottom: '1px dotted #fff',
+        backgroundColor: '#181818',
+        cursor: 'pointer',
+        marginTop: -3,
+        '&:hover': {
+            backgroundColor: '#282828'
+        }
+    },
+    replyCount: {
+        color: '#00bff3'
+    },
+    truncatedContainer: {
+        height: 300,
+        overflow: 'hidden',
+        position: 'relative'
+    },
+    truncatedComments: {
+        position: 'absolute !important',
+        bottom: 0
     }
 })
 
