@@ -44,6 +44,7 @@ function Thread({thread: rawThread}) {
     const handleExpandReply = expandedReplyId => {
         setExpandedReplyId(expandedReplyId)
         setReplyBoxOpenForId(null)
+        setTruncated(false)
     }
     const handleCollapseReply = () => {
         setExpandedReplyId(null)
