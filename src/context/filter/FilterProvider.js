@@ -17,7 +17,7 @@ function FilterProvider({children}) {
             showFilteredTerms, filteredTerms
         } = filterSettings
 
-        if (!showCollapsed && thread.collapsed) return false
+        if (!showCollapsed && thread.markType === 'collapsed') return false
         else if (!showFilteredUsers && filteredUsers.some(({regex}) => regex.test(post.author))) return false
         else if (!showFilteredTerms && filteredTerms.some(({regex}) => regex.test(post.body))) return false
 

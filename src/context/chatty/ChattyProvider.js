@@ -41,8 +41,7 @@ function ChattyProvider({children}) {
             nextThreads = nextThreads
                 .map(thread => ({
                     ...thread,
-                    pinned: markedPostsById[thread.threadId] === 'pinned',
-                    collapsed: markedPostsById[thread.threadId] === 'collapsed'
+                    markType: markedPostsById[thread.threadId] || 'unmarked'
                 }))
         }
 
@@ -58,7 +57,7 @@ function ChattyProvider({children}) {
         // sort by activity, pinned first
         nextThreads = nextThreads
             .sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId])
-            .sort((a, b) => b.pinned - a.pinned)
+            .sort((a, b) => a.markType === b.markType === 'pinned' ? 0 : a.markType === 'pinned' ? -1 : 1)
 
         setChatty({
             threads: nextThreads,
@@ -69,7 +68,10 @@ function ChattyProvider({children}) {
             // clean up any old collapsed posts after loading, doesn't impact state
             let promises = markedPosts
                 .filter(post => !maxPostIdByThread[post.id])
-                .map(({id}) => markThread(id, 'unmarked', false))
+                .map(({id}) => fetchJson('clientData/markPost', {
+                    method: 'POST',
+                    body: {username, postId: id, type: 'unmarked'}
+                }))
             await Promise.all(promises)
         }
     }
@@ -213,33 +215,6 @@ function ChattyProvider({children}) {
         window.scrollTo(0, 0)
     }
 
-    const markThread = async (postId, type, updateThreads = true) => {
-        if (isLoggedIn) {
-            await fetchJson('clientData/markPost', {
-                method: 'POST',
-                body: {username, postId, type}
-            })
-        }
-
-        if (updateThreads) {
-            const threadId = `${postId}`
-            setChatty({
-                threads: chatty.threads
-                    .map(thread => {
-                        if (thread.threadId === threadId) {
-                            return {
-                                ...thread,
-                                pinned: type === 'pinned',
-                                collapsed: type === 'collapsed'
-                            }
-                        }
-                        return thread
-                    }),
-                newThreads: chatty.newThreads
-            })
-        }
-    }
-
     // full load of chatty on start
     useEffect(() => {
         fullReload()
@@ -258,8 +233,7 @@ function ChattyProvider({children}) {
 
     const contextValue = {
         ...chatty,
-        refreshChatty,
-        markThread
+        refreshChatty
     }
 
     return (

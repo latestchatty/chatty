@@ -1,15 +1,17 @@
 import React, {useContext, useMemo, useState} from 'react'
 import Post from './Post'
 import Comments from './Comments'
-import ChattyContext from '../context/chatty/ChattyContext'
 import FilterContext from '../context/filter/FilterContext'
 import {makeStyles} from '@material-ui/styles'
+import fetchJson from '../util/fetchJson'
+import AuthContext from '../context/auth/AuthContext'
 
 function Thread({thread: rawThread}) {
     const classes = useStyles()
     const [expandedReplyId, setExpandedReplyId] = useState(null)
     const [replyBoxOpenForId, setReplyBoxOpenForId] = useState(null)
-    const {markThread} = useContext(ChattyContext)
+    const [markType, setMarkType] = useState(rawThread.markType)
+    const {username} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
     const thread = useMemo(() => {
         const posts = rawThread.posts ? rawThread.posts.sort((a, b) => a.id - b.id) : []
@@ -24,10 +26,19 @@ function Thread({thread: rawThread}) {
             ...rawThread,
             ...post,
             id: +rawThread.threadId,
-            posts: posts
+            posts: posts,
+            markType
         }
-    }, [rawThread])
+    }, [rawThread, markType])
     if (!isPostVisible(rawThread)) return null
+
+    const markThread = async (postId, type) => {
+        await fetchJson('clientData/markPost', {
+            method: 'POST',
+            body: {username, postId, type}
+        })
+        setMarkType(type)
+    }
 
     const handleExpandReply = expandedReplyId => {
         setExpandedReplyId(expandedReplyId)
@@ -40,8 +51,8 @@ function Thread({thread: rawThread}) {
     const handleOpenReplyBox = id => setReplyBoxOpenForId(id)
     const handleCloseReplyBox = () => setReplyBoxOpenForId(null)
 
-    const handleCollapse = () => markThread(thread.threadId, thread.collapsed ? 'unmarked' : 'collapsed')
-    const togglePinned = () => markThread(thread.threadId, thread.pinned ? 'unmarked' : 'pinned')
+    const handleCollapse = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'collapsed' : 'unmarked')
+    const togglePinned = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'pinned' : 'unmarked')
 
     return (
         <div className={classes.thread}>
@@ -74,4 +85,4 @@ const useStyles = makeStyles({
     }
 })
 
-export default Thread
+export default React.memo(Thread)

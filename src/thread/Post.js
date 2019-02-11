@@ -72,12 +72,12 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
                 <CardActions className={classes.actions} disableActionSpacing>
                     <Tooltip
                         disableFocusListener
-                        title={post.collapsed ? 'Uncollapse' : 'Collapse'}
+                        title={post.markType === 'collapsed' ? 'Uncollapse' : 'Collapse'}
                         enterDelay={350}
                     >
                         <CloseIcon
                             className={
-                                classnames(classes.toolbarButton, post.collapsed ? classes.collapsed : null)
+                                classnames(classes.toolbarButton, post.markType === 'collapsed' ? classes.collapsed : null)
                             }
                             onClick={onCollapse}
                         />
@@ -94,13 +94,13 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
                         isLoggedIn && post.parentId === 0 &&
                         <React.Fragment>
                             {
-                                post.pinned &&
+                                post.markType === 'pinned' &&
                                 <Tooltip disableFocusListener title='Unpin Thread' enterDelay={350}>
                                     <StarIcon className={classes.toolbarButton} onClick={onPinned}/>
                                 </Tooltip>
                             }
                             {
-                                !post.pinned &&
+                                post.markType !== 'pinned' &&
                                 <Tooltip disableFocusListener title='Pin Thread' enterDelay={350}>
                                     <StarBorderIcon className={classes.toolbarButton} onClick={onPinned}/>
                                 </Tooltip>
