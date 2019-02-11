@@ -6,21 +6,28 @@ import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import AuthContext from '../context/auth/AuthContext'
+import IndicatorContext from '../context/indicators/IndicatorContext'
 
 function LoginDialog({open, onClose}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const {login} = useContext(AuthContext)
+    const {setLoading} = useContext(IndicatorContext)
 
     const submit = async event => {
         event.preventDefault()
 
-        // TODO: Sync loading indicator
-        login(username, password)
+        try {
+            setLoading('sync')
 
-        setUsername('')
-        setPassword('')
-        onClose()
+            await login(username, password)
+
+            setUsername('')
+            setPassword('')
+            onClose()
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import IndicatorContext from './IndicatorContext'
 import AsyncLoadingIndicator from './AsyncLoadingIndicator'
+import SyncLoadingIndicator from './SyncLoadingIndicator'
 
 function IndicatorProvider({children}) {
     const [loading, setLoading] = useState(false)
@@ -16,6 +17,7 @@ function IndicatorProvider({children}) {
 
     return (
         <IndicatorContext.Provider value={contextValue}>
+            <SyncLoadingIndicator loading={loading}/>
             <AsyncLoadingIndicator loading={loading}/>
             {children}
         </IndicatorContext.Provider>
