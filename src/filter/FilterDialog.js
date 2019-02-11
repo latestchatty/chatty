@@ -7,9 +7,10 @@ import Button from '@material-ui/core/Button'
 import FilterContext from '../context/filter/FilterContext'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import {withStyles} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/styles'
 
-function FilterDialog({classes, open, onClose}) {
+function FilterDialog({open, onClose}) {
+    const classes = useStyles()
     const {filterSettings, setFilterSettings} = useContext(FilterContext)
     const [showCollapsed, setShowCollapsed] = useState(filterSettings.showCollapsed)
 
@@ -43,11 +44,11 @@ function FilterDialog({classes, open, onClose}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     content: {
         display: 'flex',
         flexDirection: 'column'
     }
-}
+})
 
-export default withStyles(styles)(FilterDialog)
+export default FilterDialog

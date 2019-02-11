@@ -4,10 +4,11 @@ import AddIcon from '../../node_modules/@material-ui/icons/Add'
 import Tooltip from '@material-ui/core/Tooltip'
 import Dialog from '@material-ui/core/Dialog'
 import ReplyBox from '../replyBox/ReplyBox'
-import {withStyles} from '@material-ui/core/styles'
 import AuthContext from '../context/auth/AuthContext'
+import {makeStyles} from '@material-ui/styles'
 
-function NewThreadButton({classes}) {
+function NewThreadButton() {
+    const classes = useStyles()
     const {isLoggedIn} = useContext(AuthContext)
     const [open, setOpen] = useState(false)
     if (!isLoggedIn) return null
@@ -33,10 +34,10 @@ function NewThreadButton({classes}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     dialogPaper: {
         width: '85vw'
     }
-}
+})
 
-export default withStyles(styles)(NewThreadButton)
+export default NewThreadButton

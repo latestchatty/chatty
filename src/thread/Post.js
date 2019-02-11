@@ -8,7 +8,6 @@ import StarIcon from '@material-ui/icons/Star'
 import StarBorderIcon from '@material-ui/icons/StarBorder'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import ReplyIcon from '@material-ui/icons/Reply'
-import {withStyles} from '@material-ui/core/styles'
 import PostExpirationBar from './PostExpirationBar'
 import PostDate from './PostDate'
 import PostAuthor from './PostAuthor'
@@ -18,8 +17,10 @@ import Tags from './Tags'
 import TagButton from './TagButton'
 import AuthContext from '../context/auth/AuthContext'
 import FilterContext from '../context/filter/FilterContext'
+import {makeStyles} from '@material-ui/styles'
 
-function Post({classes, post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenReplyBox, onCloseReplyBox}) {
+function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenReplyBox, onCloseReplyBox}) {
+    const classes = useStyles()
     const {isLoggedIn} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
 
@@ -129,7 +130,7 @@ function Post({classes, post, thread, onCollapse, onPinned, replyBoxOpenForId, o
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     card: {
         backgroundColor: '#202224',
         borderRadius: 0,
@@ -178,6 +179,6 @@ const styles = {
     collapsed: {
         color: '#f00'
     }
-}
+})
 
-export default withStyles(styles)(Post)
+export default Post

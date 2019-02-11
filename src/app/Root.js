@@ -1,5 +1,5 @@
 import React from 'react'
-import {MuiThemeProvider} from '@material-ui/core/styles'
+import {ThemeProvider} from '@material-ui/styles'
 import Theme from './Theme'
 import App from './App'
 import AuthProvider from '../context/auth/AuthProvider'
@@ -15,7 +15,7 @@ import history from '../history'
 function Root() {
     return (
         <Router history={history}>
-            <MuiThemeProvider theme={Theme}>
+            <ThemeProvider theme={Theme}>
                 <IndicatorProvider>
                     <AuthProvider>
                         <ChattyProvider>
@@ -25,7 +25,7 @@ function Root() {
                         </ChattyProvider>
                     </AuthProvider>
                 </IndicatorProvider>
-            </MuiThemeProvider>
+            </ThemeProvider>
         </Router>
     )
 }

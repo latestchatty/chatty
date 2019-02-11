@@ -3,11 +3,12 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import MessageIcon from '@material-ui/icons/Message'
 import Badge from '@material-ui/core/Badge'
-import {withStyles} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/styles'
 import fetchJson from '../util/fetchJson'
 import AuthContext from '../context/auth/AuthContext'
 
-function MessagesButton({classes}) {
+function MessagesButton() {
+    const classes = useStyles()
     const {isLoggedIn, username, password} = useContext(AuthContext)
 
     const [totalMessagesCount, setTotalMessagesCount] = useState(0)
@@ -53,10 +54,10 @@ function MessagesButton({classes}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     badge: {
         top: 12
     }
-}
+})
 
-export default withStyles(styles)(MessagesButton)
+export default MessagesButton

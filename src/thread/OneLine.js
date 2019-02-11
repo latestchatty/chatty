@@ -1,10 +1,11 @@
 import React, {useMemo} from 'react'
 import PostAuthor from './PostAuthor'
-import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
 import Tags from './Tags'
+import {makeStyles} from '@material-ui/styles'
 
-function OneLine({classes, post, thread, onExpandReply}) {
+function OneLine({post, thread, onExpandReply}) {
+    const classes = useStyles()
     const getSnippet = body => {
         const input = body.replace(/(<(?!span)(?!\/span)[^>]+>| tabindex="1")/gm, ' ')
         const maxLength = 106
@@ -54,7 +55,7 @@ function OneLine({classes, post, thread, onExpandReply}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     container: {
         display: 'flex',
         flexDirection: 'row'
@@ -105,6 +106,6 @@ const styles = {
         color: '#eee',
         fontWeight: 'bold'
     }
-}
+})
 
-export default withStyles(styles)(OneLine)
+export default OneLine

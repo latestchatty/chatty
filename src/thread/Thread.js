@@ -1,11 +1,12 @@
 import React, {useContext, useMemo, useState} from 'react'
 import Post from './Post'
 import Comments from './Comments'
-import {withStyles} from '@material-ui/core/styles'
 import ChattyContext from '../context/chatty/ChattyContext'
 import FilterContext from '../context/filter/FilterContext'
+import {makeStyles} from '@material-ui/styles'
 
-function Thread({classes, thread: rawThread}) {
+function Thread({thread: rawThread}) {
+    const classes = useStyles()
     const [expandedReplyId, setExpandedReplyId] = useState(null)
     const [replyBoxOpenForId, setReplyBoxOpenForId] = useState(null)
     const {markThread} = useContext(ChattyContext)
@@ -67,10 +68,10 @@ function Thread({classes, thread: rawThread}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     thread: {
         marginBottom: 15
     }
-}
+})
 
-export default withStyles(styles)(Thread)
+export default Thread

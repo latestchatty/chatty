@@ -4,7 +4,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import UserMenu from '../userMenu/UserMenu'
 import RefreshButton from './RefreshButton'
@@ -12,8 +11,10 @@ import NewThreadButton from './NewThreadButton'
 import MessagesButton from './MessagesButton'
 import FilterButton from '../filter/FilterButton'
 import Drawer from '@material-ui/core/Drawer'
+import {makeStyles} from '@material-ui/styles'
 
-function Nav({classes}) {
+function Nav() {
+    const classes = useStyles()
     const [drawerOpen, setDrawerOpen] = useState(false)
     const closeDrawer = () => setDrawerOpen(false)
 
@@ -61,7 +62,7 @@ function Nav({classes}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     white: {
         color: '#fff'
     },
@@ -77,6 +78,6 @@ const styles = {
         textDecoration: 'none',
         color: 'inherit'
     }
-}
+})
 
-export default withStyles(styles)(Nav)
+export default Nav

@@ -4,14 +4,15 @@ import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
-import {withStyles} from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import fetchJson from '../util/fetchJson'
 import classnames from 'classnames'
 import AuthContext from '../context/auth/AuthContext'
 import IndicatorContext from '../context/indicators/IndicatorContext'
+import {makeStyles} from '@material-ui/styles'
 
-function ReplyBox({classes, onCloseReplyBox, parentId, className}) {
+function ReplyBox({onCloseReplyBox, parentId, className}) {
+    const classes = useStyles()
     const {username, password} = useContext(AuthContext)
     const {setLoading} = useContext(IndicatorContext)
     const [text, setText] = useState('')
@@ -73,7 +74,7 @@ function ReplyBox({classes, onCloseReplyBox, parentId, className}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     card: {
         backgroundColor: '#202224',
         borderRadius: 0,
@@ -91,6 +92,6 @@ const styles = {
         backgroundColor: '#000',
         padding: 4
     }
-}
+})
 
-export default withStyles(styles)(ReplyBox)
+export default ReplyBox

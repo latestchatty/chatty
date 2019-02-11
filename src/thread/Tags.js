@@ -1,10 +1,11 @@
 import React, {useMemo} from 'react'
 import Chip from '@material-ui/core/Chip'
-import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
 import supportedTags from './supportedTags'
+import {makeStyles} from '@material-ui/styles'
 
-function Tags({classes, tags = [], variant}) {
+function Tags({tags = [], variant}) {
+    const classes = useStyles()
     const fixedTags = useMemo(() => {
         const validTags = tags.filter(tag => supportedTags.includes(tag.tag))
         const miscTagCount = tags.filter(tag => !supportedTags.includes(tag.tag))
@@ -41,7 +42,7 @@ function Tags({classes, tags = [], variant}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     containerPost: {
         marginLeft: 12
     },
@@ -89,6 +90,6 @@ const styles = {
     tag: {
         color: '#bbaf57'
     }
-}
+})
 
-export default withStyles(styles)(Tags)
+export default Tags

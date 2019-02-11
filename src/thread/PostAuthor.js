@@ -1,9 +1,10 @@
 import React, {useContext, useMemo} from 'react'
-import {withStyles} from '@material-ui/core/styles'
 import classnames from 'classnames'
 import AuthContext from '../context/auth/AuthContext'
+import {makeStyles} from '@material-ui/styles'
 
-function PostAuthor({classes, post = {}, thread = {}}) {
+function PostAuthor({post = {}, thread = {}}) {
+    const classes = useStyles()
     const {username} = useContext(AuthContext)
     const {author = ''} = post
 
@@ -37,7 +38,7 @@ const employees = [
 ]
 const mods = []
 
-const styles = {
+const useStyles = makeStyles({
     user: {
         fontSize: 14,
         fontWeight: 'bold',
@@ -61,6 +62,6 @@ const styles = {
     employee: {
         color: '#9370db'
     }
-}
+})
 
-export default withStyles(styles)(PostAuthor)
+export default PostAuthor

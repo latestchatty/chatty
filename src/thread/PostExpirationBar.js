@@ -1,7 +1,8 @@
 import React from 'react'
-import {withStyles} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/styles'
 
-function PostExpirationBar({classes, date}) {
+function PostExpirationBar({date}) {
+    const classes = useStyles()
     const now = (new Date().getTime())
     const then = new Date(date).getTime()
     const percent = Math.min((((now - then) / 3600000) / 18) * 100, 100)
@@ -25,7 +26,7 @@ function PostExpirationBar({classes, date}) {
     )
 }
 
-const styles = {
+const useStyles = makeStyles({
     wrapper: {
         height: 8,
         width: 48,
@@ -59,6 +60,6 @@ const styles = {
         backgroundSize: '25px 25px',
         boxShadow: 'rgba(255, 255, 255, 0.298039) 0 2px 4px inset, rgba(0, 0, 0, 0.4) 0 -2px 3px inset'
     }
-}
+})
 
-export default withStyles(styles)(PostExpirationBar)
+export default PostExpirationBar
