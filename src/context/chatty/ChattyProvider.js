@@ -117,7 +117,7 @@ function ChattyProvider({children}) {
         return await fetchJson(`getChatty${threadCount > 0 ? `?count=${threadCount}` : ''}`)
     }
 
-    const handleEvent = async (event = {}) => {
+    const handleEvent = (event = {}, current) => {
         const {eventType, eventData} = event
 
         if (eventType === 'newPost') {
@@ -137,15 +137,15 @@ function ChattyProvider({children}) {
                     return thread
                 }
 
-                setChatty({
-                    threads: chatty.threads.map(addReply),
-                    newThreads: chatty.newThreads.map(addReply)
-                })
+                return {
+                    threads: current.threads.map(addReply),
+                    newThreads: current.newThreads.map(addReply)
+                }
             } else {
-                setChatty({
-                    threads: chatty.threads,
+                return {
+                    threads: current.threads,
                     newThreads: [
-                        ...chatty.newThreads,
+                        ...current.newThreads,
                         {
                             threadId: `${post.id}`,
                             posts: [
@@ -153,7 +153,7 @@ function ChattyProvider({children}) {
                             ]
                         }
                     ]
-                })
+                }
             }
         } else if (eventType === 'categoryChange') {
             const {postId, category} = eventData
@@ -172,10 +172,10 @@ function ChattyProvider({children}) {
                 return thread
             }
 
-            setChatty({
-                threads: chatty.threads.map(updateCategory),
-                newThreads: chatty.newThreads.map(updateCategory)
-            })
+            return {
+                threads: current.threads.map(updateCategory),
+                newThreads: current.newThreads.map(updateCategory)
+            }
         } else if (eventType === 'lolCountsUpdate') {
             const {updates} = eventData
             const updatedPostsById = updates
@@ -202,10 +202,10 @@ function ChattyProvider({children}) {
                 return thread
             }
 
-            setChatty({
-                threads: chatty.threads.map(updateTags),
-                newThreads: chatty.newThreads.map(updateTags)
-            })
+            return {
+                threads: current.threads.map(updateTags),
+                newThreads: current.newThreads.map(updateTags)
+            }
         } else {
             console.debug('Unhandled event type:', event)
         }
@@ -229,7 +229,8 @@ function ChattyProvider({children}) {
 
     // handle events
     useEffect(() => {
-        events.forEach(event => handleEvent(event))
+        const newChatty = events.reduce((current, event) => handleEvent(event, current), chatty)
+        setChatty(newChatty)
     }, [events])
 
     const contextValue = {
