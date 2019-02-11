@@ -57,7 +57,7 @@ function TagButton({className, postId}) {
                     anchorEl={anchorEl}
                     onClose={() => setAnchorEl(null)}
                 >
-                    {tags.map(tag => <MenuItem onClick={() => handleTag(tag)}>{tag}</MenuItem>)}
+                    {tags.map(tag => <MenuItem key={tag} onClick={() => handleTag(tag)}>{tag}</MenuItem>)}
                 </Menu>
             }
         </React.Fragment>
