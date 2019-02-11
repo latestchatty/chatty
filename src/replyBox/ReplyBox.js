@@ -18,13 +18,12 @@ function ReplyBox({classes, onCloseReplyBox, parentId, className}) {
     const [posting, setPosting] = useState(false)
 
     const handleSubmit = async () => {
-        const {text} = this.state
         try {
             setLoading('async')
             setPosting(true)
             let response = await fetchJson('postComment', {method: 'POST', body: {username, password, parentId, text}})
             if (response.result === 'success') {
-                this.props.onCloseReplyBox()
+                onCloseReplyBox()
                 // TODO: toast user
             }
         } catch (ex) {

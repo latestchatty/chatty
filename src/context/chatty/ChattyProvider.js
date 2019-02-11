@@ -1,106 +1,108 @@
-import React from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import ChattyContext from './ChattyContext'
 import fetchJson from '../../util/fetchJson'
-import withIndicators from '../indicators/withIndicators'
-import withAuth from '../auth/withAuth'
+import AuthContext from '../auth/AuthContext'
+import IndicatorContext from '../indicators/IndicatorContext'
 
-class ChattyProvider extends React.PureComponent {
-    state = {
-        threads: [],
-        newThreads: []
-    }
+function ChattyProvider({children}) {
+    let mounted = true
+    const {isLoggedIn, username} = useContext(AuthContext)
+    const {setLoading} = useContext(IndicatorContext)
 
-    componentDidMount() {
-        this.mounted = true
-        return this.fullReload()
-    }
+    const [chatty, setChatty] = useState({threads: [], newThreads: []})
 
-    async componentDidUpdate(oldProps) {
-        if (oldProps.isLoggedIn !== this.props.isLoggedIn) {
-            this.updateThreads(false, true, true)
+    const [events, setEvents] = useState([])
+    const [lastEventId, setLastEventId] = useState(null)
+
+    const updateThreads = async (freshThreads = false, freshMarkedPosts = false, includeNewThreads = false) => {
+        // fresh chatty load from server
+        let {threads: nextThreads} = freshThreads ? await getChatty() : {}
+
+        // process marked posts if needed
+        let markedPosts
+        if (freshMarkedPosts) markedPosts = await getMarkedPosts(freshMarkedPosts)
+
+        // compile new thread state
+        nextThreads = nextThreads || chatty.threads
+
+        // only add in new threads when needed
+        nextThreads = includeNewThreads ? chatty.newThreads.concat(nextThreads) : nextThreads
+        let nextNewThreads = includeNewThreads ? [] : chatty.newThreads
+
+        // if we're loading marked posts, process the data
+        if (markedPosts) {
+            const markedPostsById = markedPosts
+                .reduce((acc, post) => ({
+                    ...acc,
+                    [post.id]: post.type
+                }), {})
+
+            // update post markings
+            nextThreads = nextThreads
+                .map(thread => ({
+                    ...thread,
+                    pinned: markedPostsById[thread.threadId] === 'pinned',
+                    collapsed: markedPostsById[thread.threadId] === 'collapsed'
+                }))
+        }
+
+        // order by recent activity
+        let maxPostIdByThread = nextThreads
+            .reduce((acc, thread) => {
+                acc[thread.threadId] = thread.posts.reduce((acc, post) => Math.max(post.id, acc), 0)
+                return acc
+            }, {})
+
+        // TODO: remove expired threads
+
+        // sort by activity, pinned first
+        nextThreads = nextThreads
+            .sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId])
+            .sort((a, b) => b.pinned - a.pinned)
+
+        setChatty({
+            threads: nextThreads,
+            newThreads: nextNewThreads
+        })
+
+        if (markedPosts) {
+            // clean up any old collapsed posts after loading, doesn't impact state
+            let promises = markedPosts
+                .filter(post => !maxPostIdByThread[post.id])
+                .map(({id}) => markThread(id, 'unmarked', false))
+            await Promise.all(promises)
         }
     }
 
-    componentWillUnmount() {
-        this.mounted = false
-    }
-
-    async fullReload() {
-        const {setLoading} = this.props
+    const fullReload = async () => {
         try {
             setLoading('async')
 
             const {eventId} = await fetchJson('getNewestEventId')
-            await this.updateThreads(true, true, false)
-
-            this.waitForEvent(eventId)
+            await updateThreads(true, true, false)
+            setLastEventId(eventId)
         } finally {
             setLoading(false)
         }
     }
 
-    async updateThreads(freshThreads = false, freshMarkedPosts = false, includeNewThreads = false) {
-        // fresh chatty load from server
-        let {threads} = freshThreads ? await this.getChatty() : {}
+    const waitForEvent = async () => {
+        if (mounted && lastEventId) {
+            const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
 
-        // process marked posts if needed
-        let markedPosts
-        if (freshMarkedPosts) markedPosts = await this.getMarkedPosts(freshMarkedPosts)
-
-        // compile new thread state
-        let maxPostIdByThread
-        this.setState(oldState => {
-            threads = (threads || oldState.threads)
-
-            // only add in new threads when needed
-            threads = includeNewThreads ? oldState.newThreads.concat(threads) : threads
-            let newThreads = includeNewThreads ? [] : oldState.newThreads
-
-            // if we're loading marked posts, process the data
-            if (markedPosts) {
-                const markedPostsById = markedPosts
-                    .reduce((acc, post) => ({
-                        ...acc,
-                        [post.id]: post.type
-                    }), {})
-
-                // update post markings
-                threads = threads
-                    .map(thread => ({
-                        ...thread,
-                        pinned: markedPostsById[thread.threadId] === 'pinned',
-                        collapsed: markedPostsById[thread.threadId] === 'collapsed'
-                    }))
+            if (mounted) {
+                if (!error) {
+                    setEvents(events)
+                    setLastEventId(newerEventId)
+                } else {
+                    // TODO: handle eventing error, probably need to restart events / reload chatty
+                    console.log('Error from API:waitForLastEvent call.', error)
+                }
             }
-
-            // order by recent activity
-            maxPostIdByThread = threads
-                .reduce((acc, thread) => {
-                    acc[thread.threadId] = thread.posts.reduce((acc, post) => Math.max(post.id, acc), 0)
-                    return acc
-                }, {})
-
-            // TODO: remove expired threads
-
-            // sort by activity, pinned first
-            threads = threads
-                .sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId])
-                .sort((a, b) => b.pinned - a.pinned)
-
-            return {threads, newThreads}
-        }, async () => {
-            if (markedPosts) {
-                // clean up any old collapsed posts after loading, doesn't impact state
-                let promises = markedPosts
-                    .filter(post => !maxPostIdByThread[post.id])
-                    .map(({id}) => this.markThread(id, 'unmarked', false))
-                await Promise.all(promises)
-            }
-        })
+        }
     }
 
-    async getMarkedPosts() {
-        const {isLoggedIn, username} = this.props
+    const getMarkedPosts = async () => {
         if (isLoggedIn) {
             const {markedPosts} = await fetchJson(`clientData/getMarkedPosts?username=${encodeURIComponent(username)}`)
             return markedPosts
@@ -108,28 +110,11 @@ class ChattyProvider extends React.PureComponent {
         return []
     }
 
-    async getChatty(threadCount) {
+    const getChatty = async threadCount => {
         return await fetchJson(`getChatty${threadCount > 0 ? `?count=${threadCount}` : ''}`)
     }
 
-    async waitForEvent(lastEventId) {
-        if (this.mounted) {
-            const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
-
-            if (this.mounted) {
-                if (!error) {
-                    events.forEach(event => this.handleEvent(event))
-
-                    return this.waitForEvent(newerEventId)
-                } else {
-                    // TODO: handle eventing error
-                    console.log('Error from API:waitForLastEvent call.', error)
-                }
-            }
-        }
-    }
-
-    async handleEvent(event = {}) {
+    const handleEvent = async (event = {}) => {
         const {eventType, eventData} = event
 
         if (eventType === 'newPost') {
@@ -148,14 +133,16 @@ class ChattyProvider extends React.PureComponent {
                     }
                     return thread
                 }
-                this.setState(oldState => ({
-                    threads: oldState.threads.map(addReply),
-                    newThreads: oldState.newThreads.map(addReply)
-                }))
+
+                setChatty({
+                    threads: chatty.threads.map(addReply),
+                    newThreads: chatty.newThreads.map(addReply)
+                })
             } else {
-                this.setState(oldState => ({
+                setChatty({
+                    threads: chatty.threads,
                     newThreads: [
-                        ...oldState.newThreads,
+                        ...chatty.newThreads,
                         {
                             threadId: `${post.id}`,
                             posts: [
@@ -163,7 +150,7 @@ class ChattyProvider extends React.PureComponent {
                             ]
                         }
                     ]
-                }))
+                })
             }
         } else if (eventType === 'categoryChange') {
             const {postId, category} = eventData
@@ -182,10 +169,10 @@ class ChattyProvider extends React.PureComponent {
                 return thread
             }
 
-            this.setState(oldState => ({
-                threads: oldState.threads.map(updateCategory),
-                newThreads: oldState.newThreads.map(updateCategory)
-            }))
+            setChatty({
+                threads: chatty.threads.map(updateCategory),
+                newThreads: chatty.newThreads.map(updateCategory)
+            })
         } else if (eventType === 'lolCountsUpdate') {
             const {updates} = eventData
             const updatedPostsById = updates
@@ -212,23 +199,21 @@ class ChattyProvider extends React.PureComponent {
                 return thread
             }
 
-            this.setState(oldState => ({
-                threads: oldState.threads.map(updateTags),
-                newThreads: oldState.newThreads.map(updateTags)
-            }))
+            setChatty({
+                threads: chatty.threads.map(updateTags),
+                newThreads: chatty.newThreads.map(updateTags)
+            })
         } else {
             console.debug('Unhandled event type:', event)
         }
     }
 
-    refreshChatty = async () => {
-        await this.updateThreads(false, false, true)
+    const refreshChatty = async () => {
+        await updateThreads(false, false, true)
         window.scrollTo(0, 0)
     }
 
-    markThread = async (postId, type, updateThreads = true) => {
-        const {isLoggedIn, username} = this.props
-
+    const markThread = async (postId, type, updateThreads = true) => {
         if (isLoggedIn) {
             await fetchJson('clientData/markPost', {
                 method: 'POST',
@@ -237,42 +222,51 @@ class ChattyProvider extends React.PureComponent {
         }
 
         if (updateThreads) {
-            this.setState(oldState => {
-                const threadId = `${postId}`
-                return {
-                    threads: oldState.threads
-                        .map(thread => {
-                            if (thread.threadId === threadId) {
-                                return {
-                                    ...thread,
-                                    pinned: type === 'pinned',
-                                    collapsed: type === 'collapsed'
-                                }
+            const threadId = `${postId}`
+            setChatty({
+                threads: chatty.threads
+                    .map(thread => {
+                        if (thread.threadId === threadId) {
+                            return {
+                                ...thread,
+                                pinned: type === 'pinned',
+                                collapsed: type === 'collapsed'
                             }
-                            return thread
-                        })
-                }
+                        }
+                        return thread
+                    }),
+                newThreads: chatty.newThreads
             })
         }
     }
 
-    render() {
-        const contextValue = {
-            ...this.state,
-            refreshChatty: this.refreshChatty,
-            markThread: this.markThread
-        }
+    // full load of chatty on start
+    useEffect(() => {
+        fullReload()
+        return () => mounted = false
+    }, [isLoggedIn])
 
-        return (
-            <ChattyContext.Provider value={contextValue}>
-                {this.props.children}
-            </ChattyContext.Provider>
-        )
+    // wait for events
+    useEffect(() => {
+        waitForEvent(lastEventId)
+    }, [lastEventId])
+
+    // handle events
+    useEffect(() => {
+        events.forEach(event => handleEvent(event))
+    }, [events])
+
+    const contextValue = {
+        ...chatty,
+        refreshChatty,
+        markThread
     }
+
+    return (
+        <ChattyContext.Provider value={contextValue}>
+            {children}
+        </ChattyContext.Provider>
+    )
 }
 
-export default withIndicators(
-    withAuth(
-        ChattyProvider
-    )
-)
+export default ChattyProvider

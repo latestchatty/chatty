@@ -10,12 +10,12 @@ import Checkbox from '@material-ui/core/Checkbox'
 import {withStyles} from '@material-ui/core/styles'
 
 function FilterDialog({classes, open, onClose}) {
-    const {filterSettings, updateFilterSettings} = useContext(FilterContext)
+    const {filterSettings, setFilterSettings} = useContext(FilterContext)
     const [showCollapsed, setShowCollapsed] = useState(filterSettings.showCollapsed)
 
     const handleSave = () => {
         onClose()
-        updateFilterSettings({
+        setFilterSettings({
             showCollapsed
         })
     }

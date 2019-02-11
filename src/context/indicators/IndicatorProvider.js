@@ -1,34 +1,25 @@
-import React from 'react'
+import React, {useState} from 'react'
 import IndicatorContext from './IndicatorContext'
 import AsyncLoadingIndicator from './AsyncLoadingIndicator'
 
-class IndicatorProvider extends React.PureComponent {
-    state = {
-        loading: false,
-        toast: false
-    }
+function IndicatorProvider({children}) {
+    const [loading, setLoading] = useState(false)
 
-    setLoading = loading => this.setState({loading})
-
-    showToast = msg => {
+    const showToast = msg => {
         // TODO: hook to toasts and replace other TODOs
     }
 
-    render() {
-        const {loading} = this.state
-
-        const contextValue = {
-            setLoading: this.setLoading,
-            showToast: this.showToast
-        }
-
-        return (
-            <IndicatorContext.Provider value={contextValue}>
-                <AsyncLoadingIndicator loading={loading}/>
-                {this.props.children}
-            </IndicatorContext.Provider>
-        )
+    const contextValue = {
+        setLoading,
+        showToast
     }
+
+    return (
+        <IndicatorContext.Provider value={contextValue}>
+            <AsyncLoadingIndicator loading={loading}/>
+            {children}
+        </IndicatorContext.Provider>
+    )
 }
 
 export default IndicatorProvider

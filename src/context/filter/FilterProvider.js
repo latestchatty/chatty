@@ -1,21 +1,21 @@
-import React from 'react'
+import React, {useState} from 'react'
 import FilterContext from './FilterContext'
 
-class FilterProvider extends React.PureComponent {
-    state = {
+function FilterProvider({children}) {
+    const [filterSettings, setFilterSettings] = useState({
         showCollapsed: false,
         showFilteredUsers: false,
         filteredUsers: [],
         showFilteredTerms: false,
         filteredTerms: []
-    }
+    })
 
-    isPostVisible(thread, post = thread) {
+    const isPostVisible = (thread, post = thread) => {
         const {
             showCollapsed,
             showFilteredUsers, filteredUsers,
             showFilteredTerms, filteredTerms
-        } = this.state
+        } = filterSettings
 
         if (!showCollapsed && thread.collapsed) return false
         else if (!showFilteredUsers && filteredUsers.some(({regex}) => regex.test(post.author))) return false
@@ -24,19 +24,17 @@ class FilterProvider extends React.PureComponent {
         return true
     }
 
-    render() {
-        const contextValue = {
-            filterSettings: {...this.state},
-            updateFilterSettings: settings => this.setState({...settings}),
-            isPostVisible: (thread, post) => this.isPostVisible(thread, post)
-        }
-
-        return (
-            <FilterContext.Provider value={contextValue}>
-                {this.props.children}
-            </FilterContext.Provider>
-        )
+    const contextValue = {
+        filterSettings,
+        setFilterSettings,
+        isPostVisible
     }
+
+    return (
+        <FilterContext.Provider value={contextValue}>
+            {children}
+        </FilterContext.Provider>
+    )
 }
 
 export default FilterProvider

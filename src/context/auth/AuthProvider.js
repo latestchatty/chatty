@@ -1,30 +1,23 @@
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import AuthContext from './AuthContext'
 import fetchJson from '../../util/fetchJson'
-import withIndicators from '../indicators/withIndicators'
+import IndicatorContext from '../indicators/IndicatorContext'
 
-class AuthProvider extends React.PureComponent {
-    constructor(props) {
-        super(props)
-
-        const {username, password} = this.loadStorage()
-        this.state = {
-            isLoggedIn: (username && password),
-            username, password
-        }
-    }
-
-    loadStorage() {
+function AuthProvider({children}) {
+    const {setLoading} = useContext(IndicatorContext)
+    const [credentials, setCredentials] = useState(() => {
         try {
             const storageValue = localStorage.getItem('auth') || '{}'
-            return JSON.parse(storageValue) || {}
+            const {username, password} = JSON.parse(storageValue) || {}
+            return {username, password}
         } catch (ex) {
             console.log('Invalid storage value: auth', ex)
+            localStorage.removeItem('auth')
+            return {username: null, password: null}
         }
-    }
+    })
 
-    login = async (username, password) => {
-        const {setLoading} = this.props
+    const login = async (username, password) => {
         try {
             setLoading('async')
 
@@ -32,7 +25,7 @@ class AuthProvider extends React.PureComponent {
 
             if (result.isValid) {
                 localStorage.setItem('auth', JSON.stringify({username, password}))
-                this.setState({isLoggedIn: true, username, password})
+                setCredentials({username, password})
             } else {
                 console.log('Invalid login credentials.')
                 // TODO: toast user
@@ -45,25 +38,19 @@ class AuthProvider extends React.PureComponent {
         }
     }
 
-    logout = () => {
+    const logout = () => {
         localStorage.removeItem('auth')
-        this.setState({isLoggedIn: false, username: null, password: null})
+        setCredentials({username: null, password: null})
     }
 
-    render() {
-        const contextValue = {
-            ...this.state,
+    const isLoggedIn = credentials.username && credentials.password
+    const contextValue = {...credentials, isLoggedIn, login, logout}
 
-            login: this.login,
-            logout: this.logout
-        }
-
-        return (
-            <AuthContext.Provider value={contextValue}>
-                {this.props.children}
-            </AuthContext.Provider>
-        )
-    }
+    return (
+        <AuthContext.Provider value={contextValue}>
+            {children}
+        </AuthContext.Provider>
+    )
 }
 
-export default withIndicators(AuthProvider)
+export default AuthProvider
