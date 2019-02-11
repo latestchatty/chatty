@@ -4,7 +4,7 @@ import fetchJson from '../../util/fetchJson'
 import IndicatorContext from '../indicators/IndicatorContext'
 
 function AuthProvider({children}) {
-    const {setLoading} = useContext(IndicatorContext)
+    const {setLoading, showSnackbar} = useContext(IndicatorContext)
     const [credentials, setCredentials] = useState(() => {
         try {
             const storageValue = localStorage.getItem('auth') || '{}'
@@ -28,11 +28,11 @@ function AuthProvider({children}) {
                 setCredentials({username, password})
             } else {
                 console.log('Invalid login credentials.')
-                // TODO: toast user
+                showSnackbar('Invalid username/password. Please check them and try again')
             }
         } catch (ex) {
             console.log('Error while logging in', ex)
-            // TODO: toast user
+            showSnackbar('Error while logging in. Please try again later.')
         } finally {
             setLoading(false)
         }

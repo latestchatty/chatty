@@ -10,7 +10,7 @@ import IndicatorContext from '../context/indicators/IndicatorContext'
 
 function TagButton({className, postId}) {
     const {isLoggedIn, username} = useContext(AuthContext)
-    const {setLoading} = useContext(IndicatorContext)
+    const {setLoading, showSnackbar} = useContext(IndicatorContext)
     const [anchorEl, setAnchorEl] = useState(null)
 
     const tags = supportedTags.map(tag => tag.toUpperCase())
@@ -27,9 +27,9 @@ function TagButton({className, postId}) {
             if (!text.match(/^ok /)) {
                 console.warn('Error tagging post', text)
             }
-            // TODO: toast user
         } catch (err) {
             console.error('Exception while tagging post', err)
+            showSnackbar('Error while tagging post. Please try again later.')
         } finally {
             setLoading(false)
         }

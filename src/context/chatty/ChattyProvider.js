@@ -7,7 +7,7 @@ import IndicatorContext from '../indicators/IndicatorContext'
 function ChattyProvider({children}) {
     let mounted = true
     const {isLoggedIn, username} = useContext(AuthContext)
-    const {setLoading} = useContext(IndicatorContext)
+    const {setLoading, showSnackbar} = useContext(IndicatorContext)
 
     const [chatty, setChatty] = useState({threads: [], newThreads: []})
 
@@ -97,8 +97,9 @@ function ChattyProvider({children}) {
                     setEvents(events)
                     setLastEventId(newerEventId)
                 } else {
-                    // TODO: handle eventing error, probably need to restart events / reload chatty
                     console.log('Error from API:waitForLastEvent call.', error)
+                    showSnackbar('Error receiving events. Please refresh page.')
+                    // TODO: maybe restart events automatically? Throw away state? handle somehow
                 }
             }
         }

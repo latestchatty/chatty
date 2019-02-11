@@ -14,7 +14,7 @@ import {makeStyles} from '@material-ui/styles'
 function ReplyBox({onCloseReplyBox, parentId, className}) {
     const classes = useStyles()
     const {username, password} = useContext(AuthContext)
-    const {setLoading} = useContext(IndicatorContext)
+    const {setLoading, showSnackbar} = useContext(IndicatorContext)
     const [text, setText] = useState('')
     const [posting, setPosting] = useState(false)
 
@@ -25,11 +25,10 @@ function ReplyBox({onCloseReplyBox, parentId, className}) {
             let response = await fetchJson('postComment', {method: 'POST', body: {username, password, parentId, text}})
             if (response.result === 'success') {
                 onCloseReplyBox()
-                // TODO: toast user
             }
         } catch (ex) {
             console.log('Error while posting comment', ex)
-            // TODO: toast user
+            showSnackbar('Error while posting. Please try again later.')
         } finally {
             setPosting(true)
             setLoading(false)
