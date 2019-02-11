@@ -29,8 +29,8 @@ function ReplyBox({onCloseReplyBox, parentId, className}) {
         } catch (ex) {
             console.log('Error while posting comment', ex)
             showSnackbar('Error while posting. Please try again later.')
+            setPosting(false)
         } finally {
-            setPosting(true)
             setLoading(false)
         }
     }
@@ -50,6 +50,7 @@ function ReplyBox({onCloseReplyBox, parentId, className}) {
                         placeholder='Type something interesting...'
                         name='replyBody'
                         required
+                        disabled={posting}
                         onChange={event => setText(event.target.value)}
                     />
                 </div>

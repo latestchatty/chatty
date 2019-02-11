@@ -22,8 +22,6 @@ function LoginDialog({open, onClose}) {
 
             await login(username, password)
 
-            setUsername('')
-            setPassword('')
             onClose()
         } finally {
             setLoading(false)
