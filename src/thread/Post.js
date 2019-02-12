@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react'
+import React, {useContext, useEffect, useMemo, useRef} from 'react'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -21,6 +21,7 @@ import {makeStyles} from '@material-ui/styles'
 
 function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenReplyBox, onCloseReplyBox}) {
     const classes = useStyles()
+    const domElement = useRef(null)
     const {isLoggedIn} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
 
@@ -45,87 +46,114 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
         return null
     }, [post.category, post.author])
 
-    const replyBorder = post.parentId > 0 ? 'replyBorder' : null
+    const isReply = post.parentId > 0
+    const replyBorder = isReply ? 'replyBorder' : null
 
     const handleReplyClick = () => onOpenReplyBox(post.id)
 
     if (!isPostVisible(thread, post)) return null
+
+    // Scroll into view when first visible
+    useEffect(() => {
+        if (isReply) {
+            const rect = domElement.current.getBoundingClientRect()
+            const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
+            const above = rect.bottom < 0
+            const below = rect.top - viewHeight >= 0
+            if (above) {
+                window.scrollTo({
+                    left: 0,
+                    top: domElement.current.offsetTop - 75,
+                    behavior: 'smooth'
+                })
+            } else if (below) {
+                window.scrollTo({
+                    left: 0,
+                    top: domElement.current.offsetTop - viewHeight + rect.height + 24,
+                    behavior: 'smooth'
+                })
+            }
+        }
+    }, [])
+
     return (
         <React.Fragment>
-            <Card className={classnames(classes.card, classes[tagClass], classes[replyBorder])}>
-                <div className={classes.header}>
-                    <PostAuthor post={post} thread={thread}/>
+            <div ref={domElement}>
+                <Card className={classnames(classes.card, classes[tagClass], classes[replyBorder])}>
+                    <div className={classes.header}>
+                        <PostAuthor post={post} thread={thread}/>
 
-                    <Tags tags={post.lols} variant='post'/>
+                        <Tags tags={post.lols} variant='post'/>
 
-                    <span className={classes.flex}/>
+                        <span className={classes.flex}/>
 
-                    <PostDate date={post.date}/>
+                        <PostDate date={post.date}/>
 
-                    {post.parentId === 0 && <PostExpirationBar date={post.date}/>}
-                </div>
+                        {post.parentId === 0 && <PostExpirationBar date={post.date}/>}
+                    </div>
 
-                <CardContent className={classnames('postbody', classes.content)}>
-                    <span dangerouslySetInnerHTML={html}/>
-                </CardContent>
+                    <CardContent className={classnames('postbody', classes.content)}>
+                        <span dangerouslySetInnerHTML={html}/>
+                    </CardContent>
 
-                <CardActions className={classes.actions} disableActionSpacing>
-                    <Tooltip
-                        disableFocusListener
-                        title={post.markType === 'collapsed' ? 'Uncollapse' : 'Collapse'}
-                        enterDelay={350}
-                    >
-                        <CloseIcon
-                            className={
-                                classnames(classes.toolbarButton, post.markType === 'collapsed' ? classes.collapsed : null)
-                            }
-                            onClick={onCollapse}
-                        />
-                    </Tooltip>
-
-                    {
-                        isLoggedIn &&
-                        <Tooltip disableFocusListener title='Reply' enterDelay={350}>
-                            <ReplyIcon className={classes.toolbarButton} onClick={handleReplyClick}/>
-                        </Tooltip>
-                    }
-
-                    {
-                        isLoggedIn && post.parentId === 0 &&
-                        <React.Fragment>
-                            {
-                                post.markType === 'pinned' &&
-                                <Tooltip disableFocusListener title='Unpin Thread' enterDelay={350}>
-                                    <StarIcon className={classes.toolbarButton} onClick={onPinned}/>
-                                </Tooltip>
-                            }
-                            {
-                                post.markType !== 'pinned' &&
-                                <Tooltip disableFocusListener title='Pin Thread' enterDelay={350}>
-                                    <StarBorderIcon className={classes.toolbarButton} onClick={onPinned}/>
-                                </Tooltip>
-                            }
-                        </React.Fragment>
-                    }
-
-                    <TagButton postId={post.id} className={classes.toolbarButton}/>
-
-                    <Tooltip disableFocusListener title='View Post @ Shacknews.com' enterDelay={350}>
-                        <a
-                            className={classes.toolbarButton}
-                            target='_blank'
-                            rel="noopener noreferrer"
-                            href={`http://www.shacknews.com/chatty?id=${post.id}#item_${post.id}`}
+                    <CardActions className={classes.actions} disableActionSpacing>
+                        <Tooltip
+                            disableFocusListener
+                            title={post.markType === 'collapsed' ? 'Uncollapse' : 'Collapse'}
+                            enterDelay={350}
                         >
-                            <ExitToAppIcon className={classes.toolbarButton}/>
-                        </a>
-                    </Tooltip>
-                </CardActions>
-            </Card>
+                            <CloseIcon
+                                className={
+                                    classnames(classes.toolbarButton, post.markType === 'collapsed' ? classes.collapsed : null)
+                                }
+                                onClick={onCollapse}
+                            />
+                        </Tooltip>
 
+                        {
+                            isLoggedIn &&
+                            <Tooltip disableFocusListener title='Reply' enterDelay={350}>
+                                <ReplyIcon className={classes.toolbarButton} onClick={handleReplyClick}/>
+                            </Tooltip>
+                        }
+
+                        {
+                            isLoggedIn && post.parentId === 0 &&
+                            <React.Fragment>
+                                {
+                                    post.markType === 'pinned' &&
+                                    <Tooltip disableFocusListener title='Unpin Thread' enterDelay={350}>
+                                        <StarIcon className={classes.toolbarButton} onClick={onPinned}/>
+                                    </Tooltip>
+                                }
+                                {
+                                    post.markType !== 'pinned' &&
+                                    <Tooltip disableFocusListener title='Pin Thread' enterDelay={350}>
+                                        <StarBorderIcon className={classes.toolbarButton} onClick={onPinned}/>
+                                    </Tooltip>
+                                }
+                            </React.Fragment>
+                        }
+
+                        <TagButton postId={post.id} className={classes.toolbarButton}/>
+
+                        <Tooltip disableFocusListener title='View Post @ Shacknews.com' enterDelay={350}>
+                            <a
+                                className={classes.toolbarButton}
+                                target='_blank'
+                                rel="noopener noreferrer"
+                                href={`http://www.shacknews.com/chatty?id=${post.id}#item_${post.id}`}
+                            >
+                                <ExitToAppIcon className={classes.toolbarButton}/>
+                            </a>
+                        </Tooltip>
+                    </CardActions>
+                </Card>
+            </div>
             {
                 replyBoxOpenForId === post.id &&
-                <ReplyBox parentId={post.id} onCloseReplyBox={onCloseReplyBox} className={classes.replyBox}/>}
+                <ReplyBox parentId={post.id} onCloseReplyBox={onCloseReplyBox} className={classes.replyBox}/>
+            }
         </React.Fragment>
     )
 }
