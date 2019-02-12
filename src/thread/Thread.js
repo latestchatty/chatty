@@ -69,7 +69,7 @@ function Thread({thread: rawThread}) {
             />
 
             {
-                truncated && thread.markThread !== 'collappsed' &&
+                truncated && thread.markThread !== 'collapsed' &&
                 <div className={classes.truncatedMessage} onClick={() => setTruncated(false)}>
                     Thread truncated. Click to see all&nbsp;
                     <span className={classes.replyCount}>{thread.posts.length - 1}</span>
