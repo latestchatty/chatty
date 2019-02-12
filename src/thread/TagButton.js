@@ -36,10 +36,10 @@ function TagButton({className, postId}) {
     }
 
     const tagPost = async (who, what, tag, action) => {
-        const base = 'https://www.lmnopc.com/greasemonkey/shacklol/report.php'
-        const params = querystring.stringify({who, what, tag, version: '-1'})
+        const base = 'https://lol.lmnopc.com/report.php'
+        const params = {who, what, tag, version: -1}
         if (action) params.action = action
-        const response = await fetch(`${base}?${params}`)
+        const response = await fetch(`${base}?${querystring.stringify(params)}`, {method: 'POST'})
         return response.text()
     }
 
