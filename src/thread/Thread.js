@@ -31,7 +31,6 @@ function Thread({thread: rawThread}) {
             markType
         }
     }, [rawThread, markType])
-    if (!isPostVisible(rawThread)) return null
 
     const markThread = async (postId, type) => {
         await fetchJson('clientData/markPost', {
@@ -56,6 +55,7 @@ function Thread({thread: rawThread}) {
     const handleCollapse = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'collapsed' : 'unmarked')
     const togglePinned = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'pinned' : 'unmarked')
 
+    if (!isPostVisible(thread)) return null
     return (
         <div className={classes.thread}>
             <Post
@@ -69,7 +69,7 @@ function Thread({thread: rawThread}) {
             />
 
             {
-                truncated && thread.markThread !== 'collapsed' &&
+                truncated &&
                 <div className={classes.truncatedMessage} onClick={() => setTruncated(false)}>
                     Thread truncated. Click to see all&nbsp;
                     <span className={classes.replyCount}>{thread.posts.length - 1}</span>
