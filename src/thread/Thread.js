@@ -12,7 +12,7 @@ function Thread({thread: rawThread}) {
     const [replyBoxOpenForId, setReplyBoxOpenForId] = useState(null)
     const [truncated, setTruncated] = useState(rawThread.posts.length > 20)
     const [markType, setMarkType] = useState(rawThread.markType)
-    const {username} = useContext(AuthContext)
+    const {username, isLoggedIn} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
     const thread = useMemo(() => {
         const posts = rawThread.posts ? rawThread.posts.sort((a, b) => a.id - b.id) : []
@@ -33,11 +33,13 @@ function Thread({thread: rawThread}) {
     }, [rawThread, markType])
 
     const markThread = async (postId, type) => {
-        await fetchJson('clientData/markPost', {
-            method: 'POST',
-            body: {username, postId, type}
-        })
         setMarkType(type)
+        if (isLoggedIn) {
+            await fetchJson('clientData/markPost', {
+                method: 'POST',
+                body: {username, postId, type}
+            })
+        }
     }
 
     const handleExpandReply = expandedReplyId => {
