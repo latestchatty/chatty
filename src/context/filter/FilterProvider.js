@@ -13,8 +13,10 @@ function FilterProvider({children}) {
     const isPostVisible = (thread, post = thread) => {
         const {
             showCollapsed,
-            showFilteredUsers, filteredUsers,
-            showFilteredTerms, filteredTerms
+            showFilteredUsers,
+            filteredUsers,
+            showFilteredTerms,
+            filteredTerms
         } = filterSettings
 
         if (!showCollapsed && thread.markType === 'collapsed') return false
@@ -24,9 +26,11 @@ function FilterProvider({children}) {
         return true
     }
 
+    const updateFilterSettings = updatedSettings => setFilterSettings({...filterSettings, updatedSettings})
+
     const contextValue = {
         filterSettings,
-        setFilterSettings,
+        updateFilterSettings,
         isPostVisible
     }
 

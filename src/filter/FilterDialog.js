@@ -11,14 +11,12 @@ import {makeStyles} from '@material-ui/styles'
 
 function FilterDialog({open, onClose}) {
     const classes = useStyles()
-    const {filterSettings, setFilterSettings} = useContext(FilterContext)
+    const {filterSettings, updateFilterSettings} = useContext(FilterContext)
     const [showCollapsed, setShowCollapsed] = useState(filterSettings.showCollapsed)
 
     const handleSave = () => {
+        updateFilterSettings({showCollapsed})
         onClose()
-        setFilterSettings({
-            showCollapsed
-        })
     }
 
     return (
