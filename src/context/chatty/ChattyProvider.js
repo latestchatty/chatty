@@ -65,14 +65,14 @@ function ChattyProvider({children}) {
         })
 
         if (markedPosts) {
-            // clean up any old collapsed posts after loading, doesn't impact state
-            let promises = markedPosts
+            // clean up any old posts after loading, doesn't impact state
+            let ids = markedPosts
                 .filter(post => !maxPostIdByThread[post.id])
-                .map(({id}) => fetchJson('clientData/markPost', {
-                    method: 'POST',
-                    body: {username, postId: id, type: 'unmarked'}
-                }))
-            await Promise.all(promises)
+                .map(({id}) => id)
+            await fetchJson('clientData/markPost', {
+                method: 'POST',
+                body: {username, postId: ids.join(','), type: 'unmarked'}
+            })
         }
     }
 
