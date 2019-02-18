@@ -3,6 +3,8 @@ import ChattyContext from './ChattyContext'
 import fetchJson from '../../util/fetchJson'
 import AuthContext from '../auth/AuthContext'
 import IndicatorContext from '../indicators/IndicatorContext'
+import subHours from 'date-fns/sub_hours'
+import isBefore from 'date-fns/is_before'
 
 function ChattyProvider({children}) {
     let mounted = true
@@ -52,13 +54,20 @@ function ChattyProvider({children}) {
                 return acc
             }, {})
 
-        // TODO: remove expired threads
+        // remove expired threads
+        const expireDate = subHours(Date.now(), 18)
+        nextThreads = nextThreads.filter(thread => {
+            const threadId = +thread.threadId
+            const post = thread.posts.find(post => post.id === threadId)
+            return isBefore(expireDate, post.date)
+        })
 
         // sort by activity, pinned first
         nextThreads = nextThreads
             .sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId])
             .sort((a, b) => a.markType === b.markType === 'pinned' ? 0 : a.markType === 'pinned' ? -1 : 1)
 
+        // update state to trigger render
         setChatty({
             threads: nextThreads,
             newThreads: nextNewThreads
@@ -97,7 +106,7 @@ function ChattyProvider({children}) {
                     setEvents(events)
                     setLastEventId(newerEventId)
                 } else {
-                    console.log('Error from API:waitForLastEvent call.', error)
+                    console.error('Error from API:waitForLastEvent call.', error)
                     showSnackbar('Error receiving events. Reloading full chatty.')
                     return fullReload()
                 }
