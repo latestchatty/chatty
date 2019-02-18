@@ -72,12 +72,12 @@ function ChattyProvider({children}) {
             threads: nextThreads,
             newThreads: nextNewThreads
         })
-
-        if (markedPosts) {
-            // clean up any old posts after loading, doesn't impact state
-            let ids = markedPosts
-                .filter(post => !maxPostIdByThread[post.id])
-                .map(({id}) => id)
+        
+        // clean up any old posts after loading, doesn't impact state
+        let ids = markedPosts
+            .filter(post => !maxPostIdByThread[post.id])
+            .map(({id}) => id)
+        if (ids.length) {
             await fetchJson('clientData/markPost', {
                 method: 'POST',
                 body: {username, postId: ids.join(','), type: 'unmarked'}
