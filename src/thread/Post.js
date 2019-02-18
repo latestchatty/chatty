@@ -123,7 +123,10 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
                                 {
                                     post.markType === 'pinned' &&
                                     <Tooltip disableFocusListener title='Unpin Thread' enterDelay={350}>
-                                        <StarIcon className={classes.toolbarButton} onClick={onPinned}/>
+                                        <StarIcon
+                                            className={classnames(classes.toolbarButton, classes.pinned)}
+                                            onClick={onPinned}
+                                        />
                                     </Tooltip>
                                 }
                                 {
@@ -205,7 +208,10 @@ const useStyles = makeStyles({
         marginRight: 6
     },
     collapsed: {
-        color: '#f00'
+        color: '#f00 !important'
+    },
+    pinned: {
+        color: '#fcbf20 !important'
     }
 })
 
