@@ -98,8 +98,8 @@ function ChattyProvider({children}) {
                     setLastEventId(newerEventId)
                 } else {
                     console.log('Error from API:waitForLastEvent call.', error)
-                    showSnackbar('Error receiving events. Please refresh page.')
-                    // TODO: maybe restart events automatically? Throw away state? handle somehow
+                    showSnackbar('Error receiving events. Reloading full chatty.')
+                    return fullReload()
                 }
             }
         }
