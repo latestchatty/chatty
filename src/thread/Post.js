@@ -18,20 +18,13 @@ import TagButton from './TagButton'
 import AuthContext from '../context/auth/AuthContext'
 import FilterContext from '../context/filter/FilterContext'
 import {makeStyles} from '@material-ui/styles'
+import PostBody from './PostBody'
 
 function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenReplyBox, onCloseReplyBox}) {
     const classes = useStyles()
     const domElement = useRef(null)
     const {isLoggedIn} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
-
-    const html = useMemo(() => {
-        let fixed = post.body
-        if (post.author === 'Shacknews') {
-            fixed = post.body.replace('href="/', 'href="https://www.shacknews.com/')
-        }
-        return {__html: fixed}
-    }, [post.body])
 
     const tagClass = useMemo(() => {
         if (post.category === 'nuked') {
@@ -93,7 +86,7 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
                     </div>
 
                     <CardContent className={classnames('postbody', classes.content)}>
-                        <span dangerouslySetInnerHTML={html}/>
+                        <PostBody post={post}/>
                     </CardContent>
 
                     <CardActions className={classes.actions} disableActionSpacing>
