@@ -26,7 +26,7 @@ function FilterProvider({children}) {
         return true
     }
 
-    const updateFilterSettings = updatedSettings => setFilterSettings({...filterSettings, updatedSettings})
+    const updateFilterSettings = updatedSettings => setFilterSettings({...filterSettings, ...updatedSettings})
 
     const contextValue = {
         filterSettings,
