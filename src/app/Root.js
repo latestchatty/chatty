@@ -11,6 +11,7 @@ import IndicatorProvider from '../context/indicators/IndicatorProvider'
 import FilterProvider from '../context/filter/FilterProvider'
 import {Router} from 'react-router-dom'
 import history from '../history'
+import ClientDataProvider from '../context/clientData/ClientDataProvider'
 
 function Root() {
     return (
@@ -18,11 +19,13 @@ function Root() {
             <ThemeProvider theme={Theme}>
                 <IndicatorProvider>
                     <AuthProvider>
-                        <ChattyProvider>
+                        <ClientDataProvider>
                             <FilterProvider>
-                                <App/>
+                                <ChattyProvider>
+                                    <App/>
+                                </ChattyProvider>
                             </FilterProvider>
-                        </ChattyProvider>
+                        </ClientDataProvider>
                     </AuthProvider>
                 </IndicatorProvider>
             </ThemeProvider>

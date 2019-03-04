@@ -19,8 +19,8 @@ function FilterDialog({open, onClose}) {
     const [filteredTerms, setFilteredTerms] = useState(filterSettings.filteredTerms)
     const [filteredUsers, setFilteredUsers] = useState(filterSettings.filteredUsers)
 
-    const handleSave = () => {
-        updateFilterSettings({showCollapsed, filteredTerms, filteredUsers})
+    const handleSave = async () => {
+        await updateFilterSettings({showCollapsed, filteredTerms, filteredUsers})
         onClose()
     }
 

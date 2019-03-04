@@ -20,6 +20,7 @@ function EditableList({title, value, onChange}) {
     const [itemText, setItemText] = useState('')
     const {showSnackbar} = useContext(IndicatorContext)
 
+    // TODO: This function doesn't make sense in a generic EditableList
     const addItem = () => {
         try {
             if (itemText.length) {
@@ -31,6 +32,7 @@ function EditableList({title, value, onChange}) {
             }
         } catch (ex) {
             showSnackbar('Invalid filter term.')
+            console.error('Error processing new filter value', itemText, ex)
         }
     }
     const removeItem = itemToRemove => onChange && onChange(value.filter(item => item !== itemToRemove))

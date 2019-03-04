@@ -6,15 +6,16 @@ import FilterDialog from './FilterDialog'
 
 function FilterButton() {
     const [open, setOpen] = useState(false)
+    const [rendered, setRendered] = useState(false)
     return (
         <React.Fragment>
             <Tooltip disableFocusListener title='Filter Settings' enterDelay={350}>
-                <IconButton onClick={() => setOpen(true)}>
+                <IconButton onClick={() => setOpen(true) || setRendered(true)}>
                     <FilterListIcon/>
                 </IconButton>
             </Tooltip>
 
-            <FilterDialog open={open} onClose={() => setOpen(false)}/>
+            {rendered && <FilterDialog open={open} onClose={() => setOpen(false)}/>}
         </React.Fragment>
     )
 }

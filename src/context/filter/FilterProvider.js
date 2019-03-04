@@ -1,14 +1,33 @@
-import React, {useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import FilterContext from './FilterContext'
+import ClientDataContext from '../clientData/ClientDataContext'
 
 function FilterProvider({children}) {
-    const [filterSettings, setFilterSettings] = useState({
-        showCollapsed: false,
-        showFilteredUsers: false,
-        filteredUsers: [],
-        showFilteredTerms: false,
-        filteredTerms: []
-    })
+    const {clientData} = useContext(ClientDataContext)
+    const [filterSettings, setFilterSettings] = useState(defaultSettings)
+    const {updateClientData} = useContext(ClientDataContext)
+    useEffect(() => {
+        try {
+            if (clientData && clientData.filterSettings) {
+                const {filterSettings: cfs} = clientData
+                setFilterSettings({
+                    ...filterSettings,
+                    ...{
+                        filteredTerms: (cfs.filteredTerms || [])
+                            .map(text => ({text, regex: new RegExp(text, 'gmi')})),
+                        filteredUsers: (cfs.filteredUsers || [])
+                            .map(text => ({text, regex: new RegExp(text, 'gmi')})),
+                        showCollapsed: !!cfs.showCollapsed,
+                        showFilteredTerms: !!cfs.showFilteredTerms,
+                        showFilteredUsers: !!cfs.showFilteredUsers,
+                    }
+                })
+            }
+        } catch (ex) {
+            console.error('Error parsing clientData.filterSettings, resetting to default.')
+            updateFilterSettings(defaultSettings)
+        }
+    }, [clientData])
 
     const isPostVisible = (thread, post = thread) => {
         const {
@@ -26,7 +45,16 @@ function FilterProvider({children}) {
         return true
     }
 
-    const updateFilterSettings = updatedSettings => setFilterSettings({...filterSettings, ...updatedSettings})
+    const updateFilterSettings = async updatedSettings => {
+        const newFilterSettings = {...filterSettings, ...updatedSettings}
+        setFilterSettings(newFilterSettings)
+        const cloudFilterSettings = {
+            ...newFilterSettings,
+            filteredTerms: newFilterSettings.filteredTerms.map(item => item.text),
+            filteredUsers: newFilterSettings.filteredUsers.map(item => item.text)
+        }
+        await updateClientData('filterSettings', cloudFilterSettings)
+    }
 
     const contextValue = {
         filterSettings,
@@ -39,6 +67,14 @@ function FilterProvider({children}) {
             {children}
         </FilterContext.Provider>
     )
+}
+
+const defaultSettings = {
+    filteredTerms: [],
+    filteredUsers: [],
+    showCollapsed: false,
+    showFilteredTerms: false,
+    showFilteredUsers: false
 }
 
 export default FilterProvider
