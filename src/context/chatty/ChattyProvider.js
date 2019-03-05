@@ -94,24 +94,37 @@ function ChattyProvider({children}) {
             const {eventId} = await fetchJson('getNewestEventId')
             await updateThreads(true, true, false)
             setLastEventId(eventId)
+        } catch (ex) {
+            showSnackbar('Error loading chatty. Content may not be current.')
+            console.error('Exception while doing full reload.', ex)
+            setLastEventId(0)
+            setTimeout(() => fullReload(), 5000)
         } finally {
             setLoading(false)
+
         }
     }
 
     const waitForEvent = async () => {
         if (mounted && lastEventId) {
-            const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
+            try {
+                const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
 
-            if (mounted) {
-                if (!error) {
-                    setEvents(events)
-                    setLastEventId(newerEventId)
-                } else {
-                    console.error('Error from API:waitForLastEvent call.', error)
-                    showSnackbar('Error receiving events. Reloading full chatty.')
-                    return fullReload()
+                if (mounted) {
+                    if (!error) {
+                        setEvents(events)
+                        setLastEventId(newerEventId)
+                    } else {
+                        console.error('Error from API:waitForLastEvent call.', error)
+                        showSnackbar('Error receiving events. Reloading full chatty.')
+                        return fullReload()
+                    }
                 }
+            } catch (ex) {
+                showSnackbar('Error receiving events. Reloading full chatty.')
+                console.error('Exception from API:waitForLastEvent call.', ex)
+                setLastEventId(0)
+                return fullReload()
             }
         }
     }
