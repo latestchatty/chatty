@@ -79,10 +79,14 @@ function ChattyProvider({children}) {
                 .filter(post => !maxPostIdByThread[post.id])
                 .map(({id}) => id)
             if (ids.length) {
-                await fetchJson('clientData/markPost', {
-                    method: 'POST',
-                    body: {username, postId: ids.join(','), type: 'unmarked'}
-                })
+                try {
+                    await fetchJson('clientData/markPost', {
+                        method: 'POST',
+                        body: {username, postId: ids.join(','), type: 'unmarked'}
+                    })
+                } catch (ex) {
+                    console.error('Error unmarking old posts.', ex)
+                }
             }
         }
     }
