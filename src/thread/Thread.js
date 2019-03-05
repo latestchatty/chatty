@@ -35,10 +35,14 @@ function Thread({thread: rawThread}) {
     const markThread = async (postId, type) => {
         setMarkType(type)
         if (isLoggedIn) {
-            await fetchJson('clientData/markPost', {
-                method: 'POST',
-                body: {username, postId, type}
-            })
+            try {
+                await fetchJson('clientData/markPost', {
+                    method: 'POST',
+                    body: {username, postId, type}
+                })
+            } catch (ex) {
+                console.error('Error marking post.', ex)
+            }
         }
     }
 
