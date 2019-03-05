@@ -98,7 +98,7 @@ function ChattyProvider({children}) {
             showSnackbar('Error loading chatty. Content may not be current.')
             console.error('Exception while doing full reload.', ex)
             setLastEventId(0)
-            setTimeout(() => fullReload(), 5000)
+            setTimeout(() => fullReload(), 30000)
         } finally {
             setLoading(false)
 
