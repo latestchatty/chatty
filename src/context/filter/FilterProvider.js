@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import FilterContext from './FilterContext'
 import ClientDataContext from '../clientData/ClientDataContext'
+import {cleanAllStyles} from '../../util/bodyUtils'
 
 function FilterProvider({children}) {
     const {clientData} = useContext(ClientDataContext)
@@ -40,20 +41,20 @@ function FilterProvider({children}) {
 
         if (!showCollapsed && thread.markType === 'collapsed') return false
         else if (!showFilteredUsers && filteredUsers.some(({regex}) => regex.test(post.author))) return false
-        else if (!showFilteredTerms && filteredTerms.some(({regex}) => regex.test(post.body))) return false
+        else if (!showFilteredTerms && filteredTerms.some(({regex}) => regex.test(cleanAllStyles(post.body)))) return false
 
         return true
     }
 
     const updateFilterSettings = async updatedSettings => {
         const newFilterSettings = {...filterSettings, ...updatedSettings}
-        setFilterSettings(newFilterSettings)
         const cloudFilterSettings = {
             ...newFilterSettings,
             filteredTerms: newFilterSettings.filteredTerms.map(item => item.text),
             filteredUsers: newFilterSettings.filteredUsers.map(item => item.text)
         }
         await updateClientData('filterSettings', cloudFilterSettings)
+        setFilterSettings(newFilterSettings)
     }
 
     const contextValue = {

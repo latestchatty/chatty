@@ -13,7 +13,7 @@ function Thread({thread: rawThread}) {
     const [truncated, setTruncated] = useState(rawThread.posts.length > 20)
     const [markType, setMarkType] = useState(rawThread.markType)
     const {username, isLoggedIn} = useContext(AuthContext)
-    const {isPostVisible} = useContext(FilterContext)
+    const {filterSettings, isPostVisible} = useContext(FilterContext)
     const thread = useMemo(() => {
         const posts = rawThread.posts ? rawThread.posts.sort((a, b) => a.id - b.id) : []
 
@@ -57,7 +57,8 @@ function Thread({thread: rawThread}) {
     const handleCollapse = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'collapsed' : 'unmarked')
     const togglePinned = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'pinned' : 'unmarked')
 
-    if (!isPostVisible(thread)) return null
+    const visible = useMemo(() => isPostVisible(thread), [filterSettings, markType])
+    if (!visible) return null
     return (
         <div className={classes.thread}>
             <Post

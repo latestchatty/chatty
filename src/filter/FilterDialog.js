@@ -9,10 +9,12 @@ import Typography from '@material-ui/core/Typography'
 import EditableList from './EditableList'
 import FilterCheckbox from './FilterCheckbox'
 import {makeStyles} from '@material-ui/styles'
+import IndicatorContext from '../context/indicators/IndicatorContext'
 
 function FilterDialog({open, onClose}) {
     const classes = useStyles()
     const {filterSettings, updateFilterSettings} = useContext(FilterContext)
+    const {setLoading} = useContext(IndicatorContext)
     const [showCollapsed, setShowCollapsed] = useState(filterSettings.showCollapsed)
     const [showFilteredTerms, setShowFilteredTerms] = useState(filterSettings.showFilteredTerms)
     const [showFilteredUsers, setShowFilteredUsers] = useState(filterSettings.showFilteredUsers)
@@ -20,8 +22,13 @@ function FilterDialog({open, onClose}) {
     const [filteredUsers, setFilteredUsers] = useState(filterSettings.filteredUsers)
 
     const handleSave = async () => {
-        await updateFilterSettings({showCollapsed, filteredTerms, filteredUsers})
-        onClose()
+        try {
+            setLoading('sync')
+            await updateFilterSettings({showCollapsed, filteredTerms, filteredUsers})
+            onClose()
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (

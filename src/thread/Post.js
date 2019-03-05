@@ -24,7 +24,7 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
     const classes = useStyles()
     const domElement = useRef(null)
     const {isLoggedIn} = useContext(AuthContext)
-    const {isPostVisible} = useContext(FilterContext)
+    const {filterSettings, isPostVisible} = useContext(FilterContext)
 
     const tagClass = useMemo(() => {
         if (post.category === 'nuked') {
@@ -37,14 +37,12 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
             return 'tagFrontpage'
         }
         return null
-    }, [post.category, post.author])
+    }, [post.category])
 
     const isReply = post.parentId > 0
     const replyBorder = isReply ? 'replyBorder' : null
 
     const handleReplyClick = () => onOpenReplyBox(post.id)
-
-    if (!isPostVisible(thread, post)) return null
 
     // Scroll into view when first visible
     useEffect(() => {
@@ -69,6 +67,8 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
         }
     }, [])
 
+    const visible = useMemo(() => isPostVisible(thread, post), [filterSettings])
+    if (!visible) return null
     return (
         <React.Fragment>
             <div ref={domElement}>
