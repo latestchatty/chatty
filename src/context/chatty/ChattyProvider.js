@@ -65,7 +65,7 @@ function ChattyProvider({children}) {
         // sort by activity, pinned first
         nextThreads = nextThreads
             .sort((a, b) => maxPostIdByThread[b.threadId] - maxPostIdByThread[a.threadId])
-            .sort((a, b) => a.markType === b.markType === 'pinned' ? 0 : a.markType === 'pinned' ? -1 : 1)
+            .sort((a, b) => a.markType === 'pinned' ? -1 : (b.markType === 'pinned' ? 1 : 0))
 
         // update state to trigger render
         setChatty({
