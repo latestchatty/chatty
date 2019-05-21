@@ -11,7 +11,7 @@ function PostBody({post}) {
         // TODO: search for embeddable urls here
 
         return {__html: fixed}
-    }, [post.body])
+    }, [post.body, post.author])
 
     return (
         <span dangerouslySetInnerHTML={html}/>

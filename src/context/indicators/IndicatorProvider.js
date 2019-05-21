@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useMemo, useCallback} from 'react'
 import IndicatorContext from './IndicatorContext'
 import AsyncLoadingIndicator from './AsyncLoadingIndicator'
 import SyncLoadingIndicator from './SyncLoadingIndicator'
@@ -8,12 +8,12 @@ function IndicatorProvider({children}) {
     const [loading, setLoading] = useState(false)
     const [snackbars, setSnackbars] = useState([])
 
-    const showSnackbar = message => setSnackbars(snackbars.concat([message]))
+    const showSnackbar = useCallback(message => setSnackbars(snackbars.concat([message])), [snackbars])
 
-    const contextValue = {
+    const contextValue = useMemo(() => ({
         setLoading,
         showSnackbar
-    }
+    }), [showSnackbar])
 
     return (
         <IndicatorContext.Provider value={contextValue}>

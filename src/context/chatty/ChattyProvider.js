@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useMemo, useState} from 'react'
 import ChattyContext from './ChattyContext'
 import fetchJson from '../../util/fetchJson'
 import AuthContext from '../auth/AuthContext'
@@ -7,16 +7,20 @@ import subHours from 'date-fns/sub_hours'
 import isBefore from 'date-fns/is_before'
 
 function ChattyProvider({children}) {
-    let mounted = true
     const {isLoggedIn, username} = useContext(AuthContext)
     const {setLoading, showSnackbar} = useContext(IndicatorContext)
-
     const [chatty, setChatty] = useState({threads: [], newThreads: []})
+    const [lastEventId, setLastEventId] = useState(0)
 
-    const [events, setEvents] = useState([])
-    const [lastEventId, setLastEventId] = useState(null)
+    const getMarkedPosts = useCallback(async () => {
+        if (isLoggedIn) {
+            const {markedPosts} = await fetchJson(`clientData/getMarkedPosts?username=${encodeURIComponent(username)}`)
+            return markedPosts
+        }
+        return []
+    }, [isLoggedIn, username])
 
-    const updateThreads = async (freshThreads = false, freshMarkedPosts = false, includeNewThreads = false) => {
+    const updateThreads = useCallback(async (freshThreads = false, freshMarkedPosts = false, includeNewThreads = false) => {
         // fresh chatty load from server
         let {threads: nextThreads} = freshThreads ? await getChatty() : {}
 
@@ -89,57 +93,7 @@ function ChattyProvider({children}) {
                 }
             }
         }
-    }
-
-    const fullReload = async () => {
-        try {
-            setLoading('async')
-
-            const {eventId} = await fetchJson('getNewestEventId')
-            await updateThreads(true, true, false)
-            setLastEventId(eventId)
-        } catch (ex) {
-            showSnackbar('Error loading chatty. Content may not be current.')
-            console.error('Exception while doing full reload.', ex)
-            setLastEventId(0)
-            setTimeout(() => fullReload(), 30000)
-        } finally {
-            setLoading(false)
-
-        }
-    }
-
-    const waitForEvent = async () => {
-        if (mounted && lastEventId) {
-            try {
-                const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
-
-                if (mounted) {
-                    if (!error) {
-                        setEvents(events)
-                        setLastEventId(newerEventId)
-                    } else {
-                        console.error('Error from API:waitForLastEvent call.', error)
-                        showSnackbar('Error receiving events. Reloading full chatty.')
-                        return fullReload()
-                    }
-                }
-            } catch (ex) {
-                showSnackbar('Error receiving events. Reloading full chatty.')
-                console.error('Exception from API:waitForLastEvent call.', ex)
-                setLastEventId(0)
-                return fullReload()
-            }
-        }
-    }
-
-    const getMarkedPosts = async () => {
-        if (isLoggedIn) {
-            const {markedPosts} = await fetchJson(`clientData/getMarkedPosts?username=${encodeURIComponent(username)}`)
-            return markedPosts
-        }
-        return []
-    }
+    }, [chatty.newThreads, chatty.threads, getMarkedPosts, username])
 
     const getChatty = async threadCount => {
         return await fetchJson(`getChatty${threadCount > 0 ? `?count=${threadCount}` : ''}`)
@@ -239,32 +193,69 @@ function ChattyProvider({children}) {
         }
     }
 
-    const refreshChatty = async () => {
+    const refreshChatty = useCallback(async () => {
         await updateThreads(false, false, true)
         window.scrollTo(0, 0)
-    }
+    }, [updateThreads])
 
-    // full load of chatty on start
+    // full load of chatty on start and when required
     useEffect(() => {
-        fullReload()
-        return () => mounted = false
-    }, [isLoggedIn])
+        const fullReload = async () => {
+            try {
+                setLoading('async')
 
-    // wait for events
-    useEffect(() => {
-        waitForEvent(lastEventId)
+                const {eventId} = await fetchJson('getNewestEventId')
+                await updateThreads(true, true, false)
+                setLastEventId(eventId)
+            } catch (ex) {
+                showSnackbar('Error loading chatty. Content may not be current.')
+                console.error('Exception while doing full reload.', ex)
+                setTimeout(() => fullReload(), 30000)
+            } finally {
+                setLoading(false)
+            }
+        }
+        if (lastEventId === 0) fullReload()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lastEventId])
 
-    // handle events
+    // wait for and handle events
     useEffect(() => {
-        const newChatty = events.reduce((current, event) => handleEvent(event, current), chatty)
-        setChatty(newChatty)
-    }, [events])
+        let mounted = true
+        const waitForEvent = async () => {
+            if (mounted && lastEventId) {
+                try {
+                    const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
 
-    const contextValue = {
+                    if (mounted) {
+                        if (!error) {
+                            const newChatty = events
+                                .reduce((current, event) => handleEvent(event, current), chatty)
+                            setChatty(newChatty)
+                            setLastEventId(newerEventId)
+                        } else {
+                            console.error('Error from API:waitForLastEvent call.', error)
+                            showSnackbar('Error receiving events. Reloading full chatty.')
+                            setLastEventId(0)
+                        }
+                    }
+                } catch (ex) {
+                    showSnackbar('Error receiving events. Reloading full chatty.')
+                    console.error('Exception from API:waitForLastEvent call.', ex)
+                    setLastEventId(0)
+                }
+            }
+        }
+
+        if (lastEventId) waitForEvent(lastEventId)
+        return () => mounted = false
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lastEventId])
+
+    const contextValue = useMemo(() => ({
         ...chatty,
         refreshChatty
-    }
+    }), [chatty, refreshChatty])
 
     return (
         <ChattyContext.Provider value={contextValue}>

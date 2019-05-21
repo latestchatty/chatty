@@ -24,7 +24,7 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
     const classes = useStyles()
     const domElement = useRef(null)
     const {isLoggedIn} = useContext(AuthContext)
-    const {filterSettings, isPostVisible} = useContext(FilterContext)
+    const {isPostVisible} = useContext(FilterContext)
 
     const tagClass = useMemo(() => {
         if (post.category === 'nuked') {
@@ -37,7 +37,7 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
             return 'tagFrontpage'
         }
         return null
-    }, [post.category])
+    }, [post.category, post.author])
 
     const isReply = post.parentId > 0
     const replyBorder = isReply ? 'replyBorder' : null
@@ -65,9 +65,9 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
                 })
             }
         }
-    }, [])
+    }, [isReply])
 
-    const visible = useMemo(() => isPostVisible(thread, post), [filterSettings])
+    const visible = useMemo(() => isPostVisible(thread, post), [isPostVisible, post, thread])
     if (!visible) return null
     return (
         <React.Fragment>

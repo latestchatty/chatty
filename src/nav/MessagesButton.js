@@ -17,22 +17,22 @@ function MessagesButton() {
     const displayBadge = unreadMessagesCount > 0
     const title = `( ${unreadMessagesCount} / ${totalMessagesCount} ) unread messages`
 
-    const getCounts = async () => {
-        if (isLoggedIn) {
-            const options = {method: 'POST', body: {username, password}}
-            const {total, unread} = await fetchJson('getMessageCount', options)
-            setTotalMessagesCount(total)
-            setUnreadMessagesCount(unread)
-        }
-    }
-
     // update counts every 15 minutes
     useEffect(() => {
+        const getCounts = async () => {
+            if (isLoggedIn) {
+                const options = {method: 'POST', body: {username, password}}
+                const {total, unread} = await fetchJson('getMessageCount', options)
+                setTotalMessagesCount(total)
+                setUnreadMessagesCount(unread)
+            }
+        }
+        
         getCounts()
 
         const id = setInterval(() => getCounts(), 15 * 60 * 1000)
         return () => clearInterval(id)
-    }, [isLoggedIn])
+    }, [isLoggedIn, password, username])
 
     if (!isLoggedIn) return null
     return (

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useCallback, useContext, useMemo, useState} from 'react'
 import AuthContext from './AuthContext'
 import fetchJson from '../../util/fetchJson'
 import IndicatorContext from '../indicators/IndicatorContext'
@@ -17,7 +17,7 @@ function AuthProvider({children}) {
         }
     })
 
-    const login = async (username, password) => {
+    const login = useCallback(async (username, password) => {
         try {
             setLoading('async')
 
@@ -36,15 +36,20 @@ function AuthProvider({children}) {
         } finally {
             setLoading(false)
         }
-    }
+    }, [setLoading, showSnackbar])
 
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem('auth')
         setCredentials({username: null, password: null})
-    }
+    }, [])
 
     const isLoggedIn = credentials.username && credentials.password
-    const contextValue = {...credentials, isLoggedIn, login, logout}
+    const contextValue = useMemo(() => ({
+        ...credentials, 
+        isLoggedIn, 
+        login, 
+        logout
+    }), [credentials, isLoggedIn, login, logout])
 
     return (
         <AuthContext.Provider value={contextValue}>

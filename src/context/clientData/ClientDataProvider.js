@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useState, useMemo} from 'react'
 import ClientDataContext from './ClientDataContext'
 import fetchJson from '../../util/fetchJson'
 import AuthContext from '../auth/AuthContext'
@@ -10,25 +10,7 @@ function ClientDataProvider({children}) {
     const {isLoggedIn, username} = useContext(AuthContext)
     const {showSnackbar} = useContext(IndicatorContext)
 
-    const loadClientData = async () => {
-        if (isLoggedIn) {
-            try {
-                const params = querystring.stringify({client, username: encodeURIComponent(username)})
-                const {data: string = ''} = await fetchJson(`clientData/getClientData?${params}`)
-                const data = JSON.parse(string)
-                setClientData(data)
-            } catch (ex) {
-                showSnackbar('Error loading user preferences.')
-                console.error('Error loading client data', ex)
-                setClientData({})
-                // TODO: Reset client data in cloud?
-            }
-        } else {
-            setClientData({})
-        }
-    }
-
-    const updateClientData = async (key, value) => {
+    const updateClientData = useCallback(async (key, value) => {
         try {
             const newClientData = {
                 ...clientData
@@ -45,16 +27,34 @@ function ClientDataProvider({children}) {
             showSnackbar('Error updating user preferences.')
             console.error('Error setting client data', ex)
         }
-    }
-
+    }, [clientData, showSnackbar, username])
+    
     useEffect(() => {
+        const loadClientData = async () => {
+            if (isLoggedIn) {
+                try {
+                    const params = querystring.stringify({client, username: encodeURIComponent(username)})
+                    const {data: string = ''} = await fetchJson(`clientData/getClientData?${params}`)
+                    const data = JSON.parse(string)
+                    setClientData(data)
+                } catch (ex) {
+                    showSnackbar('Error loading user preferences.')
+                    console.error('Error loading client data', ex)
+                    setClientData({})
+                    // TODO: Reset client data in cloud?
+                }
+            } else {
+                setClientData({})
+            }
+        }
+        
         loadClientData()
-    }, [isLoggedIn])
+    }, [isLoggedIn, showSnackbar, username])
 
-    const contextValue = {
+    const contextValue = useMemo(() => ({
         clientData,
         updateClientData
-    }
+    }), [clientData, updateClientData])
 
     if (isLoggedIn && !clientData) return null
     return (

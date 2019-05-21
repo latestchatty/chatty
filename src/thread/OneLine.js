@@ -9,7 +9,7 @@ function OneLine({post, thread, onExpandReply}) {
     const classes = useStyles()
 
     const lineClass = `oneline${post.recentReplyNumber || 9}`
-    const oneline = useMemo(() => getSnippet(post.body))
+    const oneline = useMemo(() => getSnippet(post.body), [post.body])
 
     return (
         <div className={classes.container}>
