@@ -24,9 +24,9 @@ function FilterProvider({children}) {
                 const {filterSettings: cfs} = clientData
                 setFilterSettings({
                     filteredTerms: (cfs.filteredTerms || [])
-                        .map(text => ({text, regex: new RegExp(text, 'gmi')})),
+                        .map(text => ({text, regex: new RegExp(text, 'mi')})),
                     filteredUsers: (cfs.filteredUsers || [])
-                        .map(text => ({text, regex: new RegExp(text, 'gmi')})),
+                        .map(text => ({text, regex: new RegExp(text, 'mi')})),
                     showCollapsed: !!cfs.showCollapsed,
                     showFilteredTerms: !!cfs.showFilteredTerms,
                     showFilteredUsers: !!cfs.showFilteredUsers,
