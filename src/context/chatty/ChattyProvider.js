@@ -11,6 +11,7 @@ function ChattyProvider({children}) {
     const {setLoading, showSnackbar} = useContext(IndicatorContext)
     const [chatty, setChatty] = useState({threads: [], newThreads: []})
     const [lastEventId, setLastEventId] = useState(0)
+    const [lastRefreshDate, setLastRefreshDate] = useState(Date.now())
 
     const getMarkedPosts = useCallback(async () => {
         if (isLoggedIn) {
@@ -213,19 +214,20 @@ function ChattyProvider({children}) {
                 setTimeout(() => fullReload(), 30000)
             } finally {
                 setLoading(false)
+                setLastRefreshDate(Date.now())
             }
         }
         if (lastEventId === 0) fullReload()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [lastEventId])
+    }, [lastRefreshDate])
 
     // wait for and handle events
     useEffect(() => {
         let mounted = true
-        const waitForEvent = async () => {
+        const pollForEvent = async () => {
             if (mounted && lastEventId) {
                 try {
-                    const {lastEventId: newerEventId, events, error} = await fetchJson(`waitForEvent?lastEventId=${lastEventId}`)
+                    const {lastEventId: newerEventId, events, error} = await fetchJson(`pollForEvent?lastEventId=${lastEventId}`)
 
                     if (mounted) {
                         if (!error) {
@@ -244,13 +246,16 @@ function ChattyProvider({children}) {
                     console.error('Exception from API:waitForLastEvent call.', ex)
                     setLastEventId(0)
                 }
+                finally {
+                    setLastRefreshDate(Date.now())
+                }
             }
         }
 
-        if (lastEventId) waitForEvent(lastEventId)
+        if (lastEventId) setTimeout(() => pollForEvent(lastEventId), 5000)
         return () => mounted = false
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [lastEventId])
+    }, [lastRefreshDate])
 
     const contextValue = useMemo(() => ({
         ...chatty,
