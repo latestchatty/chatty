@@ -1,1 +1,1 @@
-export default ['lol', 'inf', 'unf', 'wtf']
+export default ['lol', 'inf', 'unf', 'wtf', 'wow', 'aww']

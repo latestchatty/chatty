@@ -75,6 +75,12 @@ const useStyles = makeStyles({
     tagBorder: {
         border: '1px solid #bbaf57'
     },
+    awwBorder: {
+        border: '1px solid #74EDEF'
+    },
+    wowBorder: {
+        border: '1px solid #BBB6AC'
+    },
     lol: {
         color: '#f80'
     },
@@ -89,6 +95,12 @@ const useStyles = makeStyles({
     },
     tag: {
         color: '#bbaf57'
+    },
+    aww: {
+        color: '#74EDEF'
+    },
+    wow: {
+        color: '#BBB6AC'
     }
 })
 
