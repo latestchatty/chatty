@@ -9,8 +9,7 @@ import UserMenu from '../userMenu/UserMenu'
 import RefreshButton from './RefreshButton'
 import NewThreadButton from './NewThreadButton'
 import MessagesButton from './MessagesButton'
-//import FilterButton from '../filter/FilterButton'
-import SettingsButton from '../appSettings/SettingsButton'
+import FilterButton from '../filter/FilterButton'
 import Drawer from '@material-ui/core/Drawer'
 import {makeStyles} from '@material-ui/styles'
 
@@ -29,7 +28,7 @@ function Nav() {
 
                     <Typography variant="h5" className={classes.title}>Chatty</Typography>
 
-                    <SettingsButton/>
+                    <FilterButton/>
                     <NewThreadButton/>
                     <MessagesButton/>
                     <RefreshButton/>
