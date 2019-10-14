@@ -31,7 +31,7 @@ function EditableList({title, value, onChange}) {
                 setItemText('')
             }
         } catch (ex) {
-            showSnackbar('Invalid filter term.')
+            showSnackbar('Invalid filter term.', {variant: 'error'})
             console.error('Error processing new filter value', itemText, ex)
         }
     }

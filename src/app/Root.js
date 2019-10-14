@@ -12,22 +12,25 @@ import FilterProvider from '../context/filter/FilterProvider'
 import {Router} from 'react-router-dom'
 import history from '../history'
 import ClientDataProvider from '../context/clientData/ClientDataProvider'
+import {SnackbarProvider} from 'notistack'
 
 function Root() {
     return (
         <Router history={history}>
             <ThemeProvider theme={Theme}>
-                <IndicatorProvider>
-                    <AuthProvider>
-                        <ClientDataProvider>
-                            <FilterProvider>
-                                <ChattyProvider>
-                                    <App/>
-                                </ChattyProvider>
-                            </FilterProvider>
-                        </ClientDataProvider>
-                    </AuthProvider>
-                </IndicatorProvider>
+                <SnackbarProvider>
+                    <IndicatorProvider>
+                        <AuthProvider>
+                            <ClientDataProvider>
+                                <FilterProvider>
+                                    <ChattyProvider>
+                                        <App/>
+                                    </ChattyProvider>
+                                </FilterProvider>
+                            </ClientDataProvider>
+                        </AuthProvider>
+                    </IndicatorProvider>
+                </SnackbarProvider>
             </ThemeProvider>
         </Router>
     )

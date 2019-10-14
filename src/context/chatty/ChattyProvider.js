@@ -210,7 +210,7 @@ function ChattyProvider({children}) {
                 await updateThreads(true, true, false)
                 setLastEventId(eventId)
             } catch (ex) {
-                showSnackbar('Error loading chatty. Content may not be current.')
+                showSnackbar('Error loading chatty. Content may not be current.', {variant: 'error'})
                 console.error('Exception while doing full reload.', ex)
                 setTimeout(() => fullReload(), 30000)
             } finally {
@@ -242,12 +242,12 @@ function ChattyProvider({children}) {
                             }
                         } else {
                             console.error('Error from API:waitForLastEvent call.', error)
-                            showSnackbar('Error receiving events. Reloading full chatty.')
+                            showSnackbar('Error receiving events. Reloading full chatty.', {variant: 'error'})
                             setLastEventId(0)
                         }
                     }
                 } catch (ex) {
-                    showSnackbar('Error receiving events. Reloading full chatty.')
+                    showSnackbar('Error receiving events. Reloading full chatty.', {variant: 'error'})
                     console.error('Exception from API:waitForLastEvent call.', ex)
                     setLastEventId(0)
                 }

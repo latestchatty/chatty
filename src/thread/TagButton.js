@@ -29,7 +29,7 @@ function TagButton({className, postId}) {
             }
         } catch (err) {
             console.error('Exception while tagging post', err)
-            showSnackbar('Error while tagging post. Please try again later.')
+            showSnackbar('Error while tagging post. Please try again later.', {variant: 'error'})
         } finally {
             setLoading(false)
         }

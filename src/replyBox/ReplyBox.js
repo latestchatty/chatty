@@ -28,7 +28,7 @@ function ReplyBox({onCloseReplyBox, parentId, className}) {
             }
         } catch (ex) {
             console.log('Error while posting comment', ex)
-            showSnackbar('Error while posting. Please try again later.')
+            showSnackbar('Error while posting. Please try again later.', {variant: 'error'})
             setPosting(false)
         } finally {
             setLoading(false)

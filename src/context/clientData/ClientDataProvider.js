@@ -20,11 +20,11 @@ function ClientDataProvider({children}) {
             const body = {client, username: encodeURIComponent(username), data}
             const result = await fetchJson(`clientData/setClientData`, {method: 'POST', body})
             if (result.error) {
-                showSnackbar('Error updating user preferences.')
-                console.log('Error setting client data', result)
+                showSnackbar('Error updating user preferences.', {variant: 'error'})
+                console.error('Error setting client data', result)
             }
         } catch (ex) {
-            showSnackbar('Error updating user preferences.')
+            showSnackbar('Error updating user preferences.', {variant: 'error'})
             console.error('Error setting client data', ex)
         }
     }, [clientData, showSnackbar, username])
@@ -38,7 +38,7 @@ function ClientDataProvider({children}) {
                     const data = JSON.parse(string)
                     setClientData(data)
                 } catch (ex) {
-                    showSnackbar('Error loading user preferences.')
+                    showSnackbar('Error loading user preferences.', {variant: 'error'})
                     console.error('Error loading client data', ex)
                     setClientData({})
                     // TODO: Reset client data in cloud?

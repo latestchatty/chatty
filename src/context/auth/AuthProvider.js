@@ -28,11 +28,11 @@ function AuthProvider({children}) {
                 setCredentials({username, password})
             } else {
                 console.log('Invalid login credentials.')
-                showSnackbar('Invalid username/password. Please check them and try again')
+                showSnackbar('Invalid username/password. Please check them and try again', {variant: 'error'})
             }
         } catch (ex) {
             console.log('Error while logging in', ex)
-            showSnackbar('Error while logging in. Please try again later.')
+            showSnackbar('Error while logging in. Please try again later.', {variant: 'error'})
         } finally {
             setLoading(false)
         }

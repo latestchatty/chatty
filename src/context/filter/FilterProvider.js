@@ -14,7 +14,7 @@ function FilterProvider({children}) {
             await updateClientData('filterSettings', cloudFilterSettings)
         } catch (err) {
             console.error('Error updating clientData.filterSettings.')
-            showSnackbar('Error updating filter settings, changes may have been lost.')
+            showSnackbar('Error updating filter settings, changes may have been lost.', {variant: 'error'})
         }
     }, [showSnackbar, updateClientData])
 
@@ -34,7 +34,7 @@ function FilterProvider({children}) {
             }
         } catch (ex) {
             console.error('Error parsing clientData.filterSettings, resetting to default.')
-            showSnackbar('Error loading filter settings, resetting to default.')
+            showSnackbar('Error loading filter settings, resetting to default.', {variant: 'error'})
             updateCloudFilterSettings(defaultSettings)
             setFilterSettings(defaultSettings)
         }
