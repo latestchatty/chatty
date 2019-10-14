@@ -3,8 +3,9 @@ import ChattyContext from './ChattyContext'
 import fetchJson from '../../util/fetchJson'
 import AuthContext from '../auth/AuthContext'
 import IndicatorContext from '../indicators/IndicatorContext'
-import subHours from 'date-fns/sub_hours'
-import isBefore from 'date-fns/is_before'
+import subHours from 'date-fns/subHours'
+import isBefore from 'date-fns/isBefore'
+import parseISO from 'date-fns/parseISO'
 
 function ChattyProvider({children}) {
     const {isLoggedIn, username} = useContext(AuthContext)
@@ -63,7 +64,8 @@ function ChattyProvider({children}) {
         nextThreads = nextThreads.filter(thread => {
             const threadId = +thread.threadId
             const post = thread.posts.find(post => post.id === threadId)
-            return isBefore(expireDate, post.date)
+            const parsed = parseISO(post.date)
+            return isBefore(expireDate, parsed)
         })
 
         // sort by activity, pinned first

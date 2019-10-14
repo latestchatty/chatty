@@ -89,7 +89,7 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
                         <PostBody post={post}/>
                     </CardContent>
 
-                    <CardActions className={classes.actions} disableActionSpacing>
+                    <CardActions className={classes.actions} disableSpacing>
                         <Tooltip
                             disableFocusListener
                             title={post.markType === 'collapsed' ? 'Uncollapse' : 'Collapse'}
@@ -188,7 +188,8 @@ const useStyles = makeStyles({
         flexDirection: 'row'
     },
     actions: {
-        height: 34
+        height: 34,
+        padding: '0 8px 0 8px'
     },
     flex: {
         flex: 1
