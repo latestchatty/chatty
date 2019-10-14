@@ -231,10 +231,15 @@ function ChattyProvider({children}) {
 
                     if (mounted) {
                         if (!error) {
-                            const newChatty = events
-                                .reduce((current, event) => handleEvent(event, current), chatty)
-                            setChatty(newChatty)
-                            setLastEventId(newerEventId)
+                            if (newerEventId > lastEventId) {
+                                const newChatty = events
+                                    .reduce((current, event) => handleEvent(event, current), chatty)
+                                setChatty(newChatty)
+                                setLastEventId(newerEventId)
+                            } else {
+                                // No changes
+                                return waitForEvent(lastEventId)
+                            }
                         } else {
                             console.error('Error from API:waitForLastEvent call.', error)
                             showSnackbar('Error receiving events. Reloading full chatty.')
