@@ -34,9 +34,9 @@ function ClientDataProvider({children}) {
             if (isLoggedIn) {
                 try {
                     const params = querystring.stringify({client, username: encodeURIComponent(username)})
-                    const {data: string = '{}'} = await fetchJson(`clientData/getClientData?${params}`)
-                    const data = JSON.parse(string)
-                    setClientData(data)
+                    const {data} = await fetchJson(`clientData/getClientData?${params}`)
+                    const newClientData = JSON.parse(data || '{}')
+                    setClientData(newClientData)
                 } catch (ex) {
                     showSnackbar('Error loading user preferences.', {variant: 'error'})
                     console.error('Error loading client data', ex)
