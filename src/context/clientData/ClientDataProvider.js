@@ -34,7 +34,7 @@ function ClientDataProvider({children}) {
             if (isLoggedIn) {
                 try {
                     const params = querystring.stringify({client, username: encodeURIComponent(username)})
-                    const {data: string = ''} = await fetchJson(`clientData/getClientData?${params}`)
+                    const {data: string = '{}'} = await fetchJson(`clientData/getClientData?${params}`)
                     const data = JSON.parse(string)
                     setClientData(data)
                 } catch (ex) {
