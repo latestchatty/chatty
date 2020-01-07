@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react'
 import ChattyContext from './ChattyContext'
 import fetchJson from '../../util/fetchJson'
 import AuthContext from '../auth/AuthContext'
@@ -10,7 +10,12 @@ import parseISO from 'date-fns/parseISO'
 function ChattyProvider({children}) {
     const {isLoggedIn, username} = useContext(AuthContext)
     const {setLoading, showSnackbar} = useContext(IndicatorContext)
-    const [chatty, setChatty] = useState({threads: [], newThreads: []})
+    const chattyRef = useRef({
+        lastUsername: username,
+        threads: [],
+        newThreads: []
+    })
+    const [chattyValue, setChattyValue] = useState(chattyRef.current)
     const [lastEventId, setLastEventId] = useState(0)
 
     const getMarkedPosts = useCallback(async () => {
@@ -26,15 +31,14 @@ function ChattyProvider({children}) {
         let {threads: nextThreads} = freshThreads ? await getChatty() : {}
 
         // process marked posts if needed
-        let markedPosts
-        if (freshMarkedPosts) markedPosts = await getMarkedPosts(freshMarkedPosts)
+        const markedPosts = freshMarkedPosts ? await getMarkedPosts() : null
 
         // compile new thread state
-        nextThreads = nextThreads || chatty.threads
+        nextThreads = nextThreads || chattyRef.current.threads
 
         // only add in new threads when needed
-        nextThreads = includeNewThreads ? chatty.newThreads.concat(nextThreads) : nextThreads
-        let nextNewThreads = includeNewThreads ? [] : chatty.newThreads
+        nextThreads = includeNewThreads ? chattyRef.current.newThreads.concat(nextThreads) : nextThreads
+        const nextNewThreads = includeNewThreads ? [] : chattyRef.current.newThreads
 
         // if we're loading marked posts, process the data
         if (markedPosts) {
@@ -74,10 +78,8 @@ function ChattyProvider({children}) {
             .sort((a, b) => a.markType === 'pinned' ? -1 : (b.markType === 'pinned' ? 1 : 0))
 
         // update state to trigger render
-        setChatty({
-            threads: nextThreads,
-            newThreads: nextNewThreads
-        })
+        chattyRef.current.threads = nextThreads
+        chattyRef.current.newThreads = nextNewThreads
 
         // clean up any old posts after loading, doesn't impact state
         if (markedPosts) {
@@ -95,13 +97,15 @@ function ChattyProvider({children}) {
                 }
             }
         }
-    }, [chatty.newThreads, chatty.threads, getMarkedPosts, username])
+
+        setChattyValue({...chattyRef.current})
+    }, [getMarkedPosts, username])
 
     const getChatty = async threadCount => {
         return await fetchJson(`getChatty${threadCount > 0 ? `?count=${threadCount}` : ''}`)
     }
 
-    const handleEvent = (event = {}, current) => {
+    const handleEvent = (event = {}) => {
         const {eventType, eventData} = event
 
         if (eventType === 'newPost') {
@@ -121,23 +125,18 @@ function ChattyProvider({children}) {
                     return thread
                 }
 
-                return {
-                    threads: current.threads.map(addReply),
-                    newThreads: current.newThreads.map(addReply)
-                }
+                chattyRef.current.threads = chattyRef.current.threads.map(addReply)
+                chattyRef.current.newThreads = chattyRef.current.newThreads.map(addReply)
             } else {
-                return {
-                    threads: current.threads,
-                    newThreads: [
-                        ...current.newThreads,
-                        {
-                            threadId: `${post.id}`,
-                            posts: [
-                                post
-                            ]
-                        }
-                    ]
-                }
+                chattyRef.current.newThreads = [
+                    ...chattyRef.current.newThreads,
+                    {
+                        threadId: `${post.id}`,
+                        posts: [
+                            post
+                        ]
+                    }
+                ]
             }
         } else if (eventType === 'categoryChange') {
             const {postId, category} = eventData
@@ -156,10 +155,8 @@ function ChattyProvider({children}) {
                 return thread
             }
 
-            return {
-                threads: current.threads.map(updateCategory),
-                newThreads: current.newThreads.map(updateCategory)
-            }
+            chattyRef.current.threads = chattyRef.current.threads.map(updateCategory)
+            chattyRef.current.newThreads = chattyRef.current.newThreads.map(updateCategory)
         } else if (eventType === 'lolCountsUpdate') {
             const {updates} = eventData
             const updatedPostsById = updates
@@ -186,19 +183,12 @@ function ChattyProvider({children}) {
                 return thread
             }
 
-            return {
-                threads: current.threads.map(updateTags),
-                newThreads: current.newThreads.map(updateTags)
-            }
+            chattyRef.current.threads = chattyRef.current.threads.map(updateTags)
+            chattyRef.current.newThreads = chattyRef.current.newThreads.map(updateTags)
         } else {
             console.debug('Unhandled event type:', event)
         }
     }
-
-    const refreshChatty = useCallback(async () => {
-        await updateThreads(false, false, true)
-        window.scrollTo(0, 0)
-    }, [updateThreads])
 
     // full load of chatty on start and when required
     useEffect(() => {
@@ -232,10 +222,9 @@ function ChattyProvider({children}) {
                     if (mounted) {
                         if (!error) {
                             if (newerEventId > lastEventId) {
-                                const newChatty = events
-                                    .reduce((current, event) => handleEvent(event, current), chatty)
-                                setChatty(newChatty)
+                                events.forEach(event => handleEvent(event))
                                 setLastEventId(newerEventId)
+                                setChattyValue({...chattyRef.current})
                             } else {
                                 // No changes
                                 return waitForEvent(lastEventId)
@@ -254,15 +243,36 @@ function ChattyProvider({children}) {
             }
         }
 
-        if (lastEventId) waitForEvent(lastEventId)
+        waitForEvent(lastEventId)
         return () => mounted = false
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lastEventId])
 
+    // reload things when logged in user changes
+    useEffect(() => {
+        const refreshForNewUser = async () => {
+            chattyRef.current.lastUsername = username
+
+            try {
+                setLoading('async')
+                setChattyValue({threads: [], newThreads: []})
+                await updateThreads(true, true, true)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        if (username !== chattyRef.current.lastUsername) {
+            refreshForNewUser()
+        }
+    }, [username, setLoading, updateThreads])
+
+    const refreshChatty = useCallback(() => updateThreads(false, false, true), [updateThreads])
+
     const contextValue = useMemo(() => ({
-        ...chatty,
+        ...chattyValue,
         refreshChatty
-    }), [chatty, refreshChatty])
+    }), [chattyValue, refreshChatty])
 
     return (
         <ChattyContext.Provider value={contextValue}>

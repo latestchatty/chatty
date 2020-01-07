@@ -12,9 +12,14 @@ function RefreshButton() {
     const displayBadge = newThreads && newThreads.length > 0
     const title = displayBadge ? `Refresh Thread Order (${newThreads.length} new threads)` : 'Refresh Thread Order'
 
+    const handleClick = async () => {
+        await refreshChatty()
+        window.scrollTo(0, 0)
+    }
+
     return (
         <Tooltip disableFocusListener title={title} enterDelay={350}>
-            <IconButton onClick={refreshChatty}>
+            <IconButton onClick={handleClick}>
                 {
                     displayBadge ?
                         <Badge badgeContent={newThreads.length} color='secondary' classes={{badge: classes.badge}}>
