@@ -58,8 +58,8 @@ function Thread({thread: rawThread}) {
     const handleOpenReplyBox = id => setReplyBoxOpenForId(id)
     const handleCloseReplyBox = () => setReplyBoxOpenForId(null)
 
-    const handleCollapse = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'collapsed' : 'unmarked')
-    const togglePinned = () => markThread(thread.threadId, thread.markType === 'unmarked' ? 'pinned' : 'unmarked')
+    const handleCollapse = () => markThread(thread.threadId, thread.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
+    const togglePinned = () => markThread(thread.threadId, thread.markType !== 'pinned' ? 'pinned' : 'unmarked')
 
     const visible = useMemo(() => isPostVisible(thread), [isPostVisible, thread])
     if (!visible) return null
