@@ -10,7 +10,6 @@ function Thread({thread: rawThread}) {
     const classes = useStyles()
     const [expandedReplyId, setExpandedReplyId] = useState(null)
     const [replyBoxOpenForId, setReplyBoxOpenForId] = useState(null)
-    const [truncated, setTruncated] = useState(rawThread.posts.length > 20)
     const [markType, setMarkType] = useState(rawThread.markType)
     const {username, isLoggedIn} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
@@ -27,10 +26,11 @@ function Thread({thread: rawThread}) {
             ...rawThread,
             ...post,
             id: +rawThread.threadId,
-            posts: posts,
+            posts: posts.filter(p => isPostVisible(post, p)),
             markType
         }
-    }, [rawThread, markType])
+    }, [rawThread, markType, isPostVisible])
+    const [truncated, setTruncated] = useState(thread.posts.length > 20)
 
     const markThread = async (postId, type) => {
         setMarkType(type)

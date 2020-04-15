@@ -1,17 +1,14 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import Post from './Post'
 import OneLine from './OneLine'
-import FilterContext from '../context/filter/FilterContext'
 import classnames from 'classnames'
 
 function Comments({className, thread = {}, parent = thread, onCollapseReply, onExpandReply, onOpenReplyBox, expandedReplyId, replyBoxOpenForId, onCloseReplyBox}) {
-    const {isPostVisible} = useContext(FilterContext)
     return (
         <ul className={classnames('comments', className)}>
             {
                 thread.posts
                     .filter(post => post.parentId === parent.id)
-                    .filter(post => isPostVisible(thread, post))
                     .map(post =>
                         <li key={post.id}>
                             {
