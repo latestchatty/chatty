@@ -21,7 +21,7 @@ function Nav() {
     return (
         <React.Fragment>
             <AppBar elevation={0}>
-                <Toolbar variant="dense">
+                <Toolbar variant="dense" className={classes.appBar}>
                     <IconButton size="small" className={classes.menuButton} onClick={() => setDrawerOpen(!drawerOpen)}>
                         <MenuIcon className={classes.white}/>
                     </IconButton>
@@ -63,6 +63,9 @@ function Nav() {
 }
 
 const useStyles = makeStyles({
+    appBar: {
+        paddingRight: 8
+    },
     white: {
         color: '#fff'
     },
