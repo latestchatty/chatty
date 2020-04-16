@@ -15,7 +15,7 @@ function Chatty() {
 
 const useStyles = makeStyles({
     chatty: {
-        margin: '72px 8px 8px 8px',
+        margin: '56px 8px 8px 8px',
         font: '12px/1.5 arial, helvetica, clean, sans-serif'
     }
 })

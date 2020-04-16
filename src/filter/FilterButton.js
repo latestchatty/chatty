@@ -10,7 +10,7 @@ function FilterButton() {
     return (
         <React.Fragment>
             <Tooltip disableFocusListener title='Filter Settings' enterDelay={350}>
-                <IconButton onClick={() => setOpen(true) || setRendered(true)}>
+                <IconButton size="small" onClick={() => setOpen(true) || setRendered(true)}>
                     <FilterListIcon/>
                 </IconButton>
             </Tooltip>

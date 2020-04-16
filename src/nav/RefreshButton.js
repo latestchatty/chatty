@@ -19,10 +19,18 @@ function RefreshButton() {
 
     return (
         <Tooltip disableFocusListener title={title} enterDelay={350}>
-            <IconButton onClick={handleClick}>
+            <IconButton size="small" onClick={handleClick}>
                 {
-                    displayBadge ?
-                        <Badge badgeContent={newThreads.length} color='secondary' classes={{badge: classes.badge}}>
+                    displayBadge
+                        ? <Badge
+                            color='secondary'
+                            classes={{badge: classes.badge}}
+                            variant='dot'
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left'
+                            }}
+                        >
                             <RefreshIcon/>
                         </Badge>
                         : <RefreshIcon/>
@@ -34,7 +42,7 @@ function RefreshButton() {
 
 const useStyles = makeStyles({
     badge: {
-        top: 12
+        //top: 12
     }
 })
 

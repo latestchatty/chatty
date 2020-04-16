@@ -16,7 +16,7 @@ function NewThreadButton() {
     return (
         <React.Fragment>
             <Tooltip disableFocusListener title='New Thread' enterDelay={350}>
-                <IconButton onClick={() => setOpen(true)}>
+                <IconButton size="small" onClick={() => setOpen(true)}>
                     <AddIcon/>
                 </IconButton>
             </Tooltip>

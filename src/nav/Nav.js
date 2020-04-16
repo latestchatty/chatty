@@ -21,24 +21,24 @@ function Nav() {
     return (
         <React.Fragment>
             <AppBar elevation={0}>
-                <Toolbar>
-                    <IconButton className={classes.menuButton} onClick={() => setDrawerOpen(!drawerOpen)}>
+                <Toolbar variant="dense">
+                    <IconButton size="small" className={classes.menuButton} onClick={() => setDrawerOpen(!drawerOpen)}>
                         <MenuIcon className={classes.white}/>
                     </IconButton>
 
                     <Typography variant="h5" className={classes.title}>Chatty</Typography>
 
-                    <FilterButton/>
-                    <NewThreadButton/>
-                    <MessagesButton/>
                     <RefreshButton/>
+                    <NewThreadButton/>
+                    <FilterButton/>
+                    <MessagesButton/>
                     <UserMenu/>
                 </Toolbar>
             </AppBar>
 
             <Drawer open={drawerOpen} onClose={closeDrawer} className={classes.drawer}>
                 <AppBar position="static" color="primary" className={classes.drawerAppBar}>
-                    <Toolbar>
+                    <Toolbar variant="dense">
                         <Typography variant="h6" className={classes.title}>Latest Chatty</Typography>
                     </Toolbar>
                 </AppBar>

@@ -37,7 +37,7 @@ function MessagesButton() {
     if (!isLoggedIn) return null
     return (
         <Tooltip disableFocusListener title={title} enterDelay={350}>
-            <IconButton href='https://www.shacknews.com/messages' target='_blank'>
+            <IconButton size="small" href='https://www.shacknews.com/messages' target='_blank'>
                 {
                     displayBadge
                         ? <Badge

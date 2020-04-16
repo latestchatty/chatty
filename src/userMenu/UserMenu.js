@@ -15,7 +15,7 @@ function UserMenu() {
     if (!isLoggedIn) return <LoginButton/>
     return (
         <React.Fragment>
-            <IconButton onClick={event => setAnchorEl(event.target)}>
+            <IconButton size="small" onClick={event => setAnchorEl(event.target)}>
                 <PersonIcon/>
             </IconButton>
 
