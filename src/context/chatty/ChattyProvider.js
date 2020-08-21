@@ -111,9 +111,8 @@ function ChattyProvider({children}) {
         if (eventType === 'newPost') {
             const {post} = eventData
             if (post.parentId) {
-                const threadId = `${post.threadId}`
                 const addReply = thread => {
-                    if (thread.threadId === threadId) {
+                    if (thread.threadId === post.threadId) {
                         return {
                             ...thread,
                             posts: [
@@ -131,7 +130,7 @@ function ChattyProvider({children}) {
                 chattyRef.current.newThreads = [
                     ...chattyRef.current.newThreads,
                     {
-                        threadId: `${post.id}`,
+                        threadId: post.id,
                         posts: [
                             post
                         ]
