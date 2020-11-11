@@ -88,10 +88,13 @@ function ChattyProvider({children}) {
                 .map(({id}) => id)
             if (ids.length) {
                 try {
-                    await fetchJson('clientData/markPost', {
-                        method: 'POST',
-                        body: {username, postId: ids.join(','), type: 'unmarked'}
-                    })
+                    ids.reduce(async (acc, id) => {
+                        await acc
+                        return fetchJson('clientData/markPost', {
+                            method: 'POST',
+                            body: {username, postId: id, type: 'unmarked'}
+                        })
+                    }, Promise.resolve())
                 } catch (ex) {
                     console.error('Error unmarking old posts.', ex)
                 }
