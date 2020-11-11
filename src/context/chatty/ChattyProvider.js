@@ -116,12 +116,17 @@ function ChattyProvider({children}) {
             if (post.parentId) {
                 const addReply = thread => {
                     if (thread.threadId === post.threadId) {
-                        return {
-                            ...thread,
-                            posts: [
-                                ...thread.posts,
-                                post
-                            ]
+                        const found = thread.posts.find(p => p.id === post.id)
+                        if (!found) {
+                            return {
+                                ...thread,
+                                posts: [
+                                    ...thread.posts,
+                                    post
+                                ]
+                            }
+                        } else {
+                            console.warn('Duplicate reply detected!', event)
                         }
                     }
                     return thread
@@ -130,15 +135,21 @@ function ChattyProvider({children}) {
                 chattyRef.current.threads = chattyRef.current.threads.map(addReply)
                 chattyRef.current.newThreads = chattyRef.current.newThreads.map(addReply)
             } else {
-                chattyRef.current.newThreads = [
-                    ...chattyRef.current.newThreads,
-                    {
-                        threadId: post.id,
-                        posts: [
-                            post
-                        ]
-                    }
-                ]
+                const found = chattyRef.current.threads.find(t => t.threadId === post.id) ||
+                    chattyRef.current.newThreads.find(t => t.threadId === post.id)
+                if (!found) {
+                    chattyRef.current.newThreads = [
+                        ...chattyRef.current.newThreads,
+                        {
+                            threadId: post.id,
+                            posts: [
+                                post
+                            ]
+                        }
+                    ]
+                } else {
+                    console.warn('Duplicate new thread detected!', event)
+                }
             }
         } else if (eventType === 'categoryChange') {
             const {postId, category} = eventData
