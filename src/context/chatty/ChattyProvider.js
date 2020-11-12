@@ -125,8 +125,6 @@ function ChattyProvider({children}) {
                                     post
                                 ]
                             }
-                        } else {
-                            console.warn('Duplicate reply detected!', event)
                         }
                     }
                     return thread
@@ -147,8 +145,6 @@ function ChattyProvider({children}) {
                             ]
                         }
                     ]
-                } else {
-                    console.warn('Duplicate new thread detected!', event)
                 }
             }
         } else if (eventType === 'categoryChange') {
