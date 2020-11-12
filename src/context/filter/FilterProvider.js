@@ -21,15 +21,25 @@ function FilterProvider({children}) {
     useEffect(() => {
         try {
             if (clientData && clientData.filterSettings) {
-                const {filterSettings: cfs} = clientData
+                const {filterSettings: cloudFilterSettings} = clientData
+                const whichValue = (prop, otherwise) => {
+                    return cloudFilterSettings.hasOwnProperty(prop)
+                        ? cloudFilterSettings[prop] || otherwise
+                        : otherwise
+                }
                 setFilterSettings({
-                    filteredTerms: (cfs.filteredTerms || [])
+                    filteredTerms: (whichValue('filteredTerms', []))
                         .map(text => ({text, regex: new RegExp(text, 'mi')})),
-                    filteredUsers: (cfs.filteredUsers || [])
+                    filteredUsers: (whichValue('filteredUsers', []))
                         .map(text => ({text, regex: new RegExp(text, 'mi')})),
-                    showCollapsed: !!cfs.showCollapsed,
-                    showFilteredTerms: !!cfs.showFilteredTerms,
-                    showFilteredUsers: !!cfs.showFilteredUsers,
+                    showCollapsed: !!whichValue('showCollapsed', false),
+                    showFilteredTerms: !!whichValue('showFilteredTerms', false),
+                    showFilteredUsers: !!whichValue('showFilteredUsers', false),
+                    showNotWorkSafePosts: !!whichValue('showNotWorkSafePosts', true),
+                    showStupidPosts: !!whichValue('showStupidPosts', true),
+                    showOfftopicPosts: !!whichValue('showOfftopicPosts', true),
+                    showPoliticalReligiousPosts: !!whichValue('showPoliticalReligiousPosts', true),
+                    showCortexPosts: !!whichValue('showCortexPosts', true)
                 })
             }
         } catch (ex) {
@@ -46,12 +56,22 @@ function FilterProvider({children}) {
             showFilteredUsers,
             filteredUsers,
             showFilteredTerms,
-            filteredTerms
+            filteredTerms,
+            showNotWorkSafePosts,
+            showStupidPosts,
+            showOfftopicPosts,
+            showPoliticalReligiousPosts,
+            showCortexPosts
         } = filterSettings
 
         if (!showCollapsed && thread.markType === 'collapsed') return false
         else if (!showFilteredUsers && filteredUsers.some(({regex}) => regex.test(post.author))) return false
         else if (!showFilteredTerms && filteredTerms.some(({regex}) => regex.test(cleanAllStyles(post.body)))) return false
+        else if (!showNotWorkSafePosts && post.category === 'nws') return false
+        else if (!showStupidPosts && post.category === 'stupid') return false
+        else if (!showOfftopicPosts && post.category === 'tangent') return false
+        else if (!showPoliticalReligiousPosts && post.category === 'political') return false
+        else if (!showCortexPosts && post.isCortex) return false
 
         return true
     }, [filterSettings])
@@ -86,7 +106,11 @@ const defaultSettings = {
     filteredUsers: [],
     showCollapsed: false,
     showFilteredTerms: false,
-    showFilteredUsers: false
+    showNotWorkSafePosts: true,
+    showStupidPosts: true,
+    showOfftopicPosts: true,
+    showPoliticalReligiousPosts: true,
+    showCortexPosts: true
 }
 
 export default FilterProvider

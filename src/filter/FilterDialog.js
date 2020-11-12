@@ -18,13 +18,29 @@ function FilterDialog({open, onClose}) {
     const [showCollapsed, setShowCollapsed] = useState(filterSettings.showCollapsed)
     const [showFilteredTerms, setShowFilteredTerms] = useState(filterSettings.showFilteredTerms)
     const [showFilteredUsers, setShowFilteredUsers] = useState(filterSettings.showFilteredUsers)
+    const [showNotWorkSafePosts, setShowNotWorkSafePosts] = useState(filterSettings.showNotWorkSafePosts)
+    const [showStupidPosts, setShowStupidPosts] = useState(filterSettings.showStupidPosts)
+    const [showOfftopicPosts, setShowOfftopicPosts] = useState(filterSettings.showOfftopicPosts)
+    const [showPoliticalReligiousPosts, setShowPoliticalReligiousPosts] = useState(filterSettings.showPoliticalReligiousPosts)
+    const [showCortexPosts, setShowCortexPosts] = useState(filterSettings.showCortexPosts)
     const [filteredTerms, setFilteredTerms] = useState(filterSettings.filteredTerms)
     const [filteredUsers, setFilteredUsers] = useState(filterSettings.filteredUsers)
 
     const handleSave = async () => {
         try {
             setLoading('sync')
-            await updateFilterSettings({showCollapsed, filteredTerms, filteredUsers})
+            await updateFilterSettings({
+                showCollapsed,
+                showFilteredTerms,
+                showFilteredUsers,
+                showNotWorkSafePosts,
+                showStupidPosts,
+                showOfftopicPosts,
+                showPoliticalReligiousPosts,
+                showCortexPosts,
+                filteredTerms,
+                filteredUsers
+            })
             onClose()
         } finally {
             setLoading(false)
@@ -43,6 +59,34 @@ function FilterDialog({open, onClose}) {
 
                 <EditableList title='Term' value={filteredTerms} onChange={value => setFilteredTerms(value)}/>
                 <EditableList title='User' value={filteredUsers} onChange={value => setFilteredUsers(value)}/>
+
+                <div className={classes.checkboxes}>
+                    <FilterCheckbox
+                        label='Show Not Work Safe Posts'
+                        checked={showNotWorkSafePosts}
+                        onChange={() => setShowNotWorkSafePosts(!showNotWorkSafePosts)}
+                    />
+                    <FilterCheckbox
+                        label='Show Stupid Posts'
+                        checked={showStupidPosts}
+                        onChange={() => setShowStupidPosts(!showStupidPosts)}
+                    />
+                    <FilterCheckbox
+                        label='Show Offtopic Posts'
+                        checked={showOfftopicPosts}
+                        onChange={() => setShowOfftopicPosts(!showOfftopicPosts)}
+                    />
+                    <FilterCheckbox
+                        label='Show Political / Religious Posts'
+                        checked={showPoliticalReligiousPosts}
+                        onChange={() => setShowPoliticalReligiousPosts(!showPoliticalReligiousPosts)}
+                    />
+                    <FilterCheckbox
+                        label='Show Cortex Posts'
+                        checked={showCortexPosts}
+                        onChange={() => setShowCortexPosts(!showCortexPosts)}
+                    />
+                </div>
 
                 <div className={classes.checkboxes}>
                     <FilterCheckbox
