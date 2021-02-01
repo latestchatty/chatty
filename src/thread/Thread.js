@@ -46,11 +46,12 @@ function Thread({thread: rawThread}) {
     }
     const markPost = async (post, type) => {
         post.markType = type
+        const postId = post.id || post.threadId
         if (isLoggedIn) {
             try {
                 await fetchJson('clientData/markPost', {
                     method: 'POST',
-                    body: {username, postId: post.id, type}
+                    body: {username, postId, type}
                 })
             } catch (ex) {
                 console.error('Error marking post.', ex)
@@ -71,8 +72,8 @@ function Thread({thread: rawThread}) {
     const handleCloseReplyBox = () => setReplyBoxOpenForId(null)
 
     const handleHide = post => markPost(post, post.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
-    const handleCollapse = () => markThread(thread.threadId, thread.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
-    const togglePinned = () => markThread(thread.threadId, thread.markType !== 'pinned' ? 'pinned' : 'unmarked')
+    const handleCollapse = () => markThread(thread.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
+    const togglePinned = () => markThread(thread.markType !== 'pinned' ? 'pinned' : 'unmarked')
 
     const visible = useMemo(() => isPostVisible(thread), [isPostVisible, thread])
     if (!visible) return null
