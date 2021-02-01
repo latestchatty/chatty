@@ -51,7 +51,14 @@ function ChattyProvider({children}) {
             // update post markings
             nextThreads = nextThreads
                 .map(thread => ({
-                    ...thread,
+                    ...{
+                        ...thread,
+                        posts: thread.posts
+                            .map(post => ({
+                                ...post,
+                                markType: markedPostsById[post.id] || 'unmarked'
+                            }))
+                    },
                     markType: markedPostsById[thread.threadId] || 'unmarked'
                 }))
         }
@@ -84,7 +91,11 @@ function ChattyProvider({children}) {
         // clean up any old posts after loading, doesn't impact state
         if (markedPosts) {
             let ids = markedPosts
-                .filter(post => !maxPostIdByThread[post.id])
+                .filter(markedPost => {
+                    return !nextThreads.some(thread => {
+                        return thread.posts.find(post => post.id === markedPost.id)
+                    })
+                })
                 .map(({id}) => id)
             if (ids.length) {
                 try {

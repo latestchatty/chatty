@@ -65,6 +65,7 @@ function FilterProvider({children}) {
         } = filterSettings
 
         if (!showCollapsed && thread.markType === 'collapsed') return false
+        else if (!showCollapsed && post.markType === 'collapsed') return false
         else if (!showFilteredUsers && filteredUsers.some(({regex}) => regex.test(post.author))) return false
         else if (!showFilteredTerms && filteredTerms.some(({regex}) => regex.test(cleanAllStyles(post.body)))) return false
         else if (!showNotWorkSafePosts && post.category === 'nws') return false

@@ -90,7 +90,7 @@ function FilterDialog({open, onClose}) {
 
                 <div className={classes.checkboxes}>
                     <FilterCheckbox
-                        label='Show Collapsed Threads'
+                        label='Show Collapsed Threads/Posts'
                         checked={showCollapsed}
                         onChange={() => setShowCollapsed(!showCollapsed)}
                     />

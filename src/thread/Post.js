@@ -19,8 +19,10 @@ import AuthContext from '../context/auth/AuthContext'
 import FilterContext from '../context/filter/FilterContext'
 import {makeStyles} from '@material-ui/styles'
 import PostBody from './PostBody'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+import VisibilityIconOff from '@material-ui/icons/VisibilityOff'
 
-function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenReplyBox, onCloseReplyBox}) {
+function Post({post, thread, onCollapse, onHide, onPinned, replyBoxOpenForId, onOpenReplyBox, onCloseReplyBox}) {
     const classes = useStyles()
     const domElement = useRef(null)
     const {isLoggedIn} = useContext(AuthContext)
@@ -40,9 +42,14 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
     }, [post.category, post.author])
 
     const isReply = post.parentId > 0
+    const isCollapsed = thread.id === post.id && post.markType === 'collapsed'
     const replyBorder = isReply ? 'replyBorder' : null
 
     const handleReplyClick = () => onOpenReplyBox(post.id)
+    const handleHide = () => {
+        onHide(post)
+        onCollapse()
+    }
 
     // Scroll into view when first visible
     useEffect(() => {
@@ -92,17 +99,43 @@ function Post({post, thread, onCollapse, onPinned, replyBoxOpenForId, onOpenRepl
                     <CardActions className={classes.actions} disableSpacing>
                         <Tooltip
                             disableFocusListener
-                            title={post.markType === 'collapsed' ? 'Uncollapse' : 'Collapse'}
+                            title={isCollapsed ? 'Uncollapse' : 'Collapse'}
                             enterDelay={350}
                         >
                             <CloseIcon
                                 className={
-                                    classnames(classes.toolbarButton, post.markType === 'collapsed' ? classes.collapsed : null)
+                                    classnames(classes.toolbarButton, isCollapsed ? classes.collapsed : null)
                                 }
                                 onClick={onCollapse}
                             />
                         </Tooltip>
 
+                        {
+                            thread.id !== post.id && post.markType !== 'collapsed' &&
+                            <Tooltip
+                                disableFocusListener
+                                title='Hide'
+                                enterDelay={350}
+                            >
+                                <VisibilityIcon
+                                    className={classnames(classes.toolbarButton)}
+                                    onClick={handleHide}
+                                />
+                            </Tooltip>
+                        }
+                        {
+                            thread.id !== post.id && post.markType === 'collapsed' &&
+                            <Tooltip
+                                disableFocusListener
+                                title='Unhide'
+                                enterDelay={350}
+                            >
+                                <VisibilityIconOff
+                                    className={classnames(classes.toolbarButton, classes.collapsed)}
+                                    onClick={handleHide}
+                                />
+                            </Tooltip>
+                        }
                         {
                             isLoggedIn &&
                             <Tooltip disableFocusListener title='Reply' enterDelay={350}>

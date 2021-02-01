@@ -26,19 +26,31 @@ function Thread({thread: rawThread}) {
             ...rawThread,
             ...post,
             id: +rawThread.threadId,
-            posts: posts.filter(p => isPostVisible(post, p)),
+            posts,
             markType
         }
-    }, [rawThread, markType, isPostVisible])
-    const [truncated, setTruncated] = useState(thread.posts.length > 20)
+    }, [rawThread, markType])
+    const visibleReplyCount = useMemo(() => {
+        const visiblePosts = thread.posts
+            .filter(post => isPostVisible(thread, post))
+            .sort((a, b) => a.id - b.id)
+        const visiblePostIds = visiblePosts
+            .reduce((acc, post) => ({...acc, [post.id]: !!acc[post.parentId]}), {0: true})
+        return visiblePosts.reduce((acc, post) => acc + (visiblePostIds[post.parentId] ? 1 : 0), 0) - 1
+    }, [isPostVisible, thread])
+    const [truncated, setTruncated] = useState(visibleReplyCount > 20)
 
-    const markThread = async (postId, type) => {
+    const markThread = async type => {
         setMarkType(type)
+        markPost(thread, type)
+    }
+    const markPost = async (post, type) => {
+        post.markType = type
         if (isLoggedIn) {
             try {
                 await fetchJson('clientData/markPost', {
                     method: 'POST',
-                    body: {username, postId, type}
+                    body: {username, postId: post.id, type}
                 })
             } catch (ex) {
                 console.error('Error marking post.', ex)
@@ -58,6 +70,7 @@ function Thread({thread: rawThread}) {
     const handleOpenReplyBox = id => setReplyBoxOpenForId(id)
     const handleCloseReplyBox = () => setReplyBoxOpenForId(null)
 
+    const handleHide = post => markPost(post, post.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
     const handleCollapse = () => markThread(thread.threadId, thread.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
     const togglePinned = () => markThread(thread.threadId, thread.markType !== 'pinned' ? 'pinned' : 'unmarked')
 
@@ -79,7 +92,7 @@ function Thread({thread: rawThread}) {
                 truncated &&
                 <div className={classes.truncatedMessage} onClick={() => setTruncated(false)}>
                     Thread truncated. Click to see all&nbsp;
-                    <span className={classes.replyCount}>{thread.posts.length - 1}</span>
+                    <span className={classes.replyCount}>{visibleReplyCount}</span>
                     &nbsp;replies.
                 </div>
             }
@@ -91,6 +104,7 @@ function Thread({thread: rawThread}) {
                     expandedReplyId={expandedReplyId}
                     replyBoxOpenForId={replyBoxOpenForId}
                     onExpandReply={handleExpandReply}
+                    onHide={handleHide}
                     onCollapseReply={handleCollapseReply}
                     onOpenReplyBox={handleOpenReplyBox}
                     onCloseReplyBox={handleCloseReplyBox}

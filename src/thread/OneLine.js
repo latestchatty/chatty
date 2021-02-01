@@ -1,16 +1,20 @@
-import React, {useMemo} from 'react'
+import React, {useContext, useMemo} from 'react'
 import PostAuthor from './PostAuthor'
 import classnames from 'classnames'
 import Tags from './Tags'
 import {makeStyles} from '@material-ui/styles'
 import {getSnippet} from '../util/bodyUtils'
+import FilterContext from '../context/filter/FilterContext'
 
 function OneLine({post, thread, onExpandReply}) {
     const classes = useStyles()
+    const {isPostVisible} = useContext(FilterContext)
 
     const lineClass = `oneline${post.recentReplyNumber || 9}`
     const oneline = useMemo(() => getSnippet(post.body), [post.body])
 
+    const visible = useMemo(() => isPostVisible(thread, post), [isPostVisible, post, thread])
+    if (!visible) return null
     return (
         <div className={classes.container}>
             <span
