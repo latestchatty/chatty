@@ -227,7 +227,11 @@ function ChattyProvider({children}) {
                 setLoading(false)
             }
         }
-        if (lastEventId === 0) fullReload()
+        if (lastEventId === 0) {
+            chattyRef.current.threads = []
+            chattyRef.current.newThreads = []
+            fullReload()
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lastEventId])
 
