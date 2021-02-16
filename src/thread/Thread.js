@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useState} from 'react'
+import React, {useCallback, useContext, useMemo, useState} from 'react'
 import Post from './Post'
 import Comments from './Comments'
 import FilterContext from '../context/filter/FilterContext'
@@ -13,8 +13,9 @@ function Thread({thread: rawThread}) {
     const [markType, setMarkType] = useState(rawThread.markType)
     const {username, isLoggedIn} = useContext(AuthContext)
     const {isPostVisible} = useContext(FilterContext)
+    const [revision, setRevision] = useState(0)
     const thread = useMemo(() => {
-        const posts = rawThread.posts ? rawThread.posts.sort((a, b) => a.id - b.id) : []
+        const posts = rawThread.posts ? rawThread.posts : []
 
         // oneline highlights
         posts.slice(-10)
@@ -27,9 +28,10 @@ function Thread({thread: rawThread}) {
             ...post,
             id: +rawThread.threadId,
             posts,
-            markType
+            markType,
+            revision
         }
-    }, [rawThread, markType])
+    }, [rawThread, markType, revision])
     const visibleReplyCount = useMemo(() => {
         const visiblePosts = thread.posts
             .filter(post => isPostVisible(thread, post))
@@ -40,12 +42,9 @@ function Thread({thread: rawThread}) {
     }, [isPostVisible, thread])
     const [truncated, setTruncated] = useState(visibleReplyCount > 20)
 
-    const markThread = async type => {
-        setMarkType(type)
-        markPost(thread, type)
-    }
-    const markPost = async (post, type) => {
+    const markPost = useCallback(async (post, type) => {
         post.markType = type
+        setRevision(revision + 1)
         const postId = post.id || post.threadId
         if (isLoggedIn) {
             try {
@@ -57,23 +56,27 @@ function Thread({thread: rawThread}) {
                 console.error('Error marking post.', ex)
             }
         }
-    }
+    }, [isLoggedIn, revision, username])
+    const markThread = useCallback(async type => {
+        setMarkType(type)
+        markPost(thread, type)
+    }, [markPost, thread])
 
-    const handleExpandReply = expandedReplyId => {
+    const handleExpandReply = useCallback(expandedReplyId => {
         setExpandedReplyId(expandedReplyId)
         setReplyBoxOpenForId(null)
         setTruncated(false)
-    }
-    const handleCollapseReply = () => {
+    }, [])
+    const handleCollapseReply = useCallback(() => {
         setExpandedReplyId(null)
         setReplyBoxOpenForId(null)
-    }
-    const handleOpenReplyBox = id => setReplyBoxOpenForId(id)
-    const handleCloseReplyBox = () => setReplyBoxOpenForId(null)
+    }, [])
+    const handleOpenReplyBox = useCallback(id => setReplyBoxOpenForId(id), [])
+    const handleCloseReplyBox = useCallback(() => setReplyBoxOpenForId(null), [])
 
-    const handleHide = post => markPost(post, post.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
-    const handleCollapse = () => markThread(thread.markType !== 'collapsed' ? 'collapsed' : 'unmarked')
-    const togglePinned = () => markThread(thread.markType !== 'pinned' ? 'pinned' : 'unmarked')
+    const handleHide = useCallback(post => markPost(post, post.markType !== 'collapsed' ? 'collapsed' : 'unmarked'), [markPost])
+    const handleCollapse = useCallback(() => markThread(thread.markType !== 'collapsed' ? 'collapsed' : 'unmarked'), [markThread, thread.markType])
+    const togglePinned = useCallback(() => markThread(thread.markType !== 'pinned' ? 'pinned' : 'unmarked'), [markThread, thread.markType])
 
     const visible = useMemo(() => isPostVisible(thread), [isPostVisible, thread])
     if (!visible) return null
