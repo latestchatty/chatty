@@ -3,13 +3,13 @@ import Tooltip from '@material-ui/core/Tooltip'
 import LabelIcon from '@material-ui/icons/Label'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import querystring from 'querystring'
 import AuthContext from '../context/auth/AuthContext'
 import supportedTags from './supportedTags'
 import IndicatorContext from '../context/indicators/IndicatorContext'
+import fetchJson from '../util/fetchJson'
 
 function TagButton({className, postId}) {
-    const {isLoggedIn, username} = useContext(AuthContext)
+    const {isLoggedIn, username, password} = useContext(AuthContext)
     const {setLoading, showSnackbar} = useContext(IndicatorContext)
     const [anchorEl, setAnchorEl] = useState(null)
 
@@ -20,12 +20,13 @@ function TagButton({className, postId}) {
             setLoading('async')
             setAnchorEl(null)
 
-            let text = await tagPost(username, postId, tag)
-            if (text.includes('already tagged')) {
-                text = await tagPost(username, postId, tag, 'untag')
+            let {message, status} = await tagPost(username, postId, tag, 'tag')
+            if (message.includes('Already tagged')) {
+                const response = await tagPost(username, postId, tag, 'untag')
+                status = response.status
             }
-            if (!text.match(/^ok /)) {
-                console.warn('Error tagging post', text)
+            if (!status !== '1') {
+                console.warn('Error tagging post', message)
             }
         } catch (err) {
             console.error('Exception while tagging post', err)
@@ -36,11 +37,8 @@ function TagButton({className, postId}) {
     }
 
     const tagPost = async (who, what, tag, action) => {
-        const base = 'https://lol.lmnopc.com/report.php'
-        const params = {who, what, tag, version: -1}
-        if (action) params.action = action
-        const response = await fetch(`${base}?${querystring.stringify(params)}`, {method: 'POST'})
-        return response.text()
+        const body = {who, what, tag, password, action}
+        return fetchJson(`lol`, {method: 'POST', body})
     }
 
     if (!isLoggedIn) return null
