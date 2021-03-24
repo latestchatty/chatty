@@ -2,7 +2,9 @@ import querystring from 'querystring'
 
 const base = 'https://winchatty.com/v2'
 
-export default async (url, options = {}) => {
+export default async (url, options) => fetchJson(`${base}/${url}`, options)
+
+export const fetchJson = async (url, options = {}) => {
     if (options.body) {
         options = {
             ...options,
@@ -13,7 +15,7 @@ export default async (url, options = {}) => {
             body: querystring.stringify(options.body)
         }
     }
-    let res = await fetch(`${base}/${url}`, options)
+    let res = await fetch(url, options)
     if (res.ok) {
         return await tryJson(res)
     } else {

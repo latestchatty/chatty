@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from 'react'
 import PostAuthor from './PostAuthor'
 import classnames from 'classnames'
-import Tags from './Tags'
+import Tags from '../tags/Tags'
 import {makeStyles} from '@material-ui/styles'
 import {getSnippet} from '../util/bodyUtils'
 import FilterContext from '../context/filter/FilterContext'

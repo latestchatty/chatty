@@ -13,14 +13,15 @@ import PostDate from './PostDate'
 import PostAuthor from './PostAuthor'
 import classnames from 'classnames'
 import ReplyBox from '../replyBox/ReplyBox'
-import Tags from './Tags'
-import TagButton from './TagButton'
+import Tags from '../tags/Tags'
+import TagButton from '../tags/TagButton'
 import AuthContext from '../context/auth/AuthContext'
 import FilterContext from '../context/filter/FilterContext'
 import {makeStyles} from '@material-ui/styles'
 import PostBody from './PostBody'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityIconOff from '@material-ui/icons/VisibilityOff'
+import WhoTaggedButton from '../tags/WhoTaggedButton'
 
 function Post({post, thread, onCollapse, onHide, onPinned, replyBoxOpenForId, onOpenReplyBox, onCloseReplyBox}) {
     const classes = useStyles()
@@ -84,6 +85,8 @@ function Post({post, thread, onCollapse, onHide, onPinned, replyBoxOpenForId, on
                         <PostAuthor post={post} thread={thread}/>
 
                         <Tags tags={post.lols} variant='post'/>
+
+                        <WhoTaggedButton post={post}/>
 
                         <span className={classes.flex}/>
 

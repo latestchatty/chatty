@@ -4,7 +4,7 @@ import LabelIcon from '@material-ui/icons/Label'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import AuthContext from '../context/auth/AuthContext'
-import supportedTags from './supportedTags'
+import {supportedTags} from './tagData'
 import IndicatorContext from '../context/indicators/IndicatorContext'
 import fetchJson from '../util/fetchJson'
 
