@@ -2,10 +2,10 @@ export const supportedTags = ['lol', 'inf', 'unf', 'tag', 'wtf', 'wow', 'aww']
 
 export const tagsById = {
     1: 'lol',
-    2: 'inf',
+    2: 'wtf',
     3: 'unf',
-    4: 'tag',
-    5: 'wtf',
+    4: 'inf',
+    5: 'tag',
     6: 'wow',
     7: 'aww'
 }

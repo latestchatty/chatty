@@ -11,8 +11,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import fetchJson from '../util/fetchJson'
 
-const ENABLE_FEATURE = false
-
 function WhoTaggedButton({post}) {
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -22,17 +20,11 @@ function WhoTaggedButton({post}) {
     const handleClose = () => setAnchorEl(null)
 
     const handleClick = useCallback(async ({currentTarget}) => {
-        // TODO: Enable once API is available on WinChatty
-        if (!ENABLE_FEATURE) {
-            showSnackbar('This feature is under development, and will be available soon, check back later!.', {variant: 'info'})
-            return null
-        }
-
         try {
             setLoading('async')
 
-            const result = await fetchJson(`getLolTaggers?id=${post.id}`)
-            const formatted = result.reduce((acc, {tag, usernames}) => {
+            const {data} = await fetchJson(`getLolTaggers?threadIds=${post.id}`)
+            const formatted = data.reduce((acc, {tag, usernames}) => {
                 const key = tagsById[tag]
                 acc[key] = usernames
                 return acc
